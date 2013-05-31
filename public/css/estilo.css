@@ -21,7 +21,7 @@ body { 	font-size: 10px;
 	background:url("../../public/images/logo.png");
 	background-repeat: no-repeat;
 	z-index: 0;
-	background-size: 200px 150px;	
+	background-size: 200px 120px;	
 	position: relative;
 	left: 20%;
 }
