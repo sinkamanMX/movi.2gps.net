@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script>
+  deta_data = [
+   {DATA}
+  ];  
+</script>
+<script>
+$(document).ready(function () {
+	$( "#tabs_detalle" ).tabs({ 
+		selected: 0 ,
+	});
+	$(rhi_dialog).dialog('option', 'title', 'Detalle {U}');
+	rhi_mapa();
+	rhi_load_detail_datatable('{FI}','{FF}','{UND}');
+	rhi_load_com_datatable();
+	$( ".export_excel" ).button({
+      icons: {
+        primary: "ui-icon-document"
+      }
+	});	
+});	
+</script>
+<div id="tabs_detalle" style="width:98%; height:90%;">
+  <ul>
+	<button style="float:right;" class="export_excel" onclick="export_excel_detalle('{FI}','{FF}','{UND}')">Exportar</button>
+    <li><a href="#tabs_detMapa">Mapa</a></li>
+    <li><a href="#tabs_dDetalle">Detalle</a></li>
+    <li><a href="#tabs_dResumen">Resumen</a></li>
+    
+  </ul>
+  <div id="tabs_dResumen">
+  </div><!--tabs_dResumen-->
+  <div id="tabs_dDetalle">
+	<table cellpadding="0" cellspacing="0" border="0" class="display" id="rhi_detcom_table">
+		<thead>
+			<tr>
+				<th>Fecha</th>
+				<th>Evento</th>
+				<th>Velocidad</th>
+				<th>Latitud</th>
+				<th>Longitud</th>
+				<th>Dirección</th>    
+	  		</tr>
+	  </thead>
+	  <tbody></tbody>
+	</table> 
+  </div><!--tabs_dDetalle-->
+  <div id="tabs_detMapa" class="total_width" style="height:90%;" >
+  	<div id="tabs_tMapa" class="table_det"></div>
+  	<div id="tabs_dMapa" class="map_det" ></div>
+  </div><!--tabs_dMapa-->
+</div>

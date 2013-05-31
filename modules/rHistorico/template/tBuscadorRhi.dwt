@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+$(document).ready(function () {
+	damegrupo();
+	var f = new Date();  
+	m = (f.getMonth()+1 <=9)?"0"+(f.getMonth()+1):f.getMonth()+1;
+	d = (f.getDate()<=9)?"0"+(f.getDate()):f.getDate();
+	today = f.getFullYear()+"-"+m+"-"+d;
+	//alert(today)
+	$("#start_date").val(today);
+	$("#end_date").val(today);
+	$( ".datepicker" ).datepicker({
+		showOn: "button",
+		buttonImage: "public/images/cal.gif",
+		buttonImageOnly: true,
+		maxDate: '0',
+		dateFormat: "yy-mm-dd"
+				});
+	});
+</script>
+
+  <div id="tbl">
+<div style="height:400px;">
+      <div class="titulo">
+      <h4>
+      <input type="radio" id="rd1" name="rdg" checked="checked" onclick="valida_rango()" />
+                Rango de Fechas
+      </h4>
+      <div id="rfecha">         
+      <table border="0" width="100%">
+      <tr>
+      <td><label>Fecha Inicial:</label></td>
+      <td><input type="text" id="start_date" class="datepicker caja_date" readonly="readonly"/></td>
+      </tr>
+      <tr>
+      <td></td>
+      <td>
+      <select id="hri" class="mcaja">
+      	<!-- BEGIN hri -->
+        {hri.HR}
+        <!-- END hri -->
+      </select>
+      <span>&nbsp;:&nbsp;</span>
+      <select id="mni" class="mcaja">
+      	<!-- BEGIN mni -->
+        {mni.MN}
+        <!-- END mni -->
+      </select>
+      </td>
+      </tr>
+      <tr>
+      <td><label>Fecha Final:</label></td>
+      <td><input type="text" id="end_date" class="datepicker caja_date" readonly="readonly" /></td>
+      </tr>
+      <tr>
+      <td></td>
+      <td>
+      <select id="hrf" class="mcaja">
+      	<!-- BEGIN hri -->
+        {hri.HR2}
+        <!-- END hri -->
+      </select>
+      <span>&nbsp;:&nbsp;</span>
+      <select id="mnf" class="mcaja">
+      	<!-- BEGIN mni -->
+        {mni.MN2}
+        <!-- END mni -->                                             
+      </select>
+      </td>
+      </tr>
+      </table>
+      </div><!--rfecha-->
+      <br />
+      <div class="titulo" style="display:none;">
+      <h4><input type="radio" name="rdg" id="rd2" onclick="valida_rango()" />Semana</h4>
+		<div id="week_r">
+        <table width="100%">
+        <tr><td width="36%"><label>N&uacute;mero de semana:</label></td><td width="64%"><select id="cbo_sem" class="mcaja" disabled="disabled" >
+        	<!-- BEGIN weeks -->
+            {weeks.NO}
+            <!-- END weeks -->
+        </select></td></tr>
+        </table>
+        </div><!--week_r-->      
+      </div><!--titulosemana-->
+      <br />
+      <div class="titulo">
+      <h4>Grupos</h4>
+      <div id="grupos">
+        <select id="selgrupo" onchange="dameunidad();" style="width:100%" class="caja">
+        <option value="0">Seleccionar grupo</option>
+        </select>
+      </div><!--grupos-->
+      </div><!--titulogrupo-->
+      <br />
+      <div class="titulo">
+      <h4>Unidades</h4>
+      <div id="unidades">
+        <select name="selunidad" id="selunidad" style="width:100%" class="caja">
+          <option value="0">Seleccionar unidad</option>
+        </select>
+      </div><!--unidades-->
+      </div><!--titulounidades-->
+      <br />
+      <div class="titulo" style="display:none">
+      <h4>Radio Geopunto</h4>
+      <div id="radio">
+      <select id="cbo_radio" class="mcaja" style="width:60px;">
+        	<!-- BEGIN rdo -->
+            {rdo.NO}
+            <!-- END rdo -->
+      </select> metros     
+      </div><!--radio-->
+      </div><!--tituloradio-->
+      <br />
+      <div class="titulo" style="display:none">
+      <h4>Velocidad</h4>
+      <div id="velocidad">
+      Velocidad mayor a: <input type="text" id="velocity" class="mcaja" value="90" /> km/h
+      </div><!--velocidad-->
+      </div><!--titulovelocidad-->
+      <!--<input type="button" value="Buscar"  onclick="revisadatos();" class="b_op"/>-->
+      <button onclick="revisadatos();" style="float:right; width:0px; height:0px; border:#FFF solid thin;"></button>
+      			</div><!--menu-->	   	
+      		</div>
+    
+  </div>
+

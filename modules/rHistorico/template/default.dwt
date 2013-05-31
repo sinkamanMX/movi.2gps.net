@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<style type="text/css">
+.table_det{
+  border: thin solid #A6C9E2;
+  float: left;
+  height: 100%;
+  width: 20%;
+}
+.map_det{
+  border: thin solid #A6C9E2;
+  float: right;
+  height: 100%;
+  right: 1%;
+  top: 0;
+  width: 78%;  
+}
+</style>
+<div style="width:100%; height:100%;">
+  <table cellpadding="0" cellspacing="0" border="0" class="display" id="rhi_table">
+    <thead>
+      <tr>
+        <th colspan="10">
+          <div style="width:100%; float:left; align:center;"><h3>Reporte hist&oacute;rico</h3></div>
+        </th>
+        <th colspan="1">          
+          <div style="width:15%  float:right;">            
+            <button id="rhi_add" onClick="rhi_buscar()">Buscar</button>            
+          </div>
+        </th>
+        <th>
+          <div style="width:15%  float:right;">    
+            <button id="rhi_exp_exe" style="display:none;"  onClick="export_excel()">Exportar</button></th>
+          </div>  
+      </tr>
+      <tr >
+        <th>&nbsp;</th>
+        <th>Fecha</th>
+        <th>Unidad</th>	
+        <th>Total de Paradas</th>
+        <th>Paradas autorizadas</th>
+        <th>Paradas no autorizadas</th>
+        <th>Tiempo en movimiento</th>
+        <th>Tiempo detenido autorizado</th>	
+        <th>Tiempo detenido no autorizado</th>
+        <th>Velocidad Maxima</th>
+        <th>Total de excesos</th>
+        <th>Kilómetros recorridos</th>        
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table> 
+</div>
+<div id="rhi_dialog" > </div>
+<div id="rhi_dialog_nvo" > </div>
+<div id="rhi_dialog_message" title="&iexcl;Aviso!"></div> 
+<div id="rhi_dialog_confirm"></div> 

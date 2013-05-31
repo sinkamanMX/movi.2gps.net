@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--<fieldset><legend>Información</legend>-->
+  <div id="tbl">
+    <table class="tableP">
+                              
+      <tr>
+        <td>Marca:</td>
+        <td>
+        <select class="caja" id="teq_marc_nvo" onchange="teq_modelo(this.value)">
+        <option value="0">Seleccione una marca</option>
+        <!-- BEGIN marca -->
+        <option value="{marca.IDMAR}">{marca.MARCA}</option>
+        <!-- END marca -->
+        </select>
+          </select>
+          </td>   
+      </tr>  
+      <tr>
+        <td>Modelo:</td>
+        <td>
+        <div id="teq_div_modelo">
+          <select class="caja" id="teq_mode_nvo">
+          <option value="0">Seleccione un modelo</option>
+        
+          </select>
+        </div>  
+        </td>   
+      </tr>  
+      <tr>
+        <td>Tipo de comunicaci&oacute;n:</td>
+        <td>
+          <select class="caja" id="teq_tcom_nvo">
+          <option value="0">Seleccione un tipo de comunicaci&oacute;n</option>
+        	<!-- BEGIN com -->
+        	<option value="{com.IDTC}">{com.TCOM}</option>
+        	<!-- END com -->
+          </select></td>   
+      </tr>   
+      <tr>
+        <td>Nombre:</td>
+        <td><input type="text" id="teq_desc_nvo" class="caja_txt" maxlength="60"/></td>
+      </tr>
+      <tr>
+        <td>Puerto por defecto:</td>
+        <td><input type="text" id="teq_port_nvo" class="caja_txt" maxlength="60"/></td>
+      </tr>                                                
+    </table>
+    <input type="hidden" value="{ID}" id="emp_id" />
+  </div>
+<!--</fieldset>-->

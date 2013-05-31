@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+$(document).ready(function () {
+	$( ".add" ).button({
+      icons: {
+        primary: "ui-icon-plus"
+      },
+      text: "Nuevo"
+    });
+	//Dialog generico		
+	$( "#teq_eve_dialog_nvo" ).dialog({
+		autoOpen:false,
+		title:"Nuevo",
+		modal: true,
+		buttons: {
+		Cancelar: function() {
+			$("#teq_eve_dialog_nvo" ).dialog( "close" );
+			},
+		Guardar: function() {
+			//alert("editar");
+			eve_validar_nvo();
+			//$("#teq_dialog" ).dialog( "close" );
+			}			
+		}
+	});	
+	
+	//Dialog generico		
+	$( "#teq_eve_dialog_edt" ).dialog({
+		autoOpen:false,
+		title:"Editar",
+		modal: true,
+		buttons: {
+		Cancelar: function() {
+			$("#teq_eve_dialog_edt" ).dialog( "close" );
+			},
+		Guardar: function() {
+			//alert("editar");
+			eve_validar_edt();
+			//$("#teq_dialog" ).dialog( "close" );
+			}			
+		}
+	});		
+	//Dialog generico		
+	$( "#teq_com_dialog_nvo" ).dialog({
+		autoOpen:false,
+		title:"Nuevo",
+		modal: true,
+		buttons: {
+		Cancelar: function() {
+			$("#teq_com_dialog_nvo" ).dialog( "close" );
+			},
+		Guardar: function() {
+			//alert("editar");
+			com_validar_nvo();
+			//$("#teq_dialog" ).dialog( "close" );
+			}			
+		}
+	});	
+	
+	//Dialog generico		
+	$( "#teq_com_dialog_edt" ).dialog({
+		autoOpen:false,
+		title:"Editar",
+		modal: true,
+		buttons: {
+		Cancelar: function() {
+			$("#teq_eve_dialog_edt" ).dialog( "close" );
+			},
+		Guardar: function() {
+			//alert("editar");
+			com_validar_edt();
+			//$("#teq_dialog" ).dialog( "close" );
+			}			
+		}
+	});			
+});
+
+
+$( "#teq_tabs_main" ).tabs({
+   show: function(event, ui) {
+	   teq_load_datatable_eventos();
+	   teq_load_datatable_comandos();
+    }
+});
+</script>
+
+<div id="tbl" style="height:24%">
+    <table class="tableP">
+                              
+      <tr>
+        <td>Marca:</td>
+        <td>
+        <select class="caja" id="teq_marc_edt" onchange="teq_modelo_edt(this.value)">
+        <option value="0">Seleccione una marca</option>
+        <!-- BEGIN marca -->
+        <option value="{marca.IDMAR}" {marca.SLTD}>{marca.MARCA}</option>
+        <!-- END marca -->
+        </select>
+         
+          </td>
+        <td>Nombre:</td>
+        <td><input type="text" id="teq_desc_edt" class="caja_txt" maxlength="60" value="{NAME}"/></td>            
+      </tr>  
+      <tr>
+        <td>Modelo:</td>
+        <td>
+        <div id="teq_div_modelo_edt">
+          <select class="caja" id="teq_mode_edt">
+          <option value="0">Seleccione un modelo</option>
+          <!-- BEGIN modelo -->
+          <option value="{modelo.IDMD}" {modelo.SLTD}>{modelo.MODL}</option>
+          <!-- END modelo -->          
+          </select>
+        </div>  
+        </td>
+        <td>Puerto por defecto:</td>
+        <td><input type="text" id="teq_port_edt" class="caja_txt" maxlength="60" value="{PORT}"/></td>           
+      </tr>  
+      <tr>
+        <td>Tipo de comunicaci&oacute;n:</td>
+        <td>
+          <select class="caja" id="teq_tcom_edt">
+          <option value="0">Seleccione un tipo de comunicaci&oacute;n</option>
+        	<!-- BEGIN com -->
+        	<option value="{com.IDTC}" {com.SLTD}>{com.TCOM}</option>
+        	<!-- END com -->
+          </select></td>   
+      </tr>                                                  
+    </table>
+    <input type="hidden" value="{ID}" id="teq_id" />
+</div>
+<div id="teq_tabs_main" style="height:74%; width:100%; ">
+  <ul>
+    <li><a href="#teq_tabs_eventos">Eventos</a></li>
+    <li><a href="#teq_tabs_comandos">Comandos</a></li>
+  </ul>
+  <div id="teq_tabs_eventos">
+       <table cellpadding="0" cellspacing="0" border="0" class="display" id="teq_eventos_table">
+        <thead>
+        <tr>
+        <th colspan="5"><div style="width:90%; float:left;"></div>
+        <div style="width:9%; float:right;"><button class="add" id="teq_eve_add" onClick="teq_eve_tpl_nuevo()">Nuevo</button></div></th>
+        </tr>
+        <tr>
+        
+          <th></th>	
+          <th></th>
+          <th>Raz&oacute;n</th>
+          <th>C&oacute;digo de b&uacute;squeda</th>
+          <th>N&uacute;mero de bytes</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+           <!-- <td class="dataTables_teqty" colspan="5" height="100%" width="100%">Loading data from server</td>-->
+          </tr>
+        </tbody>
+      </table>    
+  </div><!--teq_tabs_eventos-->
+  <div id="teq_tabs_comandos">
+       <table cellpadding="0" cellspacing="0" border="0" class="display" id="teq_comandos_table">
+        <thead>
+        <tr>
+        <th colspan="5"><div style="width:90%; float:left;"></div>
+        <div style="width:9%; float:right;"><button class="add" onClick="teq_comand_tpl_nuevo()">Nuevo</button></div></th>
+        </tr>
+        <tr>
+        
+          <th></th>	
+          
+          <th>ID</th>
+          <th>Descripci&oacute;n</th>
+          <th>N&uacute;mero de bytes</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+           
+          </tr>
+        </tbody>
+      </table>    
+  </div><!--/*teq_tabs_comandos*/-->
+  
+</div>
+

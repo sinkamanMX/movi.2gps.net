@@ -1,0 +1,51 @@
+#ddmenu {
+  display: block;
+  width: 97%;
+  height: 30px;
+  margin: 3px auto;
+  padding: 0 15px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 1px rgba(20, 20, 20, 0.2);
+  cursor: pointer;
+  outline: none;
+  font-weight: bold;
+  color: #8aa8bd;
+}
+
+#ddmenu li { display: block; position: relative; float: left; font-size: 1.45em; text-shadow: 1px 1px 0 #fff; border-right: 1px solid #dae0e5; }
+
+#ddmenu li a {
+  display: block;
+  float: left;
+  padding: 0 12px;
+  line-height: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #6c87c0;
+  width: 230px;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+#ddmenu li:hover > a { color: #7180a0; background: #d9e2ee; }
+
+#ddmenu ul {
+  position: absolute;
+  top: 88px;
+  width: 130px;
+  background: #fff;
+  display: none;
+  margin: 0;
+  padding: 7px 0;
+  list-style: none;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.disabled_menu{
+  color: #7180a0; background: #d9e2ee; 
+}

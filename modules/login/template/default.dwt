@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{PAGE_TITLE}</title>
+<!-- ESTILOS -->
+<link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
+<link type="text/css" href="public/css/jqueryUI.css" rel="stylesheet" />
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<!-- ESTILOS -->
+<script type="text/javascript" src="public/js/ui/jquery.js"></script>
+<script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>
+<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>
+<script type="text/javascript" src="modules/login/template/js/login.js"></script>
+</head>
+<body>	 
+	<div id="panelLogin">
+		<h2 class="cabeceras" align="center">{PAGE_TITLE}</h2>  
+		<div id="contenedor">
+			<div id="div_logo"></div>			
+			<div id="lgn_data">
+				<div class="lgn_span_label">Usuario:</div>
+				<input type="text" class="lgn_caja" id="nickname" value="{NAME}"  
+						onkeydown="if (event.keyCode == 13) val_login()">
+				<div class="lgn_span_label">Contraseña:
+					<div id="lgn_span_a" class="lgn_span_a">
+						¿Olvido su Contraseña?
+					</div>
+				</div>
+				<input class="lgn_caja"  type="password" id="password" value="{PASS}"
+						onkeydown="if (event.keyCode == 13) val_login()">
+			</div>			
+			<div id="lgn_footer">
+				<div id="lgn_div_respuesta"></div>
+				<div class="demo lgn_button_log">
+					<button class="lgn_button" name="Entrar">Entrar</button>
+				</div>
+			</div>
+            <div id="dialog-message">	</div>
+            <div id="dialog-confirm" title="&iexcl;Aviso!"></div>
+         </div>
+    </div>
+  
+</body>
+</html>

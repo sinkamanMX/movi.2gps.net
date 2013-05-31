@@ -1,0 +1,5 @@
+RewriteEngine On
+<IfModule mod_rewrite.c>
+RewriteCond %{HTTP_HOST} !^www\.ubicatec\.com [NC]
+RewriteRule ^(.*) http://www.ubicatec.com/$1 [L,R=301]
+</Ifmodule>

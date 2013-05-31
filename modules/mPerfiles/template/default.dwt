@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<div style="width:100%; height:100%;">
+  <!--<div id="div_contenido">
+    <div id="div_workspace"> Contenido de la ventana -->
+          
+
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="pro_table">
+        <thead>
+        <tr>
+            <th colspan="5">
+              {HEADER}
+            </th> 
+        </tr>
+        <tr>
+        
+          <th></th>	
+          <th>ID_EMPRESA</th>
+          <th>DESCRIPCION</th>
+          <th>ACTIVO</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dataTables_empty" height="100%" width="100%">Loading data from server</td>
+          </tr>
+        </tbody>
+      </table> 
+    <!--</div> Contenido de la ventana -->
+  <!--</div> Contenedor Principal-->      
+</div>
+<div id="pro_dialog" > </div>
+<div id="pro_dialog_nvo" > </div>
+<div id="pro_dialog_message" title="&iexcl;Aviso!"></div> 
+<div id="pro_dialog_confirm"></div> 

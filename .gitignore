@@ -1,0 +1,6 @@
+#
+.project
+.buildpath
+.settings
+config/database.php
+docs/BD/*.gz

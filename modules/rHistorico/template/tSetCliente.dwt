@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<fieldset><legend>Información</legend>
+  <div id="tbl">
+    <table class="tableP">
+      <tr>
+        <td>Empresa:</td>
+        <td><input type="text" id="cli_name" class="caja_txt" maxlength="60" value="{NAME}"/></td>
+      </tr>
+      <tr>
+        <td>Activo:</td>
+        <td>
+          <select class="caja" id="cli_estatus">
+          <option value="0"{N}>NO</option>
+          <option value="1"{S}>SI</option>
+          </select></td>   
+      </tr>                           
+    </table>
+    <input type="hidden" value="{ID}" id="cli_id" />
+  </div>
+</fieldset>

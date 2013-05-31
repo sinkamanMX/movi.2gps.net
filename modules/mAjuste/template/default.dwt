@@ -1,0 +1,7 @@
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<div id="aju_menu" class="menu">
+<h3>Menu Ajustes</h3>
+</div><!--adm_menu-->
+<div id="aju_content" class="pestana_contenido">
+<p onClick="color_blue();" id="pa" >funcion desde {PATH}</p>
+</div><!--adm_content-->

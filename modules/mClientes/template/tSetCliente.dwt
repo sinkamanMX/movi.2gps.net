@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+$(document).ready(function () {
+	$( "#tabs_edt_client" ).tabs();
+	});
+</script>
+<div id="tabs_edt_client">
+  <ul>
+    <li><a href="#gral_client_data_edt">Datos Generales</a></li>
+    <li><a href="#cont_client_data_edt">Contacto</a></li>
+    <li><a href="#div_cli_val">Validación</a></li>
+  </ul>
+  <div id="gral_client_data_edt">
+<input type="hidden" id="cli_id" value="{ID}" />
+    <table class="tableP">
+      <tr>
+        <td>Nombre:</td>
+        <td><input type="text" id="cli_edt_name" class="caja_txt" maxlength="60" value="{NAME}"/></td>
+      </tr>
+      <tr>
+        <td>RFC:</td>
+        <td><input type="text" id="cli_edt_rfc" class="caja_txt" maxlength="60" value="{RFC}"/></td>
+      </tr>
+      <tr>
+        <td>Raz&oacute;n Social:</td>
+        <td><input type="text" id="cli_edt_rzon" class="caja_txt" maxlength="60" value="{RZN}"/></td>
+      </tr> 
+      <tr>
+        <td>Persona:</td>
+        <td>
+        <select id="cli_edt_per" class="caja">
+        <option value="FISICA" {P_F} >FISICA</option>
+        <option value="MORAL"  {P_M} >MORAL</option>
+        </select>
+        </td>                           
+    </table>
+    
+
+ <!-- </fieldset>    -->
+  </div><!--gral_client_data_edt-->
+  <div id="cont_client_data_edt">
+  <!--<fieldset><legend>Información</legend>-->
+
+    <table class="tableP">
+      <tr>
+        <td>Tel&eacute;fono:</td>
+        <td><input type="text" id="cli_edt_tel" class="caja_txt" maxlength="60" value="{TEL}"/></td>
+      </tr>
+      <tr>
+        <td>Direcci&oacute;n:</td>
+        <td><input type="text" id="cli_edt_dir" class="caja_txt" maxlength="60" value="{DIR}"/></td>
+      </tr>
+      <tr>
+        <td>Contacto:</td>
+        <td><input type="text" id="cli_edt_con" class="caja_txt" maxlength="60" value="{CON}"/></td>
+      </tr> 
+      <tr>
+        <td>e-mail:</td>
+        <td><input type="text" id="cli_edt_ema" class="caja_txt" maxlength="60" value="{EMA}"/></td>
+      </tr>
+      <tr>
+        <td>Movil:</td>
+        <td><input type="text" id="cli_edt_mov" class="caja_txt" maxlength="60" value="{MOV}"/></td>
+      </tr>            
+      <tr>
+        <td>Activo:</td>
+        <td>
+        <select id="cli_edt_act" class="caja">
+        <option value="S" {A_S}>Si</option>
+        <option value="N" {A_N}>No</option>
+        </select>
+        </td> 
+       </tr>
+    </table>    
+ <!-- </fieldset>     -->
+  </div><!--cont_client_data_edt-->
+  <div id="div_cli_val">
+    <table>
+      <tr>
+        <td>Pregunta:</td>
+        <td><input type="text" id="cli_edt_preg" class="caja_txt" maxlength="60" value="{PREG}"/></td>
+      </tr>      
+      <tr>
+        <td>Respuesta:</td>
+        <td><input type="text" id="cli_edt_resp" class="caja_txt" maxlength="60" value="{RESP}"/></td>
+      </tr>
+    </table>
+  </div>
+</div>
+

@@ -1,0 +1,34 @@
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<div style="width:100%; height:100%;">
+  <!--<div id="div_contenido">
+    <div id="div_workspace"> Contenido de la ventana -->
+          
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="cli_table">
+        <thead>
+        <tr>
+        <th colspan="5"><div style="width:90%; float:left;"><h3>{PAGE_TITLE}</h3></div>
+        <div style="width:9%;  float:right;"><button id="cli_add" onClick="cli_tpl_nuevo()">Nuevo</button></div></th>
+        </tr>
+        <tr>
+        
+          <th></th>	
+          <th></th>	
+          <th>Cliente</th>
+          <th>Tel&eacute;fono:</th>
+          <th>Contacto</th>
+          <th>Estatus</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <!--<td class="dataTables_empty" height="100%" width="100%">Loading data from server</td>-->
+          </tr>
+        </tbody>
+      </table> 
+    <!--</div> Contenido de la ventana -->
+  <!--</div> Contenedor Principal-->      
+</div>
+<div id="cli_dialog" > </div>
+<div id="cli_dialog_nvo" > </div>
+<div id="cli_dialog_message" title="&iexcl;Aviso!"></div> 
+<div id="cli_dialog_confirm"></div> 

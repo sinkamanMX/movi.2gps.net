@@ -1,0 +1,18 @@
+<table width="100%" id="data_report">
+<!-- BEGIN reports -->
+<tr>
+  <td width="9%">{reports.DATE}</td>
+  <td width="9%">{reports.UNIT}</td>
+  <td width="9%">{reports.PART}</td>
+  <td width="9%">{reports.PARA}</td>
+  <td width="9%">{reports.PARN}</td>
+  <td width="9%">{reports.TMOV}</td> 
+  <td width="9%">{reports.TDEA}</td> 
+  <td width="9%">{reports.TDEN}</td>  
+  <td width="9%">{reports.VELM}</td> 
+  <td width="9%">{reports.TEXC}</td> 
+  <td width="9%">{reports.KREC} km.</td> 
+    
+</tr>
+<!-- END reports -->
+</table>

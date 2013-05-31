@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<input type="hidden" value="{ID}" id="proc_txt_id_medio"/>
+<input type="hidden" value="{ID_CONTACT}" id="proc_med_id_contact"/>
+<style type="text/css">
+.total_width{
+  width:100%; !important;
+}
+.proc_caja{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:150px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.proc_caja_short{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:50px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.proc_caja_txa{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:50px;
+  width:150px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.proc_med_gral{
+  height: 150px;
+}
+</style>
+    <div class="proc_med_gral">
+      <table>
+        <tr><td>Medio:</td>
+            <td><select  id="proc_med_cmedio" class="proc_caja" >{MEDIOS}</select></td></tr>
+        <tr><td>Descripción:</td>
+            <td><input id="proc_med_des" class="proc_caja" type="text" value="{NAME}"></td></tr>
+        <tr>    
+            <td>Activo:</td>
+            <td>
+              <select class="proc_caja"  id="proc_med_estatus">
+                {STATUS}
+              </select></td> 
+        </tr>
+        <tr><td>Prioridad</td>
+            <td><input id="proc_med_prior" class="proc_caja_short" type="text" value="{PRIOR}"></td></tr>
+      </table>
+     </div> 

@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<input type="hidden" value="{ID}" id="geos_txt_id"/>
+<input type="hidden" value="c" id="geos_txt_tipo"/>
+<input type="hidden" value="0" id="geos_txt_lat"/>
+<input type="hidden" value="0" id="geos_txt_lon"/>
+<style type="text/css">
+  .left{width:260px; height:380px; position:relative; float: left;}
+  .right{width:420px; height:380px; position:relative; float: right;}
+  .geos_map_div{
+    width:420px;
+    height:350px;
+  }
+  .geos_caja_txt{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:100%;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.geos_caja_txt_search{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:40%;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+ .geos_caja_no{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:50px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+ .geos_caja_btn{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:100px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+</style>
+<script>
+  geos_poins_polygon = [
+   {POSITIONS}
+  ];  
+
+  geos_options = {
+          paths: geos_poins_polygon,
+          editable: true,
+          strokeColor: "{COLOR_HEX}",
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: "{COLOR_HEX}",
+          fillOpacity: 0.35
+    }  
+</script>
+<div id="geos_contenedor">
+  <div class="left">
+    <table>                     
+        <tr>
+            <td>Descripción:</td>
+            <td colspan="3">
+                <input type="text" id="geos_search_name" class="geos_caja_txt" value="{DESCRIPCION}" />
+            </td>
+        </tr> 
+        <tr>
+            <td>Privacidad:</td>
+            <td colspan="3">
+                <select class="geos_caja_txt" id="geos_txt_priv">
+                  {PRIVACIDAD}
+                </select>
+            </td>
+        </tr>  
+        <tr>
+            <td>Color:</td>
+            <td colspan="3">
+                <select class="geos_caja_txt" id="geos_txt_color">
+                  {COLORES}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button id="geos_start">Comenzar</button>
+            </td>
+            <td>
+                <button id="geos_drop">Borrar</button>
+            </td>            
+        </tr>         
+    </table>
+  </div>
+  <div class="right">
+      <table>
+        <tr><td align="right">
+            Buscar (lon lat/Dirección):<input type="text" class="geos_caja_txt_search" id="geos_txt_find"/>
+            &nbsp;<button id="geos_search">Buscar</button>
+        </td>        
+        </tr>
+        <tr><td>
+          <div id="geos_map" class="geos_map_div">
+          </div>
+        </td></tr>
+      </table>
+  </div>  
+</div>
+<div id="geos_tipo_confirm"></div>

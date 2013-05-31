@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<input type="hidden" value="{ID}" id="proc_txt_id_nvo"/>
+<style type="text/css">
+.total_width{
+  width:100%; !important;
+}
+.proc_caja{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:150px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.proc_caja_txa{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:50px;
+  width:150px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.proc_selected { background: #F39814; color: white; }
+.proc_divs_gral{
+  height: 300px;   
+}
+#proc_tabs{
+  width: 600px;
+}
+</style>
+  <div id="proc_tabs">
+    <ul>
+      <li ><a href="#proc_div_gral">Información</a></li>      
+      <li ><a href="#proc_div_ctos">Contactos</a></li>
+    </ul>
+
+    <div id="proc_div_gral">
+       <div class="proc_divs_gral">
+
+        <fieldset>
+          <legend>Información</legend>
+            <table class="total_width">
+              <tr>
+                  <td>Descripción  :</td> 
+                  <td><input id="proc_txt_name" class="proc_caja" type="text" value="{NAME}"></td>
+              </tr>
+              <tr>    
+                  <td valign="top">Observaciones:</td> 
+                  <td><textarea id="proc_txt_obs" class="proc_caja_txa">{OBS}</textarea></td>              
+              </tr>
+              <tr>    
+                  <td>Activo:</td>
+                  <td>
+                    <select class="proc_caja"  id="proc_cbo_estatus">
+                      {STATUS}
+                    </select></td> 
+              </tr>
+              <tr>    
+                  <td>Cliente:</td> 
+                  <td>
+                    <select  class="proc_caja"  id="global_id_client">
+                      {CLIENTES}
+                    </select></td> 
+              </tr>              
+              <tr>    
+                  <td>Unidad:</td> 
+                  <td>
+                    <select class="proc_caja"  id="proc_cbo_unit">
+                      <option value="0">Seleccione un Cliente</option>
+                      {UNITS}
+                    </select></td> 
+              </tr>
+            </table>
+        </fieldset>          
+       </div>
+    </div><!-- div general -->
+
+    <div id="proc_div_ctos"><!-- div contactos -->
+        <div class="proc_divs_gral">
+         <div class="total_width"> <button id="proc_add_contact">Nuevo Contacto</button></div> 
+         <table cellpadding="0" cellspacing="0" border="0" class="display" id="proc_table_contacts">
+              <thead>
+              <tr>      
+                <th>&nbsp;</th>
+                <th>NOMBRE</th>
+                <th>ROL</th>
+                <th>HORARIO</th>
+                <th>CONSULTA</th>
+                <th>AUTORIZA</th>              
+              </tr>
+              </thead>
+            </table>   
+        </div> 
+    </div><!-- div contactos -->    
+  </div>
+

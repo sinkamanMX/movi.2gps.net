@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<input type="hidden" value="{ID}" id="proc_txt_id_contact"/>
+<input type="hidden" value="{ID_PROT}" id="proc_txt_id_protocolo"/>
+<style type="text/css">
+.total_width{
+  width:100%; !important;
+}
+.proc_caja{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:150px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.proc_caja_short{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:50px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.proc_caja_txa{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:50px;
+  width:150px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.proc_cto_gral{
+  height: 250px;
+}
+</style>
+<div id="proc_tabs2">
+  <ul>
+    <li ><a href="#proc_cto_gral">Información</a></li>
+    <li ><a href="#proc_cto_medios">Medio de Contacto</a></li>
+  </ul>
+
+  <div id="proc_cto_gral">
+    <div class="proc_cto_gral">
+      <table>
+        <tr><td>Nombre:</td>
+            <td><input id="proc_cont_name" class="proc_caja" type="text" value="{NAME}"></td></tr>
+        <tr><td>Hora Inicial:</td>
+            <td><input id="proc_cont_hi" class="proc_caja_short" type="text" value="{HI}"></td>
+            <td>Hora Final:</td>
+            <td><input id="proc_cont_hf" class="proc_caja_short" type="text" value="{HF}"></td></tr>
+        <tr><td>Rol:</td>
+            <td><input id="proc_cont_rol" class="proc_caja" type="text" value="{ROL}"></td></tr>
+        <tr><td>Clave de Seguridad:</td>
+            <td><input id="proc_cont_clave" class="proc_caja" type="text" value="{CLAVE}"></td></tr>
+        <tr><td>Consulta:</td>
+            <td><select  class="proc_caja_short" id="proc_cont_consul" >{CONSULTA}</select></td>
+            <td>Autoriza:</td>
+            <td><select  class="proc_caja_short" id="proc_cont_aut">{AUTORIZA}</select></td></tr>
+        <tr><td>Prioridad</td>
+            <td><input id="proc_cont_prior" class="proc_caja_short" type="text" value="{PRIOR}"></td></tr>
+      </table>
+     </div> 
+  </div>
+  <div id="proc_cto_medios">
+    <div class="proc_cto_gral">
+       <div class="total_width"> <button id="proc_add_medio">Nuevo Medio</button></div> 
+       <table cellpadding="0" cellspacing="0" border="0" class="display" id="proc_table_medios">
+            <thead>
+            <tr>      
+              <th>&nbsp;</th>
+              <th>MEDIO</th>
+              <th>DESCRIPCION</th>
+              <th>PRIORIDAD</th>
+              <th>ESTATUS</th>              
+            </tr>
+            </thead>
+          </table>   
+      </div> 
+     </div> 
+  </div>  
+</div>  

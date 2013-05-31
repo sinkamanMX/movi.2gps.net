@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<style type="text/css">
+#span_welcome {
+    position: absolute;
+    height: 75px;
+    top: 40%;
+    left: 40%;
+    color: #B7B7B7;
+    font-size: 30px;
+    font-weight:bold;
+ }
+</style>
+<div id="adn_menu" class="menu" style="border:#FFF solid thin;">
+</div><!--adn_menu-->
+<div id="adm_content" class="pestana_contenido">
+	<span id="span_welcome">Seleccione una opción del Menú</span>
+</div><!--adm_content-->

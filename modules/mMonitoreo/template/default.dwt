@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{PAGE_TITLE}</title>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing"></script>
+<script type="text/javascript" src="public/js/ui/jquery.js"></script>
+<script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>
+<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>
+<script type="text/javascript" src="public/js/jquery.timer.js"></script>
+<script type="text/javascript" src="public/libs/jtables/jtables.js"></script>
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<script type="text/javascript" src="{PATH}/js/monitoreo.js"></script>
+<script type="text/javascript" src="public/js/colorpicker.js"></script>
+<script type="text/javascript" src="public/js/ui/jquery.numeric.js"></script>
+
+<link type="text/css" href="{PATH}/css/style_monitoreo.css" rel="stylesheet" />
+<link type="text/css" href="public/css/jqueryUI.css" rel="stylesheet" />
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
+<link type="text/css" href="public/libs/jtables/jtables.css"   rel="stylesheet"/>
+<script type="text/javascript">
+
+</script>
+</head>
+<body onload="init();">
+
+<div id="tabs" class="pestana_principal">
+  <ul>
+    <li ><a href="#Monitoreo">Monitoreo</a></li>
+    <li ><a href="#Admon">Administraci&oacute;n</a></li>
+    <li ><a href="#Report">Reportes</a></li>
+    <!--<li ><a href="#Ajuste">Ajustes</a></li>-->
+  </ul>
+<div id="Monitoreo" class="pestana">
+<div id="mon_menu" class="menu_monitoreo">
+
+	<div id="mon_tabs" class=" total_height tabs-bottom"><!-- Tabs para mostrar las unidades -->
+	  <ul><li><a href="#mon_tabs_1">Disponibles</a></li><li><a href="#mon_tabs-2">Seleccionadas</a></li></ul>
+	  <div class="tabs-spacer"></div>
+	  <div id="mon_tabs_1" class="total_height"><!-- Tab muestra acordeon de unidades -->
+		<div id="mon_search">
+			<table class="total_width"><tr><td>
+
+
+				<div class="ui-widget">
+				  <label for="tags">Buscar: </label>
+				  <input id="tags" />
+				</div>
+			</td></tr></table>
+		</div>		
+		<div id="mon_menu_acordeon" class="mon_div_acordeon"></div>
+	  </div><!-- Tab muestra acordeon de unidades -->
+
+	  <div id="mon_tabs-2" class="total_height">
+	  	<div id="mon_div_timer" class="invisible">Tiempo Actualización: 
+				<select id="mon_sel_time">
+					<option value="10000">10</option>
+					<option value="20000">20</option>
+					<option value="30000">30</option>
+					<option value="60000">60</option>
+					<option value="120000" selected >120</option>
+			</select> segs.</div>
+		<div id="mon_tabs_select"></div>	
+	  </div>
+
+	</div><!-- Tabs para mostrar las unidades -->
+
+</div><!--mon_menu-->
+<div id="mon_content" class="pestana_monitoreo">
+</div><!--mon_content-->
+<div  class="ui-widget-header mon_div_time_lapse">
+	<span> Tiempo para Actualizar: <span id="mon_time">00:00</span></span>
+</div>
+</div><!--Monitoreo-->
+<div id="Admon"  class="pestana"></div><!--Admon-->
+<div id="Report" class="pestana"></div><!--Report-->
+<!--<div id="Ajuste" class="pestana"></div>Ajuste-->
+<div class="mon-user-info">
+	<span><b>Bienvenido(a) : {USER}</b></span>
+</div>
+
+<div id="gral_button_admin" class="ui-state-default ui-corner-all gral_button_admin {S_ADMIN}">
+	<span class="ui-icon ui-icon-gear float_left"></span>
+	<span class="gral_text">Administración</span>
+</div>
+<div id="gral_button_close" class="ui-state-default ui-corner-all mon-close-icon">
+	<span class="ui-icon ui-icon-circle-close float_left"></span>
+	<span class="gral_text">Cerrar Sesión</span>
+</div>
+
+</div><!--tabs-->
+
+
+
+<!--------Dialogs-->
+<div id="dialog_message" title="&iexcl;Aviso!"></div>
+<div id="mon_dialog"></div>
+</body>
+</html>

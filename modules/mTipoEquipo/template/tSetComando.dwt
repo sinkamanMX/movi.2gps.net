@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <div id="tbl">
+    <table class="tableP">                             
+       <tr>
+        <td>Descripci&oacute;n: </td>
+        <td><input type="text" id="com_edt_des" class="caja_txt" maxlength="60" value="{DES}"/></td>
+      </tr> 
+      <tr>
+        <td>Comando: </td>
+        <td><input type="text" id="com_edt_com" class="caja_txt" maxlength="60" value="{COM}"/></td>
+      </tr>
+      <tr>
+        <td>N&uacute;mero de bytes: </td>
+        <td><input type="text" id="com_edt_byt" class="caja_txt" maxlength="60" value="{BYT}"/></td>
+      </tr>
+      <tr>
+        <td>Flag input: </td>
+        <td>
+          <select class="caja" id="com_edt_flg">
+          <option value="1" {FLS}>Si</option>
+          <option value="0" {FLN}>No</option>
+          </select></td>   
+      </tr> 
+      <tr>
+        <td>Password: </td>
+        <td>
+          <select class="caja" id="com_edt_pas">
+          <option value="1" {PAS}>Si</option>
+          <option value="0" {PAN}>No</option>
+          </select></td>   
+      </tr>              
+    </table>
+    <input type="hidden" value="{ID}" id="com_id" />
+  </div>

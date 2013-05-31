@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <style>
+  #sortable1, #sortable2 {width: 100%; height: 90%;  
+      top:0px; list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
+  #sortable1 li, #sortable2 li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; width: 120px; }
+  .w200{
+    width: 200px; 
+    height: 300px; 
+    vertical-align: top;  
+    overflow: hidden ;
+    overflow-y: auto;    
+  }
+  .lista{
+    border:1px solid #a1a1a1;
+    border-style: solid;
+    margin-top:5px;
+  }
+  .evt_icon{
+    width: 20px; 
+    height: 20px;     
+  }
+  .evt_caja_txt{
+    border:1px solid #a1a1a1;
+    /*padding:1px 1px; */
+    /*ackground:#dddddd;*/
+    height:21px;
+    width:100%;
+    border-radius:3px;
+    -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+  }
+  </style>
+  
+<fieldset><legend>Información</legend>
+  <div id="tbl">
+    <input type="hidden" id="evt_txt_id" value="{ID}" />
+    <table class="tableP">
+      <tr>
+        <td>Nombre:</td>
+        <td><input type="text" id="evt_txt_name" class="caja_txt" maxlength="60" value="{NAME}"/></td>
+      </tr>
+      <tr>
+        <td>Prioridad:</td>
+        <td><select id="evt_sel_prio" class="caja_txt" maxlength="60" >{PRIO}</select></td>
+      </tr>
+      <tr>
+        <td>Color:</td>
+        <td><select id="evt_txt_color" class="caja_txt"  >{UNSELECT}</select>
+          </td>             
+      </tr>     
+            <tr>
+        <td>Icono:</td>
+        <td><input type="text" id="evt_txt_icono" class="caja_txt" maxlength="60" value="{ICO}" />
+          </td>             
+      </tr>   
+            <tr>
+        <td>Visible en Detalle:</td>
+        <td><select id="evt_sel_visible" class="caja_txt" maxlength="60"  >{VALIDA}</select>
+         </td>             
+      </tr>   
+            <tr>
+        <td>Evento de Alerta:</td>
+        <td><select id="evt_sel_alert" class="caja_txt" maxlength="60" >{USELECT}</select>
+          </td>             
+      </tr>                         
+    </table>
+  </div>
+</fieldset>

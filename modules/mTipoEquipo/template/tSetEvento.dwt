@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <div id="tbl">
+    <table class="tableP">                             
+       <tr>
+        <td>Raz&oacute;n del evento: </td>
+        <td><input type="text" id="eve_edt_rzn" class="caja_txt" maxlength="60" value="{RZON}"/></td>
+      </tr> 
+      <tr>
+        <td>C&oacute;digo de b&uacute;squeda: </td>
+        <td><input type="text" id="eve_edt_cod" class="caja_txt" maxlength="60" value="{CODB}"/></td>
+      </tr>
+      <tr>
+        <td>N&uacute;mero de bytes: </td>
+        <td><input type="text" id="eve_edt_byt" class="caja_txt" maxlength="60" value="{BYTE}"/></td>
+      </tr>      
+    </table>
+    <input type="hidden" value="{ID}" id="event_id" />
+  </div>

@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+.caja_txa{
+  border:1px solid #a1a1a1;
+  /*padding:1px 1px; */
+  /*ackground:#dddddd;*/
+  height:50px;
+  width:172px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+} 
+</style>
+  <div id="tbl">
+    <table class="tableP">
+      <tr>
+        <td>Nombre:</td>
+        <td><input type="text" id="emp_name" class="caja_txt" maxlength="60" value="{NAME}"/></td>
+      </tr>
+      <tr>
+        <td>Raz&oacute;n Social:</td>
+        <td><input type="text" id="emp_rzon" class="caja_txt" maxlength="60" value="{RZON}"/></td>
+      </tr>
+      <tr>
+        <td>RFC:</td>
+        <td><input type="text" id="emp_rfc" class="caja_txt" maxlength="60" value="{RFC}"/></td>
+      </tr>
+      <tr>
+        <td>Representante legal:</td>
+        <td><input type="text" id="emp_rep" class="caja_txt" maxlength="60" value="{REP}"/></td>
+      </tr>      
+      <tr>
+        <td>Direcci&oacute;n:</td>
+        <td><input type="text" id="emp_dir" class="caja_txt" maxlength="60" value="{DIR}"/></td>
+      </tr> 
+      <tr>
+        <td>Tel&eacute;fono:</td>
+        <td><input type="text" id="emp_tel" class="caja_txt" maxlength="60" value="{TEL}"/></td>
+      </tr>       
+      <tr>
+        <td>Email:</td>
+        <td><input type="text" id="emp_mail" class="caja_txt" maxlength="60" value="{MAIL}"/></td>
+      </tr>  
+      <tr>
+        <td>Observaciones:</td>
+        <td><textarea id="emp_obs" class="caja_txa">{OBS}</textarea></td>
+      </tr>        
+      <tr>
+        <td>Activo:</td>
+        <td>
+          <select class="caja" id="emp_estatus">
+            {STATUS}
+          </select></td>   
+      </tr>                           
+    </table>
+    <input type="hidden" value="{ID}" id="emp_id" />
+  </div>

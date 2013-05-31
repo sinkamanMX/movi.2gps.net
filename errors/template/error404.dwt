@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<title>Pagina no encontrada</title>
+<body> 
+<center>
+<a href="../index.php">Regresar</a>
+<br>
+<img src="../public/images/404.jpg" alt="" style="position: absolute; left: 50%; top: 50%; margin-left: -285px; margin-top: -190px;">
+</center>
+</body>
+</html>

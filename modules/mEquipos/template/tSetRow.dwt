@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<input type="hidden" value="{ID}" id="epo_txt_id"/>
+<script>
+  epo_a_eventos = [
+   {EVTS_REL}
+  ];  
+</script>
+<div id="epo_contenedor">
+
+  <div id="epo_tabs">
+      <ul>
+      <li ><a href="#epo_div_gral">Información</a></li>
+      <li ><a href="#epo_div_unit">Unidad</a></li>
+      <li ><a href="#epo_div_evts">Eventos</a></li>
+    </ul>
+    <div id="epo_div_gral"><!-- div general -->
+      <div class="epo_divs_gral">
+        <table class="total_width">
+            <tr><td>Equipo:</td>
+                <td><select class="epo_caja_txt" id="epo_cbo_epo">
+                      {EQUIPO}
+                    </select></td></tr> 
+            <tr><td>Descripción:</td>
+                <td><input type="text" id="epo_txt_desc" class="epo_caja_txt" maxlength="60" value="{DESC}"/></td></tr>
+            <tr><td>Item Number:</td>
+                <td><input type="text" id="epo_txt_item" class="epo_caja_txt" maxlength="60" value="{ITEM}"/></td></tr>
+            <tr><td>Second Item:</td>
+                <td><input type="text" id="epo_txt_item2" class="epo_caja_txt" maxlength="60" value="{SECOND}"/></td></tr>
+            <tr><td>Teléfono:</td>
+                <td><input type="text" id="epo_txt_tel" class="epo_caja_txt" maxlength="60" value="{PHONE}"/></td></tr>
+            <tr><td>IMEI:</td>
+                <td><input type="text" id="epo_txt_imei" class="epo_caja_txt" maxlength="60" value="{IMEI}"/></td></tr>
+            <tr><td>Tiempo de Reporte:</td>
+                <td><input type="text" id="epo_txt_time" class="epo_caja_num" maxlength="60" value="{REPORT}"/></td></tr>
+
+            <tr><td>Port Tx:</td>
+                <td><input type="text" id="epo_txt_tx" class="epo_caja_num" maxlength="60" value="{TX}"/></td>
+                <td>Port Rx:</td>
+                <td><input type="text" id="epo_txt_rx" class="epo_caja_num" maxlength="60" value="{RX}"/></td>
+            </tr>                
+            <tr><td>Mensajes:</td>
+                <td><select class="epo_caja" id="epo_cbo_msg">
+                         {MSG} 
+                    </select></td>
+                <td>Video:</td>
+                <td><select class="epo_caja" id="epo_cbo_vid">
+                         {VIDEO} 
+                    </select></td>
+            </tr>
+            <tr><td>Voz:</td>
+                <td><select class="epo_caja" id="epo_cbo_voz">
+                         {VOZ}  
+                    </select></td>
+                <td>DHCP:</td>
+                <td><select class="epo_caja" id="epo_cbo_dchp">
+                      {DHCP}  
+                    </select></td>
+            </tr>
+        </table>
+      </div>
+    </div>
+    <div id="epo_div_unit"><!-- div units -->  
+      <div class="epo_divs_gral">
+          <input name="rbg" type="radio" class="rsu" id="epo_select_unit" checked>Seleccionar Unidad
+          <input name="rbg" type="radio"  class="rsu" >Crear Unidad
+          <br /><br />
+          <div id="epo_div_cunit" class="visible">
+            Unidad:
+              <select class="epo_caja_cbo" id="epo_cbo_unit">
+                    {UNIDAD}
+                  </select>
+          </div> 
+          <div id="epo_div_crea_unit" class="invisible">
+
+            <table class="tableP">
+              <tr>
+                <td>Marca:</td>
+                <td>
+                <select id="eqp_nvo_mar" class="caja" onchange="eqp_modelo(this.value)">
+                  {MARCA}          
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Modelo:</td>
+                <td>
+                <div id="div_modelo">
+                <select id="eqp_nvo_mod" class="caja">
+                <option value="0">Seleccione una marca</option>
+                </select>
+                </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Tipo:</td>
+                <td>
+                <select id="eqp_nvo_tip" class="caja">
+                    {TIPO}
+                </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Nombre:</td>
+                <td><input type="text" id="eqp_nvo_des" class="caja_txt" maxlength="60"/></td>
+              </tr>
+              <tr>
+                <td>Placas:</td>
+                <td><input type="text" id="eqp_nvo_pla" class="caja_txt" maxlength="60"/></td>
+              </tr>
+              <tr>
+                <td>Serie:</td>
+                <td><input type="text" id="eqp_nvo_ser" class="caja_txt" maxlength="60"/></td>
+              </tr>
+              <tr>
+                <td>Motor:</td>
+                <td><input type="text" id="eqp_nvo_mot" class="caja_txt" maxlength="60"/></td>
+              </tr>       
+              <tr>
+                <td>Grupo:</td>
+                <td>
+                <select id="eqp_nvo_gpo" class="caja">
+                    {GRUPO}
+                </select>
+                </td>
+              </tr>    
+            </table>
+
+
+          </div> 
+      </div>
+    </div>    
+
+    <div id="epo_div_evts"><!-- div units -->  
+      <div class="epo_divs_gral">
+          <fieldset>
+              <legend>Eventos</legend>
+              <table class="total_width">
+                <tr>
+                  <td>Eventos-Sistema:</td>
+                  <td>Eventos-Equipo :</td>
+                </tr>
+                <tr>
+                <tr>
+                  <td>
+                    <select class="epo_caja_cbo" id="epo_cbo_es">
+                      {EVTS_E}
+                    </select>
+                  </td>
+                  <td>
+                      <select class="epo_caja_cbo" id="epo_cbo_ee">
+                        {EVTS_S}
+                      </select>
+                    </td>
+                </tr> 
+                <tr>
+                    <td colspan="2" align="right"><button id="epo_add_events">Agregar</button> </td>                  
+                </tr>                
+                </tr>                  
+              </table>
+          </fieldset> 
+          <table cellpadding="0" cellspacing="0" border="0" class="display" id="epo_table_eventos">
+            <thead>
+            <tr>
+              <th> </th> 
+              <th>Evt. Sistema</th>
+              <th>Evt. Equipo</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="dataTables_empty" height="100%" width="100%">Loading data from server</td>
+              </tr>
+            </tbody>
+          </table>           
+      </div>
+    </div>  
+  </div>
+</div>    

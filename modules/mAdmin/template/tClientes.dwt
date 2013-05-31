@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>{PAGE_TITLE}</title>
+
+  <script type="text/javascript" src="public/js/ui/jquery.js"></script>
+  <script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>
+  <script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>
+  <script type="text/javascript" src="public/js/jquery.timer.js"></script>
+  <script type="text/javascript" src="public/libs/jtables/jtables.js"></script>
+  <script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+  <script type="text/javascript" src="public/js/colorpicker.js"></script>
+  <script type="text/javascript" src="public/js/ui/jquery.numeric.js"></script>
+  <script type="text/javascript" src="{PATH}/js/clientes.js"></script>
+
+  <link type="text/css" href="public/css/jqueryUI.css" rel="stylesheet" />
+  <link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+  <link type="text/css" href="public/css/estilo_admin.css" rel="stylesheet"/>
+  <link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
+  <link type="text/css" href="public/libs/jtables/jtables.css"   rel="stylesheet"/>
+</head>
+<body>
+  <div id="adm_menu">
+  <nav>
+    <ul id="ddmenu">
+      <li><a href="javascript:go_empresas();">{COMPANY}</a></li>
+      <li><a class="disabled_menu" href="javascript:void(0);">Clientes</a></li>          
+  </nav>
+</div> 
+<div id="emp_indow" class="div_unit_info ui-widget-content ui-corner-all">
+  <div style="width:100%; height:100%;">
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="cli_table">
+          <thead>
+          <tr>
+          <th colspan="5"><div style="width:90%; float:left;"><h3>{PAGE_TITLE}</h3></div>
+          <div style="width:9%;  float:right;"><button id="cli_add" onClick="cli_tpl_nuevo()">Nuevo</button></div></th>
+          </tr>
+          <tr>
+          
+            <th></th> 
+            <th></th> 
+            <th>Cliente</th>
+            <th>Tel&eacute;fono:</th>
+            <th>Contacto</th>
+            <th>Estatus</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <!--<td class="dataTables_empty" height="100%" width="100%">Loading data from server</td>-->
+            </tr>
+          </tbody>
+        </table> 
+  </div>
+</div>
+
+<div id="cli_dialog" > </div>
+<div id="cli_dialog_nvo" > </div>
+<div id="cli_dialog_message" title="&iexcl;Aviso!"></div> 
+<div id="cli_dialog_confirm"></div> 
+<input id="global_id_company" type="hidden" value="{COMPANY_ID}">
+<input id="global_id_all" type="hidden" value="{ALL_PERMS}">
+
+  <div id="gral_button_close" class="ui-state-default ui-corner-all mon-close-icon">
+    <span class="ui-icon ui-icon-circle-close float_left"></span>
+    <span class="gral_text">Cerrar Sesión</span>
+  </div>
+</body>
+</html>

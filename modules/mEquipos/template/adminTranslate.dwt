@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<input type="hidden" value="{ID}" id="epo_txt_id_u">   
+<div>
+  <table>
+      <tr><td>Equipo: </td><td>{EQP}</td></tr>
+      <tr><td>Cliente: </td>
+          <td><select class="epo_caja_cbo" id="epo_cbo_client_u">
+              {CLIENTES}
+              </select></td></tr>      
+  </table>
+  <div class="epo_divs_gral">
+    <input name="rbg_u" type="radio"  class="rs_u" id="epo_select_unit_u" checked>Seleccionar Unidad
+    <input name="rbg_u" type="radio"  class="rs_u" >Crear Unidad
+    <br /><br />
+    <div id="epo_div_cunit_u" class="visible">
+      Unidades sin equipos asignados:      
+        <select class="epo_caja_cbo" id="epo_cbo_unit_u">
+              <option value="-1">Seleccione un Cliente</option>
+        </select>
+    </div> 
+    <div id="epo_div_crea_unit_u" class="invisible">
+
+      <table class="tableP">
+        <tr>
+          <td>Marca:</td>
+          <td>
+          <select id="eqp_nvo_mar_u" class="caja" onchange="eqp_modelo_u(this.value)">
+            {MARCA}          
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Modelo:</td>
+          <td>
+          <div id="div_modelo_u">
+          <select id="eqp_nvo_mod_u" class="caja">
+          <option value="0">Seleccione una marca</option>
+          </select>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Tipo:</td>
+          <td>
+          <select id="eqp_nvo_tip_u" class="caja">
+              {TIPO}
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Nombre:</td>
+          <td><input type="text" id="eqp_nvo_des_u" class="caja_txt" maxlength="60"/></td>
+        </tr>
+        <tr>
+          <td>Placas:</td>
+          <td><input type="text" id="eqp_nvo_pla_u" class="caja_txt" maxlength="60"/></td>
+        </tr>
+        <tr>
+          <td>Serie:</td>
+          <td><input type="text" id="eqp_nvo_ser_u" class="caja_txt" maxlength="60"/></td>
+        </tr>
+        <tr>
+          <td>Motor:</td>
+          <td><input type="text" id="eqp_nvo_mot_u" class="caja_txt" maxlength="60"/></td>
+        </tr>       
+        <tr>
+          <td>Grupo:</td>
+          <td>
+          <select id="eqp_nvo_gpo_u" class="caja">
+             <option value="-1">Seleccione un Cliente</option>
+          </select>
+          </td>
+        </tr>    
+      </table>
+    </div> 
+  </div>
+</div>      

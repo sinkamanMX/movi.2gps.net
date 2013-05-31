@@ -1,0 +1,32 @@
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<div id="div_dad_teq" style="width:100%; height:100%;">
+       <table cellpadding="0" cellspacing="0" border="0" class="display" id="teq_tequipo_table">
+        <thead>
+        <tr>
+        <th colspan="5"><div style="width:90%; float:left;"><h3>{PAGE_TITLE}</h3></div>
+        <div style="width:9%; float:right;"><button id="teq_add" onClick="teq_tpl_nuevo()">Nuevo</button></div></th>
+        </tr>
+        <tr>
+        
+          <th></th>	
+          <th></th>
+          <th>Tipo de equipo</th>
+          <th>Puerto por defecto</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+           <!-- <td class="dataTables_teqty" colspan="5" height="100%" width="100%">Loading data from server</td>-->
+          </tr>
+        </tbody>
+      </table>
+</div><!--divpadre-->
+<div id="teq_dialog" > </div>
+<div id="teq_dialog_nvo" > </div>
+<div id="teq_dialog_message" title="&iexcl;Aviso!"></div> 
+<div id="teq_dialog_confirm"></div> 
+
+<div id="teq_eve_dialog_nvo" > </div>
+<div id="teq_eve_dialog_edt" > </div>
+<div id="teq_com_dialog_nvo" > </div>
+<div id="teq_com_dialog_edt" > </div>

@@ -1,0 +1,546 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{PAGE_TITLE}</title>
+<script type="text/javascript"  charset="ISO-8859-1" src="public/js/tigra_tables.js"></script>
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+
+
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+ 
+ 
+    <script src="{PATH}/js/jquery.ui.dialog.js"></script>
+<script type="text/javascript" src="public/js/ui/ui.selectmenu.js"></script>
+<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>
+
+
+<link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
+<link type="text/css" href="public/css/jqueryUI.css" rel="stylesheet" />
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<link type="text/css" href="{PATH}/css/styles.css" rel="stylesheet"/>
+
+<script  src="public/js/OpenLayers-2.11/OpenLayers.js" ></script>
+<!--<link type="text/css" href="public/css/panelcuerpo.css" rel="stylesheet"/>-->
+
+<script>
+$(document).ready(
+function(){
+ init();
+
+
+	//onload();
+});
+	
+</script>
+
+<script type="text/javascript" >
+$(function(){
+	
+	var sortorder1='';
+	$('#column1').sortable({
+		revert: true,
+		connectWith: '.column',
+		handle: 'h5',
+		cursor: 'move',
+		placeholder: 'placeholder',
+		forcePlaceholderSize: true,
+		opacity: 0.4,
+		receive: function(event, ui) { 
+		$(ui.item).find('h5').click();
+		var sortorder='';
+		$('#column1').each(function(){
+				
+				var itemorder=$(this).sortable('toArray').toString();
+				var columnId=$(this).attr('id');
+				sortorder=itemorder.toString();
+			
+				var ds=sortorder.split(',');
+				for(o=0;o<ds.length;o++){
+							
+							var pos = units.indexOf( ds[o]);
+								if(pos==-1){
+									
+									units.push(ds[o]);
+									var lad = units_s.indexOf( ds[o] );
+									units_s.splice( lad, 1 );
+									type2.push(type2_s[lad]);
+									type2_s.splice( lad, 1 );
+										var selet=$("#alt_da").val();
+									if(selet==0){
+									filtro_arras();
+									}else{
+										chekar_selec(selet);
+										}
+									 var $gallery = $( "#"+ds[o] );
+			
+									 $($gallery).animate({ height: "120px" });
+									 $($gallery).find('.dragbox-content').css('visibility', 'visible');
+									 $($gallery).find('#lupa').css('visibility', 'visible');
+									  $($gallery).find('#etic').empty();
+								//	alert(valid[i]+'!='+ds[o]);
+									}
+								
+						
+						}
+			
+			
+				//alert(sortorder);
+			
+			});
+		 }
+	})
+	.disableSelection();
+	
+	$('#column2').sortable({
+		revert: true,
+		connectWith: '.column',
+		handle: 'h5',
+		cursor: 'move',
+		placeholder: 'placeholder',
+		forcePlaceholderSize: true,
+		opacity: 0.4,
+		
+		receive: function(event, ui){
+			$(ui.item).find('h5').click();
+			var sortorder2='';
+			$('#column2').each(function(){
+				var itemorder=$(this).sortable('toArray').toString();
+				var columnId=$(this).attr('id');
+				sortorder2=itemorder.toString();
+
+				var ds=sortorder2.split(',');
+					
+			
+					for(o=0;o<ds.length;o++){
+							
+							var pos = units_s.indexOf( ds[o]);
+								if(pos==-1){
+									
+									units_s.push(ds[o]);
+									var lad = units.indexOf( ds[o] );
+									units.splice( lad, 1 );
+									type2_s.push(type2[lad]);
+									type2.splice( lad, 1 );
+									var selet=$("#alt_da").val();
+									if(selet==0){
+									filtro_arras();
+									}else{
+										chekar_selec(selet);
+										}
+									
+									var nu=ds[o].split('item');	
+									var nu1=nu[1].split('_');	
+										for(i=0;i<iconos.length;i++){
+											var dat=iconos[i].split('{');
+										
+										
+										
+											if(nu1[0]==dat[1]){	
+												if(dat[4]==0){
+											
+														 var $gallery = $( "#"+ds[o] );
+															 
+														 $($gallery).animate({ height: "41px" });
+														  $($gallery).find('.dragbox-content').css('visibility', 'hidden');
+														  $($gallery).find('#lupa').css('visibility', 'hidden');
+																
+															
+															var divs='<a href="#" onclick="popup_mod(\''+ds[o]+'\',\''+dat[2]+'\',\''+dat[8]+'\',\''+dat[3]+'\',\''+dat[5]+'\',\''+dat[10]+'\',\''+dat[11]+'\')" title="View larger image" >Configurar</a>';
+																		
+																	
+															$($gallery).find('#etic').empty();
+														 $($gallery).find('#etic').append(divs);
+				
+									
+													 }else{
+														 
+														 //objeto real
+														 	 var $gallery = $( "#"+ds[o] );
+															 
+														 $($gallery).animate({ height: "41px" });
+														  $($gallery).find('.dragbox-content').css('visibility', 'hidden');
+														  $($gallery).find('#lupa').css('visibility', 'hidden');
+																
+															
+																		var divs='<a href="#" onclick="popup_mod(\''+ds[o]+'\',\''+dat[2]+'\',\''+dat[8]+'\',\''+dat[3]+'\',\''+dat[5]+'\',\''+dat[10]+'\',\''+dat[11]+'\')" title="View larger image" >Configurar</a>';
+																
+															$($gallery).find('#etic').empty();
+														 $($gallery).find('#etic').append(divs);
+														 
+														 //dependencia
+														for(ii=1;ii<5;ii++){
+														var dep='item'+dat[4]+'_'+ii;
+														var pos3 = units.indexOf( dep);
+														if(pos3==-1){
+														//si no lo encuentra
+															}else{
+																type2_s.push(type2[pos3]);
+																type2.splice( pos3, 1 );
+																units_s.push(units[pos3]);//si lo encuentra 
+																
+																
+																	$("#column1").find("#"+units[pos3]).appendTo("#column2");
+																	 
+																	var part=units[pos3].split('item');	
+																	var part1=part[1].split('_');	
+																	for(f=0;f<iconos.length;f++){
+																			var part3=iconos[f].split('{');
+																			
+																			if(part1[0]==part3[1]){
+																					 var $gallery = $( "#"+units[pos3] );
+																					$($gallery).animate({ height: "41px" });
+																					  $($gallery).find('.dragbox-content').css('visibility', 'hidden');
+																					  $($gallery).find('#lupa').css('visibility', 'hidden');
+																							
+																					
+																									var divs='<a href="#" onclick="popup_mod(\''+units[pos3]+'\',\''+part3[2]+'\',\''+part3[8]+'\',\''+part3[3]+'\',\''+part3[5]+'\',\''+part3[10]+'\',\''+part3[11]+'\')" title="View larger image" >Configurar</a>';
+																							
+																								
+																						$($gallery).find('#etic').empty();
+																					 $($gallery).find('#etic').append(divs);
+																			}
+																	}
+																	 
+																	 units.splice( pos3, 1 );
+																	 var selet=$("#alt_da").val();
+																	if(selet==0){
+																	filtro_arras();
+																	}else{
+																		chekar_selec(selet);
+																		}
+																	
+															}
+											
+												}
+											}
+													 
+													 
+													 
+										}
+							 
+							}
+									
+									
+								//	alert(valid[i]+'!='+ds[o]);
+									}
+								
+						
+						}
+			
+				/*if(itemorder.length>1){		
+				
+					
+					for(x=0;x<ds.length;x++){
+						//alert(ds[x]);
+						
+						}
+						
+				 }else{
+					 	var nu=sortorder2.split('item');	
+						for(i=0;i<iconos.length;i++){
+							var dat=iconos[i].split(',');
+								if(nu[1]==dat[1]){	
+								  var $gallery = $( "#"+sortorder2 );
+								  	 alert( $gallery);
+								// valid.push("item"+dat[1]);
+								 $($gallery).animate({ height: "41px" });
+								 $($gallery).find('.dragbox-content').css('visibility', 'hidden');
+								  $($gallery).find('#lupa').css('visibility', 'hidden');
+									
+									if(dat[10]=='BD'){
+										var divs='<a href="#" onclick="popup_mod(\'item'+dat[1]+'\',\''+dat[2]+'\',\''+dat[8]+'\',\''+dat[3]+'\',\''+dat[5]+'\',\''+dat[10]+'\',\''+dat[11]+', '+dat[12]+'\')" title="View larger image" >Modificar</a>';
+										}else{
+										var divs='<a href="#" onclick="popup_mod(\'item'+dat[1]+'\',\''+dat[2]+'\',\''+dat[8]+'\',\''+dat[3]+'\',\''+dat[5]+'\',\''+dat[10]+'\',\''+dat[11]+'\')" title="View larger image" >Modificar</a>';
+										}								
+								
+								  
+								   $($gallery).find('#etic').empty();
+								  $($gallery).find('#etic').append(divs);
+								}
+						}
+				
+				 }*/
+				
+				 
+			}); }
+			
+	})
+	.disableSelection();
+
+	
+});
+</script>
+
+<script>
+    function setupLabel() {
+        if ($('.label_check input').length) {
+            $('.label_check').each(function(){ 
+                $(this).removeClass('c_on');
+            });
+            $('.label_check input:checked').each(function(){ 
+                $(this).parent('label').addClass('c_on');
+            });                
+        };
+        if ($('.label_radio input').length) {
+            $('.label_radio').each(function(){ 
+                $(this).removeClass('r_on');
+            });
+            $('.label_radio input:checked').each(function(){ 
+                $(this).parent('label').addClass('r_on');
+            });
+        };
+    };
+    $(document).ready(function(){
+        $('body').addClass('has-js');
+        $('.label_check, .label_radio').click(function(){
+            setupLabel();
+        });
+        setupLabel(); 
+    });
+</script>
+<script type="text/javascript">
+var div='';
+function change_div(d){
+
+	div = d;
+	//alert(div);
+}
+
+$(document).keydown(function(tecla){
+    if (tecla.keyCode == 113) {
+        //alert('Tecla F2 presionada');
+		(div=="")?$('#bx').css("display",""):$('#'+div+'').css("display","");
+		$('#'+div+'').css("display","");
+    }
+});
+
+	$(document).ready(
+		
+
+			function(){
+							
+
+	           // panel1
+				$('#panel1').panel({
+
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+
+				});
+				
+				$('#panel2').panel({
+				'collapsed':true
+				});
+				$('#panelx').tabs();
+			   /* $('#panelx').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});*/
+			    $('#panelxa').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});
+			    $('#panelxb').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});
+			    $('#panelxc').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});								
+               // panel interno 2
+				$('#panel3').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});
+				// footer
+				/* $('#footer').panel({
+
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+
+				});*/
+				// botones
+              $( "input ubmit, a, button", ".demo" ).button();
+			  $( ".b_op" ).button();
+				// combos
+				$('select#speedC').selectmenu({style:'dropdown'});
+				
+
+			/*$(".b_op" ).button();
+						var pickOp={
+						maxDate: new Date(),
+						showOn: "button",
+						buttonImage: "public/images/cal.gif",
+						buttonImageOnly: true,
+						dateFormat: "yy-mm-dd"
+						};*/				
+				//$("#start-date").datepicker(pickOp);
+				//$("#end-date").datepicker(pickOp);
+			///////DIALOG NUEVO	
+			
+			///////DIALOG crear	
+								
+//.......................................objetos y movimiento..........................//
+ 
+ 
+
+			   //------------------------
+			   
+				//------------------------
+			});
+
+
+///---- acordion 
+  $( "#dialog" ).dialog({
+       autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+
+///-----------
+$( "#dialogo" ).dialog({
+       autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+
+
+
+	
+	
+	
+	
+	</script>
+<script>
+  $(function() {
+    var icons = {
+      header: "ui-icon-circle-arrow-e",
+      activeHeader: "ui-icon-circle-arrow-s"
+    };
+    $( "#accordion" ).accordion({
+      icons: icons
+    });
+    $( "#toggle" ).button().click(function() {
+      if ( $( "#accordion" ).accordion( "option", "icons" ) ) {
+        $( "#accordion" ).accordion( "option", "icons", null );
+      } else {
+        $( "#accordion" ).accordion( "option", "icons", icons );
+      }
+    });
+  });
+  </script>
+	<script>
+	$(function() {
+		$( "#sortable" ).sortable();
+		$( "#sortable" ).disableSelection();
+	});
+	</script>
+<script>
+	$(function() {
+		$( "#start-date").datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			startDate: (new Date('01/01/2000')),
+			buttonImageOnly: true,
+			//minDate: '0',
+			dateFormat: "yy-mm-dd"
+		});
+		
+		
+		 $( ".b_ic" ).button();
+		 $(".b_op" ).button();
+
+						
+	});
+
+	</script>
+
+</head>
+<!--<body onload="init('{URL}','{RM}','{UP}')" >-->
+<body onload="" >
+<div id="panel1" style="z-index:0; position:relative;">
+   <h2 class="cabeceras">
+      
+        <table border="0" width="100%"> 
+          <tr>
+           <td width="35%"> 
+          <b>Bienvenido:<br /> {NAME}-({MAIL})</b>
+
+           </td>
+           <td width="30%" align="center"> 
+           {PAGE_TITLE}</td>
+           <td width="35%" align="right" > 
+         {FECHA}
+           </td>
+          </tr>
+        </table>
+      
+      
+  </h2>
+      <div id="contenedor" style=" height:90%; z-index:0; position:relative;">
+
+                      <!--  ---------------------------------panel x------------------------------------- -->
+<div id="panelx" onclick="change_div('bx')" style="z-index:0; top:10px; width:95%; height:95%">
+                    <div style="font-size:10px; width:70px; position:absolute; z-index:0; left:70%; display:none" class="hb">
+                    <span id="icbr" class="ui-icon ui-icon-search " title="Buscar"></span>
+                    <div style="position:relative; top:3px; left:-4px;">Buscar</div>
+                    </div>
+                 
+                 <ul>
+		<li><a href="#datagridx"  onclick="pestana1(1);">Nueva Alerta</a></li>
+		</ul>
+    
+
+
+<br />
+<div  id="column4" style="	border:1px solid #c5dbec; background:#dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif; min-height: 110px; position:relative; width:445px; z-index:99; height:50px; ">
+  		<h4 class="ui-widget-header">&nbsp;Variables</h4>
+ 		<div style=" position:relative; left:110px;" id="selet" class="styled-select"></div>
+         
+        <div id="onj" style="position:relative; top:5px; left:160px; width:130px;  " align="center" ></div>
+</div>
+<div class="column" id="column1" style="width:445px; min-height:420px; ">
+
+	
+	</div>
+
+     <div class="column" id="column5" style="width:30%; left:465px; position:absolute; top:46px; min-height:30px;  max-height:33px; " >
+	<h4 class="ui-widget-header">&nbsp;Arrastre Variables</h4>
+    </div>
+	<div class="column" id="column2" style="width:30%; left:465px; min-height:341px; max-height:255px; top: 84px; position:absolute;" >
+	</div>
+    <div class="column" id="column6" style="width:30%; left:465px; position:absolute; top:431px; min-height:30px;  max-height:33px; " >
+	 <input type="button" style="position:absolute; left:10px; visibility:hidden;" id="bu_clear" class="b_op" value="Cancelar" onclick="clear_div()" />
+    <input type="button" style="position:absolute; right:125px; visibility:hidden;" id="bu_conf" class="b_op" value="Configurar" onclick="popup_conf()" />
+    <input type="button" style="position:absolute; right:10px; visibility:hidden;" id="bu_guar" class="b_op" value="Guardar"  onclick="guar_general()"/>
+    </div>
+  	  <div class="lista" id="column3" style="position:absolute; top:46px; width:28%; right:5px; min-height:530px;" >
+      <h4 class="ui-widget-header">&nbsp;Alertas de Usuario</h4>
+      <div id="alert_c" style=" position:relative; left:3px; width: 327px;  height: 480px; overflow-x:hidden; overflow:auto;" ><table border="0" id="bucara"><tr><td><input type="text" size="30" id="buck" title="Buscar" onkeypress="txtls(this.value)" /></td><td><a href="#" onclick="busque()" ><img title="Buscar" src="/Alertas/public/images/search.png" style=" width:18px;"></a></td></tr></table><table border="0" id="cvs"></table></div>
+      </div>
+	
+	<div id="dialog"  title=" &nbsp;&nbsp; Descripcion" style="  ">
+  
+    </div>
+    <div id="dialogo"  title=" &nbsp;&nbsp; Configuracion" >
+  
+    </div>
+
+</body>
+</html>

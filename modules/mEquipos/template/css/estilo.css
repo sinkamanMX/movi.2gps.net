@@ -1,0 +1,59 @@
+.total_width{
+  width:100%; !important;
+}
+.h30{
+  height:30px;
+}
+.epo_caja{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:100px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+
+.epo_divs_gral{
+  height: 300px;   
+}
+
+.h20{
+  height: 20px; 
+}
+.epo_caja_txt{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:100%;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.epo_caja_cbo{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:150px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.epo_caja_num{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:50px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.epo_caja_cbo{
+  width:215px;  
+}
+  .epo_dialog_nvo {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    background: green;
+  }

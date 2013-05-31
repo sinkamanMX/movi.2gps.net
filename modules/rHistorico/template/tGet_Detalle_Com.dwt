@@ -1,0 +1,23 @@
+<script>
+  deta_data = [
+   {DATA}
+  ];  
+</script>
+  <table cellpadding="0" cellspacing="0" border="0" class="display" id="rhi_detcom_table">
+  <thead>
+
+  <tr>
+
+
+    <th>Fecha</th>
+    <th>Latitud</th>
+    <th>Longitud</th>
+    <th>Evento</th>
+    <th>Dirección</th>    
+  </tr>
+  </thead>
+  <tbody>
+
+  </tbody>
+  </table> 
+

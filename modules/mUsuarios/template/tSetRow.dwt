@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+.total_width{
+  width:100%; !important;
+}
+.h30{
+  height:30px;
+}
+.user_caja{
+  border:1px solid #a1a1a1;
+  padding:1px 1px; 
+  /*ackground:#dddddd;*/
+  height:20px;
+  width:100px;
+  border-radius:3px;
+  -moz-border-radius:3px; /* Firefox 3.6 and earlier */
+}
+.div1{ width:300px; float:left; left:5px; }
+.div2{ width:300px;float:left; }
+.div3{ width:300px;height:300px; clear:both; float:left }
+.div4{ width:300px;height:300px;float:left; }
+#user_accordion{
+  width: 280px;
+  height: 240px;
+}
+#user_excepciones{
+  width: 280px;
+  height: 270px;
+}
+.user_div_display{
+  display: block;
+}
+.user_div_nodisplay{
+  display: none;
+}
+.user_tabs{
+  width: 100%;
+}
+.user_divs_gral{
+  height: 415px;   
+}
+#sortable1, #sortable2 {width: 100%; height: 90%;  
+    top:0px; list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
+#sortable1 li, #sortable2 li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; width: 90%; }  
+.lista{
+    border:1px solid #a1a1a1;
+    border-style: solid;
+    margin-top:5px;
+    width: 100%;
+    height: 315px; 
+    vertical-align: top;  
+    overflow: hidden ;
+    overflow-y: auto;       
+  }
+  .h20{
+    height: 20px; 
+  }
+  
+  #com_sortable1, #com_sortable2 {width: 100%; height: 90%;  
+    top:0px; list-style-type: none; margin: 0; padding: 0 0 2.5em; float: left; margin-right: 10px; }
+  #com_sortable1 li, #com_sortable2 li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; width: 90%; }  
+
+</style>
+<input type="hidden" value="{ID}" id="user_txt_id"/>
+<input type="hidden" value="{PASS}" id="user_txt_pas_ant"/>
+<div id="user_contenedor">
+
+  <div id="user_tabs">
+    <ul>
+      <li ><a href="#user_div_gral">Información</a></li>
+      <li ><a href="#user_div_units">Unidades</a></li>
+       <li ><a href="#user_div_coman" id="comand" onclick="user_load_comands()" style=" display:none;">Comandos</a></li>
+    </ul>
+    <div id="user_div_gral"><!-- div general -->
+       <div class="user_divs_gral">
+
+         <div class="div1">
+              
+            <fieldset><legend>Información</legend>
+                <table>
+                  <tr>
+                    <td>Nombre:</td>
+                    <td><input type="text" id="user_txt_name" class="caja_txt" maxlength="60" value="{NAME}"/></td>
+                  </tr>
+                  <tr>
+                    <td>Correo electrónico:</td>
+                    <td><input type="text" id="user_txt_mail" class="caja_txt" maxlength="60" value="{EMAIL}"/></td>
+                  </tr>    
+                  <tr>
+                    <td>Estatus:</td>
+                    <td>
+                      <select id="user_sel_estatus" class="user_caja">
+                        {ESTATUS}
+                      </select></td>   
+                  </tr>
+                </table>
+            </fieldset>
+
+          </div>
+
+          <div class="div2">
+              
+            <fieldset><legend>Acceso</legend>
+                <table>
+                  <tr>
+                    <td>Usuario:</td>
+                    <td><input type="text" id="user_txt_usuario" class="caja_txt" maxlength="60" value="{USUARIO}"/></td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td><td>
+                    <div id="user_pass" class="{CLASS_PASS}">
+                      <input id="user_chk_pass" type="checkbox">Cambiar Contraseña
+                    </div>
+                  </td>
+                  </tr>                  
+                  <tr>
+                    <td>Contraseña:</td>
+                    <td><input type="text" {PAS_DIS} id="user_txt_pass" class="caja_txt" maxlength="60" value=""/></td>
+                  </tr>          
+                </table>
+            </fieldset>
+          </div>
+
+          <div class="div3">
+            <form id="user_acordeon">
+              <fieldset><legend>Permisos</legend>
+                <table>
+                    <tr>
+                      <td>Perfil:</td>
+                      <td>
+                        <select class="caja" id="user_select_perfil">
+                          {PERFIL}
+                        </select>   
+                      </td>
+                    </tr>              
+                </table>                  
+                <div id="user_accordion">
+                    {PERMISOS}
+                </div>          
+              </fieldset>
+            </form>      
+          </div>
+
+          <div class="div4">
+            <form id="user_acordeon2">
+              <fieldset><legend>Excepciones</legend>
+                <div id="user_excepciones">
+                    {EXCEPCIONES}
+                </div>   
+              </fieldset>
+            </form> 
+          </div>
+
+       </div>
+    </div><!-- div general -->
+    <div id="user_div_units"><!-- div units -->
+        <div class="user_divs_gral">
+            <div class="total_width">
+                <span>Grupos:</span>
+                <select id="user_select_grupo" class="caja">
+                      {GRUPOS}
+                  </select>
+            </div>
+            <!--<table><tr>
+                <td>Grupos:</td>
+                <td><select id="user_select_grupo" class="caja">
+                      {GRUPOS}
+                  </select></td>
+            </tr>
+            </table>--> 
+            <table class="total_width">            
+                <tr>
+                  <td style="width:45%;">Disponibles:<br>
+                    <input type="text" id="grp_search_av" class="grp_caja_txt" value="Buscar" 
+                          onfocus="if (this.value == 'Buscar') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Buscar';}"/>
+                      <div class="lista" >
+                        <ul id="sortable2" class="connectedSortable">
+                          {UNSELECT}
+                        </ul>
+                      </div>
+                  </td>      
+                  <td  style="width:10%;" colspan="2" align="center">
+                      <div class="ui-state-default ui-corner-all h20 total_width" onclick="grp_remove_all()">
+                        <div class="custom-icon-addall h20">
+                          <img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="h20 total_width ui-state-default ui-corner-all" onclick="grp_add_all()">
+                        <div class="custom-icon-dellall h20">
+                          <img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>
+                        </div>
+                      </div>
+                  </td>
+                  <td  style="width:45%;">Seleccionadas:<br>
+                    <input type="text" id="grp_search_na" class="grp_caja_txt" value="Buscar" 
+                          onfocus="if (this.value == 'Buscar') {this.value = '';}"      onblur="if (this.value == '') {this.value = 'Buscar';}"/>
+                      <div class="lista" >
+                        <ul id="sortable1" class="connectedSortable">
+                          {USELECT}
+                        </ul>  
+                        </div>
+                  </td>        
+                </tr>
+              </table>
+        </div> 
+    </div>
+    
+    <div id="user_div_coman" ><!-- div units -->
+        <div class="user_divs_gral">
+            
+            <table class="total_width total_height">            
+                <tr>
+                  <td style="width:45%;">Disponibles:<br>
+                    <input type="text" id="grp_search_coman" class="grp_caja_txt" value="Buscar" 
+                          onfocus="if (this.value == 'Buscar') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Buscar';}"/>
+                      <div class="lista" >
+                        <ul id="com_sortable2" class="connectedSortable">
+                          {COMUSELECT}
+                        </ul>
+                      </div>
+                  </td>      
+                  <td  style="width:10%;" colspan="2" align="center">
+                      <div class="ui-state-default ui-corner-all h20 total_width" onclick="grp_com_remove_all()">
+                        <div class="custom-icon-addall h20">
+                          <img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="h20 total_width ui-state-default ui-corner-all" onclick="grp_com_add_all()">
+                        <div class="custom-icon-dellall h20">
+                          <img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>
+                        </div>
+                      </div>
+                  </td>
+                  <td  style="width:45%;">Seleccionadas:<br>
+                    <input type="text" id="grp_search_com_env" class="grp_caja_txt" value="Buscar" 
+                          onfocus="if (this.value == 'Buscar') {this.value = '';}"      onblur="if (this.value == '') {this.value = 'Buscar';}"/>
+                      <div class="lista" >
+                        <ul id="com_sortable1" class="connectedSortable">
+                          {COMUNSELECT}
+                        </ul>  
+                        </div>
+                  </td>        
+                </tr>
+              </table>
+        </div> 
+    </div>
+    
+    <!-- div units -->
+  </div>
+</div>

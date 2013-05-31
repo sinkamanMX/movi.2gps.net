@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+  .grp_dialog_nvo {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    background: green;
+  }
+</style>
+<script type="text/javascript" src="{PATH}/js/admin_scripts.js"></script>
+<div style="width:100%; height:100%;">
+
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="grp_table">
+        <thead>
+        <tr>
+            <th colspan="8">
+              {HEADER}
+            </th> 
+        </tr>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Cliente</th>
+          <th>Padre</th>
+          <th>Nombre</th>          
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dataTables_empty" height="100%" width="100%">Loading data from server</td>
+          </tr>
+        </tbody>
+      </table> 
+</div>
+<div id="grp_dialog" > </div>
+<div id="grp_dialog_nvo" > </div>
+<div id="grp_dialog_message" title="&iexcl;Aviso!"></div> 
+<div id="grp_dialog_confirm"></div> 

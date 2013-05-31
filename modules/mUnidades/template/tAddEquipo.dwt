@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+  $(document).ready(function () {
+	 $( "#tabs_add_equipment" ).tabs();
+	});
+
+  function add_click() {
+    !$('#select1 option:selected').remove().appendTo('#select2');
+  }
+
+  function remove_click() {
+    !$('#select2 option:selected').remove().appendTo('#select1');
+  }
+</script>
+<div id="tabs_add_equipment">
+  <ul>
+    <li><a href="#gral_equipment_data_nvo">Datos Generales</a></li>
+    <li><a href="#cont_equipment_data_nvo">Equipos</a></li>
+  </ul>
+  <div id="gral_equipment_data_nvo">
+  <!--<fieldset><legend>Información</legend>-->
+
+    <table class="tableP">
+      <tr>
+        <td>Marca:</td>
+        <td>
+        <select id="eqp_nvo_mar" class="caja" onchange="eqp_modelo(this.value)">
+        <option value="0">Seleccione una marca</option>
+        <!-- BEGIN marca -->
+        <option value="{marca.IDMAR}">{marca.MARCA}</option>
+        <!-- END marca -->
+        </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Modelo:</td>
+        <td>
+        <div id="div_modelo">
+        <select id="eqp_nvo_mod" class="caja">
+        <option value="0">Seleccione una marca</option>
+        </select>
+        </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Tipo:</td>
+        <td>
+        <select id="eqp_nvo_tip" class="caja">
+        <option value="0">Seleccione un tipo</option>
+        <!-- BEGIN tipo -->
+        <option value="{tipo.IDTP}">{tipo.TIPO}</option>
+        <!-- END tipo -->
+        </select>
+        </td>
+      </tr>           
+      <tr>
+        <td>Nombre:</td>
+        <td><input type="text" id="eqp_nvo_des" class="caja_txt" maxlength="60"/></td>
+      </tr>
+      <tr>
+        <td>Placas:</td>
+        <td><input type="text" id="eqp_nvo_pla" class="caja_txt" maxlength="60"/></td>
+      </tr>
+      <tr>
+        <td>Serie:</td>
+        <td><input type="text" id="eqp_nvo_ser" class="caja_txt" maxlength="60"/></td>
+      </tr>
+      <tr>
+        <td>Motor:</td>
+        <td><input type="text" id="eqp_nvo_mot" class="caja_txt" maxlength="60"/></td>
+      </tr>   
+      <tr>
+        <td>Estatus:</td>
+        <td>
+        <select id="eqp_nvo_estatus" class="caja">
+          {STATUS}
+        </select>
+        </td>
+      </tr>          
+      <tr>
+        <td>Grupo:</td>
+        <td>
+        <select id="eqp_nvo_gpo" class="caja">
+        <option value="0">Seleccione un grupo</option>
+        <!-- BEGIN grupo -->
+        <option value="{grupo.IDGPO}">{grupo.GRUPO}</option>
+        <!-- END grupo -->
+        </select>
+        </td>
+      </tr>    
+    </table>
+    
+
+ <!-- </fieldset>    -->
+  </div><!--gral_equipment_data_nvo-->
+  <div id="cont_equipment_data_nvo">
+  <!--<fieldset><legend>Información</legend>-->
+  <table width="100%" height="100%">
+<!--  <tr>
+  <th colspan="2" style="background-color:#2159a2; color:#FFF;">Unidades</th>
+  </tr>-->
+  
+  <tr>
+       <td width="45%" height="">
+	   <div id="units">
+       <label>Equipos Disponibles</label><br/>
+       <select name="multi_list1" id="select1" multiple="multiple" style="width:100%;height:100%"  >
+          {NOASIG}
+       </select>
+       </div>
+        </td>
+        <td width="10%">
+          <div class="ui-state-default ui-corner-all h20 total_width" onclick="add_click()">
+            <div class="custom-icon-addall h20">
+              <img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>
+            </div>
+          </div>
+          <br>
+          <div class="h20 total_width ui-state-default ui-corner-all" onclick="remove_click()">
+            <div class="custom-icon-dellall h20">
+              <img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>
+            </div>
+          </div>          
+          <!--<center>
+           <a href="#" id="add"><span style="cursor:pointer" class="ui-icon ui-icon-circle-triangle-e"></span></a> <br/><br/>
+           <a href="#" id="remove"><span style="cursor:pointer" class="ui-icon ui-icon-circle-triangle-w"></span></a>
+          </center>-->
+       </td>
+       <td width="45%">
+       <label>EquiposAsignados</label><br/>
+       <select name="multi_list2[]" id="select2" multiple="multiple" style="width:100%;height:100%"  >
+          {ASIG}
+       </select>       
+       </td>
+   </tr>
+ </table>
+    
+
+ <!-- </fieldset>     -->
+  </div><!--cont_equipment_data_nvo-->
+</div>
+

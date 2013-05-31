@@ -1,0 +1,6 @@
+<select name="selunidad" id="selunidad" style="width:100%" class="caja">
+<option value="0">Seleccione una unidad</option>
+<!-- BEGIN und -->
+<option value="{und.IDU}">{und.UND}</option>
+<!-- END und -->
+</select>
