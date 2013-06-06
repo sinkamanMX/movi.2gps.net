@@ -81,10 +81,16 @@
 	<span><b>Bienvenido(a) : {USER}</b></span>
 </div>
 
+<div id="gral_button_manual" class="ui-state-default ui-corner-all gral_button_manual">
+	<span class="ui-icon  ui-icon-folder-collapsed float_left"></span>
+	<span class="gral_text">Manual</span>
+</div>
+
 <div id="gral_button_admin" class="ui-state-default ui-corner-all gral_button_admin {S_ADMIN}">
 	<span class="ui-icon ui-icon-gear float_left"></span>
 	<span class="gral_text">Administración</span>
 </div>
+
 <div id="gral_button_close" class="ui-state-default ui-corner-all mon-close-icon">
 	<span class="ui-icon ui-icon-circle-close float_left"></span>
 	<span class="gral_text">Cerrar Sesión</span>

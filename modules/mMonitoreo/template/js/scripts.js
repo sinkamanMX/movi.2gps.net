@@ -46,6 +46,10 @@ $(document).ready(
 		$("#gral_button_admin").click(function() {
 			location.href='index.php?m=mAdmin';
 		});		
+
+		$("#gral_button_manual").click(function() {
+			window.open('/manuals/manual.pdf');
+		}); 		
 					
 	});
 

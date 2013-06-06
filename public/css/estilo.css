@@ -21,7 +21,7 @@ body { 	font-size: 10px;
 	background:url("../../public/images/logo.png");
 	background-repeat: no-repeat;
 	z-index: 0;
-	background-size: 200px 120px;	
+	background-size: 200px 150px;	
 	position: relative;
 	left: 20%;
 }
@@ -176,6 +176,15 @@ border-radius:3px;
     float:right;	
     top:10px;
     right: 110px;
+    width:105px;
+    cursor: pointer;
+	float: left;	
+}
+.gral_button_manual{
+    position:absolute;
+    float:right;	
+    top:10px;
+    right: 220px;
     width:105px;
     cursor: pointer;
 	float: left;	
