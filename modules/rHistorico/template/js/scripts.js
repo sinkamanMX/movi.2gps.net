@@ -505,7 +505,7 @@ function rhi_ubicar(){
 	if(deta_data.length>0){
 		var latlngbounds = new google.maps.LatLngBounds( );
 
-		var mon_table = $("<table id='mon_table_selected' class='total_width' border='0'>");
+		var mon_table = $("<table id='hist_table_selected' class='total_width' border='0'>");
 
 		$("<thead><tr><th>Fecha</th><th>Evento</th><th>&nbsp;</th></tr></thead><tbody>")
 		.appendTo(mon_table)
@@ -568,7 +568,7 @@ function rhi_ubicar(){
 		});
 		mon_table.appendTo("#tabs_tMapa");	
 		scroll_table=($("#tabs_detMapa").height()-80)+"px";
-		$("#mon_table_selected").dataTable({ 
+		$("#hist_table_selected").dataTable({ 
 			"sScrollY": scroll_table,
 			"bDestroy": true,
 			"bLengthChange": false,

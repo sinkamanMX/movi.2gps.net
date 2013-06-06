@@ -7,6 +7,11 @@ $(document).ready(
 		$( "#tabs" ).tabs({ 
         	select: function(event, ui) { 
             	tab_active = ui.index; 
+            	if(tab_active==0){
+					mon_refresh_units();
+            	}else{
+					stopTimer();
+            	}
         	} 
     	});
     	

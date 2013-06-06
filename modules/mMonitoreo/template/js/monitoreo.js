@@ -538,3 +538,15 @@ function mon_send_command(){
 		$("#mon_dialog").dialog("close");
 	}
 }
+
+function stopTimer(){
+	if(mon_timer!=null){
+		mon_timer.stop();	
+		mon_timer=null;
+	}
+	if(mon_timer_count!=null){
+		mon_timer_count.stop();
+		mon_timer_count=null;
+	}	
+	$("#mon_time").html("00:00");
+}
