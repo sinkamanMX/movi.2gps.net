@@ -17,7 +17,8 @@ $id_usuario = $userAdmin->user_info['ID_USUARIO'];
 
 $sql='SELECT U.COD_ENTITY,U.DESCRIPTION FROM ADM_UNIDADES U 
 INNER JOIN ADM_GRUPOS_UNIDADES GU ON GU.COD_ENTITY=U.COD_ENTITY
-WHERE GU.ID_GRUPO = '.$_GET['gpo'];
+INNER JOIN ADM_USUARIOS_GRUPOS UG ON UG.COD_ENTITY=U.COD_ENTITY
+WHERE GU.ID_GRUPO = '.$_GET['gpo']." AND UG.ID_USUARIO = ".$id_usuario." GROUP BY U.COD_ENTITY";
 
 $query = $db->sqlQuery($sql);
 $count = $db->sqlEnumRows($query);

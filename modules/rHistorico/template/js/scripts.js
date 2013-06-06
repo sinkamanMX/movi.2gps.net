@@ -81,7 +81,7 @@ function rhi_load_datatable(){
       "bLengthChange": true,
       "bPaginate": false,
       "bFilter": true,
-      "bSort": true,
+      "bSort": false,
       "bJQueryUI": true,
       "iDisplayLength": 20,      
       "bProcessing": true,

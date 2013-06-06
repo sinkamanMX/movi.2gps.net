@@ -115,7 +115,7 @@ if(isset($_GET['unidad']) && isset($_GET['fInicio']) && isset($_GET['fFin'])){
 				$objWorkSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 				$objWorkSheet->getStyle('A1')->getFont()->getColor()->setARGB(PHPExcel_Style_Color::COLOR_WHITE);
 				$objWorkSheet->getStyle('A1')->getFont()->setSize(24);
-				$objWorkSheet->mergeCells("E".($count2+1).":F".($count2+1));
+				//$objWorkSheet->mergeCells("E".($count2+1).":F".($count2+1));
 				//subtitulo -> unidad
 				$objWorkSheet->setSharedStyle($sharedStyle2, "A2:F2");
 				$objWorkSheet
@@ -126,7 +126,8 @@ if(isset($_GET['unidad']) && isset($_GET['fInicio']) && isset($_GET['fFin'])){
 						 ->setCellValue('B3', 'Latitud')
 						 ->setCellValue('C3', 'Longitud')
 						 ->setCellValue('D3', 'Evento')
-						 ->setCellValue('E3', 'Direccion');
+						 ->setCellValue('E3', 'Velocidad km/h')
+						 ->setCellValue('F3', 'Direccion');
 				$objWorkSheet->setSharedStyle($sharedStyle2, "A3:F3");
 				$row2=4;
 				for($c=0;$c<count($queryNumHistorico2);$c++){
@@ -134,7 +135,8 @@ if(isset($_GET['unidad']) && isset($_GET['fInicio']) && isset($_GET['fFin'])){
 				$objWorkSheet->setCellValueByColumnAndRow(1,  ($row2), $queryNumHistorico2[$c][4]);
 				$objWorkSheet->setCellValueByColumnAndRow(2,  ($row2), $queryNumHistorico2[$c][5]);
 				$objWorkSheet->setCellValueByColumnAndRow(3,  ($row2), $queryNumHistorico2[$c][3]);
-				$objWorkSheet->setCellValueByColumnAndRow(4,  ($row2), $queryNumHistorico2[$c][10]);		
+				$objWorkSheet->setCellValueByColumnAndRow(4,  ($row2), $queryNumHistorico2[$c][6]);
+				$objWorkSheet->setCellValueByColumnAndRow(5,  ($row2), $queryNumHistorico2[$c][10]);		
 				$row2++;
 				}//end for 			
 				//Redimencionar 
