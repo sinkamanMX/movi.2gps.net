@@ -11,7 +11,7 @@
 	include "public/libs/MobileDetect/Mobile_Detect.php";	
 	$detect = new Mobile_Detect();
 	
-	if(!$detect->isMobile() | !$detect->isTablet() ){
+	if($detect->isMobile() | $detect->isTablet() ){
 		header('Location: http://'.$config['domain']);
 	}else{	
 		$userAdmin = new usersAdministration();
