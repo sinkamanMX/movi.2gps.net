@@ -2,11 +2,14 @@ var arrayunits 		= Array();
 var draw_acordion	= 0;
 var array_selected  = Array();
 var markers = [];
+var arraygeos = [];  
 var map, infoBubble;
 var mon_timer,mon_timer_count;
 var info_window='';
 var infowindow;
 var beachMarker;
+var arrayReferencias= Array();
+var listReferencias = 0;
 
 function mon_init(){
 	$("#mon_tabs").tabs();
@@ -48,8 +51,6 @@ function mon_load_units(){
 var mon_array_autocomplete = Array();
 
 function mon_draw_acordion(){
-
-
 	var mon_div_acordeon = $("<div>", { id: 'mon_acordeon_unidades' })
 	var mon_id_group 	= 0;
 	var mon_div_info	= "";
@@ -113,7 +114,7 @@ function mon_draw_acordion(){
       },open: function () {
         $(this).data("autocomplete").menu.element.width(500);
     	}
-    });
+    });    
 }
 
 function add_event(unit){
@@ -311,6 +312,7 @@ function mon_draw_table(){
 		});
 
 		mon_refresh_units();
+		getGeos();
 	}
 }
 
@@ -333,6 +335,13 @@ function mon_remove_map(){
 		}	
 		markers = [];
 	}
+
+	if(arraygeos || arraygeos.length>-1){
+		for (var i = 0; i < arraygeos.length; i++) {
+	          arraygeos[i].setMap(null);
+		}	
+		arraygeos = [];
+	}	
 
 	if(mon_timer!=null){
 		mon_timer.stop();	
@@ -549,4 +558,72 @@ function stopTimer(){
 		mon_timer_count=null;
 	}	
 	$("#mon_time").html("00:00");
+}
+
+function getGeos(){
+	if(listReferencias==0){
+		arrayReferencias = [];
+		$.ajax({
+			type: "POST",
+	        url: "index.php?m=mMonitoreo&c=mGetGeos",
+	        success: function(datos){
+				var result = datos;
+				if(result!= 0){
+					listReferencias  = 1;
+					arrayReferencias = new Array();
+					arrayReferencias = result.split('|');					
+					drawGeos();					
+				}
+	        }
+		});
+	}else{
+		drawGeos();
+	}
+}
+
+function drawGeos(){
+	var checkPuntos = true;
+	var checkCercas = true ;
+	for(var i=0;i<arrayReferencias.length;i++){
+		var arrayGeoInfo = arrayReferencias[i].split('!');
+		if(arrayGeoInfo[0]=='G' && checkPuntos){
+			var image = 'public/images/geo_icons/'+arrayGeoInfo[2];	
+		    var marker1 = new google.maps.Marker({
+			    map: map,
+			    position: new google.maps.LatLng(arrayGeoInfo[4],arrayGeoInfo[5]),
+			    title: 	arrayGeoInfo[3],
+				icon: 	image
+		    });
+		    markers.push(marker1);
+		}
+
+		if(arrayGeoInfo[0]=='C' && checkCercas){ 
+			var arrayGeoInfoLats = null;
+			arrayGeoInfoLats = arrayGeoInfo[6].split('&');
+			var geos_points_polygon = [];
+
+			for(j=0;j<arrayGeoInfoLats.length;j++){
+				var latlon = arrayGeoInfoLats[j].split('*');
+
+		        var Latit =  parseFloat(latlon[0]);
+		        var Longit = parseFloat(latlon[1]);
+		        var pointmarker = new google.maps.LatLng(Latit,Longit);
+		        geos_points_polygon.push(pointmarker);		        		        
+		    }
+
+			var geos_options = {
+			      paths: geos_points_polygon,
+			      strokeColor: arrayGeoInfo[1],
+			      strokeOpacity: 0.8,
+			      strokeWeight: 3,
+			      title: 	arrayGeoInfo[3],
+			      fillColor: arrayGeoInfo[1],
+			      fillOpacity: 0.35
+			} 		    
+			
+			var geos_polygon = new google.maps.Polygon(geos_options);
+			geos_polygon.setMap(map);
+			arraygeos.push(geos_polygon);
+		}
+	}	
 }
