@@ -12,7 +12,7 @@
 		'sqlDriver' 	=> 'mysql',
 		'keyapi'	    => 'AIzaSyDEKMhVRqzLTUtyUA2dm2XrEnUrPWLTJQM',
 		'path' 			=> '/',
-		'domain' 		=> 'pepsico.4togo.net',
+		'domain' 		=> 'm.2gps.net',
 		'languaje' 		=> 'es',
 		'languajePath' 	=> 'lang/',
 		'config' 		=> 'config/',
