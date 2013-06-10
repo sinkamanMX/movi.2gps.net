@@ -30,6 +30,14 @@ function onload_map(){
     });			
 	mon_load_units();
 	mon_init();
+
+	$('#mon_chk_g').change(function() {
+		mon_draw_table()
+	});
+
+	$('#mon_chk_c').change(function() {
+		mon_draw_table()
+	});
 }
 
 function mon_load_units(){
@@ -311,9 +319,9 @@ function mon_draw_table(){
 			mon_refresh_units()
 		});
 
-		mon_refresh_units();
-		getGeos();
+		mon_refresh_units();		
 	}
+	getGeos();
 }
 
 function add_info_marker(marker,content){	
@@ -582,8 +590,8 @@ function getGeos(){
 }
 
 function drawGeos(){
-	var checkPuntos = true;
-	var checkCercas = true ;
+	var checkPuntos = $('input[name=mon_chk_g]').is(':checked');
+	var checkCercas = $('input[name=mon_chk_c]').is(':checked');
 	for(var i=0;i<arrayReferencias.length;i++){
 		var arrayGeoInfo = arrayReferencias[i].split('!');
 		if(arrayGeoInfo[0]=='G' && checkPuntos){
