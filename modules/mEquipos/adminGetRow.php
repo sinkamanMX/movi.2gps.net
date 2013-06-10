@@ -25,7 +25,7 @@
 	$voz	= $Functions->cbo_from_array($a_respuestas,@$data_row['FLAG_VOZ']);
 	$dchp	= $Functions->cbo_from_array($a_respuestas,@$data_row['FLAG_DHCP_ON']);		
 	
-	$equipo=$dbf->cbo_from('COD_TYPE_EQUIPMENT','DESCRIPTION','ADM_EQUIPOS_TIPO','1=1',@$data_row['COD_TYPE_EQUIPMENT']);
+	$equipo=$dbf->cbo_from('COD_TYPE_EQUIPMENT','DESCRIPTION','ADM_EQUIPOS_TIPO','1=1 ORDER BY DES',@$data_row['COD_TYPE_EQUIPMENT']);
 		
 	if(@$unit_assign['COD_ENTITY']!=NULL){
 		$unit_info = $dbf->getRow('ADM_UNIDADES','COD_ENTITY = '.@$unit_assign['COD_ENTITY']);
