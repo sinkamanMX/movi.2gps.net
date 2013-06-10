@@ -28,7 +28,7 @@
 	
 	$tipo  = $dbf->cbo_from('ID_TIPO','DESCRIPCION','ADM_GEOREFERENCIAS_TIPO','1=1',@$data_row['ID_TIPO_GEO']);
 	
-	if($_GET['type']=="g"){		
+	if($_GET['type']=="c"){		
 		$tpl->set_filenames(array('mGetRow' => 'tGetRow'));		
 		
 		if($id_row>0){
@@ -69,8 +69,7 @@
 		$priv_select='';
 		if($a_pivacidad[$p][tipo]==@$data_row['TIPO']){$priv_select='selected';}
 		$pivacidad .= '<option '.$priv_select.' value="'.$a_pivacidad[$p]['tipo'].'" >'.$a_pivacidad[$p]['val'].'</option>';
-	}	
-	//echo @$data_row['ESTADO'];
+	}		
 	$estados   = $dbf->cbo_from_string('ID_ESTADO','NOMBRE','ZZ_SPM_ENTIDADES','1=1',@$data_row['ESTADO']);	
 	$municipio = '<option selected value="-1" >'.$Functions->codif(@$data_row['MUNICIPIO']).'</option>';
 	$colonia   = '<option selected value="-1" >'.$Functions->codif(@$data_row['COLONIA']).'</option>';

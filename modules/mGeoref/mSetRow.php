@@ -22,10 +22,10 @@
 		
 		if($id_row==0){
 		 	$data = Array(				 
-				'ID_TIPO' 	=> 0,
-				'ID_USUARIO_CREO' => $userAdmin->user_info['ID_USUARIO'], 
+				'ID_TIPO_GEO' 	=> 0,
+				'ID_ADM_USUARIO' => $userAdmin->user_info['ID_USUARIO'], 
 				'DESCRIPCION' => $name,				
-				'TIPO' 		=> 'G',
+				'TIPO' 		=> 'C',
 				'PRIVACIDAD'=> $privacidad , 	 
 				'ID_CLIENTE'=> $userAdmin->user_info['ID_CLIENTE'],
 				'COD_COLOR' => $color, 
@@ -61,7 +61,7 @@
   				$s_points .= $points[$i];							
   			} 
 	        $s_points .= ",".$points[0];			
-			$sql_patial = "INSERT INTO adm_georeferencias_espacial (ID_OBJECT_MAP,GEOM)
+			$sql_patial = "INSERT INTO ADM_GEOREFERENCIAS_ESPACIAL (ID_OBJECT_MAP,GEOM)
 								VALUES (".$id_row.",GEOMFROMTEXT('POLYGON((".$s_points."))'))";				
 			$query  = $db->sqlQuery($sql_patial);  			
   			$response = array('result' => 'edit');

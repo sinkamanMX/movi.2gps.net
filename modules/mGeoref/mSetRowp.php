@@ -45,7 +45,7 @@
 				'ESTADO' 	=> $estado,
 				'CP' 		=> $cp,
 				'RADIO' 	=> $radio,
-				'TIPO' 		=> $tipo,
+				'TIPO' 		=> 'G',
 				'PRIVACIDAD'=> $privacidad , 	 
 				'ID_CLIENTE'=> $userAdmin->user_info['ID_CLIENTE'],
 		 		'CREADO'=> date('Y-m-d H:i:s')

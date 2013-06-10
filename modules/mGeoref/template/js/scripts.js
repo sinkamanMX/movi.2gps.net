@@ -112,10 +112,10 @@ function geos_load_datatable(){
         modal: true,
         buttons: {
           "Geo Punto": function() {         
-            geos_set_function(value,'P');
+            geos_set_function(value,'G');
           },
           "Geo Cerca": function() {
-            geos_set_function(value,'G');
+            geos_set_function(value,'C');
           }
         }
       });
