@@ -49,7 +49,12 @@ $(document).ready(
 
 		$("#gral_button_manual").click(function() {
 			window.open('/manuals/manual.pdf');
-		}); 		
+		}); 
+
+		$("#gral_button_events").click(function() {
+  			var caracteristicas = "height=560,width=660,scrollTo,resizable=1,scrollbars=1,location=0";
+			nueva=window.open("index.php?m=mMonitoreo&c=mShowEvents", 'Popup', caracteristicas);
+		});
 					
 	});
 

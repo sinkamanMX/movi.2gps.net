@@ -199,6 +199,15 @@ border-radius:3px;
 }
 .mon-user-info span {color: white; text-shadow: black 0.1em 0.1em 0.2em}
 
+.mon-close-evts{
+    position:absolute;
+    float:right;	
+    top:1px;
+    right: 5px;
+    width:100px;
+    cursor: pointer;
+	float: left;
+}
 .gral_text{
 	float: left;
 	width: 80px;
@@ -368,7 +377,7 @@ border-radius:3px;
 	height: 20px;
 	position: absolute;
 	right: 35%;
-	width: 200px;
+	width: 280px;
 	color: white;
 	font-weight:bold;
 }
