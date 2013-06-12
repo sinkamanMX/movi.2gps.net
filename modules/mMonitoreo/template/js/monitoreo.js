@@ -214,11 +214,11 @@ function mon_draw_table(){
 		var mon_total_alertas	= 0;
 		$("#mon_tabs_select").html("");
 
-		var mon_table = $("<table id='mon_table_selected' class='total_width' border='0'>");
+		var mon_table_gral = $("<table id='mon_table_selected_gral' class='total_width' border='0'>");
 		$("<tr><th><div id='mon_group_icon_rows' class='icon_unit_selected'>"+
 			"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+	
 			"</div></th>"+
-			 "<th>Unidad</th> <th>U.Posicion</th></tr>").appendTo(mon_table).click(
+			 "<th>Unidad</th> <th>U.Posicion</th></tr>").appendTo(mon_table_gral).click(
 			mon_unselect_units()
 		).hover(
 			function(){
@@ -226,6 +226,11 @@ function mon_draw_table(){
 			},function() {
 				$(this).css('cursor','auto');
 		});
+
+		mon_table_gral.appendTo("#mon_tabs_select");
+		var mon_div_area = $("<div class='mon_div_acordeon'>").appendTo("#mon_tabs_select");
+
+		var mon_table = $("<table id='mon_table_selected' class='total_width mon_div_acordeon' border='0'>");
 
 		var latlngbounds = new google.maps.LatLngBounds( );
 
@@ -306,7 +311,8 @@ function mon_draw_table(){
 					$(this).css('cursor','auto');
 			});	
 		}	
-		mon_table.appendTo("#mon_tabs_select");
+		mon_table.appendTo(mon_div_area);
+		/*mon_table.appendTo("#mon_tabs_select");*/
 		//map.fitBounds( latlngbounds );
 
 		if(mon_total_alertas>0 && tab_active==0){
