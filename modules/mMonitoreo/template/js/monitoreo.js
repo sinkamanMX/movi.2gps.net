@@ -97,9 +97,6 @@ function mon_draw_acordion(){
 			mon_id_group  = arraygroup[0];
 		}
 
-/*		$("<tr id='div_unit_"+arraygroup[2]+"'><td>&nbsp;</td> <td>"+arraygroup[3]+"</td> <td>"+arraygroup[5]+
-			  "</td><td><div id='mon_acordeon_icon_"+arraygroup[2]+"' "+
-			  "class='icon_unit_unselected'></div></td></tr>")*/
 		$("<tr id='div_unit_"+arraygroup[2]+"'><td>&nbsp;</td> <td>"+arraygroup[3]+"</td> <td><td><div id='mon_acordeon_icon_"+arraygroup[2]+"' "+
 			  "class='icon_unit_unselected'></div></td></tr>")
 		.appendTo(mon_table_acoredon)
@@ -237,6 +234,7 @@ function mon_draw_table(){
 		for(var i=0;i<array_selected.length;i++){
 			var unit_info = array_selected[i].split("|");
 
+			var validateInfo='';
 	        // Se vacia la infromacion en variables para pintar en el mapa la informacion de las undidades
 			var id 		= unit_info[2];
 			var fecha	= unit_info[5];//--s
@@ -274,30 +272,29 @@ function mon_draw_table(){
 				image = 'public/images/car_orange.png';	
 			}	
 
-			/*var image = 'public/images/car.png';*/
-		    var marker1 = new google.maps.Marker({
-			    map: map,
-			    position: new google.maps.LatLng(unit_info[12],unit_info[13]),
-			    title: 	dunit,
-				icon: 	image
-		    });
-		    markers.push(marker1);
-			add_info_marker(marker1,content);
-
-			if(priory==1){
-				mon_total_alertas++;
-				mon_alerta_unidades += '<tr><td><b>'	+ dunit +'</b></td>'+
-										'<td><b>'	+ evt	+'</b></td>'+
-										'<td><b>'	+ fecha	+'</b></td>'+
-										'<td><b>'	+ dire	+'</b></td></tr>';
+			if(lat!=0 && lon !=0){
+				var marker1 = new google.maps.Marker({
+				    map: map,
+				    position: new google.maps.LatLng(unit_info[12],unit_info[13]),
+				    title: 	dunit,
+					icon: 	image
+			    });
+			    markers.push(marker1);
+				add_info_marker(marker1,content);
+				validateInfo = 
+					"<td onclick='mon_center_map(\""+array_selected[i]+"\");'>"+unit_info[3]+"</td> "+
+					"<td onclick='mon_center_map(\""+array_selected[i]+"\");'>"+unit_info[5]+ "</td>";
+			}else{
+				validateInfo = 
+					"<td onclick='monMessageValidate(\""+unit_info[3]+"\");'>"+unit_info[3]+"</td> "+
+					"<td onclick='monMessageValidate(\""+unit_info[3]+"\");'>Sin Reporte </td>";
 			}
 
 			$("<tr>"+
 				"<td><div id='mon_div_icon"+unit_info[2]+"' class='icon_unit_selected' onclick='mon_search_unidad(\""+array_selected[i]+"\",true)'>"+
 				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+	
 				"</div>"+
-				"<td onclick='mon_center_map(\""+array_selected[i]+"\");'>"+unit_info[3]+"</td> "+
-				"<td onclick='mon_center_map(\""+array_selected[i]+"\");'>"+unit_info[5]+ "</td>"+
+				validateInfo+
 				"<td><div id='mon_div_iconi"+unit_info[2]+"' class='mon_units_info' onclick='mon_get_info(\""+array_selected[i]+"\")'>"+
 				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+"</div>"+				
 				"</td></tr>")
@@ -310,6 +307,14 @@ function mon_draw_table(){
 					$(this).removeClass('unit-selected');
 					$(this).css('cursor','auto');
 			});	
+
+			if(priory==1){
+				mon_total_alertas++;
+				mon_alerta_unidades += '<tr><td><b>'	+ dunit +'</b></td>'+
+										'<td><b>'	+ evt	+'</b></td>'+
+										'<td><b>'	+ fecha	+'</b></td>'+
+										'<td><b>'	+ dire	+'</b></td></tr>';
+			}			
 		}	
 		mon_table.appendTo(mon_div_area);
 		/*mon_table.appendTo("#mon_tabs_select");*/
@@ -640,4 +645,9 @@ function drawGeos(){
 			arraygeos.push(geos_polygon);
 		}
 	}	
+}
+
+function monMessageValidate(dUnit){
+	$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La unidad '+dUnit+' No tiene reporte.</p>');
+	$("#dialog_message" ).dialog('open');   
 }
