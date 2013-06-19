@@ -251,10 +251,12 @@ function mon_draw_table(){
 			var icons 	= unit_info[15];
 			var angulo 	= unit_info[16];
 			var colprio = unit_info[4];//--*/
+			var imei 	= unit_info[18];
 			var content = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
 							'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
 						  			'<table><tr><th colspan="2">'+
 									'<tr><td align="left">Unidad :</td><td align="left">'	+ dunit +'</td></tr>'+
+									'<tr><td align="left">IMEI :</td><td align="left">'  	+ imei +'</td></tr>'+
 						  			'<tr><td align="left">Evento :</td><td align="left">'	+ evt	+'</td></tr>'+
 						  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ fecha	+'</td></tr>'+
 									'<tr><td align="left">Velocidad:</td><td align="left">'	+ vel	+' Km/h.</td></tr>'+
@@ -453,7 +455,7 @@ function mon_center_map(unitsinfo){
 	var icons 	= unit_info[15];
 	var angulo 	= unit_info[16];
 	var colprio = unit_info[4];//--
-
+	var imei 	= unit_info[18];
 	var image = new google.maps.MarkerImage('public/images/car.png',
 		new google.maps.Size(1, 1),
 		new google.maps.Point(0,0),
@@ -473,6 +475,7 @@ function mon_center_map(unitsinfo){
 						/*'<div>'+*/
 				  			'<table><tr><th colspan="2">'+
 							'<tr><td align="left">Unidad :</td><td align="left">'	+ dunit +'</td></tr>'+
+							'<tr><td align="left">IMEI :</td><td align="left">'  	+ imei +'</td></tr>'+
 				  			'<tr><td align="left">Evento :</td><td align="left">'	+ evt	+'</td></tr>'+
 				  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ fecha	+'</td></tr>'+
 							'<tr><td align="left">Velocidad:</td><td align="left">'	+ vel	+'</td></tr>'+
