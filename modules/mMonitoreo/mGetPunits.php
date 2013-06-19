@@ -54,7 +54,9 @@
 			$color		= $upos['COLOR'];								
 			
 			$querys="SELECT CONCAT('A ', TRUNCATE(DISTANCIA(".$upos['LONGITUDE'].",".$upos['LATITUDE'].
-						", LONGITUDE, LATITUDE),2),' KM de ',DESCRIPCION) AS DISTANCIA 
+						", LONGITUDE, LATITUDE),2),' KM de ',DESCRIPCION) AS DISTANCIA ,".
+						"TRUNCATE(DISTANCIA(".$upos['LONGITUDE'].",".$upos['LATITUDE'].
+						", LONGITUDE, LATITUDE),2) AS RDIST
 					FROM ADM_GEOREFERENCIAS 
 					WHERE TIPO 	 = 'G' 
 					  AND (ID_CLIENTE = ".$idCliente." 
@@ -63,7 +65,7 @@
 					ORDER BY DISTANCIA ASC LIMIT 1";					
 			$qsquery 	= $db->sqlQuery($querys);	
 			$row_loc	= $db->sqlFetchArray($qsquery);	
-			if($row_loc['DISTANCIA']!=''){
+			if($row_loc['DISTANCIA']!='' && $row_loc['RDIST'] < 5){				
 				$pdi = $row_loc['DISTANCIA'];
 			}else{
 				$pdi = "Sin PDI cercano";
