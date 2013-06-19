@@ -21,25 +21,34 @@
 	
 	while($row = $db->sqlFetchArray($query_units)){	
 		$imemiUnit= '';	
-		$commands_units=""; 				
-		$sql_cmds="SELECT  F.DESCRIPCION,F.COD_EQUIPMENT_PROGRAM, C.IMEI
+		$commands_units="";
+		
+		$sqlUnitsEquipment = "SELECT  C.IMEI, D.COD_TYPE_EQUIPMENT
 					FROM ADM_UNIDADES A
-					  INNER JOIN ADM_UNIDADES_EQUIPOS B 	ON B.COD_ENTITY 	= A.COD_ENTITY
-					  INNER JOIN ADM_EQUIPOS C 		ON C.COD_EQUIPMENT 	= B.COD_EQUIPMENT
-					  INNER JOIN ADM_EQUIPOS_TIPO D 	ON D.COD_TYPE_EQUIPMENT = C.COD_TYPE_EQUIPMENT
-					  LEFT JOIN ADM_COMANDOS_SALIDA E 	ON E.COD_TYPE_EQUIPMENT = D.COD_TYPE_EQUIPMENT
+					  INNER JOIN ADM_UNIDADES_EQUIPOS B ON B.COD_ENTITY 	= A.COD_ENTITY
+					  INNER JOIN ADM_EQUIPOS C 			ON C.COD_EQUIPMENT 	= B.COD_EQUIPMENT
+					  INNER JOIN ADM_EQUIPOS_TIPO D 	ON D.COD_TYPE_EQUIPMENT = C.COD_TYPE_EQUIPMENT	
+					WHERE A.COD_ENTITY = ".$row['COD_ENTITY'];
+		$queryInfoUnits = $db->sqlQuery($sqlUnitsEquipment);
+		$countInfoUnits	= $db->sqlEnumRows($queryInfoUnits);
+		if($countInfoUnits>0){
+			$rowEquipments = $db->sqlFetchArray($queryInfoUnits);
+			$imemiUnit      = ($rowEquipments['IMEI']=="NULL") ? "": $rowEquipments['IMEI'];
+			
+			$sql_cmds="SELECT F.DESCRIPCION,F.COD_EQUIPMENT_PROGRAM 
+					FROM ADM_COMANDOS_SALIDA E 	 
 					  LEFT JOIN ADM_COMANDOS_CLIENTE F 	ON F.COD_EQUIPMENT_PROGRAM = E.COD_EQUIPMENT_PROGRAM
 					  LEFT JOIN ADM_COMANDOS_USUARIO G 	ON G.ID_COMANDO_CLIENTE = F.ID_COMANDO_CLIENTE
-					WHERE E.FLAG_SMS   = 0 
- 					  AND A.COD_ENTITY = ".$row['COD_ENTITY']." 
-					 AND  G.ID_USUARIO = ".$userAdmin->user_info['ID_USUARIO'];
-		$query_cmds = $db->sqlQuery($sql_cmds);
-		while($row_cmds = $db->sqlFetchArray($query_cmds)){
-			$commands_units.= ($commands_units!="") ? "?" : "";
-			$commands_units.= $row_cmds['COD_EQUIPMENT_PROGRAM']."_".$row_cmds['IMEI']."_".
-							  $row_cmds['DESCRIPCION'];
-			$imemiUnit      = ($row_cmds['IMEI']=="NULL") ? "": $row_cmds['IMEI'];
-		}		
+					WHERE E.COD_TYPE_EQUIPMENT = ".$rowEquipments['COD_TYPE_EQUIPMENT']."
+					 AND E.FLAG_SMS   = 0 
+					 AND  G.ID_USUARIO = ".$userID;
+			$query_cmds = $db->sqlQuery($sql_cmds);
+			while($row_cmds = $db->sqlFetchArray($query_cmds)){
+				$commands_units.= ($commands_units!="") ? "?" : "";
+				$commands_units.= $row_cmds['COD_EQUIPMENT_PROGRAM']."_".$imemiUnit."_".
+								  $row_cmds['DESCRIPCION'];
+			}			
+		}											
 		
 		$commands_units = ($commands_units=="") ? "SC": $commands_units;
 		$imemiUnit		= ($imemiUnit=="") ? 'Sin IMEI asignado':$imemiUnit;
