@@ -21,7 +21,8 @@
   		$query = $db->sqlQuery($sql);
   		$data_perfil = $db->sqlFetchArray($query);
 		  
-		$sql_units = "SELECT ADM_GRUPOS_UNIDADES.COD_ENTITY, CONCAT(PLAQUE,'-', DESCRIPTION) AS UNIDAD
+		$sql_units = "SELECT ADM_GRUPOS_UNIDADES.COD_ENTITY, 
+						CONCAT(IF(PLAQUE IS NULL,'NP',PLAQUE),'-', IF(DESCRIPTION IS NULL,'',DESCRIPTION)) AS UNIDAD
 						FROM ADM_GRUPOS_UNIDADES 
 						INNER JOIN ADM_UNIDADES ON ADM_UNIDADES.COD_ENTITY  = ADM_GRUPOS_UNIDADES.COD_ENTITY
 						WHERE ADM_GRUPOS_UNIDADES.ID_GRUPO = ".$id_grupo;
@@ -40,7 +41,8 @@
 	}
 	
 	$and_unselect = ($a_units_selected!="") ? 'AND COD_ENTITY NOT IN ('.$a_units_selected.')': '';
-	$sql_unselect = "SELECT COD_ENTITY, CONCAT(PLAQUE,'-', DESCRIPTION) AS UNIDAD
+	$sql_unselect = "SELECT COD_ENTITY, 
+					CONCAT(IF(PLAQUE IS NULL,'NP',PLAQUE),'-', IF(DESCRIPTION IS NULL,'',DESCRIPTION)) AS UNIDAD
 					FROM ADM_UNIDADES
 						WHERE COD_CLIENT = ".$userAdmin->user_info['ID_CLIENTE']." ".$and_unselect;
 	$query_unselect = $db->sqlQuery($sql_unselect);					
