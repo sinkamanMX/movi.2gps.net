@@ -198,6 +198,7 @@ function mon_search_unidad(buscar,draw){
 }
 
 function mon_draw_table(){
+	var currentScroll = $('#mon_div_area').scrollTop();
 	mon_remove_map();
 	$("#mon_tabs_select").html("No se ha seleccionado ninguna unidad.");
 	$("#mon_div_timer").addClass("invisible");
@@ -225,7 +226,7 @@ function mon_draw_table(){
 		});
 
 		mon_table_gral.appendTo("#mon_tabs_select");
-		var mon_div_area = $("<div class='mon_div_acordeon'>").appendTo("#mon_tabs_select");
+		var mon_div_area = $("<div id='mon_div_area' class='mon_div_acordeon'>").appendTo("#mon_tabs_select");
 
 		var mon_table = $("<table id='mon_table_selected' class='total_width mon_div_acordeon' border='0'>");
 
@@ -319,8 +320,7 @@ function mon_draw_table(){
 			}			
 		}	
 		mon_table.appendTo(mon_div_area);
-		/*mon_table.appendTo("#mon_tabs_select");*/
-		//map.fitBounds( latlngbounds );
+		$("#mon_div_area").scrollTop(currentScroll);
 
 		if(mon_total_alertas>0 && tab_active==0){
 			mon_alerta_unidades += '</table>';
