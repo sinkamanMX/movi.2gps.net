@@ -23,7 +23,7 @@
 	$autoriza = $Functions->cbo_from_array($a_respuestas,@$data_row['CONTACTO_AUTORIZA']);
 	
 	$hora_in = (@$data_row['HORA_INICIAL']) ? $data_row['HORA_INICIAL']: '00:00';
-	$hora_fin= (@$data_row['HORA_INICIAL']) ? $data_row['HORA_INICIAL']: '00:00';
+	$hora_fin= (@$data_row['HORA_INICIAL']) ? $data_row['HORA_INICIAL']: '23:59';
 	
 	$tpl->set_filenames(array('mGetContact' => 'tGetContact'));
 	$tpl->assign_vars(array(
