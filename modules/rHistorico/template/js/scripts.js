@@ -543,20 +543,34 @@ function rhi_ubicar(){
 
 			points.push(new google.maps.LatLng(unitLatitude, unitLong));						
 			latlngbounds.extend( new google.maps.LatLng(unitLatitude, unitLong) ); 
-			
+
+			var colorCircle = '';
 			var image = '';
 			if(velocidad<5 && priory==0){
+				colorCircle = '#CC0000';
 				image = 'public/images/car_red.png';	
 			}else if(velocidad>5 && priory==0){
+				colorCircle = '#66CC33';
 				image = 'public/images/car_green.png';	
 			}else  if(priory==1){
+				colorCircle = '#FF9900';
 				image = 'public/images/car_orange.png';	
 			}	
+		
 			var marker1 = new google.maps.Marker({
 			    map: map_rhi,
+				icon: {
+				    path: google.maps.SymbolPath.CIRCLE,
+				    fillOpacity: 0.5,
+				    fillColor: colorCircle,
+				    strokeOpacity: 1.0,
+				    strokeColor: colorCircle,
+				    strokeWeight: 3.0, 
+				    scale: 5 //pixels
+				  },
 			    position: new google.maps.LatLng(unitLatitude,unitLong),
 			    title: 	fecha,
-				icon: 	image
+				/*icon: 	image*/
 			});
 			marcadores.push(marker1);
 			add_info_marker(marker1,info);
