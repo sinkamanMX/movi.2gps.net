@@ -38,9 +38,11 @@ $(document).ready(function () {
 	$( "#rhi_dialog" ).dialog({
 		autoOpen:false,
 		title:"Detalle",
-		modal: true,
-		width:  700,
-		height: 450 
+		modal: false,
+		resizable: false,
+		position: 'top',
+        width       : $(window).width()-15,
+        height      : $(window).height()-15
 	});	
 
 	//Dialog buscador
@@ -344,11 +346,12 @@ function rhi_detalle(fi,ff,und){
 			var result = data; 
 			$('#rhi_dialog').html('');
 
-			var w = ($(window).width())*0.92;
+			/*var w = ($(window).width())*0.92;
 			var h = ($(window).height())*0.90;
-			$("#rhi_dialog").dialog( "option", "resizable", false );
+			console.log(w+" "+h)*/
+			/*$("#rhi_dialog").dialog( "option", "resizable", false );
 			$("#rhi_dialog").dialog( "option", "width", w );
-			$("#rhi_dialog").dialog( "option", "height", h );
+			$("#rhi_dialog").dialog( "option", "height", h );*/
 			$('#rhi_dialog').dialog('open');
 			$('#rhi_dialog').html(result); 
 		}
@@ -448,6 +451,8 @@ function rhi_load_com_datatable(){
 		    "sZeroRecords": "No hay registros",
 		}
 	});	
+	oTable2.fnAdjustColumnSizing();
+	oTable2.fnDraw();
 	rhi_ubicar();
 }
 
@@ -559,9 +564,9 @@ function rhi_ubicar(){
 			var a_info= evento+"|"+fecha+"|"+velocidad+"|"+direccion;				
 
 			$("<tr>"+				
-				"<td onclick='mon_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",false);'>"+fecha+ "</td>"+
-				"<td onclick='mon_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",false);'>"+evento+ "</td>"+
-				"<td><div class='mon_units_info' onclick='mon_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",true)'>"+
+				"<td onclick='hist_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",false);'>"+fecha+ "</td>"+
+				"<td onclick='hist_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",false);'>"+evento+ "</td>"+
+				"<td><div class='mon_units_info' onclick='hist_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",true)'>"+
 				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+"</div>"+				
 				"</td></tr>")
 			.appendTo(mon_table);
@@ -652,7 +657,7 @@ function mon_remove_map(){
 	}
 }	
 
-function mon_center_map(lat,lon,info,title,show_info){
+function hist_center_map(lat,lon,info,title,show_info){
 	var unit_info = info.split("|");	
 	var info = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
 					'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
