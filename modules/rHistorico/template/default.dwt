@@ -54,9 +54,10 @@
           </div>
         </th>
         <th>
-          <div style="width:15%  float:right;" class="invisible">    
-            <button id="rhi_exp_exe" onClick="rhiExportExcel()">Exportar</button></th>
+          <div style="width:15%  float:right;" class="">    
+            <button id="rhi_exp_exe" onClick="rhiExportExcel()">Exportar</button>
           </div>  
+        </th>  
       </tr>
       <tr >
         <th>&nbsp;</th>

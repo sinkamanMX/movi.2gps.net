@@ -232,12 +232,7 @@ function rhiSearch(){
 	var nowDate 	= new Date();
     var monthDate 	= (nowDate.getMonth() + 1) ;
     	monthDate 	= (monthDate <10 )  ? ("0"+monthDate) : monthDate;
-    //var currentDate = nowDate.getFullYear()+"-"+ monthDate + '-' + nowDate.getDate();
-
-    /*
-CAMIASD
-    */
-    var currentDate = nowDate.getFullYear()+"-"+ monthDate + '-' + '19';
+    var currentDate = nowDate.getFullYear()+"-"+ monthDate + '-' + nowDate.getDate();
     var dateInit 	= currentDate+" 00:00"
     var dateFin 	= currentDate+" 23:59"
 
@@ -400,8 +395,10 @@ function getSummary(){
 				$("#rhi_exp_exe").removeClass("invisible").addClass("visible");
 				aReport=new Array();
 				aReport=result.split('||');
-				setSummaryTable();
-			}		
+			}else{
+				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La búsqueda de no obtuvo ningún resultado.</p>');
+				$("#dialog_message" ).dialog('open');	
+			}				
 		}
 	});
 }
