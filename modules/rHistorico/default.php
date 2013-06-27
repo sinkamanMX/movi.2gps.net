@@ -1,37 +1,27 @@
 <?php
 /** * 
  *  @package             
- *  @name                Pagina default del modulo silver 
+ *  @name                Pagina default del modulo 
  *  @version             1
  *  @copyright           Air Logistics & GPS S.A. de C.V.   
- *  @author              Rodwyn Moreno
- *  @modificado          23-04-2012
+ *  @author              Enrique Pe?a 
+ *  @modificado          21-06-2013
 **/
- 
 	$db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);
-	
-	/*if(!$userAdmin->u_logged())
-		echo '<script>window.location="index.php?m=login"</script>';*/
-	
-	$tpl->set_filenames(array('default'=>'default'));	
-	$idProfile   = $userAdmin->user_info['ID_PROFILE'];	
-	
 
-		 
-
+	$sqlGroups = "FROM ADM_USUARIOS_GRUPOS
+				INNER JOIN ADM_GRUPOS          
+					ON ADM_GRUPOS.ID_GRUPO = ADM_USUARIOS_GRUPOS.ID_GRUPO
+				WHERE ADM_USUARIOS_GRUPOS.ID_USUARIO = ".$userAdmin->user_info['ID_USUARIO']."
+				GROUP BY ADM_GRUPOS.ID_GRUPO";
+	$groups = $dbf->cbo_from_query('ADM_GRUPOS.ID_GRUPO','ADM_GRUPOS.NOMBRE',$sqlGroups,'',true);
+	
+	$tpl->set_filenames(array('default'=>'default'));		 
+	
 	$tpl->assign_vars(array(
-		'PAGE_TITLE'	=> "Administraci&oacute;n clientes",	
+		'PAGE_TITLE'	=> 'Reporte Historico',	
 		'PATH'			=> $dir_mod,
-		'PATH_IMG'		=> $dir_pimages,
-		'NAME'			=> $userAdmin->user_info['USER_NAME'],
-		'MAIL'			=> $userAdmin->user_info['USER_EMAIL'],
-		'TYPE'			=> $userAdmin->user_info['PRIVILEGES'],		
-		'APIKEY'		=> $config['keyapi'],
-		'COD_USER' 		=> $userAdmin->user_info['COD_USER'],
-		'COD_CLI'	 	=> $userAdmin->user_info['COD_CLIENT'],
-		//'SUBMENU'		=> $userAdmin->obtener_submenu($_GET['m']),
-		//'Tituño'		=> 'M&oacute;dulo Monitoreo'
+		'GROUPS'		=> $groups
 	));	
-
 	$tpl->pparse('default');
 ?>

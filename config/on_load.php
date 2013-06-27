@@ -41,7 +41,8 @@
 			'pData'	   		=> $config['libPath'].'/charts/pData.php',
 			'pChart' 	   	=> $config['libPath'].'/charts/pChart.php',
 			'pdf'		   	=> $config['libPath'].'/pdf/fpdf.php',
-			'comands'	   	=> $config['libPath'].'c.Commands.php'
+			'comands'	   	=> $config['libPath'].'c.Commands.php',
+			'historico'	   	=> $config['libPath'].'c.Historico.php',
 			);
 
 		foreach($classes AS $i => $v){

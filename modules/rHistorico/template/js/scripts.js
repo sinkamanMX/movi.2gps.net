@@ -1,40 +1,33 @@
 var oTable;
-var oTable2;
-var gral_data;
-var deta_data;
+var dTableDet;
+var aReport;
+var aTableEvt;
+var aReportSummary = new Array();
+var aReportHistory = new Array();
+var aReportDet     = new Array();
+var aTableHistorico = new Array();
+var aTableEventos  = new Array();
+var aEventSelected = new Array();
 var map_rhi;
-var points = [];
+var nameUnit;
 var poly = [];
 var marcadores = [];
 var info_a = new Array();
-var lats = new Array();
-var lons = new Array();
-var trayecto;
 var infowindow;
 
-$(document).ready(function () {
-	rhi_load_datatable();	
-	//datepicker
-	$( ".datepicker" ).datepicker({
-		showOn: "button",
-		buttonImage: "public/images/cal.gif",
-		buttonImageOnly: true,
-		maxDate: '0',
-		dateFormat: "yy-mm-dd"
-	});	
+$(document).ready(function(){
+	$( "#rhi_search" ).button({
+		icons: { primary: "ui-icon-search" }
+	}).click(function() {
+		rhiSearch()  		
+	});
 
-	$( "#rhi_add" ).button({
-      icons: {
-        primary: "ui-icon-search"
-      }
-    });
+	$( "#rhi_exp_exe" ).button({
+		icons: { primary: "ui-icon-document" }
+	}).click(function() {
+  		export_excel()
+	}).addClass('invisible');
 
-	$('.titulo').panel({
-		'controls':$('#cntrl').html(),
-		'collapsible':false
-	});	
-
-	//Dialog detalle	
 	$( "#rhi_dialog" ).dialog({
 		autoOpen:false,
 		title:"Detalle",
@@ -42,21 +35,24 @@ $(document).ready(function () {
 		resizable: false,
 		position: 'top',
         width       : $(window).width()-15,
-        height      : $(window).height()-15
-	});	
+        height      : $(window).height()-15,
+		close: function() {
+		  $('#rhiDialogEventos').removeClass('visible').addClass('invisible');
+		}        
+	});		
 
 	//Dialog buscador
-	$( "#rhi_dialog_nvo" ).dialog({
+	$( "#rhi_dialog_search" ).dialog({
 		autoOpen:false,
+		position: 'top',
 		title:"Buscar",
 		modal: true,
 		buttons: {
-			Cancelar: function() {
-				$("#rhi_dialog_nvo" ).dialog( "close" );
+			Cancelar: function() { 				
+				$( ".datepicker" ).datepicker( "destroy" )
+    			$(this).dialog( "close" )
 			},
-			Buscar: function() {
-				revisadatos();
-			}			
+			Buscar: function()   {  rhivalidateSearch() }			
 		}
 	});
 
@@ -68,378 +64,503 @@ $(document).ready(function () {
 				$("#rhi_dialog_message" ).dialog( "close" );
 			}
 		}
-	});
+	});	
 
-	$( "#rhi_exp_exe" ).button({
+	$( "#tabs_detalle" ).tabs({
+	    select: function(event, ui){        
+	        if(ui.index!=0){
+	        	$('#rhiDialogEventos').removeClass('visible').addClass('invisible');
+	        	rhiDrawTableDet()
+	        }else{
+	        	$('#rhiDialogEventos').removeClass('invisible').addClass('visible');
+	        }
+	    }
+  	});	
+	rhi_load_datatable();
+
+	$.widget( "ui.combobox", {
+	    _create: function() {
+	        var self = this,
+	            select = this.element.hide(),
+	            selected = select.children( ":selected" ),
+	            value = selected.val() ? selected.text() : "Select One...";
+	        var input = this.input = $( "<input>" )
+	            .insertAfter( select )
+	            .val( value )
+	            .autocomplete({
+	                delay: 0,
+	                minLength: 0,
+	                source: function( request, response ) {
+	                    var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+	                    response( select.children( "option" ).map(function() {
+	                        var text = $( this ).text();
+	                        if ( this.value && ( !request.term || matcher.test(text) ) )
+	                            return {
+	                                label: text.replace(
+	                                    new RegExp(
+	                                        "(?![^&;]+;)(?!<[^<>]*)(" +
+	                                        $.ui.autocomplete.escapeRegex(request.term) +
+	                                        ")(?![^<>]*>)(?![^&;]+;)", "gi"
+	                                    ), "<strong>$1</strong>" ),
+	                                value: text,
+	                                option: this
+	                            };
+	                    }) );
+	                },open: function () {
+        				$(this).data("autocomplete").menu.element.width(265);
+    				},
+	                select: function( event, ui ) {
+	                    ui.item.option.selected = true;
+	                    self._trigger( "selected", event, {
+	                        item: ui.item.option
+	                    });
+	                },
+	                change: function( event, ui ) {
+	                    if ( !ui.item ) {
+	                        var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
+	                            valid = false;
+	                        select.children( "option" ).each(function() {
+	                            if ( $( this ).text().match( matcher ) ) {
+	                                this.selected = valid = true;
+	                                return false;
+	                            }
+	                        });
+	                        if ( !valid ) {
+	                            $( this ).val( "" );
+	                            select.val( "" );
+	                            input.data( "autocomplete" ).term = "";
+	                            return false;
+	                        }
+	                    }
+	                }
+	            })
+	            .addClass( "comboAutoComplete ui-widget" );
+
+	        input.data( "autocomplete" )._renderItem = function( ul, item ) {
+	            return $( "<li></li>" )
+	                .data( "item.autocomplete", item )
+	                .append( "<a>" + item.label + "</a>" )
+	                .appendTo( ul );
+	        };
+
+	        this.button = $( "<button type='button'>&nbsp;</button>" )
+	            .attr( "tabIndex", -1 )
+	            .attr( "title", "Show All Items" )
+	            .insertAfter( input )
+	            .button({
+	                icons: {
+	                    primary: "ui-icon-triangle-1-s"
+	                },
+	                text: false
+	            })
+	            .removeClass( "ui-corner-all" )
+	            .addClass( "ui-corner-right ui-button-icon" )
+	            .click(function() {
+	                if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
+	                    input.autocomplete( "close" );
+	                    return;
+	                }
+
+	                $( this ).blur();
+	                input.autocomplete( "search", "" );
+	                input.focus();
+	            });
+	    },
+
+	    destroy: function() {
+	        this.input.remove();
+	        this.button.remove();
+	        this.element.show();
+	        $.Widget.prototype.destroy.call( this );
+	    }
+	});
+}); 
+
+function rhi_load_datatable(){
+	scroll_table=($("#rhiTableData").height()-130)+"px";
+	$('#rhi_table').dataTable({ 
+		"sScrollY": scroll_table,
+		"aaData" : aReportSummary,
+	    "bDestroy": true,
+	    "bLengthChange": false,
+	    "bPaginate": true,
+	    "bFilter": true,
+	    "bSort": true,
+	    "bJQueryUI": true,
+	    "iDisplayLength": 10,
+	    "bAutoWidth": false,
+	    "bSortClasses": false,    
+	    "aoColumns": [
+			{ "mData": "", sDefaultContent: "" },
+			{ "mData": "tMovimiento", sDefaultContent: "" },
+			{ "mData": "tRalenti", sDefaultContent: "" },
+			{ "mData": "tDetenido", sDefaultContent: "" },	
+			{ "mData": "distancia", sDefaultContent: "" },
+			{ "mData": "promedio", sDefaultContent: "" },
+			{ "mData": "maxima", sDefaultContent: "" }
+	    ] ,           
+	    "oLanguage": {
+	        "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
+	        "sEmptyTable": "No hay registros.",
+	        "sInfoEmpty" : "No hay registros.",
+	        "sInfoFiltered": " - Filtrado de un total de  _MAX_ registros",
+	        "sLoadingRecords": "Leyendo información",
+	        "sProcessing": "Procesando",
+	        "sSearch": "Buscar:",
+	        "sZeroRecords": "No hay registros",
+	    },
+		"aoColumnDefs": [
+		{"aTargets": [0],
+		  "sWidth": "5%",
+		  "bSortable": false,        
+		  "mRender": function (data, type, full) {
+		    var iconDetalle  = '';
+
+			iconDetalle  = '<div onclick="rhiShowDetalle();" class="custom-icon-edit-custom">'+
+                    '<img class="total_width total_height" src="data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=="/>'+
+                    '</div>';		   
+		    return '<table><tr>'+iconDetalle+'</tr></table>';
+		}}
+		]
+	});
+}
+
+function rhiSearch(){
+	var startDateTextBox = $('#rhi_from');
+	var endDateTextBox   = $('#rhi_to');
+
+	var nowDate 	= new Date();
+    var monthDate 	= (nowDate.getMonth() + 1) ;
+    	monthDate 	= (monthDate <10 )  ? ("0"+monthDate) : monthDate;
+    //var currentDate = nowDate.getFullYear()+"-"+ monthDate + '-' + nowDate.getDate();
+
+    /*
+CAMIASD
+    */
+    var currentDate = nowDate.getFullYear()+"-"+ monthDate + '-' + '19';
+    var dateInit 	= currentDate+" 00:00"
+    var dateFin 	= currentDate+" 23:59"
+
+	$( "#rhi_dialog_search").dialog('open');
+	$( "#rhi_from" ).datetimepicker( "option", "dayNamesMin", [ "Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab" ] );
+	$( "#rhi_from" ).datetimepicker( "option", "monthNames", [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Oktubre", "Noviembre", "Diciembre" ] );
+	$( "#rhi_to" ).datetimepicker( "option", "dayNamesMin", [ "Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab" ] );
+	$( "#rhi_to" ).datetimepicker( "option", "monthNames", [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Oktubre", "Noviembre", "Diciembre" ] );
+	
+	$('#rhi_from').datetimepicker({
+		showOn: "both",
+		defaultDate: dateInit,
+		maxDate: dateFin,
+		dateFormat: "yy-mm-dd",
+		buttonImage: "public/images/cal.gif",
+		buttonImageOnly: true,
+		currentText: 'Ahora',
+		closeText: 'Listo',
+		timeText: '',
+		hourText: 'Hora',
+		minuteText:'Minutos',	
+		showHour: true,
+		showMinute: true,	
+		timeFormat: 'HH:mm',
+		onClose: function(dateText, inst) {
+			if (endDateTextBox.val() != '') {
+				var testStartDate = startDateTextBox.datetimepicker('getDate').getTime()
+				var testEndDate = endDateTextBox.datetimepicker('getDate').getTime()
+				if (testStartDate > testEndDate)
+					endDateTextBox.datetimepicker('setDate', dateText);
+			}
+			else {
+				endDateTextBox.datetimepicker('setDate', dateText);
+			}
+		},
+		onSelect: function (dateText,selectedDateTime){
+			var testEndDate = endDateTextBox.datetimepicker('getDate');
+			var start = $(this).datetimepicker('getDate');
+            endDateTextBox.datetimepicker('option', 'minDate', new Date(start.getTime()));	
+			endDateTextBox.datetimepicker('setDate', testEndDate);
+		}
+	});
+	
+    $( "#rhi_to" ).datetimepicker({			
+		showOn: "both",
+		defaultDate: dateInit,
+		maxDate: dateFin,
+		dateFormat: "yy-mm-dd",
+		buttonImage: "public/images/cal.gif",
+		buttonImageOnly: true,
+		currentText: 'Ahora',
+		closeText: 'Listo',
+		timeText: '',
+		hourText: 'Hora',
+		minuteText:'Minutos',
+		showHour: true,
+		showMinute: true,	
+		timeFormat: 'HH:mm',
+		onClose: function(dateText, inst){
+			if (startDateTextBox.val() != '') {
+				var testStartDate = startDateTextBox.datetimepicker('getDate').getTime()
+				var testEndDate = endDateTextBox.datetimepicker('getDate').getTime()
+				if (testStartDate > testEndDate)
+					startDateTextBox.datetimepicker('setDate', dateText);
+			}else {
+				startDateTextBox.datetimepicker('setDate', dateText);
+			}
+		},
+		onSelect: function (dateText,selectedDateTime){
+			var testStartDate = startDateTextBox.datetimepicker('getDate');
+			var start = $(this).datetimepicker('getDate');
+			startDateTextBox.datetimepicker('option', 'maxDate', new Date(start.getTime()));
+			startDateTextBox.datetimepicker('setDate', testStartDate);		
+		}		
+    });
+
+   if($("#rhi_from").val() == '' && $("#rhi_to").val() == ''){
+		$('#rhi_from').val(dateInit);
+    	$('#rhi_to').val(dateFin);
+	}
+}
+
+function getUnits(){
+	var idGroup = $('#selgrupo').val();
+	if(idGroup>0){
+		$.ajax({
+			url: "index.php?m=rHistorico&c=mGetUnits",
+			type: "GET",
+			dataType : 'json',
+			data: {datagroup : idGroup },
+			success: function(data) {
+				var result =  data.items;
+				$("#rhiUnits").find('option').remove().end();
+				for (var i=0; i<result.length; i++) {
+				  $("#rhiUnits").append('<option value="' + result[i].id + '">' + result[i].name + '</option>');
+				} 
+
+				$( "#rhiUnits" ).combobox();
+			}		
+		});	
+	}
+}
+
+function rhivalidateSearch(){
+	var fechaInicial	= 	$('#rhi_from').val();    	
+	var fechaFinal		=   $('#rhi_to').val();
+	var idGroup			=	$('#selgrupo').val();
+	var idUnit			=	$('#rhiUnits').val();
+	var errors=0;
+	if(fechaInicial==""){
+		errors++;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar una fecha inicial.</p>');
+		$("#dialog_message" ).dialog('open');			
+	}
+	if(fechaFinal==""){
+		errors++;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar una fecha final.</p>');
+		$("#dialog_message" ).dialog('open');			
+	}
+	if(idGroup<0){
+		errors++;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un grupo.</p>');
+		$("#dialog_message" ).dialog('open');			
+	}
+	if(idUnit<0){
+		errors++;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar una unidad.</p>');
+		$("#dialog_message" ).dialog('open');			
+	}
+
+	if(errors>0){
+		return false;
+	}
+
+	getSummary();
+}
+
+function getSummary(){
+	aReportSummary   = [];
+	aTableHistorico  = [];
+	aTableEventos	 = [];	
+
+	var fechaInicial	= 	$('#rhi_from').val();    	
+	var fechaFinal		=   $('#rhi_to').val();
+	var idGroup			=	$('#selgrupo').val();
+	var idUnit			=	$('#rhiUnits').val();
+	$( "#rhi_exp_exe" ).removeClass('visible').addClass('invisible');
+	$.ajax({
+		url : "index.php?m=rHistorico&c=mGetReport",
+		type: 'GET',
+		data: {
+			idUnit	: idUnit,
+			idGroup	: idGroup,
+			fBegin	: fechaInicial,
+			fEnd  	: fechaFinal  
+		},
+		success:function(data){
+			var result = data;
+			if(result!= "no-info"){
+				$("#rhi_exp_exe").removeClass("invisible").addClass("visible");
+				aReport=new Array();
+				aReport=result.split('||');
+				setSummaryTable();
+			}		
+		}
+	});
+}
+
+function setSummaryTable(){
+	aReportSummary   = [];
+	aTableHistorico  = [];
+	aTableEventos	 = [];
+	var arraySummary = aReport[0].split("!");
+
+	nameUnit  = arraySummary[6];
+	aReportSummary = aReportSummary.concat({ 
+		"distancia" :  	arraySummary[0]+" kms.", 
+		"maxima" :  	arraySummary[1]+" km/h",
+		"promedio"   :  arraySummary[2]+" km/h",
+		"tMovimiento" : arraySummary[3],
+		"tDetenido" :  	arraySummary[4],
+		"tRalenti" :  	arraySummary[5]
+	});	
+
+	var arrayHistorico =  aReport[1].split("!");
+	for (var i=0;i<arrayHistorico.length;i++){
+		var infoHistorico = arrayHistorico[i].split('#');
+		aTableHistorico = aTableHistorico.concat({ 
+				"FECHA" :  infoHistorico[2], 
+				"EVENT" :  infoHistorico[3],
+				"VEL"   :  infoHistorico[4],
+				"LATIT" :  infoHistorico[5],
+				"LONGI" :  infoHistorico[6],
+				"DIREC" :  infoHistorico[10]
+		});
+	}
+
+	var arrayEventos =  aReport[2].split("!");
+	for (var i=0;i<arrayEventos.length;i++){
+		var infoEventos = arrayEventos[i].split('#');
+		aTableEventos = aTableEventos.concat({ 
+				"idEventos" 	:  infoEventos[0], 
+				"Eventos" 		:  infoEventos[1],
+				"totalEvetos"  	:  infoEventos[2]
+		});
+	}	
+
+	$( "#rhi_dialog_search" ).dialog( "close" );	
+	$( "#rhi_exp_exe" ).removeClass('invisible').addClass('visible');
+	rhi_load_datatable();	
+}
+
+function rhiShowDetalle(){		
+	$('#rhi_dialog').dialog('open');	
+
+	$('#tabs_detalle').tabs('option', 'selected', 0);
+
+	$(rhi_dialog).dialog('option', 'title', 'Unidad '+nameUnit);
+	$( ".export_excel" ).button({
       icons: {
         primary: "ui-icon-document"
       }
 	});	
-}); 
 
-function rhi_load_datatable(){
-    oTable = $('#rhi_table').dataTable({
-      "bDestroy": true,
-      "bLengthChange": true,
-      "bPaginate": false,
-      "bFilter": true,
-      "bSort": false,
-      "bJQueryUI": true,
-      "iDisplayLength": 20,      
-      "bProcessing": true,
-      "bAutoWidth": false,
-      "bSortClasses": false,
-      "aoColumns": [
-		  { "mData": " ", sDefaultContent: "" },
-		  { "mData": "Fecha", sDefaultContent: "" },
-		  { "mData": "Unidad", sDefaultContent: "" },
-		  { "mData": "Total de Paradas", sDefaultContent: "" },
-		  { "mData": "Paradas autorizadas", sDefaultContent: "" },
-		  { "mData": "Paradas no autorizadas", sDefaultContent: "" },
-		  { "mData": "Tiempo en movimiento", sDefaultContent: "" },
-		  { "mData": "Tiempo detenido autorizado", sDefaultContent: "" },
-		  { "mData": "Tiempo detenido no autorizado", sDefaultContent: "" },
-		  { "mData": "Velocidad Maxima", sDefaultContent: "" },
-		  { "mData": "Total de excesos", sDefaultContent: "" },
-		  { "mData": "Kilómetros recorridos", sDefaultContent: "" }
-      ] , 
-        "oLanguage": {
-          "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
-          "sEmptyTable": "No hay registros.",
-          "sInfoEmpty" : "No hay registros.",
-          "sInfoFiltered": " - Filtrado de un total de  _MAX_ registros",
-          "sLoadingRecords": "Leyendo información",
-          "sProcessing": "Procesando",
-          "sSearch": "Buscar:",
-          "sZeroRecords": "No hay registros",
-      }
-    });
-}
-
-function rhi_buscar(){
-	$.ajax({
-	  url: "index.php?m=rHistorico&c=mBuscadorRhi",
-	  type: "GET",
-	  data: {  },
-	  success: function(data) {
-		var result = data; 
-		$('#rhi_dialog_nvo').html('');
-		$('#rhi_dialog_nvo').html(result); 
-		$('#rhi_dialog_nvo').dialog('open');
-	  }
-	});	
-}  
-
-function valida_rango(){
-	var radio  =	document.getElementById("rd1").checked;
-	var radio2 =	document.getElementById("rd2").checked;
-	
-	if(radio == true){
-		$('#start_date').datepicker('enable');			
-		$('#end_date').datepicker('enable');
-		$('#hri').attr('disabled',false);
-		$('#mni').attr('disabled',false);
-		$('#hrf').attr('disabled',false);
-		$('#mnf').attr('disabled',false);
-		$('#cbo_sem').attr('disabled',true);								
-	}else if(radio2 == true){
-		$('#start_date').val('');		
-		$('#start_date').datepicker('disable');
-		$('#end_date').val('');			
-		$('#end_date').datepicker('disable');
-		$("#hri option[value='00']").attr("selected",true);
-		$("#mni option[value='00']" ).attr("selected",true);
-		$("#hrf option[value='00']").attr("selected",true);
-		$("#mnf option[value='00']" ).attr("selected",true);				
-		$('#hri').attr('disabled',true);
-		$('#mni').attr('disabled',true);
-		$('#hrf').attr('disabled',true);
-		$('#mnf').attr('disabled',true);
-		$('#cbo_sem').attr('disabled',false);
-	}
-}	
-
-function damegrupo(){
-	$.ajax({
-	  url: "index.php?m=rHistorico&c=mGrupo",
-	  type: "GET",
-	  data: {},
-	  success: function(data) {
-	    var result = data; 
-	    if(result!=0){
-			$('#grupos').html(result);
-		}else{
-			$('#grupos').html(' <select id="selgrupo" style="width:100%" class="caja">'+
-			                  ' <option value="0">No hay Grupos Disponibles</option>'+
-							  '</select>');
-		}	
-	  }
-	});	
-}
-
-function dameunidad(x){
-	grupo = $('#selgrupo').val();
-	$.ajax({
-		url: "index.php?m=rHistorico&c=mUnidad",
-		type: "GET",
-		data: {gpo : grupo},
-		success: function(data) {
-			var result = data; 
-			if(result!=0){
-				$('#unidades').html(result);
-			}else{
-				$('#unidades').html('<select name="selunidad" id="selunidad" style="width:100%" class="caja">'+
-			                      '<option value="0">No hay unidades disponibles</option>'+
-			    				  '</select>');
-			}	
-		}
-	});
-}
-
-function revisadatos(){
-	var radio  =	document.getElementById("rd1").checked;
-	var radio2 =	document.getElementById("rd2").checked;
-	var ifs=0;
-	if(radio == true){
-		if($('#start_date').val().length==0){
-		ifs=ifs+1;
-		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar una fecha inicial</p>');
-		$("#dialog_message" ).dialog('open');		
-		return false;
-			}
-		if($('#end_date').val().length==0){
-		ifs=ifs+1;
-		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar una fecha final</p>');
-		$("#dialog_message" ).dialog('open');		
-		return false;
-			}
-		if($("#end_date").val()+" "+$("#hrf").val()+":"+$("#mnf").val()+":00" < $("#start_date").val()+" "+$("#hri").val()+":"+$("#mni").val()+":00"){
-		ifs=ifs+1;
-		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La fecha final debe ser mayor a la fecha inicial</p>');
-		$("#dialog_message" ).dialog('open');		
-		return false;
-			}			
-		if($('#selunidad').val()==0){
-		ifs=ifs+1;
-		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar una unidad</p>');
-		$("#dialog_message" ).dialog('open');		
-		return false;
-			}
-		if($('#velocity').val().length==0){
-		ifs=ifs+1;
-		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir una velocidad maxima</p>');
-		$("#dialog_message" ).dialog('open');		
-		return false;
-			}			
-	}
-	
-	if(radio2 == true){
-		if($('#selunidad').val()==0){
-		ifs=ifs+1;
-		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar una unidad</p>');
-		$("#dialog_message" ).dialog('open');		
-		return false;
-			}	
-		if($('#velocity').val().length==0){
-		ifs=ifs+1;
-		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir una velocidad maxima</p>');
-		$("#dialog_message" ).dialog('open');		
-		return false;
-		}
-	}
-
-	if(ifs==0){
-		getInfo();
-	}
-}
-
-function getInfo(){
-	$("#rhi_table tbody tr").each(function(index, element) {
-	    $(this).remove();
-	});
-
-	var s='';	
-	if($('#selunidad').val()== -1){
-		$('#selunidad option').each(function(i) {
-			if(s==''){
-				if($(this).val()!= -1 && $(this).val()!= 0){
-					s=$(this).val();
-				}
-			}else{
-				if($(this).val()!= -1 && $(this).val()!= 0){
-					s+=','+$(this).val();
-				}
-			}
-		});
-		var units	=	s;
-	}else{				 
-		var units	=	$("#selunidad").val();	
-	}
-
-	var radio  =	document.getElementById("rd1").checked;
-	var radio2 =	document.getElementById("rd2").checked;
-	var fc_ini =	$("#start_date").val()+" "+$("#hri").val()+":"+$("#mni").val()+":00";
-	var fc_fin =	$("#end_date").val()+" "+$("#hrf").val()+":"+$("#mnf").val()+":00";
-
-	var fech   =	$('#cbo_sem').val();
-	var tfilt  =0;
-	var rdo = $('#cbo_radio').val()/1000;
-	var vel = $('#velocity').val();
-	
-	if(radio == true){
-		tipo = 0;
-	}else if(radio2 == true){
-		tipo = 1;
-	}
-
-	$.ajax({
-		url : "index.php?m=rHistorico&c=mGet_Report",
-		type: 'GET',
-		data: {
-			  tag  : "getData",
-			  tipo : 	tipo,
-			  fInicio : fc_ini,
-			  fFin : 	fc_fin,
-			  unidad : 	units,
-			  semana : 	fech,
-			  radio : 	rdo,
-			  vel : 	vel
-			  },
-		dataType : 'json',
-		success:function(data){
-			$('#rhi_dialog_nvo').dialog('close');				
-				$.each(data,function(index,record){
-					var row = $('<tr />');
-					fi = "'"+record.FI+"'";
-					ff = "'"+record.FF+"'";
-					$("<td/>").html('<div onclick="rhi_detalle('+fi+','+ff+','+record.ID_U+');" class="custom-icon-edit-custom">'+
-                    '<img class="total_width total_height" src="data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=="/>'+
-                    '</div>').appendTo(row);
-					$("<td/>").text(record.DATE).appendTo(row);
-					$("<td/>").text(record.UNIT).appendTo(row);
-					$("<td/>").text(record.PART).appendTo(row);
-					$("<td/>").text(record.PARA).appendTo(row);
-					$("<td/>").text(record.PARN).appendTo(row);
-					$("<td/>").text(record.TMOV).appendTo(row);
-					$("<td/>").text(record.TDEA).appendTo(row);
-					$("<td/>").text(record.TDEN).appendTo(row);
-					$("<td/>").text(record.VELM).appendTo(row);
-					$("<td/>").text(record.TEXC).appendTo(row);
-					$("<td/>").text(record.KREC).appendTo(row);
-					row.appendTo("#rhi_table");
-				});
-			$("#rhi_exp_exe").css("display","");
-		}
-	});
-}	
-
-function rhi_detalle(fi,ff,und){
-	$.ajax({
-		url: "index.php?m=rHistorico&c=mDetalle",
-		type: "GET",
-		data: {
-		  fi : fi,
-		  ff : ff,
-		  idund : und
-		},
-		success: function(data) {
-			var result = data; 
-			$('#rhi_dialog').html('');
-
-			/*var w = ($(window).width())*0.92;
-			var h = ($(window).height())*0.90;
-			console.log(w+" "+h)*/
-			/*$("#rhi_dialog").dialog( "option", "resizable", false );
-			$("#rhi_dialog").dialog( "option", "width", w );
-			$("#rhi_dialog").dialog( "option", "height", h );*/
-			$('#rhi_dialog').dialog('open');
-			$('#rhi_dialog').html(result); 
-		}
-	});
-}
-
-function rhi_mapa(){
-	latlng = new google.maps.LatLng(19.435113686545755,-99.13316173010253);
-	myOptions = {
+	var latlng = new google.maps.LatLng(19.435113686545755,-99.13316173010253);
+	var myOptions = {
 		zoom: 4,
 		center: latlng,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 
-	map_rhi = new google.maps.Map(document.getElementById("tabs_dMapa"), myOptions);
-	infowindow = new google.maps.InfoWindow;
-	/*rhi_ubicar(x,fi,ff);*/
+	map_rhi    = new google.maps.Map(document.getElementById("tabs_dMapa"), myOptions);
+	infowindow = new google.maps.InfoWindow;	
+	drawTableEvents();
+		
+	$('#rhiDialogEventos').removeClass('invisible').addClass('visible');
 }
 
-function rhi_load_detail_datatable(fi,ff,und){
-	$.ajax({
-		url: "index.php?m=rHistorico&c=mGet_Detalle_Gral",
-		type: "GET",
-		data: {
-		  fi : fi,
-		  ff : ff,
-		  idund : und,
-		  tag: "getData" 
-		 },
-		success: function(data) {
-			var result = data;
-			if(result != 0){
-				$('#tabs_dResumen').html('');
-				$('#tabs_dResumen').html(result); 
-				oTable= $('#rhi_detgral_table').dataTable({ 
-				    "aaData" :gral_data,               
-				    "bDestroy": true,
-				    "bLengthChange": false,
-				    "bPaginate": true,
-				    "bFilter": true,
-				    "bSort": true,
-				    "bJQueryUI": true,
-				    "iDisplayLength": 10,
-				    "bAutoWidth": false,
-				    "bSortClasses": false,    
-				    "aoColumns": [
-				      { "mData": "FECHA", sDefaultContent: "" },
-				      { "mData": "EVENT", sDefaultContent: "" },
-				      { "mData": "TOTAL", sDefaultContent: "" },
-				    ] ,           
-				    "oLanguage": {
-				        "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
-				        "sEmptyTable": "No hay registros.",
-				        "sInfoEmpty" : "No hay registros.",
-				        "sInfoFiltered": " - Filtrado de un total de  _MAX_ registros",
-				        "sLoadingRecords": "Leyendo información",
-				        "sProcessing": "Procesando",
-				        "sSearch": "Buscar:",
-				        "sZeroRecords": "No hay registros",
-				    },
-			  });
-			}else{
-				$('#tabs_dResumen').html('<p align="center">No existen datos asociados</p>'); 
-			}
-		}
+function drawTableEvents(){
+	var counterEventos=1;
+	var scroll_table=($("#rhiDialogEventos").height()-60)+"px";
+	aTableEvt=$('#rhiEventstable').dataTable({ 
+		"sScrollY": scroll_table,
+		"aaData" : aTableEventos,
+	    "bDestroy": true,
+	    "bLengthChange": false,
+	    "bPaginate": false,
+	    "bFilter": false,
+	    "bSort": true,
+	    "bJQueryUI": true,
+	    "bAutoWidth": false,
+	    "bSortClasses": false,    
+	    "aoColumns": [
+			{ "mData": "totalEvetos", sDefaultContent: "" },
+			{ "mData": "Eventos", sDefaultContent: "" },
+			{ "sTitle": "<input type='checkbox' id='selectAll' onchange='getSelectedAll()'>", sDefaultContent: "" }
+	    ] ,           
+	    "oLanguage": {
+	        "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
+	        "sEmptyTable": "No hay registros.",
+	        "sInfoEmpty" : "No hay registros.",
+	        "sInfoFiltered": " - Filtrado de un total de  _MAX_ registros",
+	        "sLoadingRecords": "Leyendo información",
+	        "sProcessing": "Procesando",
+	        "sSearch": "Buscar:",
+	        "sZeroRecords": "No hay registros",
+	    },
+		"aoColumnDefs": [
+			{"aTargets": [2],
+			  "sWidth": "5%",
+			  "bSortable": false,        
+			  "mRender": function (data, type, full) {
+			  	var iconDetalle  = '<input type="checkbox" name="rhiCheck" value="'+full.idEventos+'" checked onchange="getSelectedEvents()">';
+			  	counterEventos++;
+				return 	iconDetalle;
+			}}
+		]
 	});
+
+    setTimeout(function(){
+        //aTableEvt.fnAdjustColumnSizing();
+         rhiDrawTableMap();
+    },5);	    
 }
 
-function rhi_load_com_datatable(){
-	oTable2= $('#rhi_detcom_table').dataTable({ 
-		"aaData" :deta_data,               
+function getSelectedAll(){
+	if($('#selectAll').attr('checked')){
+		$('input', aTableEvt.fnGetNodes()).attr('checked','checked');
+	}else{
+		$('input', aTableEvt.fnGetNodes()).attr('checked',false);
+	}	
+	 rhiDrawTableMap();
+}
+
+function getSelectedEvents(){
+	aEventSelected  = [];
+    $("#rhiEventstable tr input:checked").each(function() {
+			aEventSelected.push(parseInt(this.value));
+    });
+    rhiDrawTableMap();
+}
+
+function rhiDrawTableDet(){		
+	var scrollTableDet =($("#tabs_detalle").height()-120)+"px";
+	dTableDet =  $('#rhi_detcom_table').dataTable({ 
+		"sScrollY": scrollTableDet,	
+		"aaData" : aTableHistorico,
 		"bDestroy": true,
 		"bLengthChange": false,
-		"bPaginate": true,
+		"bPaginate": false,
 		"bFilter": true,
 		"bSort": true,
 		"bJQueryUI": true,
-		"iDisplayLength": 15,
-		"bAutoWidth": false,
-		"bSortClasses": false,    
+		"bAutoWidth": true,
+		"bSortClasses": false, 
 		"aoColumns": [
 		  { "mData": "FECHA", sDefaultContent: "" },
 		  { "mData": "EVENT", sDefaultContent: "" },
 		  { "mData": "VEL", sDefaultContent: "" },
 		  { "mData": "LATIT", sDefaultContent: "" },
 		  { "mData": "LONGI", sDefaultContent: "" },		  
-		  { "mData": "DIREC", sDefaultContent: "" },
-		] ,           
+		  { "mData": "DIREC", sDefaultContent: "" }
+		] ,    
 		"oLanguage": {
 		    "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
 		    "sEmptyTable": "No hay registros.",
@@ -451,63 +572,16 @@ function rhi_load_com_datatable(){
 		    "sZeroRecords": "No hay registros",
 		}
 	});	
-	oTable2.fnAdjustColumnSizing();
-	oTable2.fnDraw();
-	rhi_ubicar();
+    setTimeout(function(){
+        dTableDet.fnAdjustColumnSizing();
+    },10);	
 }
 
-//-------------------------------------------------
-function export_excel(){
-	
-	var s='';	
-	if($('#selunidad').val()== -1){
-			$('#selunidad option').each(function(i) {
-			if(s==''){
-				if($(this).val()!= -1 && $(this).val()!= 0){
-			s=$(this).val();
-				}
-			//alert(s);
-				}
-				else{
-				if($(this).val()!= -1 && $(this).val()!= 0){
-			s+=','+$(this).val();
-				}
-					}
-			});
-			//alert(s);
-			var units	=	s;
-	}else{				 
-			var units	=	$("#selunidad").val();	
-		}
-	var radio  =	document.getElementById("rd1").checked;
-	var radio2 =	document.getElementById("rd2").checked;
-	var fc_ini =	$("#start_date").val()+" "+$("#hri").val()+":"+$("#mni").val()+":00";
-	var fc_fin =	$("#end_date").val()+" "+$("#hrf").val()+":"+$("#mnf").val()+":00";
-
-	var fech   =	$('#cbo_sem').val();
-	var tfilt  =0;
-	var rdo = $('#cbo_radio').val()/1000;
-	var vel = $('#velocity').val();
-	
-	if(radio == true){
-		tipo = 0;
-	}else if(radio2 == true){
-		tipo = 1;
-	}	
-	
-
-	var url = "index.php?m=rHistorico&c=mExcel";
-	var urlComplete = url + "&tipo="+tipo+"&fInicio="+fc_ini+"&fFin="+fc_fin+"&unidad="+units+"&semana="+fech;
-	
-	//var newWindow=window.open(urlComplete,'Reporte KML','height=600,width=800');
-	window.location = urlComplete;
-	return false;
-}
-//---------------------------------------------
-
-function rhi_ubicar(){	
+function rhiDrawTableMap(){
+	$("#tabs_tMapa").html('');
+	var aReportDet = aReport[1].split("!");
 	clearOverlays();
-	if(deta_data.length>0){
+	if(aReportDet.length>0){
 		var latlngbounds = new google.maps.LatLngBounds( );
 
 		var mon_table = $("<table id='hist_table_selected' class='total_width' border='0'>");
@@ -519,16 +593,16 @@ function rhi_ubicar(){
 				$(this).css('cursor','pointer');
 			},function() {
 				$(this).css('cursor','auto');
-		});		
-
-		$.each(deta_data,function(index,record){	
-			var tmp 			=  index; 
-			var unitLatitude  	=  record.LATIT;
-			var unitLong  		=  record.LONGI;
-			var evento    		=  record.EVENT;
-			var fecha     		=  record.FECHA;
-			var velocidad		=  record.VEL;
-			var direccion    	=  record.DIREC;
+		});				
+		
+		for (var i=0;i<aReportDet.length;i++){	
+			var infoDet = aReportDet[i].split('#');		
+			var unitLatitude  	=  infoDet[5];
+			var unitLong  		=  infoDet[6];
+			var evento    		=  infoDet[3];
+			var fecha     		=  infoDet[2];
+			var velocidad		=  infoDet[4];
+			var direccion    	=  infoDet[10];
 			var priory			= 0;
 
 			var info = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
@@ -543,7 +617,7 @@ function rhi_ubicar(){
 
 			points.push(new google.maps.LatLng(unitLatitude, unitLong));						
 			latlngbounds.extend( new google.maps.LatLng(unitLatitude, unitLong) ); 
-
+			
 			var colorCircle = '';
 			var image = '';
 			if(velocidad<5 && priory==0){
@@ -557,34 +631,38 @@ function rhi_ubicar(){
 				image = 'public/images/car_orange.png';	
 			}	
 		
-			var marker1 = new google.maps.Marker({
-			    map: map_rhi,
-				icon: {
-				    path: google.maps.SymbolPath.CIRCLE,
-				    fillOpacity: 0.5,
-				    fillColor: colorCircle,
-				    strokeOpacity: 1.0,
-				    strokeColor: colorCircle,
-				    strokeWeight: 3.0, 
-				    scale: 5 //pixels
-				  },
-			    position: new google.maps.LatLng(unitLatitude,unitLong),
-			    title: 	fecha,
-				/*icon: 	image*/
-			});
-			marcadores.push(marker1);
-			add_info_marker(marker1,info);
+			var existeEvent = rhiFindEvento(infoDet[0]); 
+			if(existeEvent>-1){
+				var marker1 = new google.maps.Marker({
+				    map: map_rhi,
+					icon: {
+					    path: google.maps.SymbolPath.CIRCLE,
+					    fillOpacity: 0.5,
+					    fillColor: colorCircle,
+					    strokeOpacity: 1.0,
+					    strokeColor: colorCircle,
+					    strokeWeight: 3.0, 
+					    scale: 5 //pixels
+					  },
+				    position: new google.maps.LatLng(unitLatitude,unitLong),
+				    title: 	fecha
+				});	
+				marcadores.push(marker1);
 
-			var a_info= evento+"|"+fecha+"|"+velocidad+"|"+direccion;				
+				add_info_marker(marker1,info);
 
-			$("<tr>"+				
-				"<td onclick='hist_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",false);'>"+fecha+ "</td>"+
-				"<td onclick='hist_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",false);'>"+evento+ "</td>"+
-				"<td><div class='mon_units_info' onclick='hist_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",true)'>"+
-				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+"</div>"+				
-				"</td></tr>")
-			.appendTo(mon_table);
-		});
+				var a_info= evento+"|"+fecha+"|"+velocidad+"|"+direccion;				
+
+				$("<tr>"+				
+					"<td onclick='hist_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",false);'>"+fecha+ "</td>"+
+					"<td onclick='hist_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",false);'>"+evento+ "</td>"+
+					"<td><div class='mon_units_info' onclick='hist_center_map("+unitLatitude+","+unitLong+",\""+a_info+"\""+",\""+fecha+"\",true)'>"+
+					"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+"</div>"+				
+					"</td></tr>")
+				.appendTo(mon_table);
+			}
+		}
+
 		mon_table.appendTo("#tabs_tMapa");	
 		scroll_table=($("#tabs_detMapa").height()-80)+"px";
 		$("#hist_table_selected").dataTable({ 
@@ -595,7 +673,6 @@ function rhi_ubicar(){
 			"bFilter": true,
 			"bSort": true,
 			"bJQueryUI": true,
-			/*"iDisplayLength": 15,*/
 			"bAutoWidth": false,
 			"bSortClasses": false,          
 			"oLanguage": {
@@ -631,17 +708,30 @@ function rhi_ubicar(){
 		map_rhi.fitBounds(latlngbounds);			
 	}
 }
+
+function rhiFindEvento(idEvent){	
+	var indexOf=-1;
+	var controlEventos=0;
+
+    $("#rhiEventstable tr input:checked").each(function() {
+		if(parseInt(idEvent) == parseInt(this.value) ){
+			indexOf = controlEventos;
+		}else{
+		}
+		controlEventos++;
+    });
+	return indexOf;
+}
 //---------------------------------------------------------------	
 function clearOverlays() {
   for (var i = 0; i < marcadores.length; i++ ) {
     marcadores[i].setMap(null);
   }
-  //alert(poly.length);
+
   for (var i = 0; i < poly.length; i++ ) {
     poly[i].setMap(null);
   }
-  //trayecto.setMap(null);
-  //reiniciar variables
+ 
   points=[];
   marcadores=[];
   poly=[];
@@ -707,9 +797,14 @@ function hist_center_map(lat,lon,info,title,show_info){
 	map_rhi.setCenter(positon);	
 }
 
-function export_excel_detalle(fi,ff,und){
-	var url = "index.php?m=rHistorico&c=mExcel_detalle";
-	var urlComplete = url + "&unidad="+und+"&fInicio="+fi+"&fFin="+ff;
+function rhiExportExcel(){
+	var fechaInicial	= 	$('#rhi_from').val();    	
+	var fechaFinal		=   $('#rhi_to').val();
+	var idGroup			=	$('#selgrupo').val();
+	var idUnit			=	$('#rhiUnits').val();
+
+	var url = "index.php?m=rHistorico&c=mGetReportExcel";
+	var urlComplete = url + "&fBegin="+fechaInicial+"&fEnd="+fechaFinal+"&idUnit="+idUnit;
 	window.location = urlComplete;
 	return false;
 }

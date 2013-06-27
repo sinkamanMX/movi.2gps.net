@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="public/js/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="{PATH}/js/scripts.js"></script>
 <style type="text/css">
 .table_det{
@@ -17,43 +18,133 @@
   top: 0;
   width: 78%;  
 }
+.caja_fecha{
+  border: 1px solid #A1A1A1;
+  border-radius: 3px 3px 3px 3px;
+  height: 25px;
+  padding: 1px;
+  width: 120px;
+}
+.comboAutoComplete{
+  width: 87%;
+  height: 19px;
+}
+.comboUnits{
+  height: 25px;
+  width: 100%;  
+}
+.dialogEvents{
+  height: 221px;
+  position: absolute;
+  right: 10px;
+  top: 287px;
+  width: 200px;
+}
 </style>
-<div style="width:100%; height:100%;">
+<div style="width:100%; height:100%;" id="rhiTableData">
   <table cellpadding="0" cellspacing="0" border="0" class="display" id="rhi_table">
     <thead>
       <tr>
-        <th colspan="10">
+        <th colspan="5">
           <div style="width:100%; float:left; align:center;"><h3>Reporte hist&oacute;rico</h3></div>
         </th>
         <th colspan="1">          
           <div style="width:15%  float:right;">            
-            <button id="rhi_add" onClick="rhi_buscar()">Buscar</button>            
+            <button id="rhi_search">Buscar</button>            
           </div>
         </th>
         <th>
-          <div style="width:15%  float:right;">    
-            <button id="rhi_exp_exe" style="display:none;"  onClick="export_excel()">Exportar</button></th>
+          <div style="width:15%  float:right;" class="invisible">    
+            <button id="rhi_exp_exe" onClick="rhiExportExcel()">Exportar</button></th>
           </div>  
       </tr>
       <tr >
         <th>&nbsp;</th>
-        <th>Fecha</th>
-        <th>Unidad</th>	
-        <th>Total de Paradas</th>
-        <th>Paradas autorizadas</th>
-        <th>Paradas no autorizadas</th>
         <th>Tiempo en movimiento</th>
-        <th>Tiempo detenido autorizado</th>	
-        <th>Tiempo detenido no autorizado</th>
-        <th>Velocidad Maxima</th>
-        <th>Total de excesos</th>
-        <th>Kilómetros recorridos</th>        
+        <th>Tiempo en Ralenti</th>
+        <th>Tiempo Detenido</th>
+        <th>Distancia Recorrida</th>
+        <th>Velocidad Promedio</th>
+        <th>Velocidad Maxima</th>   
       </tr>
     </thead>
     <tbody></tbody>
   </table> 
 </div>
-<div id="rhi_dialog" > </div>
-<div id="rhi_dialog_nvo" > </div>
+<div id="rhi_dialog_search" > 
+  <div class="total_width">
+    <table class="total_width">
+      <tr>
+        <td><b>Fecha Inicial :</b></td>
+        <td><input type="text" id="rhi_from" class="datepicker caja_fecha" name="from"  readonly="readonly"/></td>
+      </tr>
+      <tr>
+        <td><b>Fecha Final :</b></td>
+        <td><input type="text" id="rhi_to" class="datepicker caja_fecha" name="to"  readonly="readonly"/></td>
+      </tr>
+      <tr>
+        <td><b>Grupos :</b></td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <select id="selgrupo" onchange="getUnits();" class="comboUnits">
+            {GROUPS}
+          </select></td>
+      </tr>
+      <tr>
+        <td><b>Unidades :</b></td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <select name="selunidad" id="rhiUnits" class="comboUnits">
+              <option value="-1">Seleccionar unidad</option>
+          </select></td>
+      </tr>            
+    </table>    
+   </div> 
+</div>
 <div id="rhi_dialog_message" title="&iexcl;Aviso!"></div> 
 <div id="rhi_dialog_confirm"></div> 
+
+<div id="rhi_dialog" >
+
+  <div id="tabs_detalle" style="width:98%; height:90%;">
+    <ul>
+      <button style="float:right;" class="export_excel" onclick="rhiExportExcel()">Exportar</button>
+      <li><a href="#tabs_detMapa">Mapa</a></li>
+      <li><a href="#tabs_dDetalle">Detalle</a></li>      
+    </ul>
+    <div id="tabs_detMapa" class="total_width" style="height:90%;" >
+      <div id="tabs_tMapa" class="table_det"></div>
+      <div id="tabs_dMapa" class="map_det" ></div>     
+    </div><!--tabs_dMapa-->
+    <div id="tabs_dDetalle" class="total_height total_width">
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="rhi_detcom_table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Evento</th>
+            <th>Velocidad</th>
+            <th>Latitud</th>
+            <th>Longitud</th>
+            <th>Dirección</th>    
+            </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div><!--tabs_dDetalle-->    
+
+    <div id="rhiDialogEventos" title="Resumen de Eventos" class="dialogEvents invisible ui-dialog ui-widget ui-widget-content ui-corner-all">    
+        <table cellpadding="0" cellspacing="0" border="0" class="" id="rhiEventstable">
+          <thead>
+            <tr>
+              <th>Total</th>
+              <th>Evento</th>
+              <th></th>
+              </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>      
+  </div>
+</div>
