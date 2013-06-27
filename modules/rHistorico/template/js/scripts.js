@@ -803,6 +803,9 @@ function rhiExportExcel(){
 
 	var url = "index.php?m=rHistorico&c=mGetReportExcel";
 	var urlComplete = url + "&fBegin="+fechaInicial+"&fEnd="+fechaFinal+"&idUnit="+idUnit;
-	window.location = urlComplete;
+	/*window.location = urlComplete;*/
+	
+	/*window.location.assign(urlComplete);*/
+	window.open(urlComplete,'Download');  
 	return false;
 }

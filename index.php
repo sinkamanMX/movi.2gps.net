@@ -10,7 +10,11 @@
 	include 'config/on_load.php';
 	include "public/libs/MobileDetect/Mobile_Detect.php";	
 	$detect = new Mobile_Detect();
-	
+
+	header( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" );  // disable IE caching
+	header( "Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . " GMT" ); 
+	header( "Cache-Control: no-cache, must-revalidate" ); 
+	header( "Pragma: no-cache" );	
 	if($detect->isMobile() | $detect->isTablet() ){
 		header('Location: http://'.$config['domain']);
 	}else{	
