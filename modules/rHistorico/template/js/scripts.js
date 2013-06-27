@@ -395,6 +395,7 @@ function getSummary(){
 				$("#rhi_exp_exe").removeClass("invisible").addClass("visible");
 				aReport=new Array();
 				aReport=result.split('||');
+				setSummaryTable();
 			}else{
 				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La búsqueda de no obtuvo ningún resultado.</p>');
 				$("#dialog_message" ).dialog('open');	

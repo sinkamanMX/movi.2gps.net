@@ -136,7 +136,7 @@ if(isset($_GET['idUnit']) && isset($_GET['fBegin']) && isset($_GET['fEnd'])){
 				$objWorkSheet->setCellValueByColumnAndRow(3,  ($rowControlDet), $reporte['DESC_EVT']);
 				$objWorkSheet->setCellValueByColumnAndRow(4,  ($rowControlDet), $reporte['VELOCIDAD']);
 				$objWorkSheet->setCellValueByColumnAndRow(5,  ($rowControlDet), $reporte['direccion']);		
-				$row2++;
+				$rowControlDet++;
 			}//end for 			
 			//Redimencionar 
 			$objWorkSheet->getColumnDimension('A')->setAutoSize(true);
