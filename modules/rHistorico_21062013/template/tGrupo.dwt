@@ -1,6 +1,0 @@
-<select id="selgrupo" onchange="dameunidad(this.value);" style="width:100%" class="caja">
-<option value="0">Seleccione un grupo</option>
-<!-- BEGIN gpo -->
-<option value="{gpo.IDG}">{gpo.GPO}</option>
-<!-- END gpo -->
-</select>
