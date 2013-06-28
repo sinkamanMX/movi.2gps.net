@@ -197,7 +197,7 @@ function mon_search_unidad(buscar,draw){
 	}	
 }
 
-function mon_draw_table(){
+function mon_draw_table(){	
 	var currentScroll = $('#mon_div_area').scrollTop();
 	mon_remove_map();
 	$("#mon_tabs_select").html("No se ha seleccionado ninguna unidad.");
@@ -228,7 +228,7 @@ function mon_draw_table(){
 		mon_table_gral.appendTo("#mon_tabs_select");
 		var mon_div_area = $("<div id='mon_div_area' class='mon_div_acordeon'>").appendTo("#mon_tabs_select");
 
-		var mon_table = $("<table id='mon_table_selected' class='total_width mon_div_acordeon' border='0'>");
+		var mon_table = $("<table id='mon_table_selected' class='total_width mon_div_acordeon' border='1'>");
 
 		var latlngbounds = new google.maps.LatLngBounds( );
 
@@ -251,7 +251,7 @@ function mon_draw_table(){
 			var dunit 	= unit_info[3];//--
 			var icons 	= unit_info[15];
 			var angulo 	= unit_info[16];
-			var colprio = unit_info[4];//--*/
+			var colprio = unit_info[4];//--
 			var imei 	= unit_info[18];
 			var content = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
 							'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
@@ -332,7 +332,29 @@ function mon_draw_table(){
 			mon_refresh_units()
 		});
 
-		mon_refresh_units();		
+		mon_refresh_units();	
+
+
+		$('#mon_table_selected').dataTable({ 
+			"bDestroy": true,
+			"bLengthChange": false,
+			"bPaginate": false,
+			"bFilter": true,
+			"bSort": true,
+			"bJQueryUI": true,
+			"bAutoWidth": true,
+			"bSortClasses": false, 
+			"oLanguage": {
+			    "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
+			    "sEmptyTable": "No hay registros.",
+			    "sInfoEmpty" : "No hay registros.",
+			    "sInfoFiltered": " - Filtrado de un total de  _MAX_ registros",
+			    "sLoadingRecords": "Leyendo información",
+			    "sProcessing": "Procesando",
+			    "sSearch": "Buscar:",
+			    "sZeroRecords": "No hay registros",
+			}
+		});	
 	}
 	getGeos();
 }

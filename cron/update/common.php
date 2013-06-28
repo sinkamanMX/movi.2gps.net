@@ -92,7 +92,7 @@
 	function setPositions(){
 		global $conexion,$listEquipments;
 		for($i=0;$i<count($listEquipments);$i++){
-			setLastPositions($listEquipments[$i]['MOV_TABLE'],$listEquipments[$i]['COD_ENTITY'],$listEquipments[$i]['MOV_LAST_P']);
+			//setLastPositions($listEquipments[$i]['MOV_TABLE'],$listEquipments[$i]['COD_ENTITY'],$listEquipments[$i]['MOV_LAST_P']);
 			setHistPositions($listEquipments[$i]['MOV_TABLE'],$listEquipments[$i]['MOV_TABLE_P'],$listEquipments[$i]['COD_ENTITY'],$listEquipments[$i]['MOV_HIST_P']);
 		}		
 	}
