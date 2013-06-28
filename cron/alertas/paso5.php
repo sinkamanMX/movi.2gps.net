@@ -3,7 +3,7 @@
   //EJECUTARLO CADA HORA
   $con = mysql_connect("localhost","sa","$0lstic3$");
   if ($con){
-    $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS",$con);
+    $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$con);
 	//lee las unidades pendientes de tabla
 	$sql = "TRUNCATE TABLE ALERT_HISTORY";
 	$qry = mysql_query($sql);

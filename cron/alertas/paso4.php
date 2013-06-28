@@ -33,7 +33,7 @@
   
   $con = mysql_connect("localhost","sa","$0lstic3$");
   if ($con){
-    $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS",$con);
+    $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$con);
     limpia_tablas_no_usables($con);
     mysql_close($con);
   }

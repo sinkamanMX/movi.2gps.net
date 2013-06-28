@@ -168,7 +168,7 @@
   
   $con = mysql_connect("localhost","sa","$0lstic3$");
   if ($con){
-    $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS",$con);
+    $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$con);
 	//lee las unidades pendientes de tabla
 	$sql = "SELECT LPAD(COD_ENTITY,6,'0') AS NOMBRE, COD_ENTITY,COD_FLEET
 	          FROM ALERT_UNITY

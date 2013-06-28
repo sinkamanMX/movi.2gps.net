@@ -26,7 +26,7 @@
 
   $con = mysql_connect("localhost","sa","$0lstic3$");
   if ($con){
-    $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS",$con);
+    $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$con);
 	//Aparta los registros de la ejecucion
 	$instancia = date("Y-m-d H:i:s");
 	marca_procesados($instancia,$con);

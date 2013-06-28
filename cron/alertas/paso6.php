@@ -24,12 +24,12 @@
   function envia_mail_alerta($archivo,$destinatarios, $asunto, $mensaje){
 	  $mail  = new PHPMailer();
 	  $mail->IsSMTP(); // set mailer to use SMTP
-	  $mail->Host 	 = "66.7.198.84"; // specify main and backup server
+	  $mail->Host 	 = "188.138.40.249"; // specify main and backup server
 	  $mail->SMTPAuth  = true; // turn on SMTP authentication
-	  $mail->Username  = "alertasap"; // SMTP username
-	  $mail->Password  = "algps.2013"; // SMTP password
-	  $mail->From 	 = "alertas@tecnolider.net";
-	  $mail->FromName  = "Alertas Tecnolider";
+	  $mail->Username  = "alertas@2gps.net"; // SMTP username
+	  $mail->Password  = "4l3rt452695"; // SMTP password
+	  $mail->From 	 = "alertas@2gps.net";
+	  $mail->FromName  = "Alertas";
   	  $mail->Subject 	 = $asunto;
   	  $mail->Body 	 = $mensaje;
 	  $mail->AddAttachment($archivo,'');
@@ -63,7 +63,7 @@
   //$base = mysql_connect("192.168.6.45",'savl_reportes','uda');
   $base = mysql_connect("localhost",'sa','$0lstic3$');
   if ($base){
-    mysql_select_db("ALG_BD_CORPORATE_ALERTAS",$base);
+    mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$base);
 	/*BUSCA LAS ALERTAS A EVALUAR ACTIVAR*/
     $sql = "SELECT A.COD_ALERT_NOTIFICATION,
        		       A.EMAIL_SUBJECT,
