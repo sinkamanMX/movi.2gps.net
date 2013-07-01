@@ -31,6 +31,8 @@
  * @author Andy Prevost
  * @copyright 2004 - 2008 Andy Prevost
  */
+  include 'class.smtp.php';
+  
 
 class PHPMailer {
 
