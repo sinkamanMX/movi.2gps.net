@@ -66,7 +66,7 @@
     $geo[0][0] = -1;
     $geo[0][1] = "SP";
     //$con2 = mysql_connect("192.168.6.111","sa","$0lstic3$");
-    $con2 = mysql_connect("localhost","sa","$0lstic3$");
+    $con2 = mysql_connect("188.138.40.249","sa","$0lstic3$");
     if ($con2){
      $base2 = mysql_select_db("ALG_CORPORATE_SG",$con2);
      $sql = "SELECT P.ID_OBJECT_MAP, 
@@ -95,7 +95,7 @@
     $geo[0][0] = -1;
     $geo[0][1] = "SP";
     //$con2 = mysql_connect("192.168.6.111","sa","$0lstic3$");
-    $con2 = mysql_connect("localhost","sa","$0lstic3$");
+    $con2 = mysql_connect("188.138.40.249","sa","$0lstic3$");
     if ($con2){
      $base2 = mysql_select_db("precisiongps2",$con2);
       $sql = "SELECT P.ID_OBJECT_MAP, 
@@ -497,7 +497,7 @@
 	echo "<br>-----Se cumplieron: ".$q."--------<br>";
   }
   
-  $con = mysql_connect("localhost","sa","$0lstic3$");
+  $con = mysql_connect("188.138.40.249","sa","$0lstic3$");
   if ($con){
     $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$con);
     //paso 1 marca tablas a revisar en grupos de 5

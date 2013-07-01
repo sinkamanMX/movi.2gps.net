@@ -24,7 +24,7 @@
   }
   
 
-  $con = mysql_connect("localhost","sa","$0lstic3$");
+  $con = mysql_connect("188.138.40.249","sa","$0lstic3$");
   if ($con){
     $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$con);
 	//Aparta los registros de la ejecucion

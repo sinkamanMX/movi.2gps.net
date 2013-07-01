@@ -61,7 +61,7 @@
   /*programa*/
   
   //$base = mysql_connect("192.168.6.45",'savl_reportes','uda');
-  $base = mysql_connect("localhost",'sa','$0lstic3$');
+  $base = mysql_connect("188.138.40.249",'sa','$0lstic3$');
   if ($base){
     mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$base);
 	/*BUSCA LAS ALERTAS A EVALUAR ACTIVAR*/

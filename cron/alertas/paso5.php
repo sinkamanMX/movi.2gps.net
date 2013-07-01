@@ -1,7 +1,7 @@
 <?
   //borra la tabla de ALERT_HISTORY para mantener la BD pequeña
   //EJECUTARLO CADA HORA
-  $con = mysql_connect("localhost","sa","$0lstic3$");
+  $con = mysql_connect("188.138.40.249","sa","$0lstic3$");
   if ($con){
     $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$con);
 	//lee las unidades pendientes de tabla
