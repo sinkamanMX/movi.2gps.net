@@ -23,6 +23,7 @@
   
   function envia_mail_alerta($archivo,$destinatarios, $asunto, $mensaje){
 	  $mail  = new PHPMailer();
+	  $mail->SetLanguage("es", "lib/");
 	  $mail->IsSMTP(); // set mailer to use SMTP
 	  $mail->Host 	 = "188.138.40.249"; // specify main and backup server
 	  $mail->SMTPAuth  = true; // turn on SMTP authentication
