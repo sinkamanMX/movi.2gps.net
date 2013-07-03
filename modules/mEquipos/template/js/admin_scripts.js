@@ -70,14 +70,15 @@ $(document).ready(function (){
 
 function epo_load_datatable(){
     var client = $("#global_id_client").val();  
+    scroll_table=($("#eqTablePrincipal").height()-120)+"px";
     oTable = $('#epo_table').dataTable({
+      "sScrollY": scroll_table,
       "bDestroy": true,
       "bLengthChange": false,
-      "bPaginate": true,
+      "bPaginate": false,
       "bFilter": true,
       "bSort": true,
-      "bJQueryUI": true,
-      "iDisplayLength": 20,      
+      "bJQueryUI": true, 
       "bProcessing": true,
       "bAutoWidth": false,
       "bSortClasses": false,
