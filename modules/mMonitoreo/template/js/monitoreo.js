@@ -228,7 +228,7 @@ function mon_draw_table(){
 		mon_table_gral.appendTo("#mon_tabs_select");
 		var mon_div_area = $("<div id='mon_div_area' class='mon_div_acordeon'>").appendTo("#mon_tabs_select");
 
-		var mon_table = $("<table id='mon_table_selected' class='total_width mon_div_acordeon' border='1'>");
+		var mon_table = $("<table id='mon_table_selected' class='total_width mon_div_acordeon' border='0'>");
 
 		var latlngbounds = new google.maps.LatLngBounds( );
 
@@ -335,7 +335,7 @@ function mon_draw_table(){
 		mon_refresh_units();	
 
 
-		$('#mon_table_selected').dataTable({ 
+		/*$('#mon_table_selected').dataTable({ 
 			"bDestroy": true,
 			"bLengthChange": false,
 			"bPaginate": false,
@@ -354,7 +354,7 @@ function mon_draw_table(){
 			    "sSearch": "Buscar:",
 			    "sZeroRecords": "No hay registros",
 			}
-		});	
+		});	*/
 	}
 	getGeos();
 }

@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+.dropme {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    /*margin-top: 20px;*/
+}
+
+.dropme div {
+    display: block;
+    width: 100%;
+    border: 1px solid #ccc;
+	/*cursor: move;*/
+}
+
+.highlight {
+    padding: 5px;
+    border: 2px dotted #fff09f;
+    background: #fffef5;
+}
+
+</style>
+<script>
+$(document).ready(function () {
+	$( "#qst_tab_formulario" ).tabs();
+	$("a[href=#qst_tab_tema]").click(function(){
+		val_pes_pro();
+		});	
+	$("a[href=#qst_tab_pregunta]").click(function(){
+		val_pes_tma();
+		});			
+		
+	$('.dropme').sortable({
+		connectWith: '.dropme',
+		cursor: 'move'
+		}).droppable({
+			accept: '.dropme',
+			activeClass: 'highlight',
+			drop: function(event, ui) {
+				var $li = $('<div>').html('List ' + ui.draggable.html());
+				$li.appendTo(this);
+				}
+		});
+	
+	});
+</script>
+<input type="hidden" id="qst_op" value="{O_P}" />
+<input type="hidden" id="qst_id" value="{IDQ}" />
+
+<input type="hidden" id="qst_old_tit" value="{TIT}" />
+<input type="hidden" id="qst_old_typ" value="{TYP}" />
+<input type="hidden" id="qst_old_mlt" value="{MLV}" />
+<input type="hidden" id="qst_old_off" value="{OFV}" />
+<input type="hidden" id="qst_old_tma" value="{IDT}" />
+<input type="hidden" id="qst_old_pre" value="{LPS}" />
+<input type="hidden" id="qst_old_usr" value="{LUS}" />
+<div id="qst_tab_formulario" style="width:100%; height:98%;">
+
+<ul>
+<li><a href="#qst_tab_propiedades">Propiedades</a></li>
+<li><a href="#qst_tab_tema">Tema</a></li>
+<li><a href="#qst_tab_pregunta">Preguntas</a></li>
+<li><a href="#qst_tab_user">Usuarios</a></li>
+</ul>
+
+<div id="qst_tab_propiedades">
+<table>
+<tr>
+<td><label>Titulo:</label></td>
+<td><input type="text" class="caja_txt" id="qst_title" value="{TIT}" onkeyup="validar_nombre_qst(this.value)"/></td>
+<td><div id="qst_tit_val"></div></td>
+</tr>
+<tr>
+<td><label>Tipo:</label></td>
+<td>
+<select id="qst_type" class="caja_txt">
+{T_P}
+</select>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<input type="checkbox" id="qst_multi_resp" value="1" {MUL} /><label>Permitir m&uacute;ltiples respuestas del mismo usuario.</label>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<input type="checkbox" id="qst_offline" value="1" {OFF}/><label>Permitir funcionamiento offline.</label>
+</td>
+</tr>
+</table>
+</div><!--qst_tab_propiedades-->
+<div id="qst_tab_tema">
+<div style="position:absolute; width:98%; height:90%; ">
+	<div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:100%;">
+		<div>
+		{TMS}
+		</div>
+	</div>
+</div>
+</div><!--qst_tab_tema-->
+<div id="qst_tab_pregunta">
+<div style="position:absolute; width:98%; height:90%; border:#00F dotted thin;">
+
+<!--preguntas disponibles-->
+<div style=" width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+<span class="ui-dialog-title">Preguntas Disponibles</span>
+</div>
+<!--Buscador-->
+<div>
+<div style="width:96%;">
+<label>Buscar:</label><input type="text" id="qst_bscdr_d" class="caja_txt" onkeyup="buscador_preguntas(1,this.value);" style="width:90%;"/>
+</div>
+<div style="width:3%; position:relative; left:96%; top:-20px;">
+<span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+</div>
+</div>
+<!--Buscador-->
+<div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
+<div id="qst_preg_dsp" class="dropme" style="width:100%;">
+    {PRG}
+</div>
+</div>
+</div>   
+<!--preguntas disponibles-->
+<!--preguntas seleccionadas-->
+<div style="width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+<span class="ui-dialog-title">Preguntas Seleccionadas</span>
+<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>
+</div>
+<!--Buscador-->
+<div>
+<div style="width:96%;">
+<label>Buscar:</label><input type="text" id="qst_bscdr_s" class="caja_txt" onkeyup="buscador_preguntas(2,this.value)" style="width:90%;"/>
+</div>
+<div style="width:3%; position:relative; left:96%; top:-20px;">
+<span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+</div>
+</div>
+<!--Buscador-->
+<!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
+
+<div id="qst_preg_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+{PRS}    
+</div>
+</div>
+<!--</div>-->
+<!--preguntas seleccionadas-->
+
+</div>
+</div><!--qst_tab_pregunta-->
+<div id="qst_tab_user">
+<div style="position:absolute; width:98%; height:90%; border:#00F dotted thin;">
+
+<!--usuarios disponibles-->
+<div style=" width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+<span class="ui-dialog-title">Usuarios Disponibles</span>
+</div>
+<!--Buscador-->
+<div>
+<div style="width:96%;">
+<label>Buscar:</label><input type="text" id="qst_bscdr_ud" class="caja_txt" onkeyup="buscador_users(1,this.value);" style="width:90%;"/>
+</div>
+<div style="width:3%; position:relative; left:96%; top:-20px;">
+<span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+</div>
+</div>
+<!--Buscador-->
+<div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
+<div id="qst_user_dsp" class="dropme" style="width:100%;">
+    {USD}
+</div>
+</div>
+</div>   
+<!--usuarios disponibles-->
+<!--usuarios seleccionados-->
+<div style="width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+<span class="ui-dialog-title">Usuarios Seleccionados</span>
+<!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>-->
+</div>
+<!--Buscador-->
+<div>
+<div style="width:96%;">
+<label>Buscar:</label><input type="text" id="qst_bscdr_us" class="caja_txt" onkeyup="buscador_users(2,this.value)" style="width:90%;"/>
+</div>
+<div style="width:3%; position:relative; left:96%; top:-20px;">
+<span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+</div>
+</div>
+<!--Buscador-->
+<!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
+
+<div id="qst_user_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+{USS}
+</div>
+</div>
+<!--</div>-->
+<!--usuarios seleccionados-->
+
+</div>
+</div><!--qst_tab_user-->
+
+</div><!--qst_tabs-->

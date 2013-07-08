@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<table>
+<tr>
+<td>Descripci&oacute;n:</td>
+<td colspan="2"><input type="text" id="qst_tit_pre" class="caja_txt"/>
+</td> 
+</tr>
+<tr>
+<td>Tipo:</td>
+<td colspan="2">
+<select name="tp" id="qst_typ_pre" class="caja" onChange="selec_preg(this.value);">
+<option value="0" selected="selected">Seleccione un tipo.</option>
+<!-- BEGIN tipo -->
+<option value="{tipo.IDTP}">{tipo.TP}</option>
+<!-- END tipo -->
+</select>
+</td>
+</tr>
+<tr><td>Activo:</td>
+<td colspan="2"> 
+<select name="act" id="qst_act_pre" class="caja">
+<option value="1" selected="selected">SI</option>
+<option value="0" >NO</option>
+</select></td>
+</tr> 
+<tr><td>Recordado:</td>
+<td colspan="2"> 
+<select name="reco" id="qst_rec_pre" class="caja">
+<option value="1" >SI</option>
+<option value="0" selected="selected">NO</option>
+</select></td>
+</tr> 
+<tr>
+<td>Requerido:</td>
+<td>
+<select id="qst_req_pre" class="caja">
+<option value="1">SI</option>
+<option value="0">NO</option>
+</select>
+</td>
+</tr>
+<tr>
+<td style="height:50px;" valign="top">Complemento:</td>
+<td colspan="2" valign="top">
+<div id="qst_com_pre" style="width:100%; border:#06 solid 1px; height:20px; " >
+</div>
+<div id="sis_t" ></div>
+</td>
+</tr>
+</table>
