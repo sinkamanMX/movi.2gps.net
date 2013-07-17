@@ -16,7 +16,8 @@
 					FROM ADM_USUARIOS_GRUPOS
 					INNER JOIN ADM_GRUPOS          
 						ON ADM_GRUPOS.ID_GRUPO = ADM_USUARIOS_GRUPOS.ID_GRUPO
-					WHERE ADM_USUARIOS_GRUPOS.ID_USUARIO = ".$userID;
+					WHERE ADM_USUARIOS_GRUPOS.ID_USUARIO = ".$userID."
+					ORDER BY NOMBRE";
 	$query_units= $db->sqlQuery($sql_units);
 	
 	while($row = $db->sqlFetchArray($query_units)){	

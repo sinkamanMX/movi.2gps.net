@@ -748,17 +748,6 @@ function add_info_marker(marker,content){
 	});
 }
 
-function mon_remove_map(){
-	for (var i = 0; i < marcadores.length; i++) {
-          marcadores[i].setMap(null);
-	}	
-	marcadores = [];
-	lineCoordinates = [];
-	if(line){
-		line.setMap(null);
-	}
-}	
-
 function hist_center_map(lat,lon,info,title,show_info){
 	var unit_info = info.split("|");	
 	var info = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
