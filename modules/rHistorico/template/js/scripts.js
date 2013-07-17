@@ -685,7 +685,7 @@ function rhiDrawTableMap(){
 			}
 		});	
 		var iconsetngs = {
-		    path: google.maps.SymbolPath.BACKWARD_OPEN_ARROW,
+		    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
 		    strokeColor: '#155B90',
 		    fillColor: '#155B90',
 		    fillOpacity: 1,
