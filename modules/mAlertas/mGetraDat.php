@@ -12,7 +12,7 @@
     
 	  
 $cadena_final=' ';
-$quers1="SELECT
+echo $quers1="SELECT
 							COD_ALERT_MASTER,
 							NAME_ALERT,
 							HORARIO_FLAG_LUNES,

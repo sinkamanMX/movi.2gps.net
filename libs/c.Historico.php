@@ -132,7 +132,9 @@ class cHistorico{
 			$aControl['tiempoRalenti']		= $this->formatSeconds($aControl['tiempoRalenti']);
 			$aControl['tiempoDetenido']		= $this->formatSeconds($aControl['tiempoDetenido']);
 			
-			$aControl['promedio'] 	   		= $aControl['total']/$aControl['count'];  
+			$aControl['total'] 				= isset($aControl['total']) ? $aControl['total']: "0";
+			
+			$aControl['promedio'] 	   		= ($aControl['total']>0)?($aControl['total']/$aControl['count']) : 0;  
 			$this->aResumen['resumen'] 		= $aControl;
 			$this->aResumen['eventos'] 		= $eventos;
 			$result = true;

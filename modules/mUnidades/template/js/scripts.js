@@ -52,10 +52,9 @@ $(document).ready(function () {
 	
 });  
 function eqp_load_datatable(){
-	  //alert("load_datatable")
-	  //alert(calcDataTableHeight)
+    scroll_table=($("#untsTablePrincipal").height()-120)+"px";
     oTable = $('#eqp_table').dataTable({
-	  //"sScrollY": calcDataTableHeight(),
+      "sScrollY": scroll_table,
       "bDestroy": true,
       "bLengthChange": true,
       "bPaginate": false,

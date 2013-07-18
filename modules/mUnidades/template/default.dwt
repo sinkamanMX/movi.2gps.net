@@ -1,5 +1,5 @@
 <script type="text/javascript" src="{PATH}/js/scripts.js"></script>
-<div style="width:100%; height:100%;">
+<div id="untsTablePrincipal"  style="width:100%; height:100%;">
   <!--<div id="div_contenido">
     <div id="div_workspace"> Contenido de la ventana -->
           

@@ -55,8 +55,10 @@ $(document).ready(function () {
 	
 });  
 function eqp_load_datatable(){
+    scroll_table=($("#untsTablePrincipal").height()-120)+"px";	
     var client = $("#global_id_client").val();
     oTable = $('#eqp_table').dataTable({
+		"sScrollY": scroll_table,
       "bDestroy": true,
       "bLengthChange": true,
       "bPaginate": false,

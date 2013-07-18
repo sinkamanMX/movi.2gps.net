@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript" src="{PATH}/js/admin_scripts.js"></script>
-<div style="width:100%; height:100%;">            
+<div id="untsTablePrincipal"   style="width:100%; height:100%;">            
       <table cellpadding="0" cellspacing="0" border="0" class="display" id="eqp_table">
         <thead>
         <tr>
