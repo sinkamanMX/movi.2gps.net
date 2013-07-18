@@ -295,6 +295,12 @@ function epo_load_datatable(){
     var error=0; 
     epo_a_evts = []; 
 
+    if($('#epo_cbo_epo').val()==-1){      
+      $('#eqp_dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un tipo de Equipo.</p>');
+      $("#eqp_dialog_message" ).dialog('open');   
+      error++;
+    }
+
     if($("#epo_txt_desc").val()=="NULL" || $("#epo_txt_desc").val()==""){
       $('#epo_dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;">'+
                                       '</span>Debe escribir la descripcion.</p>');
