@@ -24,7 +24,7 @@
 		$imemiUnit= '';	
 		$commands_units="";
 		
-		$sqlUnitsEquipment = "SELECT  C.IMEI, D.COD_TYPE_EQUIPMENT
+		$sqlUnitsEquipment = "SELECT  C.IMEI, D.COD_TYPE_EQUIPMENT,D.DESCRIPTION
 					FROM ADM_UNIDADES A
 					  INNER JOIN ADM_UNIDADES_EQUIPOS B ON B.COD_ENTITY 	= A.COD_ENTITY
 					  INNER JOIN ADM_EQUIPOS C 			ON C.COD_EQUIPMENT 	= B.COD_EQUIPMENT
@@ -47,7 +47,7 @@
 			while($row_cmds = $db->sqlFetchArray($query_cmds)){
 				$commands_units.= ($commands_units!="") ? "?" : "";
 				$commands_units.= $row_cmds['COD_EQUIPMENT_PROGRAM']."_".$imemiUnit."_".
-								  $row_cmds['DESCRIPCION'];
+								  $row_cmds['DESCRIPCION']."_".$rowEquipments['DESCRIPTION'];
 			}			
 		}											
 		

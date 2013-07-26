@@ -37,7 +37,20 @@ $(document).ready(
 					mon_send_command()
 				}
 			}
-		});			
+		});		
+
+
+		$( "#mon_dialogAll" ).dialog({
+			autoOpen:false,
+			modal: true,
+			resizable: false,
+			title: "Envio de Comandos",
+			buttons: {
+				Enviar: function() {
+					sendCommands()
+				}
+			}
+		});	
 
 		$("#gral_button_close").click(function() {
 			location.href='index.php?m=login&c=login&md=lo';

@@ -111,5 +111,6 @@
 <!--------Dialogs-->
 <div id="dialog_message" title="&iexcl;Aviso!"></div>
 <div id="mon_dialog"></div>
+<div id="mon_dialogAll"></div>
 </body>
 </html>

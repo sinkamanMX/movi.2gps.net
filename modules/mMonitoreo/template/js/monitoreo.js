@@ -10,7 +10,8 @@ var infowindow;
 var beachMarker;
 var arrayReferencias= Array();
 var listReferencias = 0;
-
+var aComandosAll = '';
+var UnitsString  = '';
 function mon_init(){
 	$("#mon_tabs").tabs();
     $( ".tabs-bottom .ui-tabs-nav, .tabs-bottom .ui-tabs-nav > *" ).removeClass( "ui-corner-all ui-corner-top" ).addClass( "ui-corner-bottom" );
@@ -198,11 +199,11 @@ function mon_search_unidad(buscar,draw){
 }
 
 function mon_draw_table(){	
+	aComandosAll = '';
 	var currentScroll = $('#mon_div_area').scrollTop();
 	mon_remove_map();
 	$("#mon_tabs_select").html("No se ha seleccionado ninguna unidad.");
 	$("#mon_div_timer").addClass("invisible");
-
 	if(array_selected.length>0){    	
 		var mon_alerta_unidades	= '<table><tr><td><b>Unidad </b></td>'+
 									'<td><b>Evento </b></td>'+
@@ -213,12 +214,24 @@ function mon_draw_table(){
 		$("#mon_tabs_select").html("");
 
 		var mon_table_gral = $("<table id='mon_table_selected_gral' class='total_width' border='0'>");
-		$("<tr><th><div id='mon_group_icon_rows' class='icon_unit_selected'>"+
+		var tr_mon_table_gral = $("<tr>").appendTo(mon_table_gral);		
+		$("<th ><div  id='mon_group_icon_rows' class='icon_unit_selected'>"+
 			"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+	
-			"</div></th>"+
-			 "<th>Unidad</th> <th>U.Posicion</th></tr>").appendTo(mon_table_gral).click(
-			mon_unselect_units()
-		).hover(
+			"</div></th>").
+				click(
+					mon_unselect_units()
+				).hover(
+					function(){
+						$(this).css('cursor','pointer');
+					},function() {
+						$(this).css('cursor','auto');
+				}).appendTo(tr_mon_table_gral);
+		$("<th> Unidad</th> <th>U.Posicion</th>").appendTo(tr_mon_table_gral);
+
+		$("<th style='width:10px;' ><div id='mon_div_ico' class='total_width mon_units_info' onclick='sendCommandsAll()'>"+
+				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/></div>"+
+				"</th>").appendTo(tr_mon_table_gral)			
+			 .hover(
 			function(){
 				$(this).css('cursor','pointer');
 			},function() {
@@ -253,6 +266,14 @@ function mon_draw_table(){
 			var angulo 	= unit_info[16];
 			var colprio = unit_info[4];//--
 			var imei 	= unit_info[18];
+			if(unit_info[17]!="SC"){
+				aComandosAll = aComandosAll + ( (aComandosAll!="") ? '||': '');
+				UnitsString  = UnitsString  + ( (UnitsString !="") ? ',': '');
+
+				aComandosAll  =    aComandosAll+unit_info[17];
+				UnitsString   =    UnitsString +unit_info[2];
+			}
+
 			var content = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
 							'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
 						  			'<table><tr><th colspan="2">'+
@@ -333,28 +354,6 @@ function mon_draw_table(){
 		});
 
 		mon_refresh_units();	
-
-
-		/*$('#mon_table_selected').dataTable({ 
-			"bDestroy": true,
-			"bLengthChange": false,
-			"bPaginate": false,
-			"bFilter": true,
-			"bSort": true,
-			"bJQueryUI": true,
-			"bAutoWidth": true,
-			"bSortClasses": false, 
-			"oLanguage": {
-			    "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
-			    "sEmptyTable": "No hay registros.",
-			    "sInfoEmpty" : "No hay registros.",
-			    "sInfoFiltered": " - Filtrado de un total de  _MAX_ registros",
-			    "sLoadingRecords": "Leyendo información",
-			    "sProcessing": "Procesando",
-			    "sSearch": "Buscar:",
-			    "sZeroRecords": "No hay registros",
-			}
-		});	*/
 	}
 	getGeos();
 }
@@ -675,4 +674,76 @@ function drawGeos(){
 function monMessageValidate(dUnit){
 	$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La unidad '+dUnit+' No tiene reporte.</p>');
 	$("#dialog_message" ).dialog('open');   
+}
+
+function sendCommandsAll(){
+	$("#mon_dialogAll").html("");
+	var optionsCombo='';
+	var aUnitsCommands=[];
+	if(aComandosAll!="" && UnitsString!=""){
+		var comands = aComandosAll.split("||");
+		for(var i=0;i<comands.length;i++){
+			var descComands = comands[i].split("?");
+			for(var p=0; p<descComands.length;p++){
+				values = descComands[p].split("_");
+				if(jQuery.inArray(values[0], aUnitsCommands)==-1){					
+					optionsCombo = optionsCombo + '<option value="'+values[0]+'">'+values[3]+'/'+values[2]+'</option>';
+					aUnitsCommands.push(values[0]);	
+				}
+			}
+		}
+
+		var table_cmds = $("<table class='total_width'>").appendTo("#mon_dialogAll");
+
+		$("<tr><td>Comandos:</td><td><select class='caja_txt' id='mon_sel_cmdsAll'>"+optionsCombo+"<select></td></tr>").appendTo(table_cmds);		
+		$("<tr><td valign='top'>Comentarios:</td><td><textarea  id='mon_cmds_comAll' class='caja_txt_a' /></td></tr>").appendTo(table_cmds);
+		$("<input type='hidden' id='mon_cmds_unitAll' value='"+ UnitsString+"' />").appendTo("#mon_dialogAll");
+	}else{
+		$("<h2>NO tiene permisos para enviar comandos.</h2>").appendTo("#mon_dialogAll");
+	}
+	$("#mon_dialogAll").dialog('open',"position", { my: "left top", at: "left bottom", of: window});
+}
+
+function sendCommands(){
+	if($("#mon_dialogAll").html()!='<h2>NO tiene permisos para enviar comandos.</h2>'){
+		var command = $("#mon_sel_cmdsAll").val();
+		var comment = $("#mon_cmds_comAll").val();
+		var unit   = $("#mon_cmds_unitAll").val();
+
+		if(unit!="" && command>0 && comment!=""){
+		    $.ajax({
+		        url: "index.php?m=mMonitoreo&c=mSendCommandos",
+		        type: "GET",
+		        dataType : 'json',
+		        data: { data: command,
+		        		comment: comment ,
+		        		unit   : unit
+		        },
+		        success: function(data) {
+		          var result = data.result; 
+
+		          if(result=='no-data' || result=='problem'){
+		              $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>El comando no pudo ser enviado.</p>');
+		              $("#dialog_message" ).dialog('open');             	          
+		          }else if(result=='send'){ 
+		              $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Comando enviado correctamente.</p>');
+		              $("#dialog_message").dialog('open');
+		              $("#mon_dialog").dialog("close");
+		              /*setTimeout(mon_load_units(),5000);*/
+		          }else if(result=='no-perm'){ 
+		              $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>No tiene permiso para realizar esta acción. <br> Consulte a su administrador.</p>');
+		              $("#dialog_message" ).dialog('open');       
+				  }else if(result=='pending'){ 
+		              $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>No se puede enviar este comando, ya que existe uno pendiente por enviar.</p>');
+		              $("#dialog_message" ).dialog('open');       
+		          }
+		        }
+		    });
+		}else{
+	      $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un comando y agregar un comentario.</p>');
+	      $("#dialog_message" ).dialog('open');  				
+		}
+	}else{
+		$("#mon_dialogAll").dialog("close");
+	}
 }
