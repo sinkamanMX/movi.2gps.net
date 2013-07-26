@@ -5,7 +5,7 @@
   if ($con){
     $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$con);
 	//lee las unidades pendientes de tabla
-	$sql = "TRUNCATE TABLE ALERT_HISTORY";
+	//$sql = "TRUNCATE TABLE ALERT_HISTORY";
 	$qry = mysql_query($sql);
 	$sql = "OPTIMIZE TABLE ALERT_HISTORY";
 	$qry = mysql_query($sql);

@@ -66,9 +66,9 @@
     $geo[0][0] = -1;
     $geo[0][1] = "SP";
     //$con2 = mysql_connect("192.168.6.111","sa","$0lstic3$");
-    $con2 = mysql_connect("188.138.40.249","sa","$0lstic3$");
+    $con2 = mysql_connect("localhost","sa","$0lstic3$");
     if ($con2){
-     $base2 = mysql_select_db("ALG_CORPORATE_SG",$con2);
+     $base2 = mysql_select_db("ALG_BD_CORPORATE_MOVI",$con2);
      $sql = "SELECT P.ID_OBJECT_MAP, 
                    P.DESCRIPCION 
         FROM ADM_GEOREFERENCIAS P 
@@ -95,9 +95,9 @@
     $geo[0][0] = -1;
     $geo[0][1] = "SP";
     //$con2 = mysql_connect("192.168.6.111","sa","$0lstic3$");
-    $con2 = mysql_connect("188.138.40.249","sa","$0lstic3$");
+    $con2 = mysql_connect("localhost","sa","$0lstic3$");
     if ($con2){
-     $base2 = mysql_select_db("precisiongps2",$con2);
+     $base2 = mysql_select_db("ALG_BD_CORPORATE_MOVI",$con2);
       $sql = "SELECT P.ID_OBJECT_MAP, 
                    P.DESCRIPCION 
             FROM ADM_GEOREFERENCIAS_ESPACIAL A
@@ -233,24 +233,40 @@
   function update_last($last,$row,$con){
     if (valida_last($con,$last) > 0){
       $sql = "UPDATE ".$last."
-              SET GPS_DATETIME = '".$row->GPS_DATETIME."', 
-					 COD_ENTITY = ".$row->COD_ENTITY.",        
-					 uni_pk_flota = ".$row->uni_pk_flota.",          
-					 uni_pk_event = ".$row->uni_pk_event.",             
-					 uni_prio_event = ".$row->uni_prio_event.",             
-					 uni_descrip_event = '".$row->uni_descrip_event."',             
-					 uni_status_motor = '".$row->uni_status_motor."',             
-					 uni_vel_stop = ".$row->uni_vel_stop.",             
-					 uni_vel_tope = ".$row->uni_vel_tope.",             
-					 uni_descrip_flota = '".$row->uni_descrip_flota."',             
-					 uni_status_gps = '".$row->uni_status_gps."',             
-					 uni_velocidad = ".$row->uni_velocidad.",             
-					 uni_descrip_gral = '".$row->uni_descrip_gral."',
-					 longitude = ".$row->longitude.",
-					 latitude = ".$row->latitude."
+              SET GPS_DATETIME 			= '".	((isset($row->GPS_DATETIME)) ? $row->GPS_DATETIME : 'NULL')	."', 
+					 COD_ENTITY 		= ".	$row->COD_ENTITY		.",        
+					 uni_pk_flota 		= ".	$row->uni_pk_flota		.",          
+					 uni_pk_event 		= ".	$row->uni_pk_event		.",             
+					 uni_prio_event 	= ".	$row->uni_prio_event	.",             
+					 uni_descrip_event 	= '".	$row->uni_descrip_event	."',             
+					 uni_status_motor 	= '".	((isset($row->uni_status_motor)) ? $row->uni_status_motor : 'NULL')."', 
+					 uni_vel_stop 		= ".	((isset($row->uni_vel_stop)) ? $row->uni_vel_stop : 'NULL') .",
+					 uni_vel_tope 		= ".	((isset($row->uni_vel_tope)) ? $row->uni_vel_tope : 'NULL') .",
+					 uni_descrip_flota 	= '".	((isset($row->uni_descrip_flota)) ? $row->uni_descrip_flota :'NULL')."',
+					 uni_status_gps 	= '".	((isset($row->uni_status_gps)) ? $row->uni_status_gps : 'NULL')."',
+					 uni_velocidad 		= ".	$row->uni_velocidad		.",             
+					 uni_descrip_gral 	= '".	$row->uni_descrip_gral	."',
+					 longitude 			= ".	$row->longitude			.",
+					 latitude 			= ".	$row->latitude.			"
 			  WHERE GPS_DATETIME < '".$row->GPS_DATETIME."'"; 
     } else {
-      $sql = "INSERT INTO ".$last." (
+      $sql = "INSERT INTO ".$last."
+              SET GPS_DATETIME 			= '".	((isset($row->GPS_DATETIME)) ? $row->GPS_DATETIME : 'NULL'	)."', 
+					 COD_ENTITY 		= ".	$row->COD_ENTITY		.",        
+					 uni_pk_flota 		= ".	$row->uni_pk_flota		.",          
+					 uni_pk_event 		= ".	$row->uni_pk_event		.",             
+					 uni_prio_event 	= ".	$row->uni_prio_event	.",             
+					 uni_descrip_event 	= '".	$row->uni_descrip_event	."',             
+					 uni_status_motor 	= '".	((isset($row->uni_status_motor)) ? $row->uni_status_motor : 'NULL')."', 
+					 uni_vel_stop 		= ".	((isset($row->uni_vel_stop)) ? $row->uni_vel_stop : 'NULL' ).",
+					 uni_vel_tope 		= ".	((isset($row->uni_vel_tope)) ? $row->uni_vel_tope : 'NULL' ).",
+					 uni_descrip_flota 	= '".	((isset($row->uni_descrip_flota)) ? $row->uni_descrip_flota :'NULL')."',
+					 uni_status_gps 	= '".	((isset($row->uni_status_gps)) ? $row->uni_status_gps : 'NULL')."',
+					 uni_velocidad 		= ".	$row->uni_velocidad		.",             
+					 uni_descrip_gral 	= '".	$row->uni_descrip_gral	."',
+					 longitude 			= ".	$row->longitude			.",
+					 latitude 			= ".	$row->latitude." ";     	
+      /*$sql = "INSERT INTO ".$last." (
                 COD_ALERT_HISTORY,
   				GPS_DATETIME, 
 			    COD_ENTITY,        
@@ -283,9 +299,9 @@
 			  ".$row->uni_velocidad.",             
 			 '".$row->uni_descrip_gral."',
 			  ".$row->longitude.",
-			  ".$row->latitude.")";
+			  ".$row->latitude.")";*/
     }
-    //echo "<br>".$sql."<br>";
+    echo "<br><!--------".$sql."  ---------><br>";
     mysql_query($sql,$con);
   }
   
@@ -497,12 +513,12 @@
 	echo "<br>-----Se cumplieron: ".$q."--------<br>";
   }
   
-  $con = mysql_connect("188.138.40.249","sa","$0lstic3$");
-  if ($con){
+  $con = mysql_connect("localhost","sa","$0lstic3$");
+  if (!$con){
     $base2 = mysql_select_db("ALG_BD_CORPORATE_ALERTAS_MOVI",$con);
     //paso 1 marca tablas a revisar en grupos de 5
-    $instancia = time();
-    //$instancia = 1362787122;
+    //$instancia = time();
+    $instancia = 1374785157;
     echo "inicio: ".date("G:i:s")."<br><br>";
     if (marca_tablas($instancia,$con)){
   
