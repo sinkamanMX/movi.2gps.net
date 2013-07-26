@@ -728,7 +728,7 @@ function sendCommands(){
 		          }else if(result=='send'){ 
 		              $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Comando enviado correctamente.</p>');
 		              $("#dialog_message").dialog('open');
-		              $("#mon_dialog").dialog("close");
+		              $("#mon_dialogAll").dialog("close");
 		              /*setTimeout(mon_load_units(),5000);*/
 		          }else if(result=='no-perm'){ 
 		              $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>No tiene permiso para realizar esta acción. <br> Consulte a su administrador.</p>');
