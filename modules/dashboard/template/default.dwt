@@ -1,0 +1,481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>	My Calendar </title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <script type="text/javascript" src="public/js/ui/jquery.js"></script>   
+    <script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="{PATH}/js/modals/jquery.bpopup.js"></script>
+    <script type="text/javascript" src="{PATH}/js/comboquery/chosen.jquery.js" ></script>
+
+    <link href="{PATH}/css/estilo.css" rel="stylesheet" type="text/css" />
+    <link href="{PATH}/css/noJS.css" rel="stylesheet" type="text/css" />
+    <!--<link rel="stylesheet" href="comboquery/docsupport/style.css">-->
+    <link rel="stylesheet" href="{PATH}/js/comboquery/chosen.css">
+
+  <script>
+  $(function() {
+    $( ".draggable" ).draggable({  containment: "parent" });
+    $("#btnAdd").click( function(){
+      $('#dialogAddWidget').bPopup({
+        escClose : false                    
+      });
+    });  
+
+/*$('#dialogConfigWidget').bPopup({
+        escClose : false                    
+      });*/       
+  });
+  </script> 
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+try {
+$(document).bind("contextmenu", function(e) {
+e.preventDefault();
+$("#custom-menu").css({ top: e.pageY + "px", left: e.pageX + "px" }).show(100);
+});
+$(document).mouseup(function(e) {
+var container = $("#custom-menu");
+if (container.has(e.target).length == 0) {
+container.hide();
+}
+});
+}
+catch (err) {
+alert(err);
+}
+});
+</script>  
+
+
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('flotcontainer'));
+        chart.draw(data, options);
+      }
+    </script>  
+
+    <script type='text/javascript'>
+      google.load('visualization', '1', {packages:['gauge']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['Memory', 80],
+          ['CPU', 55],
+          ['Network', 68]
+        ]);
+
+        var options = {
+          width: 300, height: 150,
+          redFrom: 90, redTo: 100,
+          yellowFrom:75, yellowTo: 90,
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('flotcontainer2'));
+        chart.draw(data, options);
+      }
+    </script>
+
+    <script type='text/javascript'>
+      google.load('visualization', '1', {packages:['table']});
+      google.setOnLoadCallback(drawTable);
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Name');
+        data.addColumn('number', 'Salary');
+        data.addColumn('boolean', 'Full Time Employee');
+        data.addRows([
+          ['Mike',  {v: 10000, f: '$10,000'}, true],
+          ['Jim',   {v:8000,   f: '$8,000'},  false],
+          ['Alice', {v: 12500, f: '$12,500'}, true],
+          ['Bob',   {v: 7000,  f: '$7,000'},  true]
+        ]);
+
+        var table = new google.visualization.Table(document.getElementById('flotcontainer3'));
+        table.draw(data, {showRowNumber: true});
+      }
+    </script>  
+
+
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          hAxis: {title: 'Year', titleTextStyle: {color: 'red'}}
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('flotcontainer4'));
+        chart.draw(data, options);
+      }
+    </script>  
+
+   <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          hAxis: {title: 'Year',  titleTextStyle: {color: 'red'}}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('flotcontainer5'));
+        chart.draw(data, options);
+      }
+    </script>  
+
+
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['ID', 'Life Expectancy', 'Fertility Rate', 'Region',     'Population'],
+          ['CAN',    80.66,              1.67,      'North America',  33739900],
+          ['DEU',    79.84,              1.36,      'Europe',         81902307],
+          ['DNK',    78.6,               1.84,      'Europe',         5523095],
+          ['EGY',    72.73,              2.78,      'Middle East',    79716203],
+          ['GBR',    80.05,              2,         'Europe',         61801570],
+          ['IRN',    72.49,              1.7,       'Middle East',    73137148],
+          ['IRQ',    68.09,              4.77,      'Middle East',    31090763],
+          ['ISR',    81.55,              2.96,      'Middle East',    7485600],
+          ['RUS',    68.6,               1.54,      'Europe',         141850000],
+          ['USA',    78.09,              2.05,      'North America',  307007000]
+        ]);
+
+        var options = {
+          title: 'Correlation between life expectancy, fertility rate and population of some world countries (2010)',
+          hAxis: {title: 'Life Expectancy'},
+          vAxis: {title: 'Fertility Rate'},
+          bubble: {textStyle: {fontSize: 11}}
+        };
+
+        var chart = new google.visualization.BubbleChart(document.getElementById('flotcontainer6'));
+        chart.draw(data, options);
+      }
+    </script>          
+</head>
+<body>
+  <div id="divmain" class="totalwidth totalheight bigPanel">
+    <div id="menu_prin" >
+        <div id="btnAdd" class="btn-ico-trans" data-reveal-id="myModal">
+            <div class="icon-plus">              
+            </div>
+        </div>
+        <div id="btnMain">
+            <section class="main">
+                <div class="wrapper-demo">
+                    <div id="dd" class="wrapper-dropdown-1" tabindex="1">
+                        <span>main dashboard</span>
+                        <ul class="dropdown" tabindex="1">
+                            {DASHBOARDS}
+                            <li><a href="#"> NUEVO DASHBOARD</a></li>
+                        </ul>
+                    </div>
+                ​</div>
+            </section>
+        </div>
+    </div>
+    <div id="divContenedor" class="total_width">
+      
+        <!--<div class="column">-->
+         
+          <div class="portlet divgraph draggable ">
+            <div class="legendPlaceholder"></div>
+            <div id="flotcontainer" class="graphpie"></div>
+          </div>
+         
+          <div class="portlet divgraph draggable ">
+            <div id="flotcontainer2" class="graphpie"></div>
+          </div>
+
+          <div class="portlet divgraph draggable ">
+                <div id="legendPlaceholder3"></div>
+                <div id="flotcontainer3" class="graphpie"></div>
+          </div>          
+         
+        <!--</div>-->
+         
+        <!--<div class="column">-->
+         
+         
+          <div class="portlet divgraph draggable ">
+            <div id="flotcontainer4" class="graphpie"></div>
+          </div>
+
+
+          <div class="portlet divgraph draggable ">
+            <div id="flotcontainer5" class="graphpie"></div>
+          </div>
+
+          <div class="portlet divgraph draggable ">
+            <div id="flotcontainer6" class="graphpie"></div>
+          </div>          
+        <!--</div>-->
+        
+
+    <div>
+
+    <div id="dialogAddWidget" class="dialog-default-status dialog-open">
+        <div class="dialogClose"><span>CERRAR</span></div>
+        <div class="headerDialog" class="total_width">
+            <div class="tittleDialog total_width">Agregar Widget</div>
+            <div class="descriptionDialog total_width">seleccione un widget de la lista</div>
+
+            <div class="filterDialog total_width">
+                <div id="searchBoxTwo">
+                <input type="text" class="search" value="BUSCAR" onblur="if(this.value == '') { this.value = 'BUSCAR'; }" onfocus="if(this.value == 'BUSCAR') { this.value = ''; }" name="s">
+                <button type="submit">Submit</button>
+
+                <select data-placeholder="Categorias..." class="chzn-select" style="width:350px;" tabindex="2">
+                    <option value="-1">TODAS</option>
+                    {CATEGORIAS}
+                </select>    
+                </div>            
+            </div>
+            <div id="divListWidgets" class="total_width">
+
+                <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage1"></div>
+                </div>
+
+                <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage2"></div>
+                </div>
+
+                <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage3"></div>
+                </div>
+
+                <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage4"></div>
+                </div>
+
+                <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage5"></div>
+                </div>
+
+                <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage6"></div>
+                </div>
+
+               <!--<div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage7"></div>
+                </div>
+
+                <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage8"></div>
+                </div>
+
+                <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage9"></div>
+                </div>   
+
+
+                 <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage10"></div>
+                </div>
+
+                <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage11"></div>
+                </div>
+
+                <div class="widgetPanel">
+                    <div class="widgetTittle">Widget 1</div>
+                    <div class="widgetDesc">Este es un widget</div>
+                    <div class="widgetImage12"></div>
+                </div>   -->                           
+
+            </div>
+        </div>
+    </div>
+
+    <div id="dialogConfigWidget" class="dialog-default-status dialog-open">
+        <div class="dialogClose"><span>CERRAR</span></div>
+        <div class="headerDialog">
+            <div class="tittleDialog float-left w200 border5 h45 mr5 bgcolorTittle">
+                <span class="spanTittle">Widget</span></div>
+
+                <div class="soundWidget border5">
+                  <div class="iconSound"></div>
+                  <div class="iconNoSound"></div>              
+                </div>
+
+                <div class="deleteWidget border5"> 
+                    <div class="iconTrash"></div>
+                    <span class="textTrash">Eliminar <br> Widget</span>
+
+                </div>
+                <div class="copyWidget border5">
+                    <div class="iconCopy"></div>
+                    <span class="textTrash">Copiar Widget <br> a otro dashboard</span>
+                </div>
+        </div>
+        <div class="contentWidget">
+
+          <section id="wrapper" class="wrapper">
+
+            <div id="v-nav">
+
+                <ul>
+                  <li tab="tab1" class="first current">Fatti il sito</li>
+                  <li tab="tab2">Rifatti il look</li>
+                  <li tab="tab3">Organizzati</li>
+                  <li tab="tab4" class="last">Parla di te</li>
+               </ul>
+
+               <div class="tab-content">
+                 <h4><a href="http://www.evermind.it/?areaservizio=fatti-il-sito">Fatti il sito</a></h4>
+               </div>
+
+               <div class="tab-content">
+                 <h4><a href="http://www.evermind.it/?areaservizio=rifatti-il-look">Rifatti il look</a></h4>
+               </div>
+
+               <div class="tab-content">
+                  <h4><a href="http://www.evermind.it/?areaservizio=organizzati">Organizzati</a></h4>   
+               </div>
+
+               <div class="tab-content">
+                 <h4><a href="http://www.evermind.it/?areaservizio=parla-di-te">Parla di te</a></h4>                
+               </div>
+
+            </div>
+
+          </section>
+
+
+
+        </div>
+        <div class="buttonWidget">
+            <span class="tittleButton">guardar la configuración de este widget</span>
+
+        </div>
+    </div>
+
+  <script type="text/javascript">   
+    $(".chzn-select").chosen({width: "300px"});
+
+$(function() {
+        
+    $('.close').click(function () {
+        console.log( 'close' );
+        $('.tab-content').hide();
+    });
+    
+    var items = $('#v-nav>ul>li').each(function() {
+        $(this).click(function() {
+            //remove previous class and add it to clicked tab
+            items.removeClass('current');
+            $(this).addClass('current');
+
+            //hide all content divs and show current one
+            $('#v-nav>div.tab-content').hide().eq(items.index($(this))).show('fast');
+
+            window.location.hash = $(this).attr('tab');
+        });
+    });
+
+    if (location.hash) {
+        showTab(location.hash);
+    }
+    else {
+        showTab("tab1");
+    }
+
+    function showTab(tab) {
+        $("#v-nav ul li:[tab*=" + tab + "]").click();
+    }
+
+    // Bind the event hashchange, using jquery-hashchange-plugin
+    /*$(window).hashchange(function() {
+        showTab(location.hash.replace("#", ""));
+    })*/
+
+    // Trigger the event hashchange on page load, using jquery-hashchange-plugin
+    /*$(window).hashchange();*/
+
+});    
+  </script>
+
+<div id="custom-menu">
+<ol>
+<li><a href="#">Reply</a> </li>
+<li><a href="#">Reply All</a> </li>
+<li class="list-devider">
+<hr />
+</li>
+<li><a href="#">Mark as unread</a> </li>
+<li><a href="#">Delete</a> </li>
+<li><a href="#">Archive</a> </li>
+<li class="list-devider">
+<hr />
+</li>
+<li><a href="#">Junk</a> </li>
+<li><a href="#">View</a> </li>
+</ol>
+</div>  
+</body>
+</html>
