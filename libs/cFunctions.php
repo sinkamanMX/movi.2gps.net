@@ -112,5 +112,14 @@ class cFunctions{
 		}
 		return $options;		
 	}
+	
+  public function cbo_number($n,$option=''){
+	  for($i=0; $i<$n; $i++){
+		  $h = ($i<=9)?"0".$i:$i;
+		  $current = ($h==$option) ? 'selected': '';
+		  $select .= '<option '.$current.' value="'.$h.'" >'.$h.'</option>';
+		  }
+	  return $select;  		    
+	  }		
 }
 ?>

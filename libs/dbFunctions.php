@@ -130,6 +130,93 @@ class dbFunctions{
 	}	
 	return $select;  	
   }
+
+  public function cbo_from_all($id,$desc,$table,$where,$option=''){
+	global $db,$Functions;
+	$select = '';
+	$sql = "SELECT ".$id." AS ID,".$desc." AS DES
+			FROM ".$table." WHERE ".$where;	
+	$query = $db->sqlQuery($sql);
+	$count = $db->sqlEnumRows($query);
+	if($count>0){
+		$currentdefault = ($option!="")?'selected':'';
+		$select .= '<option value="-1" '.$currentdefault.'>Todos</option>';
+		while($row = $db->sqlFetchArray($query)){
+			$current = ($row['ID']==$option) ? 'selected': '';
+			$select .= '<option '.$current.' value="'.$row['ID'].'" >'.$Functions->codif($row['DES']).'</option>';
+		}
+	}	
+	return $select;  	
+  }
+  
+  public function tabla_temas($stema){
+	  global $db;
+	  $tr =1;
+	  $s = "";
+	  $tbl = '<table align="center"><tr>';
+	  $sql = "SELECT * FROM CRM2_TEMA";
+	  $qry = $db->sqlQuery($sql);
+	  $cnt = $db->sqlEnumRows($qry);
+	  if($cnt>0){
+		  while($row = $db->sqlFetchArray($qry)){
+			  if($stema!=""){
+				  $s = ($row['ID_TEMA']==$stema)?'checked="checked"':"";
+				  }
+			  else{
+				  $s = ($tr==1)?'checked="checked"':"";
+				  }
+				  $tbl.= '<td>
+				  		 <div style="width:100px; height:140px;">
+						 <div style="width:100%; height:35px; background:'.$row['CABECERA'].';"></div>
+						 <div style="width:100%; height:15px; background:'.$row['BARRA'].';"></div>
+						 <div style="width:100%; height:50px; background:'.$row['CUERPO'].';"></div>
+						 <div style="width:100%; height:40px;"><input type="radio" name="tema" '.$s.'  
+						 value="'.$row['ID_TEMA'].'"/>
+						 <label>'.$row['NOMBRE'].'</label></div>
+						 </div>
+						 </td>';
+					$tbl.= (($tr%3)==0)?'<tr>':'';
+					$tr++;
+
+			  }
+			  $tbl.= '</table>';
+			  return $tbl;
+		  }
+	  }
+	  
+public function dragndrop($id,$des,$tbl,$whr,$pr,$txt){
+	global $db;
+	$p = '';
+	$com = ($pr=="")?"":" AND ".$id." NOT IN (".$pr.") ";
+	$w = ($txt=="")?"":" AND ".$des." LIKE '%".$txt."%' ";
+	$sql = "SELECT ".$id." AS ID, ".$des." AS DES FROM ".$tbl.$whr.$com.$w." ORDER BY DES;";
+	$qry = $db->sqlQuery($sql);
+	$cnt = $db->sqlEnumRows($qry);
+	if($cnt>0){
+		while($row = $db->sqlFetchArray($qry)){
+			$p.= '<div class="ui-corner-all" id="'.$row['ID'].'">'.$row['DES'].'</div>';
+			}
+		
+		return $p;	
+		}
+	}
+	
+  public function cbo_from_notit($id,$desc,$table,$where,$option=''){
+	  global $db;
+	  $w = ($where=="")?"":" WHERE ".$where;
+	   $sql = "SELECT ".$id." AS ID,".$desc." AS DES
+	  		  FROM ".$table.$w;
+	  $query = $db->sqlQuery($sql);
+	  $count = $db->sqlEnumRows($query);
+	  if($count>0){
+		  $currentdefault = ($option!="")?'selected':'';
+		  while($row = $db->sqlFetchArray($query)){
+			  $current = ($row['ID']==$option) ? 'selected': '';
+			  $select .= '<option '.$current.' value="'.$row['ID'].'" >'.$row['DES'].'</option>';
+			  }
+		  }
+	  return $select;
+	  }	
   
   public function cbo_from_string($id,$desc,$table,$where,$option=''){
 	global $db,$Functions;
