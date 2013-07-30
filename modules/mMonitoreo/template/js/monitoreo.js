@@ -268,7 +268,6 @@ function mon_draw_table(){
 			var imei 	= unit_info[18];
 			var blockMotor = unit_info[19];
 
-			console.log(blockMotor);
 			if(unit_info[17]!="SC"){
 				aComandosAll = aComandosAll + ( (aComandosAll!="") ? '||': '');
 				UnitsString  = UnitsString  + ( (UnitsString !="") ? ',': '');
@@ -277,12 +276,34 @@ function mon_draw_table(){
 				UnitsString   =    UnitsString +unit_info[2];
 			}
 
+
+			var image = '';
+			var colorImage = '';
+			var textoMensaje = '';
+			if(blockMotor!=1 ){
+				if(vel<5 && priory==0){
+					image = 'public/images/car_red.png';
+					colorImage = 'public/images/circle_red.png';	
+				}else if(vel>5 && priory==0){
+					image = 'public/images/car_green.png';	
+					colorImage = 'public/images/circle_green.png';
+				}else  if(priory==1){
+					image = 'public/images/car_orange.png';	
+					colorImage = 'public/images/circle_orange.png';
+				}	
+			}else{
+				image = 'public/images/car_gray.png';	
+				colorImage = 'public/images/circle_gray.png';
+				textoMensaje = 'MOTOR BLOQUEADO - ';
+			}
+
+
 			var content = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
 							'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
 						  			'<table><tr><th colspan="2">'+
 									'<tr><td align="left">Unidad :</td><td align="left">'	+ dunit +'</td></tr>'+
 									'<tr><td align="left">IMEI :</td><td align="left">'  	+ imei +'</td></tr>'+
-						  			'<tr><td align="left">Evento :</td><td align="left">'	+ evt	+'</td></tr>'+
+						  			'<tr><td align="left">Evento :</td><td align="left">'	+ textoMensaje + evt	+'</td></tr>'+
 						  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ fecha	+'</td></tr>'+
 									'<tr><td align="left">Velocidad:</td><td align="left">'	+ vel	+' Km/h.</td></tr>'+
 									'<tr><td align="left">Estado:</td><td align="left">'   	+ estatus	+'</td></tr>'+									
@@ -290,18 +311,7 @@ function mon_draw_table(){
 									'<tr><td>&nbsp;</td><td align="rigth" colspan="2"<td align="left">'		+ pdi	+'</td></tr>'+
 				  					'</table>'+
 				  				'</div>';
-			var image = '';
-			if(blockMotor!=1 ){
-				if(vel<5 && priory==0){
-					image = 'public/images/car_red.png';	
-				}else if(vel>5 && priory==0){
-					image = 'public/images/car_green.png';	
-				}else  if(priory==1){
-					image = 'public/images/car_orange.png';	
-				}	
-			}else{
-				image = 'public/images/car_gray.png';	
-			}
+
 
 
 			if(lat!=0 && lon !=0){
@@ -318,14 +328,15 @@ function mon_draw_table(){
 					"<td onclick='mon_center_map(\""+array_selected[i]+"\");'>"+unit_info[5]+ "</td>";
 			}else{
 				validateInfo = 
-					"<td onclick='monMessageValidate(\""+unit_info[3]+"\");'>"+unit_info[3]+"</td> "+
-					"<td onclick='monMessageValidate(\""+unit_info[3]+"\");'>Sin Reporte </td>";
+					"<td  onclick='monMessageValidate(\""+unit_info[3]+"\");'>"+unit_info[3]+"</td> "+
+					"<td  onclick='monMessageValidate(\""+unit_info[3]+"\");'>Sin Reporte </td>";
 			}
 
 			$("<tr>"+
 				"<td><div id='mon_div_icon"+unit_info[2]+"' class='icon_unit_selected' onclick='mon_search_unidad(\""+array_selected[i]+"\",true)'>"+
 				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+	
 				"</div>"+
+				"<td><img style='width:16px; height:16px;' src='"+colorImage+"'/></td>"+
 				validateInfo+
 				"<td><div id='mon_div_iconi"+unit_info[2]+"' class='mon_units_info' onclick='mon_get_info(\""+array_selected[i]+"\")'>"+
 				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+"</div>"+				
@@ -485,6 +496,8 @@ function mon_center_map(unitsinfo){
 	var angulo 	= unit_info[16];
 	var colprio = unit_info[4];//--
 	var imei 	= unit_info[18];
+	var blockMotor = unit_info[19];
+	var textoMensaje = (blockMotor==1) ? 'MOTOR BLOQUEADO -': '';
 	var image = new google.maps.MarkerImage('public/images/car.png',
 		new google.maps.Size(1, 1),
 		new google.maps.Point(0,0),
@@ -505,7 +518,7 @@ function mon_center_map(unitsinfo){
 				  			'<table><tr><th colspan="2">'+
 							'<tr><td align="left">Unidad :</td><td align="left">'	+ dunit +'</td></tr>'+
 							'<tr><td align="left">IMEI :</td><td align="left">'  	+ imei +'</td></tr>'+
-				  			'<tr><td align="left">Evento :</td><td align="left">'	+ evt	+'</td></tr>'+
+				  			'<tr><td align="left">Evento :</td><td align="left">'	+ textoMensaje +" " + evt	+'</td></tr>'+
 				  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ fecha	+'</td></tr>'+
 							'<tr><td align="left">Velocidad:</td><td align="left">'	+ vel	+'</td></tr>'+
 							'<tr><td align="left">Estado:</td><td align="left">'   	+ estatus	+'</td></tr>'+									
