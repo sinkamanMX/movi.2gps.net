@@ -17,12 +17,12 @@ class cPositions{
     	return $table_name . $id_client;
 	}
 	
-	public function get_last_position($id_unit,$id_client){
+	public function get_last_position($id_unit,$id_client,$flagPosition=-1){
 		global $config_bd;
 		$name_table = $this->get_tablename($id_client);
 		$conexion = mysqli_connect($config_bd['host'],$config_bd['user'],$config_bd['pass'],$config_bd['bname']);
 		if($conexion){
-		$sql	= "SELECT f.PLAQUE,   
+		 $sql	= "SELECT f.PLAQUE,   
 					f.YEAR,     
 					f.DESCRIPTION,
 					IF (e.GPS_DATETIME IS NULL, '0000-00-00 00:00:00',e.GPS_DATETIME) AS GPS_DATETIME,
@@ -48,7 +48,8 @@ class cPositions{
 					IF((e.VELOCITY > 5) AND (e.MOTOR = 'ON'),'MOVIMIENTO','DESCONOCIDO'))) AS ESTATUS,
 					IF ((e.VELOCITY < 5) AND (e.MOTOR = 'ON'),'#E86100',
 					IF((e.VELOCITY = 0) AND (e.MOTOR = 'OFF'),'#000000',
-					IF((e.VELOCITY > 5) AND (e.MOTOR = 'ON'),'#00FF00','#999999'))) AS COLOR
+					IF((e.VELOCITY > 5) AND (e.MOTOR = 'ON'),'#00FF00','#999999'))) AS COLOR,
+					IF( -1 <> ".$flagPosition." , (SUBSTRING(e.DIG_INPUT, 3, 1))   , '2') AS BLOQUEO_MOTOR
 					FROM ADM_UNIDADES f  
 					LEFT JOIN LAST".$name_table." e ON e.COD_ENTITY = f.COD_ENTITY
 					LEFT JOIN ADM_EVENTOS g ON e.COD_EVENT  = g.COD_EVENT

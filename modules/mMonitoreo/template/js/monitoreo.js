@@ -266,6 +266,9 @@ function mon_draw_table(){
 			var angulo 	= unit_info[16];
 			var colprio = unit_info[4];//--
 			var imei 	= unit_info[18];
+			var blockMotor = unit_info[19];
+
+			console.log(blockMotor);
 			if(unit_info[17]!="SC"){
 				aComandosAll = aComandosAll + ( (aComandosAll!="") ? '||': '');
 				UnitsString  = UnitsString  + ( (UnitsString !="") ? ',': '');
@@ -288,13 +291,18 @@ function mon_draw_table(){
 				  					'</table>'+
 				  				'</div>';
 			var image = '';
-			if(vel<5 && priory==0){
-				image = 'public/images/car_red.png';	
-			}else if(vel>5 && priory==0){
-				image = 'public/images/car_green.png';	
-			}else  if(priory==1){
-				image = 'public/images/car_orange.png';	
-			}	
+			if(blockMotor!=1 ){
+				if(vel<5 && priory==0){
+					image = 'public/images/car_red.png';	
+				}else if(vel>5 && priory==0){
+					image = 'public/images/car_green.png';	
+				}else  if(priory==1){
+					image = 'public/images/car_orange.png';	
+				}	
+			}else{
+				image = 'public/images/car_gray.png';	
+			}
+
 
 			if(lat!=0 && lon !=0){
 				var marker1 = new google.maps.Marker({

@@ -11,7 +11,7 @@
 	$userID   	  = $userAdmin->user_info['ID_USUARIO'];	
 	$idCliente    = $userAdmin->user_info['ID_CLIENTE'];
 	$respuesta 	  = '';
-	
+	$bloqueo      = 0;
 	$sql_units  = "SELECT ADM_GRUPOS.ID_GRUPO, ADM_GRUPOS.NOMBRE, ADM_USUARIOS_GRUPOS.COD_ENTITY
 					FROM ADM_USUARIOS_GRUPOS
 					INNER JOIN ADM_GRUPOS          
@@ -23,8 +23,9 @@
 	while($row = $db->sqlFetchArray($query_units)){	
 		$imemiUnit= '';	
 		$commands_units="";
-		
-		$sqlUnitsEquipment = "SELECT  C.IMEI, D.COD_TYPE_EQUIPMENT,D.DESCRIPTION
+		$flagPosition=-1;
+		$blockMotor=2;
+		$sqlUnitsEquipment = "SELECT  C.IMEI, D.COD_TYPE_EQUIPMENT,D.DESCRIPTION, D.BLOQUEO
 					FROM ADM_UNIDADES A
 					  INNER JOIN ADM_UNIDADES_EQUIPOS B ON B.COD_ENTITY 	= A.COD_ENTITY
 					  INNER JOIN ADM_EQUIPOS C 			ON C.COD_EQUIPMENT 	= B.COD_EQUIPMENT
@@ -34,8 +35,8 @@
 		$countInfoUnits	= $db->sqlEnumRows($queryInfoUnits);
 		if($countInfoUnits>0){
 			$rowEquipments = $db->sqlFetchArray($queryInfoUnits);
-			$imemiUnit      = ($rowEquipments['IMEI']=="NULL") ? "": $rowEquipments['IMEI'];
-			
+			$imemiUnit     = ($rowEquipments['IMEI']=="NULL") ? "": $rowEquipments['IMEI'];
+			$flagPosition  = $rowEquipments['BLOQUEO'];  
 			$sql_cmds="SELECT F.DESCRIPCION,F.COD_EQUIPMENT_PROGRAM 
 					FROM ADM_COMANDOS_SALIDA E 	 
 					  LEFT JOIN ADM_COMANDOS_CLIENTE F 	ON F.COD_EQUIPMENT_PROGRAM = E.COD_EQUIPMENT_PROGRAM
@@ -54,7 +55,7 @@
 		$commands_units = ($commands_units=="") ? "SC": $commands_units;
 		$imemiUnit		= ($imemiUnit=="") ? 'Sin IMEI asignado':$imemiUnit;
 						
-		$upos = $Positions->get_last_position($row['COD_ENTITY'],$idCliente);
+		$upos = $Positions->get_last_position($row['COD_ENTITY'],$idCliente,$flagPosition);
 		if($upos != 0){
 			$show	   	= ($upos['PRIORITY']) ? 1: 0; // PRIORIDAD DEL EVENTO
 			$background	= $upos['BACKGROUND']; //COLOR DE PRIORIDAD
@@ -62,6 +63,7 @@
 			$direccion1 = $Positions->direccion_no_format($upos['LATITUDE'],$upos['LONGITUDE']);				
 			$estatus	= $upos['ESTATUS'];
 			$color		= $upos['COLOR'];								
+			$blockMotor = (isset($upos['BLOQUEO_MOTOR']) ) ? $upos['BLOQUEO_MOTOR']: '2';
 			
 			$querys="SELECT CONCAT('A ', TRUNCATE(DISTANCIA(".$upos['LONGITUDE'].",".$upos['LATITUDE'].
 						", LONGITUDE, LATITUDE),2),' KM de ',DESCRIPCION) AS DISTANCIA ,".
@@ -93,14 +95,15 @@
 							$upos['GPS_DATETIME'].'|'. $Functions->codif($upos['DESC_EVT']).'|'.$estatus.'|'.
 							$color.'|'.$pdi.'|'.$upos['VELOCIDAD'].'|'.$new_dir.'|'.$upos['LATITUDE'].'|'.
 							$upos['LONGITUDE'].'|'.$show.'|'.@$ROW['ICONO'].'|'.
-							$anglef."|".$commands_units.'|'.$imemiUnit;
+							$anglef."|".$commands_units.'|'.$imemiUnit.'|'.$blockMotor;
 		}else{
 			$data_unit = $dbf->getRow('ADM_UNIDADES',' COD_ENTITY = '.$row['COD_ENTITY']);
 			$descripcion = ($data_unit) ? $data_unit['DESCRIPTION'] : 'S/info.';
 			
 			$respuesta .= ($respuesta=="") ? "": "!";
 			$respuesta .= $row['ID_GRUPO'].'|'.$row['NOMBRE'].'|'.$row['COD_ENTITY'].'|'.
-			$Functions->codif($descripcion).'|0|0|0|0|0|0|0|0|0|0|0|0|0|'.$commands_units.'|'.$imemiUnit;
+			$Functions->codif($descripcion).'|0|0|0|0|0|0|0|0|0|0|0|0|0|'.$commands_units.'|'.
+							$imemiUnit.'|'.$blockMotor;
 		}
 	}	
 	echo $respuesta;		
