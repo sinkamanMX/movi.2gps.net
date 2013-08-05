@@ -49,7 +49,7 @@ class cPositions{
 					IF ((e.VELOCITY < 5) AND (e.MOTOR = 'ON'),'#E86100',
 					IF((e.VELOCITY = 0) AND (e.MOTOR = 'OFF'),'#000000',
 					IF((e.VELOCITY > 5) AND (e.MOTOR = 'ON'),'#00FF00','#999999'))) AS COLOR,
-					IF( -1 <> ".$flagPosition." , (SUBSTRING(e.DIG_INPUT, 3, 1))   , '2') AS BLOQUEO_MOTOR
+					IF( -1 <> ".$flagPosition." , (SUBSTRING(e.DIG_INPUT, ".$flagPosition.", 1))   , '2') AS BLOQUEO_MOTOR
 					FROM ADM_UNIDADES f  
 					LEFT JOIN LAST".$name_table." e ON e.COD_ENTITY = f.COD_ENTITY
 					LEFT JOIN ADM_EVENTOS g ON e.COD_EVENT  = g.COD_EVENT

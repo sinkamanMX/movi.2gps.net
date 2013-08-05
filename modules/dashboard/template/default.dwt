@@ -311,6 +311,9 @@ alert(err);
                     <div class="widgetImage6"></div>
                 </div>
 
+                
+                
+
                <!--<div class="widgetPanel">
                     <div class="widgetTittle">Widget 1</div>
                     <div class="widgetDesc">Este es un widget</div>
