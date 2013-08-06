@@ -193,7 +193,11 @@ alert(err);
         var chart = new google.visualization.BubbleChart(document.getElementById('flotcontainer6'));
         chart.draw(data, options);
       }
-    </script>          
+    </script>  
+
+
+
+
 </head>
 <body>
   <div id="divmain" class="totalwidth totalheight bigPanel">
@@ -275,37 +279,37 @@ alert(err);
             </div>
             <div id="divListWidgets" class="total_width">
 
-                <div class="widgetPanel">
+                <div class="widgetPanel class1">
                     <div class="widgetTittle">Widget 1</div>
                     <div class="widgetDesc">Este es un widget</div>
                     <div class="widgetImage1"></div>
                 </div>
 
-                <div class="widgetPanel">
+                <div class="widgetPanel class3 ">
                     <div class="widgetTittle">Widget 1</div>
                     <div class="widgetDesc">Este es un widget</div>
                     <div class="widgetImage2"></div>
                 </div>
 
-                <div class="widgetPanel">
+                <div class="widgetPanel class2">
                     <div class="widgetTittle">Widget 1</div>
                     <div class="widgetDesc">Este es un widget</div>
                     <div class="widgetImage3"></div>
                 </div>
 
-                <div class="widgetPanel">
+                <div class="widgetPanel class1">
                     <div class="widgetTittle">Widget 1</div>
                     <div class="widgetDesc">Este es un widget</div>
                     <div class="widgetImage4"></div>
                 </div>
 
-                <div class="widgetPanel">
+                <div class="widgetPanel class3">
                     <div class="widgetTittle">Widget 1</div>
                     <div class="widgetDesc">Este es un widget</div>
                     <div class="widgetImage5"></div>
                 </div>
 
-                <div class="widgetPanel">
+                <div class="widgetPanel class2">
                     <div class="widgetTittle">Widget 1</div>
                     <div class="widgetDesc">Este es un widget</div>
                     <div class="widgetImage6"></div>
@@ -419,7 +423,35 @@ alert(err);
     </div>
 
   <script type="text/javascript">   
-    $(".chzn-select").chosen({width: "300px"});
+    $(".chzn-select").chosen({width: "300px"}).change(function(event) {
+        var ourClass =  "class"+$(event.target).val();
+
+          // fetch the class of the clicked item
+          //var ourClass = $(this).attr('class');
+          // reset the active class on all the buttons
+          $('#divListWidgets div').removeClass('active');
+          // update the active state on our clicked button
+          $(this).parent().addClass('active');
+
+          if(ourClass != 'class-1') {
+            // show all our items
+            $('#divListWidgets').children('div.item').show();
+          }else {
+            // hide all elements that don't share ourClass
+            $('#divListWidgets').children('div:not(.' + ourClass + ')').hide();
+            // show all elements that do share ourClass
+            $('#divListWidgets').children('div.' + ourClass).show();
+          }
+          
+
+
+
+
+
+
+    });
+
+
 
 $(function() {
         
