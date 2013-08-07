@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <input type="hidden" value="{ID}" id="geos_txt_id"/>
-<input type="hidden" value="p" id="geos_txt_tipo"/>
-<input type="hidden" value="{LATITUDE}" id="geos_txt_lat"/>
-<input type="hidden" value="{LONGITUDE}" id="geos_txt_lon"/>
+<input type="hidden" value="c" id="geos_txt_tipo"/>
+<input type="hidden" value="0" id="geos_txt_lat"/>
+<input type="hidden" value="0" id="geos_txt_lon"/>
 <style type="text/css">
   .left{width:260px; height:380px; position:relative; float: left;}
   .right{width:420px; height:380px; position:relative; float: right;}
@@ -49,66 +49,30 @@
   -moz-border-radius:3px; /* Firefox 3.6 and earlier */
 }
 </style>
+<script>
+  geos_poins_polygon = [
+   {POSITIONS}
+  ];  
+
+  geos_options = {
+          paths: geos_poins_polygon,
+          editable: true,
+          strokeColor: "{COLOR_HEX}",
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: "{COLOR_HEX}",
+          fillOpacity: 0.35
+    }  
+</script>
 <div id="geos_contenedor">
   <div class="left">
-    <table>
+    <table>                     
         <tr>
             <td>Descripción:</td>
             <td colspan="3">
                 <input type="text" id="geos_search_name" class="geos_caja_txt" value="{DESCRIPCION}" />
             </td>
         </tr> 
-        <tr>
-            <td>Calle:</td>
-            <td colspan="3">
-                <input type="text" id="geos_txt_calle" class="geos_caja_txt" value="{CALLE}" />
-            </td>
-        </tr>     
-        <tr>
-            <td>No. Int:</td>
-            <td><input type="text" id="geos_txt_noint" class="geos_caja_no" value="{NO_INT}"/></td>
-            <td colspan="2">No Ext:
-            <input type="text" id="geos_txt_noext" class="geos_caja_no" value="{NO_EXT}"/></td>            
-        </tr>
-        <tr>
-            <td>Estado:</td>
-            <td colspan="3">
-                <select class="geos_caja_txt" id="geos_cbo_edo">
-                  {ESTADOS}
-                </select>
-            </td>            
-        </tr>  
-        <tr>
-            <td>Municipio:</td>
-            <td colspan="3">
-                <select class="geos_caja_txt" disabled id="geos_cbo_mun">
-                  {MUNICIPIO}
-                </select>
-            </td>        
-        </tr>                
-        <tr>
-            <td>Colonia:</td>
-            <td colspan="3">
-                <select class="geos_caja_txt" disabled id="geos_cbo_col">
-                  {COLONIA}
-                </select>
-            </td>        
-        </tr>    
-        <tr>
-            <td>CP :</td>
-            <td><input type="text" id="geos_txt_cp" class="geos_caja_no" value="{CP}"/></td>
-            <td colspan="2">
-                <input type = 'button' class="geos_caja_btn" value="Buscar Dirección"  onclick="geos_find(1);"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Tipo:</td>
-            <td colspan="3">
-                <select class="geos_caja_txt" id="geos_select_tipo">
-                  {TIPO}
-                </select>   
-            </td>
-        </tr>
         <tr>
             <td>Privacidad:</td>
             <td colspan="3">
@@ -118,19 +82,21 @@
             </td>
         </tr>  
         <tr>
-            <td>Radio (mts):</td>
+            <td>Color:</td>
             <td colspan="3">
-                <select class="geos_caja_no" id="geos_txt_ra">
-                  {RADIO}
+                <select class="geos_caja_txt" id="geos_txt_color">
+                  {COLORES}
                 </select>
             </td>
         </tr>
         <tr>
-           <td> Geopunto Base:</td>
-           <td colspan ="3"> 
-           <input type="checkbox" id="geos_check" {BASE}/>
-           </td>
-        </tr>
+            <td>
+                <button id="geos_start">Comenzar</button>
+            </td>
+            <td>
+                <button id="geos_drop">Borrar</button>
+            </td>            
+        </tr>         
     </table>
   </div>
   <div class="right">
