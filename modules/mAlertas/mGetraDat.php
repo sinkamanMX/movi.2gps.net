@@ -12,7 +12,7 @@
     
 	  
 $cadena_final=' ';
-echo $quers1="SELECT
+$quers1="SELECT
 							COD_ALERT_MASTER,
 							NAME_ALERT,
 							HORARIO_FLAG_LUNES,
@@ -46,9 +46,10 @@ echo $quers1="SELECT
 	for($i=0;$i<$count1;$i++){
 				$exp1=' ';
 				$expc=' ';
+			
 				$mindata=explode('?',$alerta[$i]);
 				$correo= str_replace(",","|",$mindata[5]);
-			
+				//echo $mindata[1];
 				$exp=explode("and",$mindata[8]);
 				  $num=count($exp);
 					for($x=0;$x<$num;$x++){
@@ -72,10 +73,10 @@ echo $quers1="SELECT
 							  $row2 = $Positions-> trae_unidades_here($quers2);
 							$rompe=explode('!',$row2);
 							if($cadena_final==' '){
-							$todo=$Functions->codif( $mindata[1]);
-								$cadena_final=$mindata[0].','.$todo.','.$mindata[6].','.$correo.','.$mindata[2].','.$mindata[3].','.$mindata[4].','.$rompe[0].','.$mindata[8].','.$rompe[1].','.$mindata[9].','.$mindata[7];
+							 $todo= $mindata[1];
+								$cadena_final=$mindata[0].','.$mindata[1].','.$mindata[6].','.$correo.','.$mindata[2].','.$mindata[3].','.$mindata[4].','.$rompe[0].','.$mindata[8].','.$rompe[1].','.$mindata[9].','.$mindata[7];
 								}else{
-								$cadena_final=$cadena_final.'!'.$mindata[0].','.$todo.','.$mindata[6].','.$correo.','.$mindata[2].','.$mindata[3].','.$mindata[4].','.$rompe[0].','.$mindata[8].','.$rompe[1].','.$mindata[9].','.$mindata[7];
+								 $cadena_final=$cadena_final.'!'.$mindata[0].','.$mindata[1].','.$mindata[6].','.$correo.','.$mindata[2].','.$mindata[3].','.$mindata[4].','.$rompe[0].','.$mindata[8].','.$rompe[1].','.$mindata[9].','.$mindata[7];
 								}		
 				}
 	

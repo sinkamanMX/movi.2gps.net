@@ -28,8 +28,13 @@
         $radio	  = $_GET['radio'];     
         $privacidad	= $_GET['privacidad']; 
         $lat	  = $_GET['lat'];   
-        $lon	  = $_GET['lon'];   	
-		
+        $lon	  = $_GET['lon'];
+		$base     = 0;
+		//if ($base == true)
+        if ($_GET['base'] == 'true')
+		{
+		  $base = 1;   
+		} 	
 		if($id_row==0){
 		 	$data = Array(				 
 				'ID_TIPO_GEO' 	=> $tipo,
@@ -48,7 +53,8 @@
 				'TIPO' 		=> 'G',
 				'PRIVACIDAD'=> $privacidad , 	 
 				'ID_CLIENTE'=> $userAdmin->user_info['ID_CLIENTE'],
-		 		'CREADO'=> date('Y-m-d H:i:s')
+		 		'CREADO'=> date('Y-m-d H:i:s'),
+				'BASE' => $base
 		 	);	
 
 			if($userAdmin->permisos['WR']){
@@ -72,7 +78,8 @@
 				'ESTADO' 	=> $estado,
 				'CP' 		=> $cp,
 				'RADIO' 	=> $radio,
-				'PRIVACIDAD'=> $privacidad
+				'PRIVACIDAD'=> $privacidad,
+				'BASE'      => $base
 		 	);				
   			if($userAdmin->permisos['UP']){
   				$where = 'ID_OBJECT_MAP ='.$id_row; 

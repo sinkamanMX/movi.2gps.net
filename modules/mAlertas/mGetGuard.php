@@ -17,7 +17,7 @@
 	$manejar=explode(',',$arrays);
 	
 	$nombre=$manejar[0];
-	$numst=$Positions-> prob_nom($userID  ,$nombre);	
+	$numst=0;//$Positions-> prob_nom($userID  ,$nombre);	
 	if($numst==0){
 	$active=$manejar[1];
 	$semana=explode('|',$manejar[3]);
@@ -67,11 +67,47 @@
 		$tipo_geo='R';
 		}
 
+		$lasq4="SELECT MAX(COD_EVENT) AS MAXIMO FROM ADM_EVENTOS";
+							$queryQ  = $db->sqlQuery($lasq4);
+							
+								$rowU = $db->sqlFetchArray($queryQ);
+								$qurt=$rowU['MAXIMO'];
+			
 		$resu=0;
 		$cont_ema=explode(',',$correo);
 		$unidades= explode('|',$manejar[6]);
 		$unidades_name=explode('|',$manejar[8]);
-	 $lasq="INSERT ALERT_MASTER VALUE (0,UPPER('".$nombre."'),".$idCompany.",".$userID.",0,".$lun.",".$mar.",".$mier.",".$jue.",".$vier.",".$sab.",".$dom.",'".$horini."','".$horfin."','".$correo."',".$active.",0,0,CURRENT_TIMESTAMP,'".$cad_vari."',0,'',0,'".$tipo_geo."',0,'','','','',".count($cont_ema).",0)";
+	 $lasq="INSERT ALERT_MASTER VALUE (0,UPPER('".$nombre."'),
+	 ".$idCompany.",
+	 ".$userID.",
+	 0,
+	 ".$lun.",
+	 ".$mar.",
+	 ".$mier.",
+	 ".$jue.",
+	 ".$vier.",
+	 ".$sab.",
+	 ".$dom.",
+	 '".$horini."',
+	 '".$horfin."',
+	 '".$correo."',
+	 ".$active.",
+	 0,
+	 0,
+	 CURRENT_TIMESTAMP,
+	 '".$cad_vari."',
+	 0,
+	 '',
+	 0,
+	 '".$tipo_geo."',
+	 0,
+	 '',
+	 '',
+	 '',
+	 '',
+	 ".count($cont_ema).",
+	 0)";
+	 
 	 $prim=$Positions-> nue_gd_vari($lasq);
 	
 		if($prim==1){
@@ -79,24 +115,23 @@
 			$cod_alert_mas=$Positions-> nue_gd_max($lasq2);
 			if($cod_alert_mas!=0){
 
+
+$new_idvent=$qurt+1;
+											
+											$lasq5="INSERT INTO ADM_EVENTOS (COD_EVENT,ID_CLIENTE, DESCRIPTION, PRIORITY, FLAG_VISIBLE_CONSOLE) 
+											VALUES (".$new_idvent.",".$idCompany.",'".$nombre."',0,0)";
+											$query5  = $db->sqlQuery($lasq5);
+											
 				for($x=0;$x<count($unidades);$x++){
 		
 						$lasq3="INSERT INTO ALERT_DETAIL_VARIABLES (COD_ALERT_ENTITY,COD_ALERT_MASTER, COD_FLEET, COD_ENTITY,".$listado.",uni_descrip_gral) VALUE(0,".$cod_alert_mas.",0,".$unidades[$x].",".$conun_lis.",'".$unidades_name[$x]."');";
 						$second=$Positions-> nue_gd_details($lasq3);
 						if($second==1){
 						
-							$lasq4="SELECT MAX(COD_EVENT) AS MAXIMO FROM ADM_EVENTOS";
-							$queryQ  = $db->sqlQuery($lasq4);
 							
-								$rowU = $db->sqlFetchArray($queryQ);
-								$qurt=$rowU['MAXIMO'];
 								if($qurt!=0){
 											
-											$new_idvent=$qurt+1;
 											
-											$lasq5="INSERT INTO ADM_EVENTOS (COD_EVENT,ID_CLIENTE, DESCRIPTION, PRIORITY, FLAG_VISIBLE_CONSOLE) 
-											VALUES (".$new_idvent.",".$idCompany.",'".$nombre."',0,0)";
-											$query5  = $db->sqlQuery($lasq5);
 											
 											
 											

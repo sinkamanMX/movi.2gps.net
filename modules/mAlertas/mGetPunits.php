@@ -17,8 +17,9 @@
 	$userID   	      =  $userAdmin->user_info['ID_USUARIO'];	
 	$idCompany    = $userAdmin->user_info['ID_CLIENTE'];
   	$cadena_envio = "";
+	$cadena_envio2 = ' ';
     $id_unidad = "";
-
+	$cadena_ids=' ';
  
 		$query_units_cli="SELECT b.ID_GRUPO,
 								c.NOMBRE,
@@ -37,15 +38,22 @@
 	  while($rowU = $db->sqlFetchArray($queryQ)){	
 
 								if($cadena_envio == ""){
-								  
+								  $cadena_ids=$rowU['COD_ENTITY'];
                                    $cadena_envio = 	$rowU['ID_GRUPO'].'|'.$rowU['NOMBRE'].'|'.$rowU['COD_ENTITY'].'|'.$rowU['DESCRIPTION'];
 							  
 								}else{
+									$cadena_ids=$cadena_ids.','.$rowU['COD_ENTITY'];
 								 $cadena_envio =  $cadena_envio .'!'.$rowU['ID_GRUPO'].'|'.$rowU['NOMBRE'].'|'.$rowU['COD_ENTITY'].'|'.$rowU['DESCRIPTION'];
 							  
 								}
 
 	   }
+  
+  
+ 	
+	   
+  
+  
   
   
   	echo $cadena_envio;

@@ -500,7 +500,8 @@ $( "#dialogo" ).dialog({
   	  <div class="lista" id="column3" style="position:absolute; top:65px; width:29%; right:-3px; min-height:530px;" >
       <h4 class="ui-widget-header">&nbsp;Alertas de Usuario</h4>
       <table border="0" id="bucara"><tr><td><input type="text" size="30" id="buck" title="Buscar" onkeyup="txtls(this.value)" /></td><td><a href="#" onclick="busque()" ><img title="Buscar" src="/public/images/search.png" style=" width:18px;"></a></td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td></td></tr></table>
-      <div id="alert_c" style=" position:relative; left:3px; width: 327px;  height: 460px; overflow-x:hidden; overflow:auto;" ><table border="0" id="cvs"></table></div>
+      <div id="alert_c" style=" position:relative; left:3px; width: 327px;  height: 460px; overflow-x:hidden; overflow:auto;" ><table border="0" id="cvs" style="position:absolute;">
+      </table></div>
       </div>
 	
 	<div id="dialog"  title=" &nbsp;&nbsp; Descripcion" style="  ">

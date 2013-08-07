@@ -531,7 +531,17 @@ function popup_mod(id,desp,icon,val,def,type,opc){
 						ajax.onreadystatechange=function() {
 						if (ajax.readyState==4) {
 								var result =ajax.responseText;
-								
+								/*document.getElementById('dialogo').innerHTML=result;
+										 $( "#dialogo" ).dialog({
+												width:200,
+												buttons: {
+											 
+												Ok: function() {
+												  $( this ).dialog( "close" );
+										  
+												}
+											  }
+											});*/
 								if(result != 0){
 								cadena=result;
 								var selts=cadena.split('?');
@@ -630,12 +640,30 @@ function popup_mod(id,desp,icon,val,def,type,opc){
 				if(type=='OP'){
 					var dat=opc.split(';');
 					var cadena='';
+					var nums=0;
+					var separas='';
+					
+					for(i=0;i<pest.length;i++){
+						
+						var consul=pest[i].indexOf(val);
+						
+						if(consul!=-1){
+							nums=i;
+							var div=pest[i].split(' = ');
+							
+							separas=div[1];
+							}
+						
+						}
+					//var consul=pest.indexOf(val);
 					
 					
+					console.log(separas.toString());
 					for(i=0;i<dat.length;i++){
 						
 						var dat1=dat[i].split('?');
-						if(dat1[0]==1){
+						
+						if(dat1[0]==separas.toString()){
 							
 							cadena+='<option value="'+dat1[0]+'" selected="selected">'+dat1[1]+'</option>';
 						
@@ -1425,7 +1453,7 @@ function validacion_general(){
 	var vali8=$("#Domingo").is(":checked");
 	var lun=0;var mar=0;var mier=0;var juev=0;var vier=0;var sab=0;var dom=0; ///---
 	if(vali2==true){lun=1;}if(vali3==true){mar=1;}if(vali4==true){mier=1;}if(vali5==true){juev=1;}
-	if(vali5==true){vier=1;}if(vali7==true){sab=1;}if(vali8==true){dom=1;}
+	if(vali6==true){vier=1;}if(vali7==true){sab=1;}if(vali8==true){dom=1;}
 	var fecha1=$("#hri").val();var fecha2=$("#mni").val();var fecha3=$("#hrf").val();var fecha4=$("#mnf").val();
 	var fecha_i=fecha1+':'+fecha2;////------
 	var fecha_f=fecha3+':'+fecha4;//////---------
@@ -1500,8 +1528,11 @@ function guar_general(){
 		
 		if(listo!=0){
 			 valida_puntos();
+			 
+			 console.log(listo+'-'+listo1);
 			 if(listo1!=0){
 				 var arreglo=respuesta.toString();
+					console.log(arreglo);
 				 		if(listo2==0){
 						var url="index.php?m=mAlertas&c=mGetGuard&q="+arreglo;
 						}else{
@@ -1561,6 +1592,7 @@ function guar_general(){
 												 listo1=0;
 												 listo2=0;
 												 valida_listo=0;
+												 respuesta[7]=' ';
 												 ides_f=new Array();
 												 $("#bu_conf").css('visibility', 'hidden');		
 												$("#bu_clear").css('visibility', 'hidden');	
@@ -1704,7 +1736,8 @@ function r_filtro5(){
 										var rompe=parametro[x].split(',');
 										ids_edi.push(rompe[0]);
 										noms_edi.push(rompe[1]);
-										var dibuja='<tr id="'+rompe[0]+'"><td ><div id="sizer2" class="sizer" style="width:230px;" ><table  border="0" style="width-min:230px">'+
+										
+										var dibuja='<tr id="'+rompe[0]+'" ><td  style="width:280px; height: 50px;" ><div id="sizer2" class="sizer" style="width:230px; position:relative;" ><table  border="0" style="width-min:230px; ">'+
 												'<tr><td> Nombre: </td><td>&nbsp;</td><td ></td><td><a href="#" onclick="editar_todo(\''+rompe[0]+'\')" ><img title="Editar" src="/public/images/Edit_icon.png" style="width:15px;"></a>&nbsp;<a href="#" onclick="elimina_edit(\''+rompe[0]+'\')" ><img title="Eliminar" src="/public/images/elimina.png"></a></td></tr>'+
 												'<tr><td colspan="4"><font color="#2f4f4f" face="Arial Black" size="1"  >'+rompe[1]+'</font></td></tr>'+
 												'<tr><td colspan="4"><font color="#C0C0C0" face="Arial Black" size="1" >Creacion: '+rompe[11]+'</font></td></tr>'+
@@ -1781,9 +1814,10 @@ function elimina_edit(x){
 	}
 /*  +++++++++++++++++++++++++++++++++++++++++++ DANIEL ++++++++++++++++++++++++++++++++++++  */
 var valida_listo=0;
+var pest=new Array();
 var nuve=new Array();
 function editar_todo(dato){
-	
+	 pest=new Array();
 	
 	if(valida_listo==0){
 		$("#etiqueta").remove();
@@ -1824,7 +1858,11 @@ function editar_todo(dato){
 		
 			for(p=0;p<pdi.length;p++){
 				var pdi1=pdi[p].split(' = ');
-			
+				var consul=pest.indexOf(pdi[p].toString());
+				if(consul==-1){
+				pest.push(pdi[p].toString());
+				}
+				
 				if(exx[1]==pdi1[0]){
 				//	alert(pdi1[1]);
 						nuve.push(pdi1[1]);

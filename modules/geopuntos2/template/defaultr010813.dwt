@@ -1,0 +1,619 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{PAGE_TITLE}</title>
+<script type="text/javascript"  charset="ISO-8859-1" src="public/js/tigra_tables.js"></script>
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<!--<script type="text/javascript" src="public/js/frameV2.js"></script>-->
+<script type="text/javascript" src="public/js/ui/jquery.js"></script>
+<script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>
+<script type="text/javascript" src="public/js/ui/ui.selectmenu.js"></script>
+<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>
+
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key={APIKEY}" type="text/javascript"></script>
+
+<link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
+<link type="text/css" href="public/css/jqueryUI.css" rel="stylesheet" />
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<!--<link type="text/css" href="public/css/panelcuerpo.css" rel="stylesheet"/>-->
+
+	<script>
+	$(function() {
+		$( ".search" ).button({
+			icons: {
+				primary: "ui-icon-search"
+				},
+			text: false
+		});
+		
+		$("#cnt_qstion").height($("#qstion").height()-75);
+		$(".evd").height($("#cnt_qstion").height()*0.93).width($("#cnt_qstion").width()*0.49)
+		$(".caja_date").datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			buttonImageOnly: true,
+			maxDate: '0',
+			dateFormat: "yy-mm-dd"
+		});
+		//$( "#dtf" ).datepicker( "option", "minDate", 0 );
+		//$( "#dti" ).datepicker( "option", "maxDate", 0 );
+		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+		$( "#dialog-message" ).dialog({
+			autoOpen:false,
+			modal: false,
+			buttons: {
+				Aceptar: function() {
+					$("#dialog-message" ).dialog( "close" );
+					//alert(save)
+					//if(save==1){r_filtro(); save=0;}
+				}
+			}
+		});
+		$( "#dialog_pb" ).dialog({
+			autoOpen:false,
+			modal: false
+		});		
+	});
+	</script>
+<script>
+	$(function() {
+		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+	
+	});
+	</script>
+
+     
+
+
+
+<script type="text/javascript">
+
+	
+$(document).ready(
+function(){
+	if (GBrowserIsCompatible()) {
+		//alert('compatible')
+        map = new GMap2(document.getElementById("mapa"));
+        map.setCenter(new GLatLng(21.698265,-103.447266), 5);
+        map.setUIToDefault();
+	}	
+				});
+				
+			
+
+
+var div='';
+function change_div(d){
+
+	div = d;
+	//alert(div);
+}
+
+$(document).keydown(function(tecla){
+    if (tecla.keyCode == 113) {
+        //alert('Tecla F2 presionada');
+		(div=="")?$('#bx').css("display",""):$('#'+div+'').css("display","");
+		$('#'+div+'').css("display","");
+    }
+});
+
+		$(document).ready(
+		
+		
+		
+
+			function(){
+							
+
+	           // panel1
+				$('#panel1').panel({
+
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+
+				});
+			//panel qst
+				$("#qstion").panel({
+					//'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});
+				
+				
+				$('#panel2').panel({
+				'collapsed':true
+				});
+				$('#panelgeos').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+					});
+			   /* $('#panelx').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});*/
+
+				// footer
+				/* $('#footer').panel({
+
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+
+				});*/
+				// botones
+              $( "input ubmit, a, button", ".demo" ).button();
+			  //$( "#bgeo" ).button();
+			  $( "#bgeo" ).button({
+				  icons: {
+					  primary: "ui-icon-plusthick"
+					  },
+				  text: false
+				  });
+			  $( "#bscr" ).button({
+				  icons: {
+					  primary: "ui-icon-search"
+					  },
+				  text: false
+				  });				  
+				// combos
+				$('select#speedC').selectmenu({style:'dropdown'});
+
+			///////DIALOG NUEVO	
+				$("#dialog" ).dialog({
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan" },
+					width:  800,
+					height: 600,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_datos();
+						},
+			
+						"Cancelar": function(){
+							if($("#dialog" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							cerrar();
+						}
+					},
+					
+					show: "blind",
+					hide: "blind"
+				}
+				);
+			///////DIALOG NUEVA ZONA	
+				$("#dialognz" ).dialog({
+					title: "Agregar Zona",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan" },
+					width:  800,
+					height: 600,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_datos_z();
+						},
+			
+						"Cancelar": function(){
+							if($("#dialognz" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialognz").dialog('close');
+						}
+					},
+					
+					show: "blind",
+					hide: "blind"
+				}
+				);
+			///////DIALOG DETALLE CIRCUITO
+			var x=screen.width*.51;
+			var y=screen.height*.55;
+				$("#dialogDC" ).dialog({
+					//title: "Agregar Zona",
+					modal: false,
+					autoOpen:false,
+					//overlay: { opacity: 0.2, background: "cyan" },
+					width:  400,
+					height: 300,
+					position: [x, y],
+					/*buttons: {
+						
+						"Guardar": function(){
+							validar_datos_z();
+						},
+			
+						"Cancelar": function(){
+							if($("#dialognz" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialognz").dialog('close');
+						}
+					},*/
+					
+					show: "blind",
+					hide: "blind"
+				}
+				);							
+			///////DIALOG crear	
+				$("#dialog-crear" ).dialog({
+					title: "Nuevo Geo-punto",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan" },
+					width:  700,
+					height: 600,
+					buttons: {
+						
+						"Guardar": function(){
+							AgregaGeoPunto_Acepta();
+						},
+			
+						"Cancelar": function(){
+							if($("#dialog" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog-crear").dialog('close');
+						}
+					},
+					
+					show: "blind",
+					hide: "blind"
+				}
+				);				
+			///////DIALOG NUEVO	
+					
+//.......................................dialog editar..........................//
+				$("#dialog_edt" ).dialog({
+					title: "Editar Circuito",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 800,
+					height: 600,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_datos_c2();
+							
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog_edt" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog_edt" ).dialog('close');
+						
+						}
+					},
+					
+					show: "blind",
+					hide: "blind",
+				}
+				);
+//.......................................dialog editar zona..........................//
+				$("#dialog_edtz" ).dialog({
+					title: "Editar Zona",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 800,
+					height: 600,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_datos_z2();
+							
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog_edt" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog_edt" ).dialog('close');
+						
+						}
+					},
+					
+					show: "blind",
+					hide: "blind",
+				}
+				);
+				
+//.......................................dialog puntos..........................//
+				$("#dialog_pts" ).dialog({
+					title: "Editar {PAGE_TITLE}",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 900,
+					height: 700,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_ed();
+							
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog_pts" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog_pts" ).dialog('close');
+						
+						}
+					},
+					
+					show: "blind",
+					hide: "blind",
+				}
+				);
+//.......................................dialog puntos..........................//
+				$("#dialog_pte" ).dialog({
+					title: "Editar punto",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 700,
+					height: 600,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_datap();
+							
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog_pte" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog_pte" ).dialog('close');
+						
+						}
+					},
+					
+					show: "blind",
+					hide: "blind",
+				}
+				);				
+//.......................................dialog notas..........................//
+				$("#dialog-note" ).dialog({
+					title: "Nueva Nota",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 350,
+					height: 300,
+					buttons: {
+						
+						"Guardar": function(){
+							gdr_note();
+							
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog-note" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog-note" ).dialog('close');
+						
+						}
+					},
+					
+					show: "blind",
+					hide: "blind",
+				}
+				);				
+//.......................................dialog puntos ed..........................//
+				$("#dialog_ptse" ).dialog({
+					title: "Editar Punto",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 900,
+					height: 600,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_datap();
+							
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog_ptse" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog_ptse" ).dialog('close');
+						
+						}
+					},
+					
+					show: "blind",
+					hide: "blind",
+				}
+				);								
+//.......................................dialog alerta..........................//
+
+								
+
+			   //------------------------
+			   
+				//------------------------
+			});
+
+
+
+    function abrir(){
+		$( "#dialog" ).dialog('open');
+	}
+    function cerrar(){
+		$( "#dialog" ).dialog('close');
+	}	
+	</script>
+
+
+
+
+</head>
+<!--<body onload="init('{URL}','{RM}','{UP}')" >-->
+<body onload="ConsultaGeoPuntos()" >
+<div id="panel1" style="z-index:-5">
+   <h2 class="cabeceras">
+      
+        <table border="0" width="100%"> 
+          <tr>
+           <td width="35%"> 
+          <b>Bienvenido:<br /> {NAME}-({MAIL})</b>
+
+           </td>
+           <td width="30%" align="center"> 
+           {PAGE_TITLE}</td>
+           <td width="35%" align="right"> 
+         {FECHA}
+           </td>
+          </tr>
+        </table>
+      
+      
+  </h2>
+<div id="contenedor" style="z-index:-5;">
+
+
+                      <!--  ---------------------------------panel x------------------------------------- -->  
+<div id="panelgeos" class="panel_li"  style="z-index:-4;">
+<h2 class="cabeceras">
+<table width="100%">
+<tr>
+<td>
+<button id="bgeo" class="small_btn" style="position:absolute; top:1px; left: 5px;" onclick="nuevo(1,-1);"></button>
+<button id="bscr" class="small_btn" style="position:absolute; top:1px; left:40px;" onclick="nuevo();"></button>
+</td>
+</tr>
+<tr>
+<td width="14%"></td>
+<td width="38%">Nombre</td>
+<td width="32%">NIP</td>
+<td width="16%">Tipo</td>
+</tr>
+</table>
+</h2>
+<div style="height:97%" id="divgeo">
+	<div id="c_data" style=" overflow:scroll; overflow-x:hidden;  ">
+    
+    </div>
+</div>
+
+</div>        
+
+             
+			
+            
+
+				
+                      <!--  ---------------------------------panel xa mapa------------------------------------- -->  
+           <div id="mapa" class="ui-corner-all panelsi" ></div>
+           
+           <div id="qstion" class="ui-corner-all panelxa">
+           <h2>
+           <table width="100%;">
+           <tr><td colspan="3" align="center">Evidencias</td></tr>
+           <tr><td><label>Usuario:</label></td><td><label>Inicio:</label></td><td><label>Fin:</label></td></tr>
+           <tr>
+           <td>
+           
+           <select class="caja" id="user">
+           <option value="-1" >Todos</option>
+           <!-- BEGIN dt3 -->
+           <option value="{dt3.IDU}" >{dt3.USR}</option>
+           <!-- END dt3 -->
+           </select>
+           </td>
+           <td>
+           
+           <input type="text" class="caja_date ui-corner-all" id="dti" value="{DATE}" readonly="readonly" />
+           <select id="hri" class="mcaja">
+           <!-- BEGIN hrs -->
+           {hrs.NO}
+           <!-- END hrs -->
+           </select>
+           <span>&nbsp;:&nbsp;</span>
+           <select id="mni" class="mcaja">
+           <!-- BEGIN min -->
+           {min.NO}
+           <!-- END min -->
+           </select>
+           </td>
+           <td>
+           
+           <input type="text" class="caja_date ui-corner-all" id="dtf" value="{DATE}" readonly="readonly" />
+           <select id="hrf" class="mcaja">
+           <!-- BEGIN hrs -->
+           {hrs.NO}
+           <!-- END hrs -->
+           </select>
+           <span>&nbsp;:&nbsp;</span>
+           <select id="mnf" class="mcaja">
+           <!-- BEGIN min -->
+           {min.NO}
+           <!-- END min -->
+           </select>           
+           </td>
+           <td>
+           <button class="search small_btn" onclick="get_evidencias();"></button>
+           </td>
+           </tr>
+           <!--<tr><td>Fecha</td><td>Cuestionario</td><td>Usuario</td>-->
+           </table></h2>
+           <div style="width:100%;" id="cnt_qstion">
+            
+           <div id="ev" class="evd ui-corner-all" style="position:relative; float:left; border:#4297D7 solid thin; overflow:scroll; overflow-x:hidden;">
+          
+           </div>
+           <div id="evc" class="evd ui-corner-all" style="position:relative; float:right; border:#4297D7 solid thin; overflow:scroll; overflow-x:hidden;"></div>
+           </div><!--cnt_qstion-->
+           </div>
+           
+          <!-- <div id="panelxxa" class="ui-corner-all" ></div>-->
+
+ 
+
+            
+            
+                
+             
+            <div id="dialogDC"></div>
+			<div id="dialog_pb"></div>
+            <div id="dialog" > </div>
+            <div id="dialognz" > </div>
+            <div id="dialog_edt" > </div> 
+            <div id="dialog_edtz" > </div>             
+            <div id="dialog_pts" > </div>
+            <div id="dialog_ptse" > </div>
+            <div id="dialog_pte" > </div>
+            
+            <div id="dialog-message" title="&iexcl;Aviso!">		</div>
+                       
+            <div id="dialog-confirm" title="&iexcl;Aviso!"></div>
+            <div id="dialog-crear" ></div>
+            <div id="dialog-note" ></div>
+
+
+
+   </div>
+
+              
+</div>
+
+</body>
+</html>

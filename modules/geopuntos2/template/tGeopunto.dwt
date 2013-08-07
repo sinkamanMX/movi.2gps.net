@@ -1,0 +1,241 @@
+<input type="hidden" id="geop" value="{OP}">
+<input type="hidden" id="idg" value="{IDG}">
+<div id="geo_tabs" style="width:95%; height:95%;">
+  <ul>
+    <li><a href="#geo_tabs1">Datos Generales</a></li>
+    <li><a href="#geo_tabs2" onClick="">Ubicaci&oacute;n</a></li>
+    <li><a href="#geo_tabs3">Cuestionarios</a></li>
+    <li><a href="#geo_tabs4" onClick="lay();">Payload</a></li>
+  </ul>
+  <div id="geo_tabs1">
+  <fieldset>
+  <legend>Datos del geopunto</legend>
+  <table width="70%">
+  <tr>
+  <td><label>Nombre:</label></td>
+  <td><input type="text" class="caja" id="gdsc" value="{DSC}"></td>
+  </tr>
+  <tr>
+  <td><label>Tipo:</label></td>
+  <td>
+  <select class="caja" id="gtyp">
+  <!-- BEGIN T -->
+  <option value="{T.ID}" {T.S} >{T.DES}</option>
+  <!-- END T -->
+  </select>
+  </td>
+  </tr>
+  <tr>
+  <td><label>NIP:</label></td>
+  <td><input type="text" class="caja" id="gnip" value="{NIP}"></td>
+  </tr> 
+  <tr>
+  <td><label>Radio:</label></td>
+  <td>
+  <select id="grdo" class="mcaja" >
+  <!-- BEGIN r -->
+  {r.R}
+  <!-- END r -->
+  </select>
+  </td>
+  </tr></table> 
+  </fieldset>
+  <br><br>
+  <fieldset>
+  <legend>Datos del responsable</legend>
+  <table width="70%">
+  <tr>
+  <td><label>Nombre:</label></td>
+  <td><input type="text" class="caja" id="gres" value="{RES}"></td>
+  </tr> 
+  <tr>
+  <td><label>Correo:</label></td>
+  <td><input type="text" class="caja" id="gcor" value="{COR}"></td>
+  </tr>
+  <tr>
+  <td><label>Celular:</label></td>
+  <td><input type="text" class="caja" id="gcel" value="{CEL}"></td>
+  </tr>  
+  <tr>
+  <td><label>Twitter:</label></td>
+  <td><input type="text" class="caja" id="gtwt" value="{TWT}"></td>
+  </tr>  
+  </table>  
+  </fieldset>
+
+
+  </div><!--tabs1-->
+  <div id="geo_tabs2">
+  <div id="location_data" style="width:35%; float:left;" class="ui-corner-all brdrc">
+  <div id="cnt_dir">
+  <table width="100%">
+  <tr>
+  <td><label>Calle:</label></td>
+  <td>
+  <input type="text" id="gstr" class="caja" value="{STR}" />
+  </td>
+  </tr>
+  <tr>
+  <td><label>Estado:</label></td>
+  <td>
+  <select class="caja" id="gedo" onChange="buscar_mun(this.value)">
+  <option value="0" >Seleccionar estado</option>
+  <!-- BEGIN data -->
+  <option value="{data.IDE}" {data.S} >{data.EDO}</option>
+  <!-- END data -->
+  </select>
+  </td>
+  </tr>
+  <tr>
+  <td>
+  <label>Municipio:</label>
+  </td>
+  <td>
+  <div id="dgmun">
+  <select class="caja" id="gmun" onChange="buscar_col(this.value)">
+  <option value="0" >Seleccionar municipio</option>
+  <!-- BEGIN mun -->
+  <option value="{mun.ID}" {mun.S} >{mun.DES}</option>
+  <!-- END mun -->
+  </select>
+  </div>
+  </td>
+  </tr>
+  <tr>
+  <td><label>Colonia:</label></td>
+  <td>
+  <div id="dgcol">
+  <select class="caja" id="gcol">
+  <option value="0"  >Seleccionar Colonia</option>
+  <!-- BEGIN col -->
+  <option value="{col.ID}" {col.S} >{col.DES}</option>
+  <!-- END col -->
+  </select>
+  </div>
+  </td>
+  </tr>
+  <tr>
+  <td><label>C.P.:</label></td>
+  <td>
+  <input type="text" class="caja_date ui-corner-all" id="gc_p" value="{C_P}"  />
+  <!--<button class="buscar small_btn" onClick="busca_por_cp()"></button>-->
+  <button class="mapa small_btn" onClick="showAddress();"></button>
+  </td>
+  </tr>
+  </table>
+  </div><!--cnt_dir-->
+  <table width="100%">
+  <tr>
+  <td colspan="2"><label><br>Buscar por coordenadas:</label></td>
+  </tr>
+  <tr>
+  <td>
+  <label>Latitud:</label>
+  </td>
+  <td><div id="dglat"><input type="text" class="caja_date ui-corner-all" id="glat" value="{LAT}" ></div></td>
+  </tr>
+  <tr>
+  <td>
+  <label>Longitud:</label>
+  </td>
+  <td>
+  <div id="dglon"><input type="text" class="caja_date ui-corner-all" id="glon" value="{LON}"></div>
+  <button class="buscar small_btn" onClick="centra_punto();"></button>
+  </td>
+  </tr>
+  </table>
+  
+  </div><!--location_data-->
+  <div id="geo_location_map"  style="width:460px; height:440px; float:right; border:#a6c9e2 solid thin;" class="ui-corner-all brdrc"></div><!--location_map-->
+  </div><!--tabs2-->
+  <div id="geo_tabs3">
+    <div style="position:absolute; width:98%; height:90%; border:#00F dotted thin;">
+    
+    <!--cuestionarios disponibles-->
+    <div style=" width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">Cuestionarios Disponibles</span>
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(1,this.value);" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
+    <div id="geo_qst_dsp" class="dropme" style="width:100%;">
+    <!-- BEGIN U -->
+    <div class="ui-corner-all" id="{U.ID}">{U.DES}</div>
+    <!-- END U -->
+    </div>
+    </div>
+    </div>   
+    <!--cuestionarios disponibles-->
+    <!--cuestionarios seleccionados-->
+    <div style="width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">Cuestionarios Seleccionados</span>
+    <!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>-->
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(2,this.value)" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+    <!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
+    
+    <div id="geo_qst_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+    <!-- BEGIN U2 -->
+    <div class="ui-corner-all" id="{U2.ID}">{U2.DES}</div>
+    <!-- END U2 -->
+    </div>
+    </div>
+    <!--</div>-->
+    <!--cuestionarios seleccionados-->
+    
+    </div>
+  
+  </div><!--tabs3-->
+  <div id="geo_tabs4"></div><!--tabs4-->
+</div>
+<script>
+//$(document).ready(function(){
+	pgeo_gmapa();
+	$("#geo_tabs").tabs();
+	$("#location_data").height($("#geo_tabs").height()*0.9)
+	$("#geo_location_map").height($("#geo_tabs").height()*0.9)
+	$( ".buscar" ).button({
+      icons: {
+        primary: "ui-icon-search"
+      },
+      text: false
+    });
+	$( ".mapa" ).button({
+      icons: {
+        primary: "ui-icon-arrow-4"
+      },
+      text: false
+    })
+	
+	$('.dropme').sortable({
+		connectWith: '.dropme',
+		cursor: 'move'
+		}).droppable({
+			accept: '.dropme',
+			activeClass: 'highlight',
+			drop: function(event, ui) {
+				var $li = $('<div>').html('List ' + ui.draggable.html());
+				$li.appendTo(this);
+				}
+		});//alert($("#location_data").height());
+	//});
+</script>

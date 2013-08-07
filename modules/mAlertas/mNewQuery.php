@@ -10,9 +10,8 @@
 	set_time_limit(0);
 	$db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);
 	
-		
-	if(!$userAdmin->u_logged())
-		echo '<script>window.location="index.php?m=login"</script>';
+		if(!$userAdmin->u_logged()){echo '<script>window.location="index.php?m=login"</script>';}
+
 					
 	$userID   	      = $userAdmin->user_info['ID_USUARIO'];	
 	$cliente    = $userAdmin->user_info['ID_CLIENTE'];
@@ -30,7 +29,7 @@
 			 $cad=$div;
 			}
 	
-	$query_units_cli=$cad;
+$query_units_cli=$cad;
 			$queryQ  = $db->sqlQuery($query_units_cli);
 			$count     = $db->sqlEnumRows($queryQ);
 		

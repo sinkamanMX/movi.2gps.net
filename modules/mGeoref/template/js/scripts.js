@@ -480,12 +480,24 @@ function geos_load_datatable(){
       $("#geos_dialog_message" ).dialog('open');  
       error++;
     }  
-	//alert(error)
+/*	 if($("#geos_check").is(':checked')) {  
+            alert("Está activado"+$("#geos_check").is(':checked'));
+        } else {  
+            alert("No está activado"+$("#geos_check").is(':checked'));  
+        }  */
+		
     if(error==0){ geos_send_edit_geop(); }
+	
   }
 
+
+
   function geos_send_edit_geop(){
-	  
+	  var b = false;
+	  if($("#geos_check").is(':checked')){
+		  b = true;
+	  }
+	 // alert (b);
       $.ajax({
           url: "index.php?m=mGeoref&c=mSetRowp",
           type: "GET",
@@ -503,6 +515,7 @@ function geos_load_datatable(){
             tipo    : $("#geos_select_tipo").val(),
             radio   : $("#geos_txt_ra").val(),  
             privacidad: $("#geos_txt_priv").val(),
+			base      : b,
             lat   : marker.getPosition().lat().toFixed(6),
             lon   : marker.getPosition().lng().toFixed(6)
           },

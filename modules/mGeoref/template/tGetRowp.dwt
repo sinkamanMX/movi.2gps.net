@@ -119,11 +119,17 @@
         </tr>  
         <tr>
             <td>Radio (mts):</td>
-            <td colspa="3">
+            <td colspan="3">
                 <select class="geos_caja_no" id="geos_txt_ra">
                   {RADIO}
                 </select>
             </td>
+        </tr>
+        <tr>
+           <td> Geopunto Base:</td>
+           <td colspan ="3"> 
+           <input type="checkbox" id="geos_check" {BASE}/>
+           </td>
         </tr>
     </table>
   </div>

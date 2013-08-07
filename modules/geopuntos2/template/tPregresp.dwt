@@ -1,0 +1,35 @@
+<style type="text/css">
+.tabladatos{
+	width:100%;
+	/*//height:420px;*/
+	background-color:#FFF;
+	margin:0;
+	}
+.datashow{
+	font-family: Calibri, Arial;
+	font-size:12px;
+
+	background-color:#FFF; 
+	margin:auto;
+}
+</style>
+<div class="tabladatos" >
+<table width="100%">
+<tr>
+<td width="50%">Pregunta</td>
+<td width="50%">Respuesta</td>
+</tr>
+</table>
+<table class="datashow" id="datashow_pr" width="100%">
+    <!-- BEGIN pr -->
+    <tr class="FontXD">
+    <td width="50%">{pr.PRE}</td>
+    <td width="50%">{pr.RES}</td>
+    </tr>
+	<!-- END pr -->
+</table>
+
+
+</div>
+
+
