@@ -73,7 +73,8 @@
 	$estados   = $dbf->cbo_from_string('ID_ESTADO','NOMBRE','ZZ_SPM_ENTIDADES','1=1',@$data_row['ESTADO']);	
 	$municipio = '<option selected value="-1" >'.$Functions->codif(@$data_row['MUNICIPIO']).'</option>';
 	$colonia   = '<option selected value="-1" >'.$Functions->codif(@$data_row['COLONIA']).'</option>';
-   if ($data_row['BASE']== 1 ){
+    $base = 0;
+   if ($data_row['BASE']== '1' ){
     $base= 'checked="checked"';
    }
 	$colores   = $dbf->cbo_from('COD_COLOR','DESCRIPTION','ADM_COLORES','1=1',@$data_row['COD_COLOR']);
