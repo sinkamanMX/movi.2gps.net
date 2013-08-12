@@ -1,0 +1,16 @@
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title> My Calendar </title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <script type="text/javascript" src="public/js/ui/jquery.js"></script>   
+    <script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="{PATH}/js/modals/jquery.bpopup.js"></script>    
+    <script type="text/javascript" src="{PATH}/js/comboquery/chosen.jquery.js" ></script>
+    <script type="text/javascript" src="{PATH}/js/dashboard.js"></script>
+
+    <link href="{PATH}/css/estilo.css" rel="stylesheet" type="text/css" />
+    <link href="{PATH}/css/noJS.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{PATH}/js/comboquery/chosen.css">
+</head>

@@ -1,78 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>	My Calendar </title>
+    <title> My Calendar </title>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <script type="text/javascript" src="public/js/ui/jquery.js"></script>   
     <script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript" src="{PATH}/js/modals/jquery.bpopup.js"></script>
+    <script type="text/javascript" src="{PATH}/js/modals/jquery.bpopup.js"></script>    
     <script type="text/javascript" src="{PATH}/js/comboquery/chosen.jquery.js" ></script>
+    <script type="text/javascript" src="{PATH}/js/dashboard.js"></script>
 
     <link href="{PATH}/css/estilo.css" rel="stylesheet" type="text/css" />
     <link href="{PATH}/css/noJS.css" rel="stylesheet" type="text/css" />
-    <!--<link rel="stylesheet" href="comboquery/docsupport/style.css">-->
     <link rel="stylesheet" href="{PATH}/js/comboquery/chosen.css">
-
-  <script>
-  $(function() {
-    $( ".draggable" ).draggable({  containment: "parent" });
-    $("#btnAdd").click( function(){
-      $('#dialogAddWidget').bPopup({
-        escClose : false,
-        modalClose: false,
-      });
-    });  
-
-/*$('#dialogConfigWidget').bPopup({
-        escClose : false                    
-      });*/       
-  });
-  </script> 
-
-
-<script type="text/javascript">
-$(document).ready(function() {
-try {
-$(document).bind("contextmenu", function(e) {
-e.preventDefault();
-$("#custom-menu").css({ top: e.pageY + "px", left: e.pageX + "px" }).show(100);
-});
-$(document).mouseup(function(e) {
-var container = $("#custom-menu");
-if (container.has(e.target).length == 0) {
-container.hide();
-}
-});
-}
-catch (err) {
-alert(err);
-}
-});
-</script>  
-<script type="text/javascript">
-$(document).ready(function() {
-  $('#wgtTxtSearch').keyup(function(){
-      var ourClass =  this.value;      
-      searchOfText(ourClass);
-  });
-});
-
-function searchOfText(textSearch){
-    $('#divListWidgets > div > .widgetTittle').each(function () {
-        var searchText = $(this).html();  
-        if(searchText.contains(textSearch)){
-          $(this).parent().fadeIn();
-        }else{
-          $(this).parent().fadeOut();
-        }
-    });
-}
-
-function closePopUpWidgets(){
-   $('#dialogAddWidget').bPopup().close();
-}
-</script>
 </head>
 <body>
   <div id="divmain" class="totalwidth totalheight bigPanel">
@@ -128,7 +68,7 @@ function closePopUpWidgets(){
 
     <div>
 
-    <div id="dialogAddWidget" class="dialog-default-status dialog-open">
+ <div id="dialogAddWidget" class="dialog-default-status dialog-open">
         <div class="dialogClose" onclick="closePopUpWidgets();"><span>CERRAR</span></div>
         <div class="headerDialog" class="total_width">
             <div class="tittleDialog total_width">Agregar Widget</div>
@@ -147,42 +87,6 @@ function closePopUpWidgets(){
             </div>
             <div id="divListWidgets" class="total_width">
                 {WIDGETS}
-                <div class="widgetPanel class1">
-                    <div class="widgetTittle">Widget 1</div>
-                    <div class="widgetDesc">Este es un widget</div>
-                    <div class="widgetImage1"></div>
-                </div>
-
-                <div class="widgetPanel class3 ">
-                    <div class="widgetTittle">Widget 1</div>
-                    <div class="widgetDesc">Este es un widget</div>
-                    <div class="widgetImage2"></div>
-                </div>
-
-                <div class="widgetPanel class2">
-                    <div class="widgetTittle">Widget 1</div>
-                    <div class="widgetDesc">Este es un widget</div>
-                    <div class="widgetImage3"></div>
-                </div>
-
-                <div class="widgetPanel class1">
-                    <div class="widgetTittle">Widget 1</div>
-                    <div class="widgetDesc">Este es un widget</div>
-                    <div class="widgetImage4"></div>
-                </div>
-
-                <div class="widgetPanel class3">
-                    <div class="widgetTittle">Widget 1</div>
-                    <div class="widgetDesc">Este es un widget</div>
-                    <div class="widgetImage5"></div>
-                </div>
-
-                <div class="widgetPanel class2">
-                    <div class="widgetTittle">Widget 1</div>
-                    <div class="widgetDesc">Este es un widget</div>
-                    <div class="widgetImage6"></div>
-                </div>                        
-
             </div>
         </div>
     </div>

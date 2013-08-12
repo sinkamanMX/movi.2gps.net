@@ -36,12 +36,13 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 				
 		for($i=0;$i<$totalWidgets;$i++){			
 			$widgets.='<div class="widgetPanel class'.$widgetsDisponibles[$i]['ID_WIDGET'].'">
+						<input type="hidden" value="'.$widgetsDisponibles[$i]['ID_WIDGET'].'"/>
                     <div class="widgetTittle">'.$widgetsDisponibles[$i]['NOMBRE'].'</div>
                     <div class="widgetDesc">'.$widgetsDisponibles[$i]['DESCRIPCION'].'</div>
                     <!--<div class="widgetImage1"></div>-->
                 </div>';
 		}
-	}	
+	}
 		
 	$tpl->assign_vars(array(
 		'PATH'			=> $dir_mod,

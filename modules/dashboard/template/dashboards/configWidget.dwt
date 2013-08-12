@@ -1,0 +1,62 @@
+    <div id="dialogConfigWidget" class="dialog-default-status dialog-open">
+        <div class="dialogClose"><span>CERRAR</span></div>
+        <div class="headerDialog">
+            <div class="tittleDialog float-left w200 border5 h45 mr5 bgcolorTittle">
+                <span class="spanTittle">Widget</span></div>
+
+                <div class="soundWidget border5">
+                  <div class="iconSound"></div>
+                  <div class="iconNoSound"></div>              
+                </div>
+
+                <div class="deleteWidget border5"> 
+                    <div class="iconTrash"></div>
+                    <span class="textTrash">Eliminar <br> Widget</span>
+
+                </div>
+                <div class="copyWidget border5">
+                    <div class="iconCopy"></div>
+                    <span class="textTrash">Copiar Widget <br> a otro dashboard</span>
+                </div>
+        </div>
+        <div class="contentWidget">
+
+          <section id="wrapper" class="wrapper">
+
+            <div id="v-nav">
+
+                <ul>
+                  <li tab="tab1" class="first current">Fatti il sito</li>
+                  <li tab="tab2">Rifatti il look</li>
+                  <li tab="tab3">Organizzati</li>
+                  <li tab="tab4" class="last">Parla di te</li>
+               </ul>
+
+               <div class="tab-content">
+                 <h4><a href="http://www.evermind.it/?areaservizio=fatti-il-sito">Fatti il sito</a></h4>
+               </div>
+
+               <div class="tab-content">
+                 <h4><a href="http://www.evermind.it/?areaservizio=rifatti-il-look">Rifatti il look</a></h4>
+               </div>
+
+               <div class="tab-content">
+                  <h4><a href="http://www.evermind.it/?areaservizio=organizzati">Organizzati</a></h4>   
+               </div>
+
+               <div class="tab-content">
+                 <h4><a href="http://www.evermind.it/?areaservizio=parla-di-te">Parla di te</a></h4>                
+               </div>
+
+            </div>
+
+          </section>
+
+
+
+        </div>
+        <div class="buttonWidget">
+            <span class="tittleButton">guardar la configuración de este widget</span>
+
+        </div>
+    </div>
