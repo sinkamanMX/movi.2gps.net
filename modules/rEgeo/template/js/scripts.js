@@ -194,9 +194,16 @@ function rhi_load_datatable(){
 			{ "mData": "", sDefaultContent: "" },
 			{ "mData": "tMovimiento", sDefaultContent: "" },
 			{ "mData": "tRalenti", sDefaultContent: "" },
+<<<<<<< HEAD
 			{ "mData": "tDetenido", sDefaultContent: "" }
 			
 			
+=======
+			{ "mData": "tDetenido", sDefaultContent: "" },	
+			{ "mData": "distancia", sDefaultContent: "" },
+			{ "mData": "promedio", sDefaultContent: "" },
+			{ "mData": "maxima", sDefaultContent: "" }
+>>>>>>> e7a074752a3e68ea75ed73aa1f4db74316a2ad42
 	    ] ,           
 	    "oLanguage": {
 	        "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
@@ -378,6 +385,10 @@ function getSummary(){
 	var fechaFinal		=   $('#rhi_to').val();
 	var idGroup			=	$('#selgrupo').val();
 	var idUnit			=	$('#rhiUnits').val();
+<<<<<<< HEAD
+=======
+	//alert(fechaInicial+''+fechaFinal+''+idGroup+''+idUnit);
+>>>>>>> e7a074752a3e68ea75ed73aa1f4db74316a2ad42
 	$( "#rhi_exp_exe" ).removeClass('visible').addClass('invisible');
 	$.ajax({
 		url : "index.php?m=rEgeo&c=mGetReport",
@@ -684,7 +695,11 @@ function rhiDrawTableMap(){
 			}
 		});	
 		var iconsetngs = {
+<<<<<<< HEAD
 		    path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
+=======
+		    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+>>>>>>> e7a074752a3e68ea75ed73aa1f4db74316a2ad42
 		    strokeColor: '#155B90',
 		    fillColor: '#155B90',
 		    fillOpacity: 1,
