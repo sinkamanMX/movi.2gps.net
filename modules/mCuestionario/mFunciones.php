@@ -12,7 +12,7 @@ class mFunciones{
 function ngraficas($dbh,$dbuser,$dbpass,$dbname,$qst,$rtime,$dti,$dtf){
 	$conexion = mysqli_connect($dbh,$dbuser,$dbpass,$dbname);
 	if($conexion){
-		$sql = "SELECT P.ID_PREGUNTA, P.COMPLEMENTO,P.DESCRIPCION AS PREGUNTA
+		$sql = "SELECT P.ID_PREGUNTA, P.COMPLEMENTO,P.GRAFICABLEDATA,P.DESCRIPCION AS PREGUNTA
 		FROM CRM2_PREG_RES PR
 		INNER JOIN CRM2_PREGUNTAS P ON P.ID_PREGUNTA=PR.ID_PREGUNTA
 		INNER JOIN CRM2_RESPUESTAS R ON R.ID_RES_CUESTIONARIO=PR.ID_RES_CUESTIONARIO
@@ -25,6 +25,7 @@ function ngraficas($dbh,$dbuser,$dbpass,$dbname,$qst,$rtime,$dti,$dtf){
 				//$this->graficar($dbh,$dbuser,$dbpass,$dbname,$qst,$rtime,$row['ID_PREGUNTA']);
 				//$this->tabla($dbh,$dbuser,$dbpass,$dbname,$qst,$rtime,$row['ID_PREGUNTA'],$row['COMPLEMENTO'],$dti,$dtf);
 				$idp_com = ($idp_com=="")?$row['ID_PREGUNTA']."|".$row['COMPLEMENTO']."|".$row['PREGUNTA']: $idp_com."*".$row['ID_PREGUNTA']."|".$row['COMPLEMENTO']."|".$row['PREGUNTA'];
+				//$idp_com = ($idp_com=="")?$row['ID_PREGUNTA']."|".$row['GRAFICABLEDATA']."|".$row['PREGUNTA']: $idp_com."*".$row['ID_PREGUNTA']."|".$row['GRAFICABLEDATA']."|".$row['PREGUNTA'];
 				
 				}
 				//echo $idp_com;
@@ -51,7 +52,9 @@ function tabla($dbh,$dbuser,$dbpass,$dbname,$qst,$rtime,$idp,$complemento, $dti,
 		 $tabla[$i+1][0]=$dts[$i];
 		}
 	for($i=0; $i<count($com); $i++){
-		 $tabla[0][$i+1]=$com[$i];
+		 //$tabla[0][$i+1]=$com[$i];
+		 $tabla[0][$i+1]= (is_numeric($com[$i]))?"Cantidad":$com[$i];
+		 
 		}
 	$this->llenar_tabla($dbh,$dbuser,$dbpass,$dbname,$qst,$rtime,$idp,$tabla,count($com));
 	}
@@ -84,9 +87,15 @@ function llenar_tabla($dbh,$dbuser,$dbpass,$dbname,$qst,$rtime,$idp,$tabla,$com)
 						   if($row['D']==$tabla[$r][0]){
 							   //echo $row['D']."==".$tabla[$r][0]."<br>";
 							   if($tabla[0][$c]!=""){
+								   //echo $row['RESPUESTA']."==".$tabla[0][$c]."<br>";
 								   if($row['RESPUESTA']==$tabla[0][$c]){
 									   $tabla[$r][$c] =  ($tabla[$r][$c]=="")?1:$tabla[$r][$c]+1;
 									}
+									else{
+										if(is_numeric($row['RESPUESTA'])){
+											$tabla[$r][$c] =  $row['RESPUESTA'];
+											}
+										}
 							   }
 							}
 						  }

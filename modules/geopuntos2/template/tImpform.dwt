@@ -1,0 +1,39 @@
+<script>
+	//Definir botones dowload
+	$( ".down" ).button({
+      icons: {
+        primary: "ui-icon-circle-arrow-s"
+      },
+      text: false
+    })
+</script>
+
+<div style=" height:40px; width:100%" >
+<div style="position:relative; float:left; width:90%;">
+<form name="envi_excel" id="geo_form" action="index.php?m=geopuntos2&c=mImportFile" method="post" enctype="multipart/form-data" target="archivo">
+<table>
+<tr>
+<td>Archivo:</td><td><input type="file" id="geo_excel" name="geo_excel"/> </td>
+</tr>
+</table>
+</form>
+</div>
+<div style="position:relative; float:right; width:9%">
+<button class="down" onclick="geo_down_format()">Descargar plantilla</button>
+</div>
+</div>
+
+<input type="hidden" id="usuario" value="{COD_USER}" size="20"/>
+<input type="hidden" id="cliente" value="{COD_CLI}" size="20"/>
+
+
+
+
+              
+<div id="console2" style="height:auto; width:100%;">
+<iframe name="archivo" id="archivo" style=" display:none;" width="700" height="100" frameborder="1"></iframe>
+Consola de eventos:
+<div id="geo_c_content2" class="ui-corner-all" style="width:100%; height:250px; border:#A6C9E2 solid thin;" ></div>
+</div>
+
+

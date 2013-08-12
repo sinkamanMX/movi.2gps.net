@@ -12,8 +12,8 @@
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="geo_table" width="100%">
 <thead>
 <tr>
-<th colspan="5"><div style="width:90%; float:left;"><h3>Geopuntos</h3></div>
-<div style="width:9%;  float:right;"><button class="boton" id="geo_add" onClick="geo_nuevo(1,-1);">Nuevo</button></div></th>
+<th colspan="5"><div style="width:79%; float:left;"><h3>Geopuntos</h3></div>
+<div style="width:20%;  float:right;"><button class="boton" id="geo_add" onClick="geo_nuevo(1,-1);">Nuevo</button><button class="import small_btn" onclick="geo_imp_for();" title="Importar"></button></div></th>
 </tr>
 <tr>
 <th></th>	
@@ -149,7 +149,8 @@
                 
              
            
-            <div id="geo_dialog" > </div>           
+            <div id="geo_dialog" > </div>
+            <div id="geo_dialog_import" > </div>           
             <div id="geo_dialog_message" title="&iexcl;Aviso!"></div>
             <div id="geo_dialog_confirm" title="&iexcl;Aviso!"></div>
 

@@ -265,12 +265,11 @@ function epo_load_datatable(){
   }
 
   function epo_send_delete(value){
-    
     $.ajax({
-        url: "/login/login",
+        url: "index.php?m=mEquipos&c=mDelRow",
         type: "GET",
         dataType : 'json',
-        data: { user: value },
+        data: { data: value },
         success: function(data) {
           var result = data.result; 
 

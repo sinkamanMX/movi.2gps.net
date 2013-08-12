@@ -74,6 +74,7 @@
 	$municipio = '<option selected value="-1" >'.$Functions->codif(@$data_row['MUNICIPIO']).'</option>';
 	$colonia   = '<option selected value="-1" >'.$Functions->codif(@$data_row['COLONIA']).'</option>';
     $base = 0;
+	echo 'BASE:'.$data_row['BASE'];
    if ($data_row['BASE']== '1' ){
     $base= 'checked="checked"';
    }

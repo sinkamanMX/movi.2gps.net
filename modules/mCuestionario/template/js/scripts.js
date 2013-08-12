@@ -663,7 +663,7 @@ function qst_guardar_form(op){
 			    },
           success: function(data) {
             var result = data; 
-			alert(result);
+			//alert(result);
 			if(result>0){
 				message = (op==1)?"El cuestionario ha sido almacenado satisfactoriamente.":"El cuestionario ha sido actualizado satisfactoriamente";
 				$('#qst_dialog_formu').dialog('close');
@@ -834,7 +834,7 @@ function qst_save_formp(){
 			},
         success: function(data) {
         var result = data;
-		alert(result) 
+		//alert(result) 
 		if(result==1){
 			preguntas_seleccionadas();
 			$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La pregunta ha sido almacenda satisfactoriamente</p>');
@@ -952,7 +952,7 @@ function qst_send_delete(q){
 				qst_load_datatable();
 				}
 			else{
-				alert(result);
+				//alert(result);
 				$('#eqp_dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Ha ocurrido un error intentelo nuevamente.</p>');
 				$("#eqp_dialog_message" ).dialog('open');
 				}	

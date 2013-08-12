@@ -148,6 +148,7 @@
 			}
 			$comp = "  AND ID_CUESTIONARIO NOT IN (".$idq.") ";
 		 }
+		 if($idq!=""){
 		 $sql_e = "SELECT ID_CUESTIONARIO,DESCRIPCION FROM CRM2_CUESTIONARIOS WHERE COD_CLIENT = ".$cod_client." AND ID_CUESTIONARIO  IN (".$idq.") ORDER BY DESCRIPCION;";
 		 $qry_e = $db->sqlQuery($sql_e);
 		 $cnt_e = $db->sqlEnumRows($qry_e);
@@ -159,7 +160,8 @@
 					'DES'	=>	$row_e['DESCRIPCION']
 					));
 				}		
-			}		 
+			}
+		 }
 		}
 	else{
 		$comp = "";

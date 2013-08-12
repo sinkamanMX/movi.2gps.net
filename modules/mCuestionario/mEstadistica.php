@@ -2,7 +2,7 @@
 /** *              
  *  @name                Script que muestra los datos de un perfil
  *  @copyright           Air Logistics & GPS S.A. de C.V.   
- *  @author              Enrique Peña 
+ *  @author              Rodwyn Moreno
  *  @modificado          27/03/13
 **/
 	header('Content-Type: text/html; charset=UTF-8');
@@ -20,6 +20,8 @@
 		$sStartDate = date ("Y-m-d", $sStartTS);
 		$sEndDate   = date ("Y-m-d", $sStartTS + (6*24*60*60));		
 	
+	$tpl->set_filenames(array('mEstadistica' => 'tEstadistica'));
+	
 	$sd_h = $Functions->cbo_number(24,"00");
 	$sd_m = $Functions->cbo_number(60,"00");
 	$ed_h = $Functions->cbo_number(24,"23");
@@ -30,7 +32,7 @@
 	$pregs = $dbf->cbo_from_query("CP.ID_PREGUNTA","P.DESCRIPCION",$c_qry,"",true);
 	//$pregs = $dbf->cbo_from_all("ID_PREGUNTA","DESCRIPCION","CRM2_PREGUNTAS","COD_CLIENT = ".$emp." ORDER BY DESCRIPCION","");
 	
-	$tpl->set_filenames(array('mEstadistica' => 'tEstadistica'));
+	
 	$tpl->assign_vars(array(
 
 		'DB_H'          => $config_bd['host'],

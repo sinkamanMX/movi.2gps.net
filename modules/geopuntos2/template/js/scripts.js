@@ -22,6 +22,13 @@ $(document).ready(function () {
       },
       text: false
     })
+	//Definir botones importar
+	$( ".import" ).button({
+      icons: {
+        primary: "ui-icon-circle-arrow-n"
+      },
+      text: false
+    })
 	//DEFINIR BOTON
 	$(".boton").button();
 	//CARGAR TABLA GEOPUNTOS
@@ -49,6 +56,28 @@ $(document).ready(function () {
 		show: "blind",
 		hide: "blind"
 		});
+	//Declara dialog import
+	$("#geo_dialog_import" ).dialog({
+		modal: true,
+		autoOpen:false,
+		overlay: { opacity: 0.2, background: "cyan" },
+		width:  550,
+		height: 400,
+		buttons: {
+			"Importar": function(){
+				geo_enviar_excel();
+				},
+			"Cancelar": function(){
+				if($("#geo_dialog_import" ).dialog('isOpen')){
+					$("#dialog_message").dialog('close');
+					}
+					$("#geo_dialog_import" ).dialog('close');
+					geo_load_datatable();
+				}
+				},
+		show: "blind",
+		hide: "blind"
+		});		
 	//MAPA PRINCIPAL
 	geo_mapa();
 	
@@ -859,4 +888,53 @@ function proceso_borrar(id){
 			}
 		});	
 	}	
+//-----------------------------------------------------------
+function geo_imp_for(){
+	$.ajax({
+		url: "index.php?m=geopuntos2&c=mImpform",
+		type: "GET",
+		success: function(data) {
+			var result = data;
+			//alert(result) 
+			if(result!=0){
+				$('#geo_dialog_import').dialog('open'); 
+				$('#geo_dialog_import').html(result); 
+				}
+			}
+		});		
 	
+	}	
+//---------------- funcion que permite descargar archivo excel-plantilla
+
+function geo_down_format()
+{
+
+   window.location="public/Descargas/Geopuntos/plantilla.xls";
+}	
+//----------------------- funcion que envia el excel.
+function geo_enviar_excel(){
+	
+	if($('#geo_excel').val()==""){			
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Seleccione un archivo</p>');
+		$("#dialog_message" ).dialog('open');
+		$('#geo_excel').focus();
+		return false;
+	}
+	else{
+		$("#dialog_message").dialog({ title: "Cargando" });
+		$('#dialog_message').html('<div class="demo"><div style="position:relative; width:60px; left:120px; "><img src="public/images/ajax_loader.gif" width="60" height="60" ><br/>Cargando...</div></div></div>');
+		$("#dialog_message" ).dialog('open');
+		
+		//barra_progress();
+	
+		document.forms["geo_form"].submit();
+		$("#geo_excel").val("");
+		$("#dialog_message" ).dialog('close');		
+		
+		}
+}	
+//------------------------------------------------------------
+function mensaje(g){
+$("#geo_c_content2").html(g)
+//document.getElementById('c_content2').innerHTML =g;	 
+}
