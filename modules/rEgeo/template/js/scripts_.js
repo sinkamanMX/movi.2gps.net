@@ -192,11 +192,12 @@ function rhi_load_datatable(){
 	    "bSortClasses": false,    
 	    "aoColumns": [
 			{ "mData": "", sDefaultContent: "" },
-			{ "mData": "time_out", sDefaultContent: "" },
-			{ "mData": "time_in", sDefaultContent: "" },
-			{ "mData": "visitas", sDefaultContent: "" }
-			
-			
+			{ "mData": "tMovimiento", sDefaultContent: "" },
+			{ "mData": "tRalenti", sDefaultContent: "" },
+			{ "mData": "tDetenido", sDefaultContent: "" },	
+			{ "mData": "distancia", sDefaultContent: "" },
+			{ "mData": "promedio", sDefaultContent: "" },
+			{ "mData": "maxima", sDefaultContent: "" }
 	    ] ,           
 	    "oLanguage": {
 	        "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
@@ -378,6 +379,7 @@ function getSummary(){
 	var fechaFinal		=   $('#rhi_to').val();
 	var idGroup			=	$('#selgrupo').val();
 	var idUnit			=	$('#rhiUnits').val();
+	//alert(fechaInicial+''+fechaFinal+''+idGroup+''+idUnit);
 	$( "#rhi_exp_exe" ).removeClass('visible').addClass('invisible');
 	$.ajax({
 		url : "index.php?m=rEgeo&c=mGetReport",
@@ -390,7 +392,6 @@ function getSummary(){
 		},
 		success:function(data){
 			var result = data;
-			alert(result);
 			if(result!= "no-info"){
 				$("#rhi_exp_exe").removeClass("invisible").addClass("visible");
 				aReport=new Array();
@@ -410,12 +411,14 @@ function setSummaryTable(){
 	aTableEventos	 = [];
 	var arraySummary = aReport[0].split("!");
 
-	nameUnit  = arraySummary[3];
+	nameUnit  = arraySummary[6];
 	aReportSummary = aReportSummary.concat({ 
-		"time_out":  	aReport[0], 
-		"time_in" :  	aReport[1],
-		"visitas" :     aReport[2]
-
+		"distancia" :  	arraySummary[0]+" kms.", 
+		"maxima" :  	arraySummary[1]+" km/h",
+		"promedio"   :  arraySummary[2]+" km/h",
+		"tMovimiento" : arraySummary[3],
+		"tDetenido" :  	arraySummary[4],
+		"tRalenti" :  	arraySummary[5]
 	});	
 
 	var arrayHistorico =  aReport[1].split("!");
@@ -427,7 +430,7 @@ function setSummaryTable(){
 				"VEL"   :  infoHistorico[4],
 				"LATIT" :  infoHistorico[5],
 				"LONGI" :  infoHistorico[6],
-				"DIREC" :  infoHistorico[10],
+				"DIREC" :  infoHistorico[10]
 		});
 	}
 
@@ -438,7 +441,6 @@ function setSummaryTable(){
 				"idEventos" 	:  infoEventos[0], 
 				"Eventos" 		:  infoEventos[1],
 				"totalEvetos"  	:  infoEventos[2]
-				
 		});
 	}	
 
@@ -684,7 +686,7 @@ function rhiDrawTableMap(){
 			}
 		});	
 		var iconsetngs = {
-		    path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
+		    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
 		    strokeColor: '#155B90',
 		    fillColor: '#155B90',
 		    fillOpacity: 1,
