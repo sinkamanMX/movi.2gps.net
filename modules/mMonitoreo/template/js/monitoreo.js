@@ -110,7 +110,7 @@ function mon_draw_acordion(){
 
 	mon_div_info.appendTo(mon_div_acordeon);	
 	mon_div_acordeon.appendTo("#mon_menu_acordeon");
-	mon_div_acordeon.accordion();
+	mon_div_acordeon.accordion({ clearStyle: true, autoHeight: false });
 	draw_acordion=1;
 
     $( "#tags" ).autocomplete({
