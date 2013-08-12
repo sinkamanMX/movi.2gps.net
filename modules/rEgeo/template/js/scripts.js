@@ -194,10 +194,9 @@ function rhi_load_datatable(){
 			{ "mData": "", sDefaultContent: "" },
 			{ "mData": "tMovimiento", sDefaultContent: "" },
 			{ "mData": "tRalenti", sDefaultContent: "" },
-			{ "mData": "tDetenido", sDefaultContent: "" },	
-			{ "mData": "distancia", sDefaultContent: "" },
-			{ "mData": "promedio", sDefaultContent: "" },
-			{ "mData": "maxima", sDefaultContent: "" }
+			{ "mData": "tDetenido", sDefaultContent: "" }
+			
+			
 	    ] ,           
 	    "oLanguage": {
 	        "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
@@ -319,7 +318,7 @@ function getUnits(){
 	var idGroup = $('#selgrupo').val();
 	if(idGroup>0){
 		$.ajax({
-			url: "index.php?m=rHistorico&c=mGetUnits",
+			url: "index.php?m=rEgeo&c=mGetUnits",
 			type: "GET",
 			dataType : 'json',
 			data: {datagroup : idGroup },
@@ -381,7 +380,7 @@ function getSummary(){
 	var idUnit			=	$('#rhiUnits').val();
 	$( "#rhi_exp_exe" ).removeClass('visible').addClass('invisible');
 	$.ajax({
-		url : "index.php?m=rHistorico&c=mGetReport",
+		url : "index.php?m=rEgeo&c=mGetReport",
 		type: 'GET',
 		data: {
 			idUnit	: idUnit,
@@ -790,7 +789,7 @@ function rhiExportExcel(){
 	var idGroup			=	$('#selgrupo').val();
 	var idUnit			=	$('#rhiUnits').val();
 
-	var url = "index.php?m=rHistorico&c=mGetReportExcel";
+	var url = "index.php?m=rEgeo&c=mGetReportExcel";
 	var urlComplete = url + "&fBegin="+fechaInicial+"&fEnd="+fechaFinal+"&idUnit="+idUnit;
 	/*window.location = urlComplete;*/
 	
