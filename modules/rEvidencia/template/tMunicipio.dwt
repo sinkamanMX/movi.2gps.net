@@ -1,0 +1,7 @@
+  <select class="caja" id="gmun" onChange="buscar_col(this.value)">
+  <option value="0" >Seleccionar municipio</option>
+  <!-- BEGIN data -->
+  <option value="{data.IDM}" >{data.MUN}</option>
+  <!-- END data -->
+  </select>
+

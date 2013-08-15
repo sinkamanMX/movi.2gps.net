@@ -4,7 +4,7 @@
  *  @name                Obtiene los GeoPuntos.
 *   @version             1
 *   @copyright           Air Logistics & GPS S.A. de C.V.   
- *  @author              rODWYN mORENO
+ *  @author              Rodwyn Moreno
  *  @modificado          12-07-2011 
 **/
 
@@ -15,12 +15,19 @@
 	if(!$userAdmin->u_logged())  //Valida Usuario Logeado
 		echo '<script>window.location="index.php?m=login"</script>';  //Manda al login si no se ha Logeo.
 	//--------------------------- Modificada BD y Encabezado------------------------
+	$cod_client =  $userAdmin->user_info['COD_CLIENT'];
+
+	$result = array();
 	
-	$tpl->set_filenames(array(
-		'mColonia'=>'tColonia'
-	));
-	
-	$sql  = "SELECT ID_COLONIA,NOMBRE FROM ZZ_SPM_COLONIAS WHERE ID_MUNICIPIO = ".$_GET['id']." AND ID_ESTADO = ".$_GET['ide']."  ORDER BY NOMBRE;";
+	$sql  = "SELECT P.DESCRIPCION AS PREGUNTA,
+	IF(TP.MULTIMEDIA=0,PR.RESPUESTA,CONCAT('<img src=\"',PR.RESPUESTA,'\" style=\"width:100px; height:100px;\">')) AS RESPUESTA
+	FROM CRM2_PREGUNTAS P 
+	INNER JOIN CRM2_TIPO_PREG TP ON P.ID_TIPO = TP.ID_TIPO
+	INNER JOIN CRM2_PREG_RES  PR ON PR.ID_PREGUNTA=P.ID_PREGUNTA
+	INNER JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON P.ID_PREGUNTA = CP.ID_PREGUNTA
+	WHERE PR.ID_RES_CUESTIONARIO = ".$_GET['id']."
+	GROUP BY P.ID_PREGUNTA
+	ORDER BY CP.ORDEN;";
 					
 						
 	$qry = $db->sqlQuery($sql);
@@ -28,23 +35,15 @@
 	
 	if($cnt > 0){ 
 		while($row = $db->sqlFetchArray($qry)){
-		   
-		
-		$tpl->assign_block_vars('data',array(
-		'IDC'	=>	$row['ID_COLONIA'],
-		'COL'	=>	$row['NOMBRE']
-		));
-		}
-	$tpl->pparse('mColonia');	
+			$result[] = $row; // Inside while loop
+			}
 	}
-	else{
-		echo 0;
-		}
+	echo json_encode( $result = array('aaData'=>$result ) );	 	
+	$db->sqlClose();
 
 
 	
-	
-	
+
 	
 
 ?>

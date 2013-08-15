@@ -30,13 +30,6 @@
 		
 		if($cnt_a > 0){
 			$row_a = $db->sqlFetchArray($qry_a);
-			
-			$aes = ($row_a['ITI_AUTO_E_S_GPS']=='S')?'checked="checked"':'';
-			$nen = ($row_a['ITI_NOTI_ENTRADA']=='S')?'checked="checked"':'';
-			$nsa = ($row_a['ITI_NOTI_SALIDA']=='S')?'checked="checked"':'';
-			$nat = ($row_a['ITI_NOTI_ATRAZO']=='S')?'checked="checked"':'';
-			$nvr = ($row_a['ITI_NOTI_VISTA_RUTA']=='S')?'checked="checked"':'';
-			
 				$tpl->assign_vars(array(
 				'IDG'	=>	$row_a['ID_OBJECT_MAP'],
 				'DSC'	=>	$row_a['DESCRIPCION'],
@@ -49,13 +42,6 @@
 				'C_P'	=>	$row_a['CP'],
 				'LAT'	=>	$row_a['LATITUDE'],
 				'LON'	=>	$row_a['LONGITUDE'],
-				
-				'AES'	=>	$aes,
-				'NEN'	=>	$nen,
-				'NSA'	=>	$nsa,
-				'NAT'	=>	$nat,
-				'NVR'	=>	$nvr,
-				
 				'OP'	=>  $_GET['op']
 				));
 			
@@ -70,8 +56,7 @@
 		if($cnt_b > 0){
 			while($row_b = $db->sqlFetchArray($qry_b)){
 				if($_GET['op']==2){
-					$f = comparar($row_b['MUN'],$row_a['MUNICIPIO']);
-					$s = ($f == 1)?'selected="selected"':'';
+					$s = ($row_b['MUN'] == $row_a['MUNICIPIO'])?'selected="selected"':'';
 				}
 				else{
 					$s="";
@@ -87,7 +72,7 @@
 		$sql_c  = "SELECT C.ID_COLONIA,C.NOMBRE AS COL FROM ZZ_SPM_COLONIAS C
 		INNER JOIN ZZ_SPM_MUNICIPIOS M ON M.ID_MUNICIPIO = C.ID_MUNICIPIO
 		INNER JOIN  ZZ_SPM_ENTIDADES E ON E.ID_ESTADO = C.ID_ESTADO
-		WHERE (M.NOMBRE = '".$row_a['MUNICIPIO']."' OR M.NOMBRE LIKE '%".$row_a['MUNICIPIO']."%') AND E.NOMBRE = '".$row_a['ESTADO']."' ORDER BY C.NOMBRE;";
+		WHERE M.NOMBRE = '".$row_a['MUNICIPIO']."' AND E.NOMBRE = '".$row_a['ESTADO']."' ORDER BY C.NOMBRE;";
 		$qry_c = $db->sqlQuery($sql_c);
 		$cnt_c = $db->sqlEnumRows($qry_c);
 		
@@ -96,10 +81,7 @@
 				
 				if($_GET['op']==2){
 					//echo $row_c['COL']." == ".$row_a['ADD_COLONY']."<br>";
-					//echo $row_c['COL']."<br>";
-					$f = comparar($row_c['COL'],$row_a['COLONIA']);
-					//echo "<br>";
-					$s = ($f == 1)?'selected="selected"':'';
+					$s = ($row_c['COL'] == $row_a['COLONIA'])?'selected="selected"':'';
 				}		
 				else{
 					$s="";
@@ -141,8 +123,7 @@
 		
 		if($_GET['op']==2){
 			//echo $row['NOMBRE']." == ".$row_a['ADD_STATE']."<br>";
-			$f = comparar($row['NOMBRE'],$row_a['ESTADO']);
-			$s = ($f == 1)?'selected="selected"':'';
+			$s = ($row['NOMBRE'] == $row_a['ESTADO'])?'selected="selected"':'';
 		}
 		else{
 			$s="";
@@ -167,7 +148,6 @@
 			}
 			$comp = "  AND ID_CUESTIONARIO NOT IN (".$idq.") ";
 		 }
-		 if($idq!=""){
 		 $sql_e = "SELECT ID_CUESTIONARIO,DESCRIPCION FROM CRM2_CUESTIONARIOS WHERE COD_CLIENT = ".$cod_client." AND ID_CUESTIONARIO  IN (".$idq.") ORDER BY DESCRIPCION;";
 		 $qry_e = $db->sqlQuery($sql_e);
 		 $cnt_e = $db->sqlEnumRows($qry_e);
@@ -179,8 +159,7 @@
 					'DES'	=>	$row_e['DESCRIPCION']
 					));
 				}		
-			}
-		 }
+			}		 
 		}
 	else{
 		$comp = "";
@@ -221,24 +200,6 @@
 	}
 	
 	$tpl->pparse('mGeopunto');
-
-function comparar($x,$y){
-	global $db;
-
-	if($y!=""){
-	$i = trim($x);
-	$j = trim($y);
 	
-	
-	 $sql = "SELECT IF('".$i."' LIKE '%".$j."%',1,0) AS CMP;";
-	//echo "<br>";
-	$qry = $db->sqlQuery($sql);
-	$row = $db->sqlFetchArray($qry);
-	return $row['CMP'];
-	}
-	else{
-		return 0;
-		}
-	}	
 
 ?>

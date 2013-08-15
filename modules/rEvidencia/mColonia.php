@@ -4,7 +4,7 @@
  *  @name                Obtiene los GeoPuntos.
 *   @version             1
 *   @copyright           Air Logistics & GPS S.A. de C.V.   
- *  @author              rODWYN mORENO
+ *  @author              Erick A. Calderón
  *  @modificado          12-07-2011 
 **/
 

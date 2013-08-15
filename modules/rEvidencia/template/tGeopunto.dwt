@@ -41,7 +41,6 @@
   </tr></table> 
   </fieldset>
   <br><br>
-  <div style="float:left; width:49%">
   <fieldset>
   <legend>Datos del responsable</legend>
   <table width="70%">
@@ -63,38 +62,6 @@
   </tr>  
   </table>  
   </fieldset>
-  </div>
-  
-  <div style="float:right; width:49%;">
-  <fieldset>
-  <legend>Itinerarios</legend>
-  <table width="100%">
-  <tr>
-  <td><input type="checkbox"  id="gaes" {AES}></td>
-  <td><label>Detecci&oacute;n de entrada y salida autom&aacute;tico.</label></td>
-  </tr>   
-  <tr>
-  <td><input type="checkbox"  id="gnen" {NEN}></td>  
-  <td><label>Notificaci&oacute;n de entrada.</label></td>
-  </tr> 
-  <tr>
-  <td><input type="checkbox"  id="gnsa" {NSA}></td>
-  <td><label>Notificaci&oacute;n de salida.</label></td>
-  </tr>
-  <tr>
-  <td><input type="checkbox"  id="gnat" {NAT}></td>
-  <td><label>Notificaci&oacute;n de atrazo.</label></td>  
-  </tr>  
-  <tr>
-  <td><input type="checkbox"  id="gnvr" {NVR} ></td>
-  <td><label>Vista Ruta.</label></td>
-  </tr> 
-  <tr>
-  <td colspan="2"><label><strong>Nota:</strong> Para la correcta funcionalidad de estas opciones debe estar siempre activo el GPS dentro de la aplicaci&oacute;n "itinerarios Movilidad".</label></td>
-  </tr>      
-  </table>  
-  </fieldset>  
-  </div>
 
 
   </div><!--tabs1-->

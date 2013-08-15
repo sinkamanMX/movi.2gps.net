@@ -1,0 +1,33 @@
+  <script>
+  $(function() {
+    $( "#accordion" ).accordion({
+      heightStyle: "fill"
+    });
+	
+  });
+  $(function() {
+    $( "#accordion-resizer" ).resizable({
+      minHeight: 140,
+      minWidth: 200,
+      resize: function() {
+        $( "#accordion" ).accordion( "refresh" );
+      }
+    });
+  });
+  </script>
+<style>
+#accordion-resizer {
+	padding: 2px;
+    width: 700px;
+    height: 430px;
+}
+#accordion .ui-icon { display: none; }
+#accordion .ui-accordion-header a { padding-left: 60px; }
+</style>
+{SCRP}
+<input type="hidden" id="qtxt" value="{QTXT}" >
+<div id="accordion-resizer" class="ui-widget-content">
+  <div id="accordion">
+  {HTML} 
+  </div><!--accordion-->
+</div><!--accordion-resizer-->

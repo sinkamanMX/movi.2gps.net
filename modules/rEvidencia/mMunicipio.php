@@ -4,7 +4,7 @@
  *  @name                Obtiene los GeoPuntos.
 *   @version             1
 *   @copyright           Air Logistics & GPS S.A. de C.V.   
- *  @author              rODWYN mORENO
+ *  @author              Erick A. Calderón
  *  @modificado          12-07-2011 
 **/
 
@@ -17,10 +17,10 @@
 	//--------------------------- Modificada BD y Encabezado------------------------
 	
 	$tpl->set_filenames(array(
-		'mColonia'=>'tColonia'
+		'mMunicipio'=>'tMunicipio'
 	));
 	
-	$sql  = "SELECT ID_COLONIA,NOMBRE FROM ZZ_SPM_COLONIAS WHERE ID_MUNICIPIO = ".$_GET['id']." AND ID_ESTADO = ".$_GET['ide']."  ORDER BY NOMBRE;";
+	$sql  = "SELECT ID_MUNICIPIO,NOMBRE FROM ZZ_SPM_MUNICIPIOS WHERE ID_ESTADO = ".$_GET['id']." ORDER BY NOMBRE;";
 					
 						
 	$qry = $db->sqlQuery($sql);
@@ -31,11 +31,11 @@
 		   
 		
 		$tpl->assign_block_vars('data',array(
-		'IDC'	=>	$row['ID_COLONIA'],
-		'COL'	=>	$row['NOMBRE']
+		'IDM'	=>	$row['ID_MUNICIPIO'],
+		'MUN'	=>	$row['NOMBRE']
 		));
 		}
-	$tpl->pparse('mColonia');	
+	$tpl->pparse('mMunicipio');	
 	}
 	else{
 		echo 0;

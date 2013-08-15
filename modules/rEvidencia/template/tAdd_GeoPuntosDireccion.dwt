@@ -1,0 +1,75 @@
+  <tr>
+  <td><label>Calle:</label></td>
+  <td>
+  <input type="text" id="gstr" class="caja" value="{STREET}" />
+  </td>
+  </tr>
+  <tr>
+  <td><label>Estado:</label></td>
+  <td>
+  <select class="caja" id="gedo" onChange="buscar_mun(this.value)">
+  <option value="0" >Seleccionar estado</option>
+ <!-- BEGIN states -->
+ <option value="{states.ID}" {states.S}>{states.NAME}</option>
+ <!-- END   states -->
+  </select>
+  </td>
+  </tr>
+  <tr>
+  <td>
+  <label>Municipio:</label>
+  </td>
+  <td>
+  <div id="dgmun">
+  <select class="caja" id="gmun" onChange="buscar_col(this.value)">
+  <option value="0" >Seleccionar municipio</option>
+ <!-- BEGIN mun -->
+ <option value="{mun.ID}" {mun.S}>{mun.NAME}</option>
+ <!-- END   mun -->
+  </select>
+  </div>
+  </td>
+  </tr>
+  <tr>
+  <td><label>Colonia:</label></td>
+  <td>
+  <div id="dgcol">
+  <select class="caja" id="gcol">
+  <option value="0" >Seleccionar colonia</option>
+  <!-- BEGIN col -->
+  <option value="{col.ID}" {col.S}>{col.NAME}</option>
+  <!-- END   col -->  
+  </select>
+  </div>
+  </td>
+  </tr>
+  <tr>
+  <td><label>C.P.:</label></td>
+  <td>
+  <input type="text" class="caja_date ui-corner-all" id="gc_p" value="{CP}"  />
+<!--  <button class="buscar small_btn" onClick="busca_por_cp()"></button>-->
+  <button class="mapa small_btn" onClick="showAddress();"></button>
+  </td>
+  </tr>
+<script>
+$(document).ready(function(){
+	$( "#tabs" ).tabs();
+	//$("#location_data").height($("#tabs").height()*0.9)
+	//$("#location_map").height($("#tabs").height()*0.9)
+	$( ".buscar" ).button({
+      icons: {
+        primary: "ui-icon-search"
+      },
+      text: false
+    });
+	$( ".mapa" ).button({
+      icons: {
+        primary: "ui-icon-arrow-4"
+      },
+      text: false
+    })
+	
+	//alert($("#location_data").height());
+	});
+</script>  
+

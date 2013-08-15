@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+
+<div style="width:100%; height:100%; border:#066 solid thin;" id="geo_main">
+
+<!--  ---------------------------------panel xa mapa------------------------------------- -->  
+<div id="rev_mapa" class="ui-corner-all " style="width:44.5%; height:100%;  float:right; position:relative; " ></div>
+<!--  ---------------------------------panel xa mapa------------------------------------- -->  
+
+<!--panel evidencias-->           
+<div id="revidencia" class="ui-corner-all " style="width:55%; height:49.5%; border:#a6c9e2 solid thin; float:left; position:relative; ">
+<table width="100%;" style="background:#5c9ccc; color:#FFFFFF;">
+           <tr><td><label>Usuario:</label></td>
+           <td>
+           
+           <select class="caja" id="rev_user">
+           <option value="-1" >Todos</option>
+           <!-- BEGIN dt3 -->
+           <option value="{dt3.IDU}" >{dt3.USR}</option>
+           <!-- END dt3 -->
+           </select>
+           </td>           
+           </tr>
+</table>           
+<table width="100%;" style="background:#5c9ccc; color:#FFFFFF;">
+           <tr><td><label>Inicio:</label></td><td><label>Fin:</label></td></tr>
+           <tr>
+
+           <td>
+           
+           <input type="text" class="caja_date ui-corner-all" id="rev_dti" value="{DATE}" readonly="readonly" />
+           <select id="rev_hri" class="mcaja">
+           <!-- BEGIN hrs -->
+           {hrs.NO}
+           <!-- END hrs -->
+           </select>
+           <span>&nbsp;:&nbsp;</span>
+           <select id="rev_mni" class="mcaja">
+           <!-- BEGIN min -->
+           {min.NO}
+           <!-- END min -->
+           </select>
+           </td>
+           <td>
+           
+           <input type="text" class="caja_date ui-corner-all" id="rev_dtf" value="{DATE}" readonly="readonly" />
+           <select id="rev_hrf" class="mcaja">
+           <!-- BEGIN hrs -->
+           {hrs.HF}
+           <!-- END hrs -->
+           </select>
+           <span>&nbsp;:&nbsp;</span>
+           <select id="rev_mnf" class="mcaja">
+           <!-- BEGIN min -->
+           {min.MF}
+           <!-- END min -->
+           </select>           
+           </td>
+           <td>
+           <button class="search small_btn" onclick="rev_get_evidencias();validar_id()" ></button>
+           </td>
+           </tr>
+           <!--<tr><td>Fecha</td><td>Cuestionario</td><td>Usuario</td>-->
+           </table>
+           
+
+
+        
+
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="rev_evd_table" width="100%" height="100%">
+<thead>
+<tr>
+<th colspan="5"><strong>Evidencias</strong></th>
+</tr>
+
+<tr>
+<th></th>	
+<th></th>	
+<th>Fecha</th>
+<th>Cuestionario</th>
+<th>Usuario</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>          
+
+           
+
+
+           </div>
+<!--panel evidencias-->         
+
+<div class="ui-corner-all " style="width:55%; height:49.5%;  float:left; bottom:0px; position:relative; border:#FF0000 solid thin;">
+
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="rev_devd_table" width="100%" height="100%">
+<thead>
+<tr>
+<th colspan="5"><strong>Detalle evidencias</strong></th>
+</tr>
+
+<tr>	
+<th>Pregunta</th>
+<th>Respuesta</th>
+
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>            
+
+</div>
+
+ 
+
+            
+            
+                
+             
+           
+            <div id="geo_dialog" > </div>           
+            <div id="geo_dialog_message" title="&iexcl;Aviso!"></div>
+            <div id="geo_dialog_confirm" title="&iexcl;Aviso!"></div>
+
+
+
+
+   </div>

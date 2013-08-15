@@ -32,21 +32,12 @@ if($_GET['op']==1){
 			'RESPONSABLE'	    => $_GET['res'],
 			'CORREO'	    	=> $_GET['cor'],
 			'CELULAR'	    	=> $_GET['cel'],
-			'TWITTER'	    	=> $_GET['twt'],
-			
-			'ITI_AUTO_E_S_GPS'	    	=> $_GET['aes'],
-			'ITI_NOTI_ENTRADA'	    	=> $_GET['nen'],
-			'ITI_NOTI_SALIDA'	    	=> $_GET['nsa'],
-			'ITI_NOTI_ATRAZO'	    	=> $_GET['nat'],
-			'ITI_NOTI_VISTA_RUTA'	   	=> $_GET['nvr']
-			
+			'TWITTER'	    	=> $_GET['twt']
 		);
-//``````````
 
-			if($dbf-> insertDB($data,'ADM_GEOREFERENCIAS',true) == true ){
-				echo 1;
-				if($_GET['qst']!=""){
-					$idg = lastid();
+
+			if($dbf-> insertDB($data,'ADM_GEOREFERENCIAS',true) == true){
+				$idg = lastid();
 				$qs = explode(',',$_GET['qst']);
 				$sgpc = "";
 				
@@ -62,11 +53,8 @@ if($_GET['op']==1){
 				else{
 					echo -1;
 					}
-					}
-				
-			if($_GET['p_r']!=""){
+					
 				$a =  explode("^",$_GET['p_r']);
-				
 				$sgp = "";
 				for($j=0; $j<count($a); $j++){
 					$b = explode("~",$a[$j]);
@@ -81,8 +69,6 @@ if($_GET['op']==1){
 							echo -2;
 							}
 						}	
-				}
-
 	
 	}
 if($_GET['op']==2){
@@ -106,13 +92,7 @@ if($_GET['op']==2){
 			'RESPONSABLE'	    => $_GET['res'],
 			'CORREO'	    	=> $_GET['cor'],
 			'CELULAR'	    	=> $_GET['cel'],
-			'TWITTER'	    	=> $_GET['twt'],
-			
-			'ITI_AUTO_E_S_GPS'	    	=> $_GET['aes'],
-			'ITI_NOTI_ENTRADA'	    	=> $_GET['nen'],
-			'ITI_NOTI_SALIDA'	    	=> $_GET['nsa'],
-			'ITI_NOTI_ATRAZO'	    	=> $_GET['nat'],
-			'ITI_NOTI_VISTA_RUTA'	   	=> $_GET['nvr']	
+			'TWITTER'	    	=> $_GET['twt']		
 	);
 	
 	$where = " ID_OBJECT_MAP  = ".$_GET['id'];
@@ -121,13 +101,7 @@ if($_GET['op']==2){
 		}
 	else{
 		echo 0;
-		}
-if($_GET['qst']!=""){			
-$qs = explode(',',$_GET['qst']);
-					$sgpc = "";
-					for($i=0; $i<count($qs); $i++){
-					$sgpc .= ($sgpc=="")?"(".$qs[$i].",".$_GET['id'].")":",(".$qs[$i].",".$_GET['id'].")";
-					}
+		}	
 //Obetener cuestionarios asignados al punto
 	$sql  = "SELECT ID_CUESTIONARIO FROM ADM_GEOREFERENCIA_CUESTIONARIO  WHERE ID_OBJECT_MAP = ".$_GET['id'];
 	$qry = $db->sqlQuery($sql);
@@ -137,7 +111,11 @@ $qs = explode(',',$_GET['qst']);
 		$sql_c="DELETE FROM ADM_GEOREFERENCIA_CUESTIONARIO WHERE ID_OBJECT_MAP =".$_GET['id'];
 				if ($qry_c= $db->sqlQuery($sql_c)){
 					//INSERTAR NUEVOS CUESTIONARIOS
-					
+					$qs = explode(',',$_GET['qst']);
+					$sgpc = "";
+					for($i=0; $i<count($qs); $i++){
+					$sgpc .= ($sgpc=="")?"(".$qs[$i].",".$_GET['id'].")":",(".$qs[$i].",".$_GET['id'].")";
+					}
 					
 					$sql_d = "INSERT INTO ADM_GEOREFERENCIA_CUESTIONARIO (ID_CUESTIONARIO,ID_OBJECT_MAP) VALUES ".$sgpc;  
 					if ($qry_d = $db->sqlQuery($sql_d)){
@@ -147,26 +125,7 @@ $qs = explode(',',$_GET['qst']);
 						echo -1;
 						}	
 					}
-
-		}
-	else{
-		$sql_d = "INSERT INTO ADM_GEOREFERENCIA_CUESTIONARIO (ID_CUESTIONARIO,ID_OBJECT_MAP) VALUES ".$sgpc;  
-		if ($qry_d = $db->sqlQuery($sql_d)){
-			echo 2;
-			}
-		else{
-			echo -1;
-			}
-		}			
-}
-
-if($_GET['p_r']!=""){
-	$a =  explode("^",$_GET['p_r']);
-					$sgp = "";
-					for($j=0; $j<count($a); $j++){
-						$b = explode("~",$a[$j]);
-						$sgp .= ($sgp=="")?"(".$b[0].",".$_GET['id'].",'".$b[1]."','".date('Y-m-d H:i:s')."')":",(".$b[0].",".$_GET['id'].",'".$b[1]."','".date('Y-m-d H:i:s')."')";
-					}
+		}		
 //obtener payload asignado al punto 
 	$sql  = "SELECT ID_CUESTIONARIO FROM ADM_GEO_PAYLOAD WHERE ID_OBJECT_MAP = ".$_GET['id'];
 	$qry = $db->sqlQuery($sql);
@@ -175,8 +134,13 @@ if($_GET['p_r']!=""){
 		//Borrar payload
 		$sql_c="DELETE FROM ADM_GEO_PAYLOAD WHERE ID_OBJECT_MAP =".$_GET['id'];
 				if ($qry_c= $db->sqlQuery($sql_c)){
-					
-					
+					//Insertar nuevo payload
+					$a =  explode("^",$_GET['p_r']);
+					$sgp = "";
+					for($j=0; $j<count($a); $j++){
+						$b = explode("~",$a[$j]);
+						$sgp .= ($sgp=="")?"(".$b[0].",".$_GET['id'].",'".$b[1]."','".date('Y-m-d H:i:s')."')":",(".$b[0].",".$_GET['id'].",'".$b[1]."','".date('Y-m-d H:i:s')."')";
+					}
 					//Almacenar relación payload pregunta respuesta 
 					$sql_d = "INSERT INTO ADM_GEO_PAYLOAD (ID_CUESTIONARIO,ID_OBJECT_MAP,CADENA_PAYLOAD,FECHA_CREADO) VALUES ".$sgp; 
 					if ($qry_d = $db->sqlQuery($sql_d)){
@@ -188,18 +152,7 @@ if($_GET['p_r']!=""){
 					}
 		
 		}
-	else{
-		//Almacenar relación payload pregunta respuesta 
-		$sql_d = "INSERT INTO ADM_GEO_PAYLOAD (ID_CUESTIONARIO,ID_OBJECT_MAP,CADENA_PAYLOAD,FECHA_CREADO) VALUES ".$sgp; 
-					if ($qry_d = $db->sqlQuery($sql_d)){
-							echo 1;
-							}
-						else{
-							echo -2;
-							}
-		
-		}	
-}
+
 
 	
 	}
