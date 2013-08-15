@@ -9,10 +9,12 @@
     <script type="text/javascript" src="{PATH}/js/modals/jquery.bpopup.js"></script>    
     <script type="text/javascript" src="{PATH}/js/comboquery/chosen.jquery.js" ></script>
     <script type="text/javascript" src="{PATH}/js/dashboard.js"></script>
+    <script type="text/javascript" src="{PATH}/js/jquery-jvert-tabs-1.1.4.js"></script>
 
-    <link href="{PATH}/css/estilo.css" rel="stylesheet" type="text/css" />
+    <link href="{PATH}/css/estilo.css" rel="stylesheet" type="text/css" />    
     <link href="{PATH}/css/noJS.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="{PATH}/js/comboquery/chosen.css">
+    <link href="{PATH}/css/jquery-jvert-tabs-1.1.4.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
   <div id="divmain" class="totalwidth totalheight bigPanel">
@@ -36,7 +38,7 @@
         </div>
     </div>
     <div id="divContenedor" class="total_width">
-         <!--
+         
           <div class="portlet divgraph draggable ">
             <div class="legendPlaceholder"></div>
             <div id="flotcontainer" class="graphpie"></div>
@@ -63,7 +65,7 @@
           <div class="portlet divgraph draggable ">
             <div id="flotcontainer6" class="graphpie"></div>
           </div>          
-        -->
+        
         
 
     <div>
@@ -92,66 +94,7 @@
     </div>
 
     <div id="dialogConfigWidget" class="dialog-default-status dialog-open">
-        <div class="dialogClose"><span>CERRAR</span></div>
-        <div class="headerDialog">
-            <div class="tittleDialog float-left w200 border5 h45 mr5 bgcolorTittle">
-                <span class="spanTittle">Widget</span></div>
 
-                <div class="soundWidget border5">
-                  <div class="iconSound"></div>
-                  <div class="iconNoSound"></div>              
-                </div>
-
-                <div class="deleteWidget border5"> 
-                    <div class="iconTrash"></div>
-                    <span class="textTrash">Eliminar <br> Widget</span>
-
-                </div>
-                <div class="copyWidget border5">
-                    <div class="iconCopy"></div>
-                    <span class="textTrash">Copiar Widget <br> a otro dashboard</span>
-                </div>
-        </div>
-        <div class="contentWidget">
-
-          <section id="wrapper" class="wrapper">
-
-            <div id="v-nav">
-
-                <ul>
-                  <li tab="tab1" class="first current">Fatti il sito</li>
-                  <li tab="tab2">Rifatti il look</li>
-                  <li tab="tab3">Organizzati</li>
-                  <li tab="tab4" class="last">Parla di te</li>
-               </ul>
-
-               <div class="tab-content">
-                 <h4><a href="http://www.evermind.it/?areaservizio=fatti-il-sito">Fatti il sito</a></h4>
-               </div>
-
-               <div class="tab-content">
-                 <h4><a href="http://www.evermind.it/?areaservizio=rifatti-il-look">Rifatti il look</a></h4>
-               </div>
-
-               <div class="tab-content">
-                  <h4><a href="http://www.evermind.it/?areaservizio=organizzati">Organizzati</a></h4>   
-               </div>
-
-               <div class="tab-content">
-                 <h4><a href="http://www.evermind.it/?areaservizio=parla-di-te">Parla di te</a></h4>                
-               </div>
-
-            </div>
-
-          </section>
-
-
-
-        </div>
-        <div class="buttonWidget">
-            <span class="tittleButton">guardar la configuración de este widget</span>
-
-        </div>
     </div>
 
   <script type="text/javascript">   
@@ -163,72 +106,13 @@
               if($(this).hasClass(ourClass)){
                   $(this).fadeIn();
               }else{
-                  $(this).fadeOut();
-              }
+                  $(this).fadeOut();              }
             }else{
               $(this).fadeIn();
             }  
          });
     });
-
-$(function() {
-        
-    $('.close').click(function () {
-        console.log( 'close' );
-        $('.tab-content').hide();
-    });
-    
-    var items = $('#v-nav>ul>li').each(function() {
-        $(this).click(function() {
-            //remove previous class and add it to clicked tab
-            items.removeClass('current');
-            $(this).addClass('current');
-
-            //hide all content divs and show current one
-            $('#v-nav>div.tab-content').hide().eq(items.index($(this))).show('fast');
-
-            window.location.hash = $(this).attr('tab');
-        });
-    });
-
-    if (location.hash) {
-        showTab(location.hash);
-    }
-    else {
-        showTab("tab1");
-    }
-
-    function showTab(tab) {
-        $("#v-nav ul li:[tab*=" + tab + "]").click();
-    }
-
-    // Bind the event hashchange, using jquery-hashchange-plugin
-    /*$(window).hashchange(function() {
-        showTab(location.hash.replace("#", ""));
-    })*/
-
-    // Trigger the event hashchange on page load, using jquery-hashchange-plugin
-    /*$(window).hashchange();*/
-
-});    
   </script>
 
-<div id="custom-menu">
-<ol>
-<li><a href="#">Reply</a> </li>
-<li><a href="#">Reply All</a> </li>
-<li class="list-devider">
-<hr />
-</li>
-<li><a href="#">Mark as unread</a> </li>
-<li><a href="#">Delete</a> </li>
-<li><a href="#">Archive</a> </li>
-<li class="list-devider">
-<hr />
-</li>
-<li><a href="#">Junk</a> </li>
-<li><a href="#">View</a> </li>
-</ol>
-</div>  
 </body>
 </html>

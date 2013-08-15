@@ -1,0 +1,147 @@
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<script type="text/javascript">
+/*$(function() {
+        
+    $('.close').click(function () {
+        console.log( 'close' );
+        $('.tab-content').hide();
+    });
+    
+    var items = $('#v-nav>ul>li').each(function() {
+        $(this).click(function() {
+            //remove previous class and add it to clicked tab
+            items.removeClass('current');
+            $(this).addClass('current');
+
+            //hide all content divs and show current one
+            $('#v-nav>div.tab-content').hide().eq(items.index($(this))).show('fast');
+
+            window.location.hash = $(this).attr('tab');
+        });
+    });
+
+    if (location.hash) {
+        showTab(location.hash);
+    }
+    else {
+        showTab("tab1");
+    }
+
+    function showTab(tab) {
+        $("#v-nav ul li:[tab*=" + tab + "]").click();
+    }
+
+    // Bind the event hashchange, using jquery-hashchange-plugin
+    /*$(window).hashchange(function() {
+        showTab(location.hash.replace("#", ""));
+    })
+
+    // Trigger the event hashchange on page load, using jquery-hashchange-plugin
+    $(window).hashchange();
+
+});    */
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#divTabs").jVertTabs();
+});
+</script>
+
+  <input type="hidden" id="wdgtsId" name="" value="{ID_ROW}">  
+  <input type="hidden" id="wdgtsIdWidget" name="" value="{ID_WIDGET}">
+
+  <div class="dialogClose"  onclick="closeNewWidgets();"><span>CERRAR</span></div>
+        
+  <div class="headerDialog">
+    <div class="tittleDialog float-left w200 border5 h45 mr5 bgcolorTittle">
+      <span class="spanTittle">{NOMBRE_WIDGET}</span>
+    </div>
+
+    <div class="soundWidget border5">
+      <div class="iconSoundEnable border5"></div>
+      <div class="iconNoSoundDisable border5"></div>
+    </div>
+
+    <div class="deleteWidget border5">
+        <div class="block">  
+          <div class="iconTrash"></div>
+          <span class="textTrash">Eliminar <br> Widget</span>
+        </div>
+    </div>
+
+    <div class="copyWidget border5">
+        <div class="unblock">        
+          <div class="iconCopy"></div>
+          <span class="textTrash">Copiar Widget <br> a otro dashboard</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="contentWidget">
+
+
+
+      <div id="wrapper" class="wrapper">
+        <div id="divTabs">
+        <div>
+          <ul>
+            <li><a href="#vtabs-content-a">Tab 1</a></li>
+            <li><a href="#vtabs-content-b">Tab 2</a></li>
+            <li><a href="#vtabs-content-c">Tab 3</a></li>
+          </ul>
+        </div>
+        <div>
+          <div id="#vtabs-content-a">
+            <p>This is panel 1</p>    
+            <p>This content is static</p> 
+          </div>
+          <div id="#vtabs-content-b">
+            <p>This is panel 2</p>
+            <p>The quick brown fox jumped over the lazy dog</p>
+            <p>This content is static</p>     
+          </div>
+          <div id="#vtabs-content-c">
+            <!-- content in this panel will be loaded dynamically via ajax.-->
+          </div>  
+        </div>
+      </div>
+    </div>
+    <!--<section id="wrapper" class="wrapper">
+
+      <div id="v-nav">
+
+          <ul>
+            <li tab="tab1" class="first current">Fatti il sito</li>
+            <li tab="tab2">Rifatti il look</li>
+            <li tab="tab3">Organizzati</li>
+            <li tab="tab4" class="last">Parla di te</li>
+         </ul>
+
+         <div class="tab-content">
+           <h4><a href="http://www.evermind.it/?areaservizio=fatti-il-sito">Fatti il sito</a></h4>
+         </div>
+
+         <div class="tab-content">
+           <h4><a href="http://www.evermind.it/?areaservizio=rifatti-il-look">Rifatti il look</a></h4>
+         </div>
+
+         <div class="tab-content">
+            <h4><a href="http://www.evermind.it/?areaservizio=organizzati">Organizzati</a></h4>   
+         </div>
+
+         <div class="tab-content">
+           <h4><a href="http://www.evermind.it/?areaservizio=parla-di-te">Parla di te</a></h4>                
+         </div>
+
+      </div>
+
+    </section>-->
+
+  </div>
+
+  <div class="buttonWidget">
+      <span class="tittleButton">guardar la configuración de este widget</span>
+  </div>

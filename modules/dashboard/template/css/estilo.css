@@ -47,6 +47,20 @@ body {  font-size: 10px;
     border-radius: 5px 5px 5px 5px;
 }
 
+.visible{
+    display: block;
+}
+
+.invisible{
+    display: none;
+}
+
+.block{
+    background-color: rgba(255, 255, 255, 0.2);
+    height: 50px;
+    width: 100%;
+}
+
 /** 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             eSTILOS DE MENUS Y BOTONES
@@ -546,12 +560,12 @@ body {  font-size: 10px;
     margin-right: 5px;
     width: 110px;
 }
-
+/*
 .soundWidget:hover{
   background-color: #AF117D;
   background: #AF117D;
   color: #FFFFFF;    
-}
+}*/
 
 .deleteWidget{
     background-color: #F2F2F2;
@@ -565,9 +579,9 @@ body {  font-size: 10px;
 }
 
 .deleteWidget:hover {
-  background-color: #AF117D;
+  /*background-color: #AF117D;
   background: #AF117D;
-  color: #FFFFFF;    
+  color: #FFFFFF;    */
 }
 
 .textTrash{
@@ -588,9 +602,9 @@ body {  font-size: 10px;
 }
 
 .copyWidget:hover {
-  background-color: #AF117D;
+  /*background-color: #AF117D;
   background: #AF117D;
-  color: #FFFFFF;    
+  color: #FFFFFF;   */ 
 }
 
 .bgcolorTittle{
@@ -599,10 +613,85 @@ body {  font-size: 10px;
 }
 
 .spanTittle{
-    bottom: -5px;
+    bottom: -10px;
+    font-size: 18px;
+    left: 5px;
     position: relative;
     vertical-align: middle;
-    left: 5px;
+}
+
+.iconSoundEnable{
+    background: url("../images/icons/sound_hover.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 40px;
+    left: 10px;
+    position: relative;
+    top: 2px;
+    width: 40px;
+    background-color: #BFBFBF;
+    border-radius: 5px 5px 5px 5px;      
+}
+
+.iconSoundDisable{
+    background: url("../images/icons/sound.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 40px;
+    left: 10px;
+    position: relative;
+    top: 2px;
+    width: 40px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.iconSoundDisable:hover{
+    background: url("../images/icons/sound_hover.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 40px;
+    left: 10px;
+    position: relative;
+    top: 2px;
+    width: 40px;
+    background-color: #AF117D;
+    border-radius: 5px 5px 5px 5px;    
+}
+
+
+.iconNoSoundEnable{
+    background: url("../images/icons/no_sound_hover.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 40px;
+    left: 2px;
+    margin-left: 22px;
+    position: relative;
+    top: 2px;
+    width: 40px;  
+    background-color: #BFBFBF;
+    border-radius: 5px 5px 5px 5px; 
+}
+
+.iconNoSoundDisable{
+    background: url("../images/icons/no_sound.png") no-repeat scroll 0 0;
+    border-radius: 5px 5px 5px 5px;
+    float: left;
+    height: 40px;
+    left: 2px;
+    margin-left: 22px;
+    position: relative;
+    top: 2px;
+    width: 40px;
+}
+
+.iconNoSoundDisable:hover{
+    background: url("../images/icons/no_sound_hover.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 40px;
+    left: 2px;
+    margin-left: 22px;
+    position: relative;
+    top: 2px;
+    width: 40px;  
+    background-color: #AF117D;
+    border-radius: 5px 5px 5px 5px;    
 }
 
 .iconTrash{
@@ -616,54 +705,12 @@ body {  font-size: 10px;
 }
 
 .iconTrash:hover{
-    background: url("../images/icons/trash_over.png") no-repeat scroll 0 0 transparent;
+    /*background: url("../images/icons/trash_over.png") no-repeat scroll 0 0 transparent;
     height: 40px;
     left: 1px;
     position: relative;
     top: 2px;
-    width: 40px;
-}
-
-.iconSound{
-    background: url("../images/icons/sound.png") no-repeat scroll 0 0 transparent;
-    float: left;
-    height: 40px;
-    left: 10px;
-    position: relative;
-    top: 2px;
-    width: 40px;
-}
-
-.iconSound:hover{
-    background: url("../images/icons/sound_hover.png") no-repeat scroll 0 0 transparent;
-    float: left;
-    height: 40px;
-    left: 10px;
-    position: relative;
-    top: 2px;
-    width: 40px;
-}
-
-.iconNoSound{
-    background: url("../images/icons/no_sound.png") no-repeat scroll 0 0 transparent;
-    float: left;
-    height: 40px;
-    left: 2px;
-    margin-left: 22px;
-    position: relative;
-    top: 2px;
-    width: 40px;
-}
-
-.iconNoSound:hover{
-    background: url("../images/icons/no_sound_hover.png") no-repeat scroll 0 0 transparent;
-    float: left;
-    height: 40px;
-    left: 2px;
-    margin-left: 22px;
-    position: relative;
-    top: 2px;
-    width: 40px;  
+    width: 40px;*/
 }
 
 .iconCopy{
@@ -674,6 +721,16 @@ body {  font-size: 10px;
     position: relative;
     top: 2px;
     width: 40px;
+}
+
+.iconCopy:hover{
+    /*background: url("../images/icons/copy_hover.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 40px;
+    left: 5px;
+    position: relative;
+    top: 2px;
+    width: 40px;*/
 }
 
 .contentWidget{
@@ -690,14 +747,14 @@ body {  font-size: 10px;
 .buttonWidget{
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 5px 5px 5px 5px;
-    height: 15%;
-    left: 130px;
-    position: relative;
-    top: 50px;
-    width: 80%; 
     color: #FFFFFF;
     font-size: 25px;
-    font-weight: bold;    
+    font-weight: bold;
+    height: 15%;
+    left: 25px;
+    position: relative;
+    top: 50px;
+    width: 94%;   
 }
 
 .tittleButton{
@@ -714,11 +771,11 @@ body {  font-size: 10px;
 
 .wrapper
 {
+    height: 100%;
     margin: 0 auto;
-    min-height: 600px;
     padding-top: 10px;
     width: 100%;
-    }
+}
 
 .wrapper h1, .wrapper h4, .wrapper p, .wrapper pre, .wrapper ul, .wrapper li
 {
@@ -736,6 +793,7 @@ body {  font-size: 10px;
 
 .wrapper li
 {
+    border-radius: 5px 0 0 5px;
     outline: 0;
     text-decoration: none;
     -webkit-transition-property: background color;
@@ -754,7 +812,7 @@ body {  font-size: 10px;
     -ms-transition-timing-function: ease-out;
     transition-timing-function: ease-out;
 }
-
+/*
 #v-nav
 {
     color: #BFBFBF;
@@ -861,7 +919,7 @@ body {  font-size: 10px;
 #custom-menu ol li:hover
 {
     background-color: #efefef;
-}
+}*/
 
 /*
 #custom-menu ol li:active
