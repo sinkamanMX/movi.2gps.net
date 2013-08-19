@@ -1,4 +1,5 @@
 var rev_map;
+var grados = 0;
 $(document).ready(function () {
 	//Pintar mapa
 	rev_mapa();
@@ -18,9 +19,61 @@ $(document).ready(function () {
       },
       text: false
     })	
+	//Definir botnes exportar
+	$( ".export" ).button({
+      icons: {
+        primary: "ui-icon-circle-arrow-s"
+      },
+      text: false
+    })	
+	
 	//Obtener Evidencias
 	rev_get_evidencias();
 	
+	//DECLARAR DIALOG NUEVO/EDICION
+	$("#rev_dialog" ).dialog({
+		modal: true,
+		autoOpen:false,
+		overlay: { opacity: 0.2, background: "cyan" },
+		width:  800,
+		height: 600,
+		buttons: {
+			"Guardar": function(){
+				rev_validar_datos();
+				},
+			"Cancelar": function(){
+				if($("#rev_dialog" ).dialog('isOpen')){
+					$("#dialog_message").dialog('close');
+					}
+					$("#rev_dialog" ).dialog('close');
+				}
+				},
+		show: "blind",
+		hide: "blind"
+		});	
+	
+	//DECLARAR DIALOG IMAGEN
+	$("#rev_dialog_img" ).dialog({
+		modal: true,
+		autoOpen:false,
+		overlay: { opacity: 0.2, background: "cyan" },
+		resizable: true,
+		width:  800,
+		height: 600,
+		buttons: {
+			"Guardar": function(){
+				rev_save_img();
+				},
+			"Cancelar": function(){
+				if($("#rev_dialog_img" ).dialog('isOpen')){
+					$("#dialog_message").dialog('close');
+					}
+					$("#rev_dialog_img" ).dialog('close');
+				}
+				},
+		show: "blind",
+		hide: "blind"
+		})	
 	});
 	
 //-----------------------------------------------------------------------
@@ -44,7 +97,7 @@ function rev_get_evidencias(){
 		f = $("#rev_dtf").val()+" "+$("#rev_hrf").val()+":"+$("#rev_mnf").val()+":00";
 		
 		$(document.body).css('cursor','wait');
-		scroll_table=($("#revidencia").height()-145)+"px";
+		scroll_table=($("#revidencia").height()-172)+"px";
 		qstTable = $('#rev_evd_table').dataTable({
 		  "sScrollY": scroll_table,
 		  "bDestroy": true,
@@ -129,7 +182,7 @@ function rev_get_preg_resp(idq){
 
 
 		$(document.body).css('cursor','wait');
-		scroll_table=($("#revidencia").height()-100)+"px";
+		scroll_table=($("#rev_det").height()-95)+"px";
 		//wtd = ($("#qst_main").width()*.45)+"px"
 		qstTable = $('#rev_devd_table').dataTable({
 		  "sScrollY": scroll_table,
@@ -185,10 +238,129 @@ function rev_get_position(lat,lon,fecha,qst,usr){
 	}	
 ///----------------------------------------------------------------------------	
 function rev_reporte_pdf(id,date,qst,usr){
-	alert(id+","+date+","+qst+","+usr);
+	//alert(id+","+date+","+qst+","+usr);
 	
 	    var url= "index.php?m=rEvidencia&c=Reporte_pdf&id="+id+"&date="+date+"&qst="+qst+"&usr="+usr;
 		window.location=url;
 		//return false;
 }
+//-------------------------------------------------------------------------
+function rev_opn_form(){
+	$.ajax({
+		url: "index.php?m=rEvidencia&c=mExport_Form",
+		type: "GET",
+		success: function(data) {
+			var result = data; 
+			//alert(op)
+			
+			
+			$("#rev_dialog").dialog("open");
+			$('#rev_dialog').html(""); 
+			$('#rev_dialog').html(result); 
+				}
+		});		
+	}
+//-------------------------------------------------------------------------
+function rev_validar_datos(){
+	var ifs = 0;
 	
+	var dti = $("#rev_xdti").val()+" "+$("#rev_xhri").val()+":"+$("#rev_xmni").val()+":00";
+	var dtf = $("#rev_xdtf").val()+" "+$("#rev_xhrf").val()+":"+$("#rev_xmnf").val()+":59";
+	
+	if(dti>dtf){
+		ifs=ifs+1;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La fecha final debe ser mayor a la fecha inicial.</p>');
+		$("#dialog_message" ).dialog('open');		
+		return false;
+		}	
+	
+	var qst = $('#rev_qst_sel div').map(function() {
+		return this.id;
+		}).get();
+	if(qst.length==0){
+		ifs=ifs+1;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar al menos un cuestionario.</p>');
+		$("#dialog_message" ).dialog('open');		
+		return false;
+		}
+		
+	var usr = $('#rev_usr_sel div').map(function() {
+		return this.id;
+		}).get();
+	if(usr.length==0){
+		ifs=ifs+1;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar al menos un usuario.</p>');
+		$("#dialog_message" ).dialog('open');		
+		return false;
+		}	
+	
+	if(ifs==0){
+		var u = "";
+		var q = "";
+		
+		for(i=0; i<usr.length; i++){
+			u += (u=="")?usr[i]:","+usr[i];
+			}
+
+		for(i=0; i<usr.length; i++){
+			q += (q=="")?qst[i]:","+qst[i];
+			}		
+		
+		rev_export_excel(dti,dtf,u,q);
+		}
+	}
+	
+//-------------------------------------------------------------------------------
+function rev_export_excel(dti,dtf,u,q){
+	var url= "index.php?m=rEvidencia&c=Reporte_excelM&f1="+dti+"&f2="+dtf+"&usuarios="+u+"&cuestionario="+q; 
+	window.location=url;
+	return false;
+	}
+//---------------------------------------
+function rev_ver_img(img){
+	$.ajax({
+		url: "index.php?m=rEvidencia&c=mImage",
+		data : {
+			img:img
+			},
+		type: "GET",
+		success: function(data) {
+			var result = data; 
+			//alert(op)
+			
+			
+				$("#rev_dialog_img").dialog("open");
+				$('#rev_dialog_img').html(""); 
+				$('#rev_dialog_img').html(result); 
+				
+				}
+		});		
+	//alert(img);
+
+	}	
+//-------------------------------------------------
+function rev_save_img(){
+	//alert($("#rev_img").prop('src'))
+	$.ajax({
+		url: "index.php?m=rEvidencia&c=mSaveImg",
+		data : {
+			img : $("#rev_img").prop('src'),
+			grd : grados
+			},
+		type: "GET",
+		success: function(data) {
+			var result = data; 
+			alert(result)
+			if(result==1){
+				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La imagen ha sido almacenada correctamente.</p>');
+				$("#dialog_message" ).dialog('open');		
+				$("#rev_dialog_img").dialog("open");
+				}
+			else{
+				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La imagen no ha podido ser almacenada.</p>');
+				$("#dialog_message" ).dialog('open');		
+				}	
+			}
+		});		
+
+	}

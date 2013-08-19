@@ -11,6 +11,7 @@ class cHistorico{
 	public $idClient=0;
 	public $idUnit  =0;
 	public $aHistorico= Array();
+	public $aHistorico2 = Array();
 	public $aResumen  = Array();
 	public $errorMessage='';
 	
@@ -76,6 +77,52 @@ class cHistorico{
 		}
 		return $result;		
 	}
+	
+	
+		function hist_geo($sqlOptions=''){
+	    global $db,$Positions;
+		$result = false;	
+		$tableName = $this->getTableName();
+		if($tableName!=""){		
+		    $cont = -1;	
+			$this->aHistorico2 = Array();				
+			$sqlHistorico = "SELECT 
+							IF(f.PLAQUE IS NULL,'NP',f.PLAQUE) AS PLAQUE,
+							IF(f.DESCRIPTION IS NULL,'',f.DESCRIPTION) AS DESCRIPTION, 
+							f.COD_ENTITY,
+							e.COD_EVENT,
+							IF (e.GPS_DATETIME IS NULL, '0000-00-00 00:00:00',e.GPS_DATETIME) AS GPS_DATETIME,
+							IF(g.DESCRIPTION IS NULL,'NO HA REPORTADO',g.DESCRIPTION) AS DESC_EVT,
+							IF(e.VELOCITY IS NULL,0,e.VELOCITY) AS VELOCIDAD,        
+							IF(e.LATITUDE IS NULL,0,e.LATITUDE) AS LATITUDE,
+							IF(e.LONGITUDE IS NULL,0,e.LONGITUDE) AS LONGITUDE,
+							IF (g.PRIORITY is null,0,g.PRIORITY) as PRIORITY,
+							IF ((e.VELOCITY < 5) AND (e.MOTOR = 'ON'),'RALENTI',
+							IF((e.VELOCITY = 0) AND (e.MOTOR = 'OFF'),'DETENIDO',
+							IF((e.VELOCITY > 5) AND (e.MOTOR = 'ON'),'MOVIMIENTO','DESCONOCIDO'))) AS ESTATUS 
+							FROM ADM_UNIDADES f  
+							LEFT JOIN HIST".$tableName." e 
+								ON e.COD_ENTITY = f.COD_ENTITY
+							LEFT JOIN ADM_EVENTOS g 
+								ON e.COD_EVENT  = g.COD_EVENT
+							WHERE e.COD_ENTITY = ".$this->idUnit." ".$sqlOptions.
+							" ORDER BY e.GPS_DATETIME";
+			$query 	= $db->sqlQuery($sqlHistorico);
+			while($row = $db->sqlFetchAssoc($query)){
+			$cont++;
+			$this->aHistorico2[$cont][0] = $row['LATITUDE'];
+			$this->aHistorico2[$cont][1] = $row['LONGITUDE'];
+			
+			}
+			$this->errorMessage = "ok";
+			//$result =  true;
+		}else{
+			$this->errorMessage = "problem-table-name"; 
+			//$result = false;
+		}
+		return $this->aHistorico2;		
+	}
+	
 	
 	public function getResumen(){
 		global $db,$Positions;
@@ -154,4 +201,8 @@ class cHistorico{
 		$s = ($s<10) ? "0".$s : $s;
 		return $h.":".$m.":".$s;
 	}	
+	
+
+		
 }
+	

@@ -1,0 +1,187 @@
+<div style="width:100%; height:95%;" >
+
+<div style="border:#a6c9e2 solid thin; height:10%" class="ui-corner-all">
+<table width="100%;" style="background:#5c9ccc; color:#FFFFFF;">
+           <tr><td><label>Inicio:</label></td><td><label>Fin:</label></td></tr>
+           <tr>
+
+           <td>
+           
+           <input type="text" class="caja_date ui-corner-all" id="rev_xdti" value="{DATE}" readonly />
+           <select id="rev_xhri" class="mcaja">
+           <!-- BEGIN hrs -->
+           {hrs.NO}
+           <!-- END hrs -->
+           </select>
+           <span>&nbsp;:&nbsp;</span>
+           <select id="rev_xmni" class="mcaja">
+           <!-- BEGIN min -->
+           {min.NO}
+           <!-- END min -->
+           </select>
+           </td>
+           <td>
+           
+           <input type="text" class="caja_date ui-corner-all" id="rev_xdtf" value="{DATE}" readonly />
+           <select id="rev_xhrf" class="mcaja">
+           <!-- BEGIN hrs -->
+           {hrs.HF}
+           <!-- END hrs -->
+           </select>
+           <span>&nbsp;:&nbsp;</span>
+           <select id="rev_xmnf" class="mcaja">
+           <!-- BEGIN min -->
+           {min.MF}
+           <!-- END min -->
+           </select>           
+           </td>
+           </tr>
+           <!--<tr><td>Fecha</td><td>Cuestionario</td><td>Usuario</td>-->
+           </table>
+</div>
+
+
+
+
+    <div style="position:relative; width:100%; height:45%;">
+    
+    <!--cuestionarios disponibles-->
+    <div style="position:relative; width:49.5%; height:100%; float:left; border:#A6C9E2 solid thin;" class="ui-corner-all">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">Cuestionarios Disponibles</span>
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(1,this.value);" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:130px; ">
+    <div id="geo_qst_dsp" class="dropme" style="min-height:130px; min-width:170px; width:100%;">
+    <!-- BEGIN U -->
+    <div class="ui-corner-all" id="{U.ID}">{U.DES}</div>
+    <!-- END U -->
+    </div>
+    </div>
+    </div>   
+    <!--cuestionarios disponibles-->
+    <!--cuestionarios seleccionados-->
+    <div style="position:relative; width:49.5%; height:100%; float:right; border:#a6c9e2 solid thin;" class="ui-corner-all">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">Cuestionarios Seleccionados</span>
+    <!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>-->
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(2,this.value)" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:130px; ">
+    <div id="rev_qst_sel" class="dropme" style="min-height:130px; min-width:170px; width:100%; ">
+    <!-- BEGIN U2 -->
+    <div class="ui-corner-all" id="{U2.ID}">{U2.DES}</div>
+    <!-- END U2 -->
+    </div>
+    </div>
+    </div><!--div scroll-->
+    <!--cuestionarios seleccionados-->
+    
+    <!--cuestionarios disponibles-->
+    <div style="position:relative; width:49.5%; height:100%; float:left; border:#A6C9E2 solid thin;" class="ui-corner-all">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">Usuarios Disponibles</span>
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(1,this.value);" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:130px; ">
+    <div id="geo_qst_dsp" class="dropmeU" style="min-height:130px; min-width:170px; width:100%;">
+    <!-- BEGIN dt3 -->
+    <div class="ui-corner-all" id="{dt3.IDU}">{dt3.USR}</div>
+    <!-- END dt3 -->
+    </div>
+    </div>
+    </div>   
+    <!--cuestionarios disponibles-->
+    <!--cuestionarios seleccionados-->
+    <div style="position:relative; width:49.5%; height:100%; float:right; border:#a6c9e2 solid thin;" class="ui-corner-all">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">Usuarios Seleccionados</span>
+    <!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>-->
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(2,this.value)" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:130px; ">
+    <div id="rev_usr_sel" class="dropmeU" style="min-height:130px; min-width:170px; width:100%; ">
+    <!-- BEGIN U2 -->
+    <div class="ui-corner-all" id="{U2.ID}">{U2.DES}</div>
+    <!-- END U2 -->
+    </div>
+    </div>
+    </div><!--div scroll-->
+    <!--cuestionarios seleccionados-->    
+    
+    </div>
+
+  
+  
+</div>
+
+<script>
+	//Definir datepicker
+	$(".caja_date").datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			buttonImageOnly: true,
+			maxDate: '0',
+			dateFormat: "yy-mm-dd"
+		});
+	$('.dropme').sortable({
+		connectWith: '.dropme',
+		cursor: 'move'
+		}).droppable({
+			accept: '.dropme',
+			activeClass: 'highlight',
+			drop: function(event, ui) {
+				var $li = $('<div>').html('List ' + ui.draggable.html());
+				$li.appendTo(this);
+				}
+		});		
+	$('.dropmeU').sortable({
+		connectWith: '.dropmeU',
+		cursor: 'move'
+		}).droppable({
+			accept: '.dropmeU',
+			activeClass: 'highlight',
+			drop: function(event, ui) {
+				var $li = $('<div>').html('List ' + ui.draggable.html());
+				$li.appendTo(this);
+				}
+		});			
+</script>

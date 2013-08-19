@@ -1,0 +1,24 @@
+<script type="text/javascript" src="http://jqueryrotate.googlecode.com/svn/trunk/jQueryRotate.js"></script>
+<img src="{IMG}" id="rev_img" width="96%" height="90%" align="middle" />
+
+<div align="center"  style="position:absolute; left:0px; bottom:0px; width:98%; height:30px; border:#0000FF solid thin;">
+
+<button  class="turn small_btn" onClick="rev_rotar_img()"  ></button>
+
+</div>
+<script>
+	//Definir botnes buscar
+	$( ".turn" ).button({
+      icons: {
+        primary: "ui-icon-refresh"
+      },
+      text: false
+    })
+var angle = 0;
+
+function rev_rotar_img(){
+	 angle += 90;
+	 grados += 90;
+    $("#rev_img").rotate(angle);
+	}		
+</script>
