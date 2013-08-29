@@ -267,9 +267,6 @@ function mon_draw_table(){
 			var colprio = unit_info[4];//--
 			var imei 	= unit_info[18];
 			var blockMotor = unit_info[19];
-			var type    = unit_info[20];
-			var battery = unit_info[21];
-
 
 			if(unit_info[17]!="SC"){
 				aComandosAll = aComandosAll + ( (aComandosAll!="") ? '||': '');
@@ -279,62 +276,43 @@ function mon_draw_table(){
 				UnitsString   =    UnitsString +unit_info[2];
 			}
 
-			var image 			= '';
-			var colorImage 		= '';
-			var textoMensaje 	= '';
-			var otrosCampos		= '';
 
-			if(type=='V'){
-				if(blockMotor!=1 ){
-					if(vel<5 && priory==0){
-						image = 'public/images/geo_icons/car_red.png';
-						colorImage = "width:16px;' src='public/images/geo_icons/circle_red.png";	
-					}else if(vel>5 && priory==0){
-						image = 'public/images/geo_icons/car_green.png';	
-						colorImage = "width:16px;' src='public/images/geo_icons/circle_green.png";
-					}else  if(priory==1){
-						image = 'public/images/geo_icons/car_orange.png';	
-						colorImage = "width:16px;' src='public/images/geo_icons/circle_orange.png";
-					}	
-				}else{
-					image = 'public/images/car_gray.png';	
-					colorImage = "width:12px;' public/images/circle_gray.png";
-					textoMensaje = 'MOTOR BLOQUEADO - ';
-				}
-				otrosCampos= '<tr><td align="left">Velocidad:</td><td align="left">'	+ vel	+' Km/h.</td></tr>'+
-							 '<tr><td align="left">Estado:</td><td align="left">'   	+ estatus	+'</td></tr>';
+			var image = '';
+			var colorImage = '';
+			var textoMensaje = '';
+			if(blockMotor!=1 ){
+				if(vel<5 && priory==0){
+					image = 'public/images/car_red.png';
+					colorImage = 'public/images/circle_red.png';	
+				}else if(vel>5 && priory==0){
+					image = 'public/images/car_green.png';	
+					colorImage = 'public/images/circle_green.png';
+				}else  if(priory==1){
+					image = 'public/images/car_orange.png';	
+					colorImage = 'public/images/circle_orange.png';
+				}	
 			}else{
-				if(!isNaN(battery)){
-					if(battery < 33){
-						image = 'public/images/geo_icons/phone_red.png';
-						colorImage = "width:12px;' src='public/images/geo_icons/battery_low.png";	
-					}else if(battery>34 && battery < 66){
-						image = 'public/images/geo_icons/phone_orange.png';
-						colorImage = "width:12px;' src='public/images/geo_icons/battery_medium.png";	
-					}else if(battery>67){						
-						image = 'public/images/geo_icons/phone_green.png';
-						colorImage = "width:12px;' src='public/images/geo_icons/battery.png";	
-					}
-				}else{
-					console.log("No hya nada");
-				}
-
-				otrosCampos= '<tr><td align="left">Nivel de Bateria:</td><td align="left">'	+ battery	+'% </td></tr>';
+				image = 'public/images/car_gray.png';	
+				colorImage = 'public/images/circle_gray.png';
+				textoMensaje = 'MOTOR BLOQUEADO - ';
 			}
 
 
 			var content = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
 							'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
-						  			'<table width="400"><tr><th colspan="2">'+
+						  			'<table><tr><th colspan="2">'+
 									'<tr><td align="left">Unidad :</td><td align="left">'	+ dunit +'</td></tr>'+
 									'<tr><td align="left">IMEI :</td><td align="left">'  	+ imei +'</td></tr>'+
 						  			'<tr><td align="left">Evento :</td><td align="left">'	+ textoMensaje + evt	+'</td></tr>'+
 						  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ fecha	+'</td></tr>'+
-									otrosCampos+								
+									'<tr><td align="left">Velocidad:</td><td align="left">'	+ vel	+' Km/h.</td></tr>'+
+									'<tr><td align="left">Estado:</td><td align="left">'   	+ estatus	+'</td></tr>'+									
 									'<tr><td align="left">Dirección:</td><td align="left">'	+ dire	+'</td></tr>'+
 									'<tr><td>&nbsp;</td><td align="rigth" colspan="2"<td align="left">'		+ pdi	+'</td></tr>'+
 				  					'</table>'+
 				  				'</div>';
+
+
 
 			if(lat!=0 && lon !=0){
 				var marker1 = new google.maps.Marker({
@@ -358,7 +336,7 @@ function mon_draw_table(){
 				"<td><div id='mon_div_icon"+unit_info[2]+"' class='icon_unit_selected' onclick='mon_search_unidad(\""+array_selected[i]+"\",true)'>"+
 				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+	
 				"</div>"+
-				"<td><img style='height:16px;"+colorImage+"'/></td>"+
+				"<td><img style='width:16px; height:16px;' src='"+colorImage+"'/></td>"+
 				validateInfo+
 				"<td><div id='mon_div_iconi"+unit_info[2]+"' class='mon_units_info' onclick='mon_get_info(\""+array_selected[i]+"\")'>"+
 				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+"</div>"+				
@@ -371,7 +349,7 @@ function mon_draw_table(){
 				},function() {
 					$(this).removeClass('unit-selected');
 					$(this).css('cursor','auto');
-			});
+			});	
 
 			if(priory==1){
 				mon_total_alertas++;
@@ -407,8 +385,8 @@ function add_info_marker(marker,content){
       infoWindow.setContent(content);
       infoWindow.open(map, marker);
       map.setZoom(18);
-	  map.setCenter(latLng); 
-	  map.panTo(latLng);     
+	  map.setCenter(latLng);   
+	  map.panTo(latLng);        
 	});
 }
 
@@ -520,9 +498,6 @@ function mon_center_map(unitsinfo){
 	var colprio = unit_info[4];//--
 	var imei 	= unit_info[18];
 	var blockMotor = unit_info[19];
-	var type    = unit_info[20];
-	var battery = unit_info[21];
-
 	var textoMensaje = (blockMotor==1) ? 'MOTOR BLOQUEADO -': '';
 	var image = new google.maps.MarkerImage('public/images/car.png',
 		new google.maps.Size(1, 1),
@@ -538,30 +513,20 @@ function mon_center_map(unitsinfo){
 
     markers.push(beachMarker);
 
-	var image 			= '';
-	var colorImage 		= '';
-	var textoMensaje 	= '';
-	var otrosCampos		= '';
-
-	if(type=='V'){
-		otrosCampos= '<tr><td align="left">Velocidad:</td><td align="left">'	+ vel	+' Km/h.</td></tr>'+
-					 '<tr><td align="left">Estado:</td><td align="left">'   	+ estatus	+'</td></tr>';
-	}else{
-		otrosCampos= '<tr><td align="left">Nivel de Bateria:</td><td align="left">'	+ battery	+'% </td></tr>';
-	}
-
-
 	var info = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
 					'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
-				  			'<table width="400"><tr><th colspan="2">'+
+						/*'<div>'+*/
+				  			'<table><tr><th colspan="2">'+
 							'<tr><td align="left">Unidad :</td><td align="left">'	+ dunit +'</td></tr>'+
 							'<tr><td align="left">IMEI :</td><td align="left">'  	+ imei +'</td></tr>'+
-				  			'<tr><td align="left">Evento :</td><td align="left">'	+ textoMensaje + evt	+'</td></tr>'+
+				  			'<tr><td align="left">Evento :</td><td align="left">'	+ textoMensaje +" " + evt	+'</td></tr>'+
 				  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ fecha	+'</td></tr>'+
-							otrosCampos+								
+							'<tr><td align="left">Velocidad:</td><td align="left">'	+ vel	+'</td></tr>'+
+							'<tr><td align="left">Estado:</td><td align="left">'   	+ estatus	+'</td></tr>'+									
 							'<tr><td align="left">Dirección:</td><td align="left">'	+ dire	+'</td></tr>'+
 							'<tr><td>&nbsp;</td><td align="rigth" colspan="2"<td align="left">'		+ pdi	+'</td></tr>'+
 		  					'</table>'+
+		  				/*'</div>'+*/
 		  				'</div>';
 	if(infowindow){infoWindow.close();infowindow.setMap(null);}
 	infowindow = new google.maps.InfoWindow({
@@ -573,7 +538,7 @@ function mon_center_map(unitsinfo){
 	var positon = new google.maps.LatLng(lat, lon);
 	map.setZoom(18);
 	map.setCenter(positon);	
-	map.panTo(positon);
+	map.panTo(positon);     
 }
 
 function mon_get_info(valor){

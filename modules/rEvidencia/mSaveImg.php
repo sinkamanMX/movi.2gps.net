@@ -1,21 +1,30 @@
-<?php
-//define image path
-$filename = $_GET['img'];
-$degrees = $_GET['grd'];
-// Load the image
-if($source = imagecreatefromjpeg($filename)){echo 1;}else{echo 0;}
+<?php	
+// Tipo de contenido
+header('Content-Type: image/jpeg');
 
 
-// Rotate
-if($rotate = imagerotate($source, $degrees, 0)){echo 2;}else{echo -1;}
+//------------------------------------------------
+//echo $_GET['img'].",".$_GET['grd'];
+    $fotos = '/var/www/vhosts/2gps.net/subdominios/movi/'.$_GET['img'];
+    $angulos = -1*$_GET['grd'];
+    $ruta_imagen = $fotos;
+    $imagen_ori = imagecreatefromjpeg($ruta_imagen);
+    $imagen_original = imagerotate($imagen_ori, $angulos, 0);
+    $ancho_original = imagesx($imagen_original);
+    $alto_original = imagesy($imagen_original);
+    $ancho_final = 500;//($alto_original/2);
+    $alto_final  = 600;//($ancho_original/2); //($ancho_final / $ancho_original) * $alto_original;
+    $imagen_redimensionada = imagecreatetruecolor($alto_final, $ancho_final);
 
-//and save it on your server...
 
-//if(file_put_contents($filename,$rotate)){
-if(file_put_contents("prueba.jpg",$rotate)){	
-	echo 1;
-	}
-else{
-	echo 0;
-	}	
+    imagecopyresized($imagen_redimensionada, $imagen_original, 0, 0, 0, 0, $alto_final, $ancho_final, $ancho_original, $alto_original);
+    if(imagejpeg($imagen_redimensionada, $fotos)){
+		imagedestroy($imagen_original);
+		imagedestroy($imagen_redimensionada);
+		echo 1;
+		}
+    else{
+		echo 0;
+		}
+    
 ?>

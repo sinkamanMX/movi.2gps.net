@@ -1,7 +1,10 @@
 <script type="text/javascript" src="http://jqueryrotate.googlecode.com/svn/trunk/jQueryRotate.js"></script>
+<input type="hidden" id="rev_src_val" value="{IMG}" />
+<input type="hidden" id="rev_grd_val" value="0" >
+<input type="hidden" id="rev_img_id" value="{ID}" />
 <img src="{IMG}" id="rev_img" width="96%" height="90%" align="middle" />
 
-<div align="center"  style="position:absolute; left:0px; bottom:0px; width:98%; height:30px; border:#0000FF solid thin;">
+<div align="center"  style="position:absolute; left:0px; bottom:0px; width:98%; height:30px; ">
 
 <button  class="turn small_btn" onClick="rev_rotar_img()"  ></button>
 
@@ -14,11 +17,12 @@
       },
       text: false
     })
-var angle = 0;
+var grados = 0;
 
 function rev_rotar_img(){
-	 angle += 90;
+
 	 grados += 90;
-    $("#rev_img").rotate(angle);
+    $("#rev_img").rotate(grados);
+	$("#rev_grd_val").val(grados);
 	}		
 </script>

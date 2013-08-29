@@ -1,4 +1,5 @@
 var rev_map;
+var ide = -1;
 var grados = 0;
 $(document).ready(function () {
 	//Pintar mapa
@@ -179,7 +180,7 @@ function get_usr(){
 	}	
 //----------------------------
 function rev_get_preg_resp(idq){
-
+ide = idq;
 
 		$(document.body).css('cursor','wait');
 		scroll_table=($("#rev_det").height()-95)+"px";
@@ -317,11 +318,13 @@ function rev_export_excel(dti,dtf,u,q){
 	return false;
 	}
 //---------------------------------------
-function rev_ver_img(img){
+function rev_ver_img(img,id){
+	//alert(id)
 	$.ajax({
 		url: "index.php?m=rEvidencia&c=mImage",
 		data : {
-			img:img
+			img:img,
+			id:id
 			},
 		type: "GET",
 		success: function(data) {
@@ -339,22 +342,26 @@ function rev_ver_img(img){
 
 	}	
 //-------------------------------------------------
+function validar_id(){}
+//-------------------------------------------------
 function rev_save_img(){
-	//alert($("#rev_img").prop('src'))
+	//alert($("#rev_grd_val").val())
 	$.ajax({
 		url: "index.php?m=rEvidencia&c=mSaveImg",
 		data : {
-			img : $("#rev_img").prop('src'),
-			grd : grados
+			img : $("#rev_src_val").val(),
+			grd : $("#rev_grd_val").val()
 			},
 		type: "GET",
 		success: function(data) {
 			var result = data; 
-			alert(result)
+			//alert(result)
 			if(result==1){
 				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La imagen ha sido almacenada correctamente.</p>');
-				$("#dialog_message" ).dialog('open');		
-				$("#rev_dialog_img").dialog("open");
+				$("#dialog_message" ).dialog('open');
+				//alert(ide)
+				rev_get_preg_resp(ide);
+				$("#rev_dialog_img").dialog("close");
 				}
 			else{
 				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La imagen no ha podido ser almacenada.</p>');

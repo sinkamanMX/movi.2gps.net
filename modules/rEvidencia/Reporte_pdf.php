@@ -119,6 +119,10 @@ function FancyTable2($header2){
 	$this->Cell($w2[0],4,$_GET['qst'],'LR',0,'L',$fill2);
 	for($x=0; $x<count($data); $x++){
 		
+		if($x>0){
+			$this->Cell($w2[0],4,"",'LR',0,'L',$fill2);
+			}
+		
 		$this->Cell($w2[1],24,$data[$x][0],'LR',0,'L',$fill2);
 		if($data[$x][2]==0){
 		$this->Cell($w2[2],24,$data[$x][1],'LR',0,'C',false);	
@@ -381,5 +385,5 @@ $pdf->Ln(10);
 $pdf->FancyTable2($header2);
 //for($i=1;$i<=40;$i++)
 //$pdf->Cell(0,5,'Imprimiendo línea número '.$i,0,1);
-$pdf->Output('dd.pdf','D');
+$pdf->Output('rev_'.date('Ymd_His').'.pdf','D');
 ?>

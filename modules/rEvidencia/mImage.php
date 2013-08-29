@@ -21,7 +21,8 @@
 	));
 
 	$tpl->assign_vars(array(
-		'IMG'			=> $_GET['img']
+		'IMG'			=> $_GET['img'],
+		'ID'			=> $_GET['id']
 	));			
 	$tpl->pparse('mImage');	
 ?>

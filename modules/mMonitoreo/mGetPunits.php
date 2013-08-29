@@ -25,12 +25,11 @@
 		$commands_units="";
 		$flagPosition=-1;
 		$blockMotor=2;
-		$sqlUnitsEquipment = "SELECT  C.IMEI, D.COD_TYPE_EQUIPMENT,D.DESCRIPTION, D.BLOQUEO, MM.TYPE
+		$sqlUnitsEquipment = "SELECT  C.IMEI, D.COD_TYPE_EQUIPMENT,D.DESCRIPTION, D.BLOQUEO
 					FROM ADM_UNIDADES A
 					  INNER JOIN ADM_UNIDADES_EQUIPOS B ON B.COD_ENTITY 	= A.COD_ENTITY
 					  INNER JOIN ADM_EQUIPOS C 			ON C.COD_EQUIPMENT 	= B.COD_EQUIPMENT
 					  INNER JOIN ADM_EQUIPOS_TIPO D 	ON D.COD_TYPE_EQUIPMENT = C.COD_TYPE_EQUIPMENT	
-					  INNER JOIN ADM_MARCA_MODELO MM ON A.COD_TRADEMARK_MODEL = MM.COD_TRADEMARK_MODEL 
 					WHERE A.COD_ENTITY = ".$row['COD_ENTITY'];
 		$queryInfoUnits = $db->sqlQuery($sqlUnitsEquipment);
 		$countInfoUnits	= $db->sqlEnumRows($queryInfoUnits);
@@ -55,8 +54,7 @@
 		
 		$commands_units = ($commands_units=="") ? "SC": $commands_units;
 		$imemiUnit		= ($imemiUnit=="") ? 'Sin IMEI asignado':$imemiUnit;
-		$typeEquimpent	= ($rowEquipments['TYPE']=="") ? "SM": $rowEquipments['TYPE'];	
-					
+						
 		$upos = $Positions->get_last_position($row['COD_ENTITY'],$idCliente,$flagPosition);
 		if($upos != 0){
 			$show	   	= ($upos['PRIORITY']) ? 1: 0; // PRIORIDAD DEL EVENTO
@@ -64,9 +62,8 @@
 			$anglef		= $upos['ANGULO']; // ANGULO UTILIZADO PARA GIRAR OBJETO						
 			$direccion1 = $Positions->direccion_no_format($upos['LATITUDE'],$upos['LONGITUDE']);				
 			$estatus	= $upos['ESTATUS'];
-			$color		= $upos['COLOR'];
+			$color		= $upos['COLOR'];								
 			$blockMotor = (isset($upos['BLOQUEO_MOTOR']) ) ? $upos['BLOQUEO_MOTOR']: '2';
-			$battery 	= $upos['BATTERY'];
 			
 			$querys="SELECT CONCAT('A ', TRUNCATE(DISTANCIA(".$upos['LONGITUDE'].",".$upos['LATITUDE'].
 						", LONGITUDE, LATITUDE),2),' KM de ',DESCRIPCION) AS DISTANCIA ,".
@@ -98,7 +95,7 @@
 							$upos['GPS_DATETIME'].'|'. $Functions->codif($upos['DESC_EVT']).'|'.$estatus.'|'.
 							$color.'|'.$pdi.'|'.$upos['VELOCIDAD'].'|'.$new_dir.'|'.$upos['LATITUDE'].'|'.
 							$upos['LONGITUDE'].'|'.$show.'|'.@$ROW['ICONO'].'|'.
-							$anglef."|".$commands_units.'|'.$imemiUnit.'|'.$blockMotor."|".$typeEquimpent."|".$battery;
+							$anglef."|".$commands_units.'|'.$imemiUnit.'|'.$blockMotor;
 		}else{
 			$data_unit = $dbf->getRow('ADM_UNIDADES',' COD_ENTITY = '.$row['COD_ENTITY']);
 			$descripcion = ($data_unit) ? $data_unit['DESCRIPTION'] : 'S/info.';
@@ -106,7 +103,7 @@
 			$respuesta .= ($respuesta=="") ? "": "!";
 			$respuesta .= $row['ID_GRUPO'].'|'.$row['NOMBRE'].'|'.$row['COD_ENTITY'].'|'.
 			$Functions->codif($descripcion).'|0|0|0|0|0|0|0|0|0|0|0|0|0|'.$commands_units.'|'.
-							$imemiUnit.'|'.$blockMotor."|".$typeEquimpent."|".$battery;
+							$imemiUnit.'|'.$blockMotor;
 		}
 	}	
 	echo $respuesta;		
