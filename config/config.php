@@ -10,6 +10,7 @@
 
 	$config = array(
 		'sqlDriver' 	=> 'mysql',
+		'keyapi'	    => 'AIzaSyDEKMhVRqzLTUtyUA2dm2XrEnUrPWLTJQM',
 		'path' 			=> '/',
 		'domain' 		=> 'm.2gps.net',
 		'languaje' 		=> 'es',

@@ -5,3 +5,4 @@
 config/database.php
 docs/BD/*.gz
 modules/geopuntos2/phpqrcode/cache/*
+public/evidencia/*

@@ -8,7 +8,7 @@
   
   function marca_procesados($instancia,$con){
     $sql = "UPDATE ALERT_UPDATE_ENTITY SET TABLA = '".$instancia."' WHERE TABLA IS NULL or TABLA = 0 LIMIT 200";
-    //echo $sql;
+    echo $sql;
 	$qry = mysql_query($sql);
   }
   
