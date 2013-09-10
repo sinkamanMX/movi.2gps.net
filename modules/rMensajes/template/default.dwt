@@ -3,8 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="{PATH}/css/style.css">
 <script type="text/javascript" src="{PATH}/js/scripts.js"></script>
-    <script type="text/javascript" src="public/js/comboquery/chosen.jquery.js" ></script>
-    <link rel="stylesheet" href="public/js/comboquery/chosen.css">    
+  <script type="text/javascript" src="public/js/comboquery/chosen.jquery.js" ></script>
+  <link rel="stylesheet" href="public/js/comboquery/chosen.css">    
     <div id="vtab">
         <ul>
             <li class="icon-in"></li>
