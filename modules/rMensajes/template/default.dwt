@@ -3,6 +3,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="{PATH}/css/style.css">
 <script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+    <script type="text/javascript" src="public/js/comboquery/chosen.jquery.js" ></script>
+    <link rel="stylesheet" href="public/js/comboquery/chosen.css">    
     <div id="vtab">
         <ul>
             <li class="icon-in"></li>
@@ -30,37 +32,37 @@
             </table> 
           </div>
 
-          <div id="divmesgs">
+          <div class="divmesgs">
             <div  id="recMsgInRead"  class="divMsgReadIn ui-widget-content ui-corner-all invisible">
               <input type="hidden" id="idMsgIn" value="0"/>
               <div id="mTittleUnit" class="msgTittleUnit">  </div>
               <div id="mTimeUnit" class="msgTime">        </div> 
               <div class="MsgRead">
                   <div class="msgResp"></div>
-                  <div class="floatleft cursor_point" onclick="">Responder</div>
+                  <div class="floatleft cursor_point" onclick="msgRespdIn(0)">Responder</div>
                   <div class="msgRenv"></div>
-                  <div class="floatleft cursor_point" onclick="msgReSend()">Reenviar</div>
+                  <div class="floatleft cursor_point" onclick="msgRespdIn(1)">Reenviar</div>
               </div>
               <div id="msgDataRead" class="msgData"> </div>
             </div>
 
-            <div  class="divMsgReadIn ui-widget-content ui-corner-all  invisible">
-                <div class="ui-widget-header ui-corner-all" align="left">Responder</div>
+            <div id="recMsgInResp" class="divMsgReadIn ui-widget-content ui-corner-all  invisible">
+                <div id="recMsgTittle" class="ui-widget-header ui-corner-all" align="left">Responder</div>
                 
                 <div style="margin-top:5px; height: 25px;">
-                    <input type="text" style="width:98%;"/>
+                    <div id="cboMsgs" class="invisible">
+                      <select id="cboUnits" multiple="" data-placeholder="Unidades..." class="chzn-select" style="width:95%;">
+                        {UNITS}
+                      </select>
+                    </div>               
+                    <span  id="recMsgDesc" class="invisible msgTittleUnit"></span>
                 </div>
-                <div style="margin-top:5px; margin-bottom:5px; margin-left: 5px;">Mensaje:</div>
-                <div class="divcomboMacros">
-                    <select id="cboMacros" class="comboMacros">
-                        <option value="0">Selecciona una opcion</option>
-                    </select>
-                </div>
-                <textarea class="txtAreaMsg"></textarea>
+                <div style="margin-top:5px; margin-bottom:5px; margin-left: 5px; height: 35px;">Mensaje:</div>
+                <textarea id="respMsgText" class="txtAreaMsg"></textarea>
 
                 <div class="buttons" >
-                    <button id="rhi_exp_exe" onClick="">Cancelar</button>
-                    <button id="rhi_exp_exe" onClick="">Enviar</button>
+                    <button id="msg_button_cancelIn" onClick="">Cancelar</button>
+                    <button id="msg_button_sendIn" onClick="">Enviar</button>
                 </div>                
             </div>
           </div>  
@@ -70,13 +72,60 @@
 
         <div><!-- End Tab Out-->
 
+          <div style="width: 100%; height: 100%; float: left;" id="divTableOut">
+            <table cellpadding="0" cellspacing="0" border="0" class="display" id="msgTableOut">
+              <thead>
+                <tr>
+                  <th colspan="5">
+                    <div style="width:100%; float:left; align:center;"><h3>Bandeja de Salida</h3></div>
+                  </th>
+                </tr>
+                <tr >
+                  <th>&nbsp;</th>
+                  <th>Unidad</th>
+                  <th>Recibido</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table> 
+          </div>
 
+          <div class="divmesgs">
 
+            <div  id="recMsgOutRead"  class="divMsgReadIn ui-widget-content ui-corner-all invisible">
+              <input type="hidden" id="idMsgOut" value="0"/>
+              <div id="mTittleUnitOut" class="msgTittleUnit">  </div>
+              <div id="mTimeUnitOut" class="msgTime">        </div> 
+              <div class="MsgRead">
+                  <div class="msgRenv"></div>
+                  <div class="floatleft cursor_point" onclick="sendRequestResp()">Reenviar</div>
+              </div>
+              <div id="msgDataReadOut" class="msgData"> </div>
+            </div>
+          </div>
         </div><!-- End Tab Out-->
 
-        <div>
+        <div class="divNew"><!-- Start New Message-->
             
-        </div>
+            <div class="divMsgReadNew ui-widget-content ui-corner-all">
+                <div id="recMsgTittle" class="ui-widget-header ui-corner-all" align="left">Nuevo Mensaje</div>    
+                 <div style=" align:center; margin-left: 5px;"><h3>Destinatarios:</h3></div>   
+                <div style="margin-top:5px; height: 25px;">
+                      <select id="cboUnitsNew" multiple="" data-placeholder="Unidades..." class="chzn-select-new" style="width:95%;">
+                        {UNITS}
+                      </select>
+                </div>
+                <div style="  height: 35px;margin-bottom: 5px;margin-left: 5px; margin-top: 50px;"><h3>Mensaje:</h3></div>
+                <textarea id="respMsgTextNew" class="txtAreaMsg"></textarea>
+
+                <div class="buttons" >
+                    <button id="msg_button_cancelNew" onClick="">Cancelar</button>
+                    <button id="msg_button_sendNew" onClick="">Enviar</button>
+                </div>                
+            </div>
+
+
+        </div><!-- End New Message-->
         
         <!-- Start Search Mensajes -->
         <!--<div>
@@ -86,3 +135,8 @@
     </div>    
 
     <div id="dialog_msg" ></div> 
+
+      <script type="text/javascript">   
+        $(".chzn-select").chosen({width: "290px"}).change(function(event) { });
+        $(".chzn-select-new").chosen({width: "500px"}).change(function(event) { });
+      </script>

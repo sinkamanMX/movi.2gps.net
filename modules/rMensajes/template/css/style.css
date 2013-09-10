@@ -73,7 +73,7 @@
     z-index: 9;
 }
 
-#divmesgs{
+.divmesgs{
     /*background-color: #212183;
     border: 1px solid #212183;*/
     float: left;
@@ -165,4 +165,18 @@
 
 .datatablerowhighlight {
     background-color: #47A3DA  !important;
+}
+
+.divNew{
+    width: 85% !important;
+    height: 98% ;
+    border: 1px solid #FFFFFF !important;  
+}
+
+.divMsgReadNew{
+    height: 75%;
+    margin-left: 20%;
+    margin-top: 4%;
+    position: relative;
+    width: 500px;
 }
