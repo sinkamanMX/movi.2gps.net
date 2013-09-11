@@ -13,8 +13,7 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 			echo '<script>window.location="index.php?m=login"</script>';
 			
 	$client   = $userAdmin->user_info['ID_CLIENTE'];
-
-	//``````````````
+	
 	$data = Array(
 			'ID_TIPO'		=> $_GET['typ'],
 			'COD_CLIENT'   	=> $client,
@@ -24,10 +23,24 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 			'RECORDADO'   	=> $_GET['rec'],
 			'REQUERIDO'   	=> $_GET['req']
 	);
-	if($dbf-> insertDB($data,'CRM2_PREGUNTAS',true) == true){
-		echo 1;
+	
+	if($_GET['op']==1){
+
+		if($dbf-> insertDB($data,'CRM2_PREGUNTAS',true) == true){
+			echo 1;
 		}
-	else{
-		echo 0;
+		else{
+			echo 0;
 		}	
+	}
+	if($_GET['op']==2){
+		$where = " ID_PREGUNTA  = ".$_GET['id'];
+		if(($dbf-> updateDB('CRM2_PREGUNTAS',$data,$where,true)==true)){
+			echo 1;
+		}
+		else{
+			echo 0;
+		}	
+	}
+
 ?>

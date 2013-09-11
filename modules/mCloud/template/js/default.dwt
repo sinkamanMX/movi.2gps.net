@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{PAGE_TITLE}</title>
+<script type="text/javascript"  charset="ISO-8859-1" src="public/js/tigra_tables.js"></script>
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+
+
+
+ <!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>-->
+ 
+  <script src="{PATH}/js/jquery.js"></script>
+<script src="{PATH}/js/jquery.cookie.js"></script>
+
+<!--<script src="{PATH}/js/jquery.ui.dialog.js"></script>-->
+<script src="{PATH}/js/jquery.treeview.js"></script>
+    <script src="{PATH}/js/demo.js"></script>
+    <script src="{PATH}/js/jquery.qtip-1.0.0-rc3.js"></script>
+    <script src="{PATH}/js/jquery.qtip-1.0.0-rc3.min.js"></script>
+<!--<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>-->
+
+
+<link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
+<link type="text/css" href="public/css/jqueryUI.css" rel="stylesheet" />
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<link type="text/css" href="{PATH}/css/styles.css" rel="stylesheet"/>
+<link type="text/css" href="{PATH}/css/jquery.treeview.css" rel="stylesheet"/>
+<link type="text/css" href="{PATH}/css/screen.css" rel="stylesheet"/>
+
+
+<script>
+$(document).ready(
+function(){
+ init();
+
+
+	//onload();
+});
+	
+</script>
+
+
+
+<script>
+    function setupLabel() {
+        if ($('.label_check input').length) {
+            $('.label_check').each(function(){ 
+                $(this).removeClass('c_on');
+            });
+            $('.label_check input:checked').each(function(){ 
+                $(this).parent('label').addClass('c_on');
+            });                
+        };
+        if ($('.label_radio input').length) {
+            $('.label_radio').each(function(){ 
+                $(this).removeClass('r_on');
+            });
+            $('.label_radio input:checked').each(function(){ 
+                $(this).parent('label').addClass('r_on');
+            });
+        };
+    };
+    $(document).ready(function(){
+        $('body').addClass('has-js');
+        $('.label_check, .label_radio').click(function(){
+            setupLabel();
+        });
+        setupLabel(); 
+    });
+</script>
+
+<!--<script>
+	$(function() {
+		$( "#start-date").datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			startDate: (new Date('01/01/2000')),
+			buttonImageOnly: true,
+			//minDate: '0',
+			dateFormat: "yy-mm-dd"
+		});
+		
+		
+		 $( ".b_ic" ).button();
+		 $(".b_op" ).button();
+
+						
+	});
+
+	</script>-->
+
+</head>
+<!--<body onload="init('{URL}','{RM}','{UP}')" >-->
+<body onload="" >
+<div id="panel1" style="z-index:0; position:relative;">
+  
+      <div id="contenedor" style=" height:90%; z-index:0; position:relative;">
+
+                      <!--  ---------------------------------panel x------------------------------------- -->
+<div id="panelx"  style="z-index:0; top:10px; width:95%; height:95%">
+
+                    <div style="font-size:10px; width:70px; position:absolute; z-index:0; left:70%; display:none" class="hb">
+                                     <span id="icbr" class="ui-icon ui-icon-search " title="Buscar"></span>
+                    <div style="position:relative; top:3px; left:-4px;">Buscar</div>
+                    </div>
+  
+<div  id="column4" style="	border:1px solid #c5dbec; background:#dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif; min-height: 110px; position:relative; width:445px; z-index:99; height:50px; ">
+  		<h4 class="ui-widget-header">&nbsp;Variables</h4>
+ 		<div style=" position:relative; left:110px;" id="selet" class="styled-select"></div>
+         
+        <div id="onj" style="position:relative; top:5px; left:160px; width:130px;  " align="center" ></div>
+</div>
+<div class="column" id="column1" style="width:260px; height:500px; overflow-x:auto; overflow-y:auto; ">
+<h4>&nbsp;&nbsp;Mis Carpetas</h4>
+	<ul id="browser" class="filetree" style="position:relative; left:10px; ">
+		
+	</ul>
+	
+	</div>
+
+     <div class="column" id="column5" style="width:30%; left:465px; position:absolute; top:46px; min-height:30px;  max-height:33px; " >
+	<h4 class="ui-widget-header">&nbsp;Creación de Alertas</h4>
+       <span id="etiqueta" style=" font-size:14px; font:bold; color:#CCC; height:10px; position:absolute; left:60px; top:50px; z-index:1;">>>Arrastre Aqui sus Variables<<</span>
+    </div>
+	<div class="column" id="column2" style="width:30%; left:465px; min-height:341px; max-height:255px; top: 84px; position:absolute;" >
+
+	</div>
+    <div class="column" id="column6" style="width:30%; left:465px; position:absolute; top:431px; min-height:30px;  max-height:33px; " >
+	 <input type="button" style="position:absolute; left:10px; visibility:hidden;" id="bu_clear" class="b_op" value="Cancelar" onclick="clear_div()" />
+    <input type="button" style="position:absolute; right:125px; visibility:hidden;" id="bu_conf" class="b_op" value="Configurar" onclick="popup_conf()" />
+    <input type="button" style="position:absolute; right:10px; visibility:hidden;" id="bu_guar" class="b_op" value="Guardar"  onclick="guar_general()"/>
+    </div>
+  	  <div class="lista" id="column3" style="position:absolute; top:46px; width:28%; right:5px; min-height:530px;" >
+      <h4 class="ui-widget-header">&nbsp;Alertas de Usuario</h4>
+      <table border="0" id="bucara"><tr><td><input type="text" size="30" id="buck" title="Buscar" onkeyup="txtls(this.value)" /></td><td><a href="#" onclick="busque()" ><img title="Buscar" src="/public/images/search.png" style=" width:18px;"></a></td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td></td></tr></table>
+      <div id="alert_c" style=" position:relative; left:3px; width: 327px;  height: 460px; overflow-x:hidden; overflow:auto;" ><table border="0" id="cvs"></table></div>
+      </div>
+	
+<!--	<div id="dialog"  title=" &nbsp;&nbsp; Descripcion" style="  ">
+  
+    </div>
+    <div id="dialogo"  title=" &nbsp;&nbsp; Configuracion" >
+  
+    </div>-->
+
+</body>
+</html>

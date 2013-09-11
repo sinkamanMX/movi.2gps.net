@@ -1,0 +1,509 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{PAGE_TITLE}</title>
+<script type="text/javascript"  charset="ISO-8859-1" src="public/js/tigra_tables.js"></script>
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+
+<!--<script src="/js/jquery.ui.core.js"></script>
+	<script src="{PATH}/js/jquery.ui.widget.js"></script>
+	<script src="{PATH}/js/jquery.ui.mouse.js"></script>
+	<script src="{PATH}/js/jquery.ui.draggable.js"></script>
+	<script src="{PATH}/js/jquery.ui.position.js"></script>
+	<script src="{PATH}/js/jquery.ui.resizable.js"></script>-->
+<style>
+a.tooltip span {
+display:none; 
+margin:0 0 0 10px; 
+padding:5px 5px; 
+ z-index:999;
+ position:absolute;
+} 
+
+.styled-select {
+   width: 240px;
+   height: 34px;
+   overflow: hidden;
+   background: url(http://cdn.bavotasan.com/wp-content/uploads/2011/05/down_arrow_select.jpg) no-repeat right #ddd;
+   border: 1px solid #ccc;
+   }
+   .styled-select select {
+   background: transparent;
+   font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+   font:bold;
+   width: 268px;
+   padding: 5px;
+   font-size: 16px;
+   line-height: 1;
+   border: 0;
+   border-radius: 0;
+   height: 34px;
+   -webkit-appearance: none;
+   }
+   
+a.tooltip:hover span {
+display:inline; 
+  position:absolute;
+border:1px solid #79b7e7; 
+background:#d0e5f5; 
+	width:450px;
+    height:120px;
+   
+    font-weight:bold;
+    margin:-50px 190px 300px -250px;
+color:#1d5987; 
+    z-index:999;
+	
+}
+
+#variabe{  height:85%;  top: 50px; position:absolute; float: left; left: 10px; width: 29%; min-height: 18em; padding: 1%;  }
+  #gallery {  width: 99%; min-height: 12em; }
+  .gallery.custom-state-active {  }
+  .gallery li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
+  .gallery li h5 { margin: 0 0 0.4em; cursor: move; }
+  .gallery li a { float: right; }
+  .gallery li a.ui-icon-zoomin { float: left; }
+  .gallery li img { width: 100%; cursor: move; }
+  
+
+#selet { font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+   font:bold; }
+#trash { top: 50px; z-index:-1; position:absolute; right: 392px; float: right; width: 30%; min-height: 18em; padding: 1%; }
+#lista { top: 50px; position:absolute;  float: right; right: 20px;  width: 28%; min-height: 18em; padding: 1%; }
+
+body {
+	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+	font-size: 62.5%;
+}
+</style>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+ 
+  
+
+  <link href="{PATH}/css/inettuts.css" rel="stylesheet" type="text/css" />
+<!--   <script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.2.6.min.js"></script>-->
+<!--	<script type="text/javascript" src="{PATH}/js/jquery-ui-personalized-1.6rc2.min.js"></script>-->
+    <script type="text/javascript" src="{PATH}/js/inettuts.js"></script>
+    <script src="{PATH}/js/jquery.ui.dialog.js"></script>
+
+
+
+<script type="text/javascript" src="public/js/ui/ui.selectmenu.js"></script>
+<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>
+
+
+<link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
+<link type="text/css" href="public/css/jqueryUI.css" rel="stylesheet" />
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+
+<script  src="public/js/OpenLayers-2.11/OpenLayers.js" ></script>
+<!--<link type="text/css" href="public/css/panelcuerpo.css" rel="stylesheet"/>-->
+
+<script>
+$(document).ready(
+function(){
+ init();
+
+ 
+
+	//onload();
+});
+
+</script>
+
+
+
+ 
+
+
+
+<script type="text/javascript">
+var div='';
+function change_div(d){
+
+	div = d;
+	//alert(div);
+}
+
+$(document).keydown(function(tecla){
+    if (tecla.keyCode == 113) {
+        //alert('Tecla F2 presionada');
+		(div=="")?$('#bx').css("display",""):$('#'+div+'').css("display","");
+		$('#'+div+'').css("display","");
+    }
+});
+
+	$(document).ready(
+		
+
+			function(){
+							
+
+	           // panel1
+				$('#panel1').panel({
+
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+
+				});
+				
+				$('#panel2').panel({
+				'collapsed':true
+				});
+				$('#panelx').tabs();
+			   /* $('#panelx').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});*/
+			    $('#panelxa').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});
+			    $('#panelxb').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});
+			    $('#panelxc').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});								
+               // panel interno 2
+				$('#panel3').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});
+				// footer
+				/* $('#footer').panel({
+
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+
+				});*/
+				// botones
+              $( "input ubmit, a, button", ".demo" ).button();
+			  $( ".b_op" ).button();
+				// combos
+				$('select#speedC').selectmenu({style:'dropdown'});
+				
+
+			/*$(".b_op" ).button();
+						var pickOp={
+						maxDate: new Date(),
+						showOn: "button",
+						buttonImage: "public/images/cal.gif",
+						buttonImageOnly: true,
+						dateFormat: "yy-mm-dd"
+						};*/				
+				//$("#start-date").datepicker(pickOp);
+				//$("#end-date").datepicker(pickOp);
+			///////DIALOG NUEVO	
+			
+			///////DIALOG crear	
+								
+//.......................................objetos y movimiento..........................//
+ 
+ 
+
+			   //------------------------
+			   
+				//------------------------
+			});
+
+
+///---- acordion 
+  $( "#dialog" ).dialog({
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+
+
+
+
+	
+	
+	
+	
+	</script>
+     <script>
+  $(function() {
+    // there's the gallery and the trash
+    var $gallery = $( "#gallery" ),
+      $trash = $( "#trash" );
+ 
+    // let the gallery items be draggable
+    $( "li", $gallery ).draggable({
+      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+      revert: "invalid", // when not dropped, the item will revert back to its initial position
+      containment: "document",
+      helper: "clone",
+      cursor: "move"
+    });
+ 
+    // let the trash be droppable, accepting the gallery items
+    $trash.droppable({
+      accept: "#gallery > li",
+      activeClass: "ui-state-highlight",
+      drop: function( event, ui ) {
+        deleteImage( ui.draggable );
+      }
+    });
+ 
+    // let the gallery be droppable as well, accepting items from the trash
+    $gallery.droppable({
+      accept: "#trash li",
+      activeClass: "custom-state-active",
+      drop: function( event, ui ) {
+        recycleImage( ui.draggable );
+      }
+    });
+ 
+    // image deletion function
+    var recycle_icon = "<a href='modules/mAlertasM/d/link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
+    function deleteImage( $item ) {
+      $item.fadeOut(function() {
+        var $list = $( "ul", $trash ).length ?
+          $( "ul", $trash ) :
+          $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $trash );
+ 
+        $item.find( "a.ui-icon-trash" ).remove();
+        $item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
+          $item
+            .animate({ width: "48px" })
+            .find( "img" )
+              .animate({ height: "36px" });
+        });
+      });
+    }
+ 
+    // image recycle function
+    var trash_icon = "<a href='link/to/trash' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
+    function recycleImage( $item ) {
+      $item.fadeOut(function() {
+        $item
+          .find( "a.ui-icon-refresh" )
+            .remove()
+          .end()
+          .css( "width", "96px")
+          .append( trash_icon )
+          .find( "img" )
+            .css( "height", "72px" )
+          .end()
+          .appendTo( $gallery )
+          .fadeIn();
+      });
+    }
+ 
+    // image preview function, demonstrating the ui.dialog used as a modal window
+    function viewLargerImage( $link ) {
+      var src = $link.attr( "href" ),
+        title = $link.siblings( "img" ).attr( "alt" ),
+        $modal = $( "img[src$='" + src + "']" );
+ 
+      if ( $modal.length ) {
+        $modal.dialog( "open" );
+      } else {
+        var img = $( "<img alt='" + title + "' width='384' height='288' style='display: none; padding: 8px;' />" )
+          .attr( "src", src ).appendTo( "body" );
+        setTimeout(function() {
+          img.dialog({
+            title: title,
+            width: 400,
+            modal: true
+          });
+        }, 1 );
+      }
+    }
+ 
+    // resolve the icons behavior with event delegation
+    $( "ul.gallery > li" ).click(function( event ) {
+      var $item = $( this ),
+        $target = $( event.target );
+ 
+      if ( $target.is( "a.ui-icon-trash" ) ) {
+        deleteImage( $item );
+      } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+        viewLargerImage( $target );
+      } else if ( $target.is( "a.ui-icon-refresh" ) ) {
+        recycleImage( $item );
+      }
+ 
+      return false;
+    });
+  });
+  </script>
+	<script>
+	$(function() {
+		$( "#sortable" ).sortable();
+		$( "#sortable" ).disableSelection();
+	});
+	</script>
+<script>
+	$(function() {
+		$( "#start-date").datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			startDate: (new Date('01/01/2000')),
+			buttonImageOnly: true,
+			//minDate: '0',
+			dateFormat: "yy-mm-dd"
+		});
+		
+		
+		 $( ".b_ic" ).button();
+		 $(".b_op" ).button();
+		/*$('#panelE').panel({
+
+			'controls':$('#cntrl').html(),
+			'collapsible':false
+
+		});*/
+						
+	});
+
+	</script>
+
+</head>
+<!--<body onload="init('{URL}','{RM}','{UP}')" >-->
+<body onload="" >
+<div id="panel1" style="z-index:0; position:relative;">
+   <h2 class="cabeceras">
+      
+        <table border="0" width="100%"> 
+          <tr>
+           <td width="35%"> 
+          <b>Bienvenido:<br /> {NAME}-({MAIL})</b>
+
+           </td>
+           <td width="30%" align="center"> 
+           {PAGE_TITLE}</td>
+           <td width="35%" align="right" > 
+         {FECHA}
+           </td>
+          </tr>
+        </table>
+      
+      
+  </h2>
+          <div id="contenedor" style=" height:90%; z-index:0; position:relative;">
+
+                      <!--  ---------------------------------panel x------------------------------------- -->  
+<div id="panelx" onclick="change_div('bx')" style="z-index:0; top:10px; width:95%; height:95%">
+                    <div style="font-size:10px; width:70px; position:absolute; z-index:0; left:70%; display:none" class="hb">
+                    <span id="icbr" class="ui-icon ui-icon-search " title="Buscar"></span>
+                    <div style="position:relative; top:3px; left:-4px;">Buscar</div>
+                    </div>   
+                  <!--  <table border="0" class="cabeceras" style="font-size:12px; font-stretch:narrower; z-index:2;  position:absolute; right:100px; top:1px; width:260px; height:33px; color:#FFF;  font-weight: bold;"> <tr id='fec'><td >Fecha:</td><td>
+                     
+                     <input type="text" class="caja_txt" id="start-date"  readonly="readonly" > 
+                     </td></tr><tr id='comb' style="display:none;"><td >Unidad:</td><td >
+                    <div id="combo" ></div>
+                     </td></tr></table>             
+                   <button class="b_op"  style="font-size:12px;  position:absolute; right:10px; " id="pft" onclick="nuevo();"><span class="ui-icon ui-icon-plusthick"></span><div class="btns_op" style="position:absolute; top:7px; left:30px;">Iniciar</div></button>-->
+                 
+                 <ul>
+		<li><a href="#datagridx" onclick="pestana1(1);">Nueva Alerta</a></li>
+		
+		<!--<li><a href="#datagridz" onclick="document.getElementById('ye').style.display = ''; document.getElementById('equis').style.display = 'none';">Viajes por Asignar</a></li> -->       
+	</ul>            
+
+<div class="ui-widget ui-helper-clearfix">
+ <div id="variabe" style="border:1px solid #c5dbec; background:#dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;">
+ <h4 class="ui-widget-header">&nbsp;Variables</h4>
+ <div id="selet" class="styled-select">
+
+ </div>
+ <div id="lista_objt" style="width:350px;" >
+ <br />
+<div id="gallery" style=" font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;" class="gallery ui-helper-reset ui-helper-clearfix">
+	<li class="ui-widget-content ui-corner-tr">
+    <h5 class="ui-widget-header">High Tatras</h5>
+    <img src="images/high_tatras_min.jpg" alt="The peaks of High Tatras" width="76" height="72" />
+    <a href="images/high_tatras.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+    <a href="link/to/trash" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <h5 class="ui-widget-header">High Tatras 2</h5>
+    <img src="images/high_tatras2_min.jpg" alt="The chalet at the Green mountain lake" width="96" height="72" />
+    <a href="images/high_tatras2.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <h5 class="ui-widget-header">High Tatras 3</h5>
+    <img src="images/high_tatras3_min.jpg" alt="Planning the ascent" width="96" height="72" />
+    <a href="images/high_tatras3.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+    <a href="//link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <h5 class="ui-widget-header">High Tatras 4</h5>
+    <img src="images/high_tatras4_min.jpg" alt="On top of Kozi kopka" width="96" height="72" />
+    <a href="images/high_tatras4.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+    <a href="//link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <h5 class="ui-widget-header">High Tatras 4</h5>
+    <img src="images/high_tatras4_min.jpg" alt="On top of Kozi kopka" width="96" height="72" />
+    <a href="images/high_tatras4.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <h5 class="ui-widget-header">High Tatras 4</h5>
+    <img src="http://2.bp.blogspot.com/-PHROlSqBlFs/UCzST4dQ7vI/AAAAAAAACZ8/6Fb8kO51mRc/s1600/tumblr_m3or85za7B1runcwco1_1280.jpg" alt="On top of Kozi kopka" width="96" height="72" />
+    <a href="#" onclick="popup()" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <h5 class="ui-widget-header">High Tatras 4</h5>
+    <img src="images/high_tatras4_min.jpg" alt="On top of Kozi kopka" width="96" height="72" />
+    <a href="images/high_tatras4.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <h5 class="ui-widget-header">High Tatras 4</h5>
+    <img src="images/high_tatras4_min.jpg" alt="On top of Kozi kopka" width="96" height="72" />
+    <a href="images/high_tatras4.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+  <li class="ui-widget-content ui-corner-tr">
+    <h5 class="ui-widget-header">High Tatras 4</h5>
+    <img src="images/high_tatras4_min.jpg" alt="On top of Kozi kopka" width="96" height="72" />
+    <a href="images/high_tatras4.jpg" title="View larger image" class="ui-icon ui-icon-zoomin">View larger</a>
+    <a href="link/to/trash/script/when/we/have/js/off" title="Delete this image" class="ui-icon ui-icon-trash">Delete image</a>
+  </li>
+
+
+  
+</div>
+</div>
+ </div>
+ 
+<div id="trash" class="ui-widget-content ui-state-default" >
+  <h4 class="ui-widget-header">&nbsp; Alerta</h4>
+  <div id="new" >
+  </div>
+</div>
+ 
+ <div id="lista" style=" background:#FFFFFF;" class="ui-widget-content ui-state-default" >
+  <h4 class="ui-widget-header">&nbsp; Alertas Creadas</h4>
+</div>
+
+<div id="dialog"  title=" &nbsp;&nbsp; Nueva Versión de Módulo de Rastreo" style="  ">
+
+</div>
+
+
+ 
+ 
+
+<!-- <iframe name="destino" width="0" height="0"></iframe> -->
+</body>
+</html>

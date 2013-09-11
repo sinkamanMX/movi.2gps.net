@@ -1,0 +1,82 @@
+CREATE TABLE `ALERT_DICTIONARY_EXPRESION` (
+  `COD_ALERT_DICTIONARY` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `DESCRIPTION` VARCHAR(30) COLLATE latin1_swedish_ci DEFAULT NULL,
+  `ID_TIPO_VARIABLE` INTEGER(11) DEFAULT '0' COMMENT 'P PDI, R RSI, G GEOCERCA, U UNIDAD, T CONTADOR DE TIEMPO, A VARIABLE ANALOGICA',
+  `NAME_VARIABLE` VARCHAR(30) COLLATE latin1_swedish_ci DEFAULT NULL COMMENT 'NOMBRE DE LA VARIABLE USADA, EJEMPLO "{EVENT_DESCRIPTION}"',
+  `DEPENDENCIA` INTEGER(11) NOT NULL,
+  `DATASOURCE` VARCHAR(20) COLLATE latin1_swedish_ci NOT NULL,
+  `DATA_SQL` VARCHAR(300) COLLATE latin1_swedish_ci NOT NULL,
+  `DATA_TYPE` ENUM('N','S') DEFAULT 'N' COMMENT 'N NUMÉRICO, S STRING',
+  `METHOD_CALCULATION` TEXT COLLATE latin1_swedish_ci COMMENT 'AQUI DESCRIBIMOS COMO SE CALCULA ESTA VARIABLE',
+  `DIC_DEFAULT_VALUE` VARCHAR(100) COLLATE latin1_swedish_ci DEFAULT NULL COMMENT 'VALORES POR DEFECTO PARA PROBAR LA EXPRESSION',
+  `FLAG_TRASICION` ENUM('0','1') DEFAULT '0',
+  `DATA_LEN` INTEGER(4) DEFAULT '0',
+  `TYPE_EXPRESION` ENUM('A','T') DEFAULT NULL COMMENT 'VARIABLE DE ALERTA (A)O DE TEXTO (T)',
+  `FLAG_ACTIVE` ENUM('0','1') DEFAULT NULL COMMENT '0 INACTIVA, 1 ACTIVA',
+  `EQUAL_CONDITION` VARCHAR(2) COLLATE latin1_swedish_ci DEFAULT NULL COMMENT '=,<>,>=,<=,>,<',
+  `COMBINATIONS` VARCHAR(200) COLLATE latin1_swedish_ci NOT NULL,
+  `ICONO` VARCHAR(100) COLLATE latin1_swedish_ci NOT NULL
+)ENGINE=MyISAM COMMENT='' CHECKSUM=0 DELAY_KEY_WRITE=0 PACK_KEYS=0 MIN_ROWS=0 MAX_ROWS=0 ROW_FORMAT=DYNAMIC CHARACTER SET 'latin1'
+COLLATE 'latin1_swedish_ci';
+
+COMMIT;
+
+
+
+/* Data for the `ALERT_DICTIONARY_EXPRESION` table  (Records 1 - 52) */
+
+INSERT INTO `ALERT_DICTIONARY_EXPRESION` (`COD_ALERT_DICTIONARY`, `DESCRIPTION`, `ID_TIPO_VARIABLE`, `NAME_VARIABLE`, `DEPENDENCIA`, `DATASOURCE`, `DATA_SQL`, `DATA_TYPE`, `METHOD_CALCULATION`, `DIC_DEFAULT_VALUE`, `FLAG_TRASICION`, `DATA_LEN`, `TYPE_EXPRESION`, `FLAG_ACTIVE`, `EQUAL_CONDITION`, `COMBINATIONS`, `ICONO`) VALUES 
+  (1, 'ENTRADA PDI', 1, 'pdi_in', 4, 'OP', '0?FALSO;1?VERDADERO', 'N', NULL, '1', '1', 1, 'A', '1', '=', '4x20x30x22', '/public/images/pdi_pk.png'),
+  (2, 'SALIDA PDI', 1, 'pdi_out', 4, 'OP', '0?FALSO;1?VERDADERO', 'N', NULL, '1', '1', 1, 'A', '1', '=', '4x20x30x22', '/public/images/pdi_pk.png'),
+  (3, 'PERMANENCIA PDI', 1, 'pdi_on', 4, 'OP', '0?FALSO;1?VERDADERO', 'N', NULL, '1', '0', 1, 'A', '1', '=', '4x20x27x30x31x32x33x34x36x22', '/public/images/pdi_pk.png'),
+  (4, 'CLAVE PDI', 1, 'pdi_pk', 0, 'BD', 'SELECT COD_OBJECT_MAP AS ID, DESCRIPTION AS DESCRIPTION FROM SAVL_G_PRIN WHERE COD_CLIENT = $cliente AND TYPE_OBJECT_MAP = \\''P\\''', 'N', NULL, '1', '0', 10, 'A', '1', '=', '1x2x3x20x30x22x33x27x31x32x34x36', '/public/images/pdi_pk.png'),
+  (5, 'NOMBRE PDI', 1, 'pdi_descrip', 4, '', '', 'S', NULL, 'PDI X', '0', 30, 'T', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (7, 'INICIO RSI', 4, 'rsi_begin', 0, '', '', 'N', NULL, '1', '1', 1, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (8, 'CANCELACION RSI', 4, 'rsi_cancel', 13, '', '', 'N', NULL, '1', '1', 1, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (9, 'FIN RSI', 4, 'rsi_end', 13, '', '', 'N', NULL, '1', '1', 1, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (10, 'SALIDA RSI', 4, 'rsi_out', 13, '', '', 'N', NULL, '1', '1', 1, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (11, 'ENTRADA RSI', 4, 'rsi_in', 13, '', '', 'N', NULL, '1', '1', 1, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (12, 'PERMANENCIA RSI', 4, 'rsi_on', 13, '', '', 'N', NULL, '1', '0', 1, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (13, 'CLAVE RSI', 4, 'pk_rsi', 0, '', '', 'N', NULL, '1', '0', 10, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (14, 'NOMBRE RSI', 4, 'rsi_descrip', 0, '', '', 'S', NULL, 'RSI X', '0', 30, 'T', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (15, 'ENTRADA GEO', 2, 'geo_in', 18, 'OP', '0?FALSO;1?VERDADERO', 'N', NULL, '1', '1', 1, 'A', '1', '=', '18x20x30x22', '/public/images/pdi_pk.png'),
+  (16, 'SALIDA GEO', 2, 'geo_out', 18, 'OP', '0?FALSO;1?VERDADERO', 'N', NULL, '1', '1', 1, 'A', '1', '=', '18x20x22x30', '/public/images/pdi_pk.png'),
+  (17, 'PERMANENCIA GEOCERCA', 2, 'geo_on', 18, 'OP', '0?FALSO;1?VERDADERO', 'N', NULL, '1', '0', 1, 'A', '1', '=', '18x20x27x30x31x32x33x34x36', '/public/images/pdi_pk.png'),
+  (18, 'CLAVE GEOCERCA', 2, 'geo_pk', 0, 'BD', 'SELECT COD_OBJECT_MAP AS ID, DESCRIPTION AS DESCRIPTION FROM SAVL_G_PRIN WHERE COD_CLIENT = $cliente AND TYPE_OBJECT_MAP = \\''G\\''', 'N', NULL, '1', '0', 10, 'A', '1', '=', '15x16x17x20x30x22x31x34x36x32x33', '/public/images/pdi_pk.png'),
+  (19, 'NOMBRE GEOCERCA', 2, 'geo_descrip', 18, '', '', 'S', NULL, 'GEOCERCA X', '0', 30, 'T', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (20, 'CLAVE UNIDAD', 3, 'uni_pk_gral', 0, '', '', 'N', NULL, '1', '0', 10, 'A', '0', '=', '21x22x23x24x25x26x27x28x29x30x31x32x33x34x35x36x18', '/public/images/pdi_pk.png'),
+  (21, 'NOMBRE UNIDAD', 3, 'uni_descrip_gral', 0, '', '', 'S', NULL, 'UNIDAD X', '0', 30, 'T', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (22, 'VELOCIDAD', 3, 'uni_velocidad', 0, 'OP', '10?10;20?20;30?30;40?40;50?50;60?60;70?70;80?80;90?90;100?100;110?110;120?120;130?130;140?140;150?150;160?160', 'N', NULL, '0', '0', 7, 'A', '1', '=', '20', '/public/images/pdi_pk.png'),
+  (23, 'ESTATUS GPS', 3, 'uni_status_gps', 0, 'OP', '0?ERROR;2?OK', 'S', NULL, '2', '0', 2, 'A', '1', '=', '20', '/public/images/pdi_pk.png'),
+  (24, 'NOMBRE FLOTA', 3, 'uni_descrip_flota', 0, '', '', 'S', NULL, 'FLOTA X', '0', 30, 'T', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (25, 'VELOCIDAD TOPE', 3, 'uni_vel_tope', 0, 'OP', '10?10;20?20;30?30;40?40;50?50;60?60;70?70;80?80;90?90;100?100;110?110;120?120;130?130;140?140;150?150;160?160', 'N', NULL, '96', '0', 3, 'A', '1', '=', '20', '/public/images/pdi_pk.png'),
+  (26, 'VELOCIDAD DETENIDA', 3, 'uni_vel_stop', 0, 'OP', '0?0', 'N', NULL, '5', '0', 3, 'A', '1', '=', '20', '/public/images/pdi_pk.png'),
+  (27, 'ESTATUS MOTOR', 3, 'uni_status_motor', 0, 'OP', 'ON?ENCENDIDO; OFF?APAGADO', 'S', NULL, 'OFF', '0', 3, 'A', '1', '=', '20', '/public/images/pdi_pk.png'),
+  (28, 'NOMBRE DEL EVENTO', 3, 'uni_descrip_event', 0, '', '', 'S', NULL, 'REPORTE X SOLICITUD', '0', 30, 'T', '0', '=', '20', '/public/images/pdi_pk.png'),
+  (29, 'PRIORIDAD DEL EVENTO', 3, 'uni_prio_event', 0, '', '', 'N', NULL, '1', '0', 1, 'A', '0', '=', '20', '/public/images/pdi_pk.png'),
+  (30, 'CLAVE EVENTO', 3, 'uni_pk_event', 0, 'EVT', 'SELECT COD_EVENT AS ID, DESCRIPTION AS DESCRIPTION FROM SAVL1260 WHERE COD_EVENT > 0 ', 'N', NULL, '1', '0', 10, 'A', '1', '=', '20x1x2x3x4x15x16x17x18', '/public/images/pdi_pk.png'),
+  (31, 'TIEMPO DETENIDA MOTOR ON', 3, 'time_stop_motor_on', 0, '', '', 'N', NULL, '1', '0', 3, 'A', '0', '=', '20x3x4x18x17', '/public/images/pdi_pk.png'),
+  (32, 'TIEMPO EXCESO VELOCIDAD', 3, 'time_exceso_vel', 0, '', '', 'N', NULL, '1', '0', 3, 'A', '0', '=', '20x3x4x17x18', '/public/images/pdi_pk.png'),
+  (33, 'TIEMPO MOTOR ON', 3, 'time_motor_on', 0, '', '', 'N', NULL, '1', '0', 3, 'A', '0', '=', '20x3x17x4x18', '/public/images/pdi_pk.png'),
+  (34, 'TIEMPO DETENIDA', 3, 'time_stop_all', 0, '', '', 'N', NULL, '1', '0', 3, 'A', '0', '=', '20x3x4x17x18', '/public/images/pdi_pk.png'),
+  (35, 'TIEMPO MOVIMIENTO', 3, 'time_move', 0, '', '', 'N', NULL, '1', '0', 3, 'A', '0', '=', '20', '/public/images/pdi_pk.png'),
+  (36, 'TIEMPO MOTOR OFF', 3, 'time_motor_off', 0, '', '', 'N', NULL, '1', '0', 3, 'A', '0', '=', '20x3x4x17x18', '/public/images/pdi_pk.png'),
+  (37, 'TIEMPO EN PDI', 1, 'time_pdi', 4, '', '', 'N', NULL, '1', '0', 3, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (38, 'TIEMPO EN GEO', 2, 'time_geo', 18, '', '', 'N', NULL, '1', '0', 3, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (39, 'TIEMPO EN RSI', 4, 'time_rsi', 0, '', '', 'N', NULL, '1', '0', 3, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (40, 'VALOR IN ANALOGICA 1', 3, 'ana_in1', 0, '', '', 'N', NULL, '0.0', '0', 6, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (41, 'VALOR IN ANALOGICA 2', 3, 'ana_in2', 0, '', '', 'N', NULL, '0.0', '0', 6, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (42, 'VALOR IN ANALOGICA 3', 3, 'ana_in3', 0, '', '', 'N', NULL, '0.0', '0', 6, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (43, 'VALOR IN ANALOGICA 4', 3, 'ana_in4', 0, '', '', 'N', NULL, '0.0', '0', 6, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (44, 'CLAVE FLOTA', 3, 'uni_pk_flota', 0, '', '', 'N', NULL, '1', '0', 10, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (45, 'ESTATUS RSI', 4, 'rsi_last_status', 0, '', '', 'N', NULL, '0', '0', 1, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (46, 'RSI ORDEN APARICION', 4, 'rsi_order_apparition', 0, '', '', 'N', NULL, '0', '0', 10, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (47, 'RSI AVANCE', 4, 'rsi_percent_progress', 0, '', '', 'N', NULL, '0', '0', 5, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (48, 'RSI DIST ACUMULADA', 4, 'rsi_distance_acumulate_km', 0, '', '', 'N', NULL, '0', '0', 10, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (49, 'RSI DIST PENDIENTE', 4, 'rsi_distance_less_km', 0, '', '', 'N', NULL, '0', '0', 10, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (50, 'RSI TIPO DE PUNTO', 4, 'rsi_type_point_rsi', 0, '', '', 'N', NULL, '0', '0', 2, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (51, 'TIEMPO FUERA DE RSI', 4, 'time_out_rsi', 0, '', '', 'N', NULL, '0', '0', 3, 'A', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (52, 'DETALLE DE RSI', 4, 'rsi_detalle_descrip', 0, '', '', 'S', NULL, 'RSI DETALLE X', '0', 40, 'T', '0', '=', '0', '/public/images/pdi_pk.png'),
+  (53, 'REVERSA RSI', 4, 'rsi_reverse', 0, '', '', 'N', NULL, '0', '1', 1, 'A', '0', '=', '0', '/public/images/pdi_pk.png');
+
+

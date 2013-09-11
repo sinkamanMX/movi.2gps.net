@@ -1,4 +1,5 @@
 <?php
+header("Content-Type: text/html;charset=utf-8");
 $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);
 	$userData = new usersAdministration(); //Nueva Instancia de Admin.
 	
@@ -70,6 +71,7 @@ if($_GET['op']==1){
 				$sgp = "";
 				for($j=0; $j<count($a); $j++){
 					$b = explode("~",$a[$j]);
+					
 					$sgp .= ($sgp=="")?"(".$b[0].",".$idg.",'".$b[1]."','".date('Y-m-d H:i:s')."')":",(".$b[0].",".$idg.",'".$b[1]."','".date('Y-m-d H:i:s')."')";
 					}
 				//Almacenar relación payload pregunta respuesta 
@@ -165,8 +167,10 @@ if($_GET['p_r']!=""){
 					$sgp = "";
 					for($j=0; $j<count($a); $j++){
 						$b = explode("~",$a[$j]);
-						$sgp .= ($sgp=="")?"(".$b[0].",".$_GET['id'].",'".$b[1]."','".date('Y-m-d H:i:s')."')":",(".$b[0].",".$_GET['id'].",'".$b[1]."','".date('Y-m-d H:i:s')."')";
+						
+						$sgp .= ($sgp=="")?"(".$b[0].",".$_GET['id'].",'".utf8_decode($b[1])."','".date('Y-m-d H:i:s')."')":",(".$b[0].",".$_GET['id'].",'".utf8_decode($b[1])."','".date('Y-m-d H:i:s')."')";
 					}
+					//echo $sgp;
 //obtener payload asignado al punto 
 	$sql  = "SELECT ID_CUESTIONARIO FROM ADM_GEO_PAYLOAD WHERE ID_OBJECT_MAP = ".$_GET['id'];
 	$qry = $db->sqlQuery($sql);

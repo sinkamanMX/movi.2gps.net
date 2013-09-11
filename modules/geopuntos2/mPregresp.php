@@ -4,17 +4,22 @@
  *  @name                Obtiene los GeoPuntos.
 *   @version             1
 *   @copyright           Air Logistics & GPS S.A. de C.V.   
- *  @author              Erick A. Calderón
+ *  @author              Rodwyn Moreno
  *  @modificado          12-07-2011 
 **/
 
 	//--------------------------- Modificada BD y Encabezado------------------------
+	header('Content-type: text/html; charset=UTF-8') ;
 	$db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);	
 	$userData = new usersAdministration(); //Nueva Instancia de Admin.
 	
 	if(!$userAdmin->u_logged())  //Valida Usuario Logeado
 		echo '<script>window.location="index.php?m=login"</script>';  //Manda al login si no se ha Logeo.
 	//--------------------------- Modificada BD y Encabezado------------------------
+	
+
+
+
 	$cod_client =  $userAdmin->user_info['COD_CLIENT'];
 
 	$result = array();
@@ -35,7 +40,8 @@
 	
 	if($cnt > 0){ 
 		while($row = $db->sqlFetchArray($qry)){
-			$result[] = $row; // Inside while loop
+			
+			$result[] = $dbf->utf8_encode_array($row); // Inside while loop
 			}
 	}
 	echo json_encode( $result = array('aaData'=>$result ) );	 	

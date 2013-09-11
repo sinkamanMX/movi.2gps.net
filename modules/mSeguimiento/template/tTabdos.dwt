@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  <div id="seg_tabs2">
+<!--div tabla-->
+<div id="dseg_tbl" style="width:49.5%; height:98%; position:relative; float:left; border:#6600CC solid thin;">
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="tseg_data" width="100%" height="100%">
+<thead>
+
+<tr style=" background:#5C9CCC;"><th colspan="5" style="font-size:24px; color:#FFFFFF;">Resumen</th><th colspan="2"><button class="export small_btn" onclick="seg_export_excel();" ></button></th></tr>
+<tr style="width:100%;">
+<th width="4%"></th>	
+	
+<th width="16%">Fecha</th>
+<th width="16%">Kilometros recorridos</th>
+<th width="16%">Velocidad</th>
+<th width="16%">RPM</th>
+<th width="16%">Rendimiento combustible</th>
+<th width="16%">Temperatura motor</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table> 
+</div>
+<!--div tabla-->
+<!--div mapa-->
+<div id="dseg_map"  style="width:49.5%; min-height:500px; position:relative; float:right; border:#99FF99 solid thin;">
+
+</div>
+<!--div mapa-->
+  </div><!--seg_tabs2-->
+  
+<script>
+$(document).ready(function () {
+	//Definir botnes exportar
+	$( ".export" ).button({
+      icons: {
+        primary: "ui-icon-circle-arrow-s"
+      },
+      text: false
+    })	
+	seg_mapa();
+	seg_get_data();
+	});
+</script>  

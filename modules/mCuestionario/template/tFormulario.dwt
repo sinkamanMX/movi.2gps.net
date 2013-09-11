@@ -82,7 +82,7 @@ $(document).ready(function () {
 </select>
 </td>
 </tr>
-<tr>
+<!--<tr>
 <td colspan="2">
 <input type="checkbox" id="qst_multi_resp" value="1" {MUL} /><label>Permitir m&uacute;ltiples respuestas del mismo usuario.</label>
 </td>
@@ -91,7 +91,7 @@ $(document).ready(function () {
 <td colspan="2">
 <input type="checkbox" id="qst_offline" value="1" {OFF}/><label>Permitir funcionamiento offline.</label>
 </td>
-</tr>
+</tr>-->
 </table>
 </div><!--qst_tab_propiedades-->
 <div id="qst_tab_tema">
@@ -122,7 +122,7 @@ $(document).ready(function () {
 </div>
 <!--Buscador-->
 <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
-<div id="qst_preg_dsp" class="dropme" style="width:100%;">
+<div id="qst_preg_dsp" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
     {PRG}
 </div>
 </div>
@@ -132,10 +132,10 @@ $(document).ready(function () {
 <div style="width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
 <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
 <span class="ui-dialog-title">Preguntas Seleccionadas</span>
-<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>
+<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg(0,1);"><span class="ui-icon ui-icon-plusthick"></span></a>
 </div>
 <!--Buscador-->
-<div>
+<div >
 <div style="width:96%;">
 <label>Buscar:</label><input type="text" id="qst_bscdr_s" class="caja_txt" onkeyup="buscador_preguntas(2,this.value)" style="width:90%;"/>
 </div>
@@ -174,7 +174,7 @@ $(document).ready(function () {
 </div>
 <!--Buscador-->
 <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
-<div id="qst_user_dsp" class="dropme" style="width:100%;">
+<div id="qst_user_dsp" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
     {USD}
 </div>
 </div>

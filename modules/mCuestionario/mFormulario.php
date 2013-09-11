@@ -16,7 +16,7 @@
 	 function ex_qry($id,$tbl,$w){
 		global $db;
 		$lp = "";
-		$sql = "SELECT ".$id." AS ID FROM ".$tbl.$w;
+		echo $sql = "SELECT ".$id." AS ID FROM ".$tbl.$w;
 		$qry = $db->sqlQuery($sql);
 		$cnt = $db->sqlEnumRows($qry);
 		if($cnt>0){
@@ -47,10 +47,12 @@
 		$mul = (@$qst['MULTIPLES_RESPUESTAS']!="")?'checked="checked"':"";
 		$off = (@$qst['OFFLINE']!="")?'checked="checked"':"";
 		$lps = ex_qry("ID_PREGUNTA"," CRM2_CUESTIONARIO_PREGUNTAS "," WHERE ID_CUESTIONARIO = ".$_GET['cuestionario']." ORDER BY ORDEN");
-		$lpd = ex_qry("ID_PREGUNTA"," CRM2_PREGUNTAS "," WHERE COD_CLIENT = ".$cte." AND ID_PREGUNTA NOT IN (".$lps.") ORDER BY DESCRIPCION ");
+		$lpd = ($lps!="")?ex_qry("ID_PREGUNTA"," CRM2_PREGUNTAS "," WHERE COD_CLIENT = ".$cte." AND ID_PREGUNTA NOT IN (".$lps.") ORDER BY DESCRIPCION "):'';
 		
-		$pgd = $dbf->dragndrop("ID_PREGUNTA","DESCRIPCION","CRM2_PREGUNTAS"," WHERE ACTIVO=1 AND COD_CLIENT =".$cte,$lps,"");
-		$pgs = $dbf->dragndrop("ID_PREGUNTA","DESCRIPCION","CRM2_PREGUNTAS"," WHERE ACTIVO=1 AND COD_CLIENT =".$cte,$lpd,"");
+		$pgd = $dbf->dragndropF("ID_PREGUNTA","DESCRIPCION","CRM2_PREGUNTAS"," WHERE ACTIVO=1 AND COD_CLIENT =".$cte,$lps,"",'ondblclick="form_preg(this.id,2)"',' ORDER BY DES;');
+		echo "PLD";
+		echo $pld;
+		$pgs = $dbf->dragndropF("P.ID_PREGUNTA","P.DESCRIPCION"," CRM2_PREGUNTAS P"," INNER JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON CP.ID_PREGUNTA = P.ID_PREGUNTA WHERE ACTIVO=1 AND COD_CLIENT =".$cte,$lpd,"",'ondblclick="form_preg(this.id,2)"'," ORDER BY CP.ORDEN;");
 		
 		$lus = ex_qry("COD_USER","CRM2_VENDEDOR_CUESTIONARIO"," WHERE ID_CUESTIONARIO = ".$_GET['cuestionario']);
 		$lud = ex_qry("ID_USUARIO","ADM_USUARIOS"," WHERE ID_CLIENTE = ".$cte." AND ID_USUARIO NOT IN (".$lus.")");
@@ -69,7 +71,7 @@
 		}
 	else{
 		//vacia
-		$prg = $dbf->dragndrop("ID_PREGUNTA","DESCRIPCION","CRM2_PREGUNTAS"," WHERE ACTIVO=1 AND COD_CLIENT =".$cte,"","");
+		$prg = $dbf->dragndropF("P.ID_PREGUNTA","P.DESCRIPCION","CRM2_PREGUNTAS P "," INNER JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON CP.ID_PREGUNTA = P.ID_PREGUNTA WHERE ACTIVO=1 AND COD_CLIENT =".$cte,"","",'ondblclick="form_preg(this.id,2)"'," ORDER BY CP.ORDEN;");
 		$usr = $dbf->dragndrop("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS"," WHERE ESTATUS='Activo' AND ID_CLIENTE =".$cte,"","");
 		$tpl->assign_vars(array(
 		'PRG'      	=> $prg,

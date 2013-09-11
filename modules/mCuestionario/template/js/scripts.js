@@ -23,6 +23,7 @@ $(document).ready(function () {
 	w = window.innerWidth;
 	h = window.innerHeight;
 	//alert(w+"/"+h)
+	
 	$( "#qst_dialog_chart" ).dialog({
 		autoOpen:false,
 		title:"Estad\u00edstica",
@@ -663,7 +664,7 @@ function qst_guardar_form(op){
 			    },
           success: function(data) {
             var result = data; 
-			//alert(result);
+			alert(result);
 			if(result>0){
 				message = (op==1)?"El cuestionario ha sido almacenado satisfactoriamente.":"El cuestionario ha sido actualizado satisfactoriamente";
 				$('#qst_dialog_formu').dialog('close');
@@ -682,10 +683,16 @@ function qst_guardar_form(op){
 
 	}
 //----------------------------------------------------
-function form_preg(){
+function form_preg(id,op){
+	if(op==1){$("#qst_dialog_formp").dialog('option', 'title', 'Agregar Pregunta');}
+	if(op==2){$("#qst_dialog_formp").dialog('option', 'title', 'Editar Pregunta');}
 	      $.ajax({
-          url: "index.php?m=mCuestionario&c=mFormulariop",
+          url : "index.php?m=mCuestionario&c=mFormulariop",
           type: "GET",
+		  data: {
+			  id:id,
+			  op:op
+			  },
           success: function(data) {
             var result = data; 
 			//$('#qst_dialog_formu').dialog( "destroy" );
@@ -830,7 +837,9 @@ function qst_save_formp(){
 			act : $("#qst_act_pre").val(),
 			rec : $("#qst_rec_pre").val(),
 			req : $("#qst_req_pre").val(),
-			com : $("#qst_comp").val()
+			com : $("#qst_comp").val(),
+			op  : $("#qst_hop").val(),
+			id  : $("#qst_hid").val()
 			},
         success: function(data) {
         var result = data;
@@ -996,3 +1005,28 @@ function buscador_users(op,txt){
           }
       });	
 	}	 
+//--------------------------------------------------------------------------------------------------------
+function qst_edt_pre(idp){
+	$( "#qst_dialog_formp" ).dialog('open');
+	}
+//-----------------------------------------------------------
+//---------------------------------------
+function qst_ver_img(img,id){
+	$.ajax({
+		url: "index.php?m=mCuestionario&c=mImage",
+		data : {
+			img:img,
+			id:id
+			},
+		type: "GET",
+		success: function(data) {
+			var result = data; 
+			
+				$("#qst_dialog_img").dialog("open");
+				$('#qst_dialog_img').html(""); 
+				$('#qst_dialog_img').html(result); 
+				
+				}
+		});		
+
+	}	

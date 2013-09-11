@@ -1,34 +1,13 @@
  <?php
-   /*function WeekToDate($week, $year){
-  	$Jan1 = mktime (1, 1, 1, 1, 1, $year);
-	$iYearFirstWeekNum = (int) strftime("%W",mktime (1, 1, 1, 1, 1, $year));
-	if ($iYearFirstWeekNum == 1){
-		$week = $week - 1;
-	}
 
-	$weekdayJan1 = date ('w', $Jan1);
-	$FirstMonday = strtotime(((4-$weekdayJan1)%7-3) . ' days', $Jan1);
-	$CurrentMondayTS = strtotime(($week) . ' weeks', $FirstMonday);
-	return ($CurrentMondayTS);
-  }*/
-
-
-		/*$iWeekNum = Date('W') - 1;
-		$iYear = date("Y");
-		$sStartTS = WeekToDate($iWeekNum, $iYear);
-		$sStartDate = date ("Y-m-d", $sStartTS);
-		$sEndDate   = date ("Y-m-d", $sStartTS + (6*24*60*60));		
-		$rtime = " AND CAST(R.FECHA AS DATE) BETWEEN '".$sStartDate."' AND '".$sEndDate."'";
-		$dates = $sStartDate." - ".$sEndDate;
-		$datos = "";*/
 		$dti = $_GET['gr_start_date']." ".$_GET['gr_hri'].":".$_GET['gr_mni'].":00";
 		$dtf = $_GET['gr_end_date']." ".$_GET['gr_hrf'].":".$_GET['gr_mnf'].":59";
 		$rtime =" AND R.FECHA BETWEEN '".$dti."' AND '".$dtf."'";
 		$nameq = $_GET['name_qst'];
 		
-		//$user = ($_GET['gr_user']!=-1)?$_GET['gr_user']:$_GET['all_us'];
+
 		$user = ($_GET['gr_user']!=-1)?" AND R.COD_USER IN (".$_GET['gr_user'].") ":"";
-		//$preg = ($_GET['gr_preg']!=-1)?$_GET['gr_preg']:$_GET['all_ans'];
+
 		$preg = ($_GET['gr_preg']!=-1)?" AND P.ID_PREGUNTA IN (".$_GET['gr_preg'].") ":"";
 		$inn  = ($_GET['gr_preg']!=-1)?" INNER JOIN CRM2_PREG_RES PR ON R.ID_RES_CUESTIONARIO = PR.ID_RES_CUESTIONARIO
 INNER JOIN CRM2_PREGUNTAS P ON PR.ID_PREGUNTA=P.ID_PREGUNTA ":"";
@@ -84,6 +63,8 @@ GROUP BY F;";
 			//Valores
 			data.setCell(i, 1, parseInt(d[2]));
 			
+
+			
 			
 			
 			}
@@ -94,15 +75,19 @@ GROUP BY F;";
           title: 'Estad\u00edstica del cuestionario '+nameq,
           hAxis: {title: 'D\u00edas',  titleTextStyle: {color: 'red'}}
         };
-
-        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+		if(len.length==1){
+			var chart = new google.visualization.ColumnChart(document.getElementById('qst_chart_div'));
+		}
+		else{
+			var chart = new google.visualization.AreaChart(document.getElementById('qst_chart_div'));
+			}
         chart.draw(data, options);
       }
     </script>
   </head>
   <body>
  <?php 
-echo '<div id="chart_div" style="width: 99%; height: 99%; position:relative; top:0%; left:0%;"></div>';	
+echo '<div id="qst_chart_div" style="width: 99%; height: 99%; position:relative; top:0%; left:0%;"></div>';	
  ?>     
   </body>
 </html>

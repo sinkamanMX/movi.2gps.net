@@ -1,0 +1,61 @@
+<style>
+.car{
+	-webkit-border-radius: 0px;
+-webkit-border-top-left-radius: 12px;
+-moz-border-radius: 0px;
+-moz-border-radius-topleft: 12px;
+/*border-radius: 5px;*/
+border-top-left-radius: 12px;
+border-bottom-left-radius: 12px;	
+
+	
+	}
+	.car1{
+		border-color:#999;
+	-webkit-border-radius: 0px;
+-webkit-border-top-right-radius: 12px;
+-moz-border-radius: 0px;
+-moz-border-radius-topleft: 12px;
+/*border-radius: 5px;*/
+border-top-right-radius: 12px;
+border-bottom-right-radius: 12px;	
+
+	
+	}
+	
+	.car2{
+-webkit-border-radius: 12px;
+-moz-border-radius: 12px;
+border-radius: 12px;
+color:#FFFFFF;
+ font-weight: bold;
+font-size:8px;
+	}
+
+	
+</style>
+<table id="equis"  style=" float:right; height:100%; width:99.5%; background-color:#f5f8f9; color:#e17009; top:0px; border-bottom-color:#79b7e7; border-left-color:#79b7e7; border-right-color:#79b7e7;  border-collapse: separate;  border-spacing:  -1px; " align="center" >
+                             
+            	 <tr>
+             	  <th width="13%">Unidad</th>
+             	  <th width="87%">Linea de Tiempo</th>
+            	</tr>
+            </table>
+        <div id="myDivs">     
+	<table id="MyData"  class="usersTableInfo" width="100%" cellspacing="0" >
+    <!-- BEGIN datos2 -->
+        <tr style="cursor:pointer; " >
+		 <th width="15%" rowspan="2"   style="border:#FFFFFF solid 1px; background: #FFF url(public/images/1a.png);" bgcolor="#DBDBDB" ></th> 
+         {datos2.HRS}
+		</tr>
+        <tr style="cursor:pointer;">{datos2.FRAC}</tr>
+      
+	
+          {datos2.UNI}
+          {datos2.HIST}
+    
+	<!-- END datos2 -->
+    </table>
+</div>
+  <!--<td width="40%" onDblClick="nuevo('{datos2.IDU}')">{datos2.UND}</td>
+         <td width="60%" onDblClick="nuevo('{datos2.IDU}')">{datos2.VJE}</td>-->

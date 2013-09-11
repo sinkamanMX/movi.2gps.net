@@ -89,22 +89,27 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 				}	
 			}
 						if($_GET['pre'] != $_GET['opre']){
+							echo $_GET['pre']." != ".$_GET['opre'];
+							echo "<br>";
+							echo $_GET['idq'];
 					$where = " ID_CUESTIONARIO  = ".$_GET['idq'];
-					$dbf->deleteDB('CRM2_CUESTIONARIO_PREGUNTAS',$where);
-					$q = $_GET['idq'];
-					$p = explode(",",$_GET['pre']);
-					$o = 1;
-					for($i=0; $i<count($p); $i++){
-						$pr .= ($pr=="")?"(".$p[$i].",".$q.",".$o.")":",(".$p[$i].",".$q.",".$o.")";
-						$o++;
+					if($dbf->deleteDB('CRM2_CUESTIONARIO_PREGUNTAS',$where)==true){
+						$q = $_GET['idq'];
+						$p = explode(",",$_GET['pre']);
+						$o = 1;
+						for($i=0; $i<count($p); $i++){
+							$pr .= ($pr=="")?"(".$p[$i].",".$q.",".$o.")":",(".$p[$i].",".$q.",".$o.")";
+							$o++;
 						}
-					$sql_p = "INSERT INTO CRM2_CUESTIONARIO_PREGUNTAS VALUES ".$pr;	
-					if($qry_p = $db->sqlQuery($sql_p)){
-						echo 1;
+						$sql_p = "INSERT INTO CRM2_CUESTIONARIO_PREGUNTAS VALUES ".$pr;	
+						if($qry_p = $db->sqlQuery($sql_p)){
+							echo 1;
 						}
-					else{
-						echo -1;
+						else{
+							echo -1;
 						}	
+					}
+					else{echo -2;}
 					}
 				if($_GET['usr'] != $_GET['ousr']){
 					$whr = " ID_CUESTIONARIO  = ".$_GET['idq'];

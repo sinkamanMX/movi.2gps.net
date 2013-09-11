@@ -45,7 +45,7 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 			$arreglo[$c][5] = $Positions->direccion_no_format($row['LATITUD'],$row['LONGITUD']);
 			$c++;
 		}			
-		for($i=1; $i<count($arreglo); $i++){
+		for($i=0; $i<count($arreglo); $i++){
 			$data .= ($data!="") ? ', ': '';
 			$data .= '{"IDRC"  : "'.$arreglo[$i][0].'" , '.
 					 ' "FECHA" : "'.$arreglo[$i][1].'" , '.

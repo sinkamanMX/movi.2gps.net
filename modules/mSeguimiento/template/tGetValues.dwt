@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+$(document).ready(function () {
+	temp = [{TMP}];  
+	rpmAccel = [{RPM}];
+	speedAccel = [{VEL}];
+	//Ejecutar Velocimetro
+	seg_velocimetro();
+	//Ejecutar temperatura
+	seg_temperatura();
+	//Ejecutar odometro
+	seg_kmr = [{KMR}]
+	seg_fun_kmr();
+	//Ejecutar combustible
+	seg_kml = [{KML}];
+	
+	seg_tf = [{TF}];
+	seg_ifu = [{IFU}];
+	seg_oil_pre = [{PRE}];
+	seg_t_cru = [{CRU}];
+	seg_e_idle = [{DET}];
+	seg_e_load = [{CAR}];
+	seg_e_time = [{TME}];
+	seg_fun_kml();
+	});
+</script>

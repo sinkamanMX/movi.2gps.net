@@ -1,6 +1,7 @@
 var geof_marcadores = [];
 var gmain_mrk = [];
 var gmain_cir = [];
+var gcir = [];
 var geoTable;
 var geo_map;
 var geo_gmap;
@@ -387,6 +388,9 @@ function geo_main_clearOverlays(){
 	for (var i = 0; i < gmain_cir.length; i++ ) {
     gmain_cir[i].setMap(null);
 	}  
+	for (var i=0; i<gcir.length; i++){
+		gcir[i].setMap(null);
+		}
  
 	}
 //------------------------------------------------------------------------------------
@@ -423,6 +427,7 @@ function centra_mapa(lat,lon,dsc,nip,typ,rdo){
 	
 	geoCircle.setMap(geo_map);
 	gmain_cir.push(marker);
+	gcir.push(geoCircle);
 	
 	geo_map.setZoom(18);
 	geo_map.setCenter(marker.getPosition());
@@ -529,7 +534,7 @@ function showAddress(){
 		marker.setMap(geo_gmap);
 		geof_marcadores.push(marker);
       } else {
-        alert("Geocode was not successful for the following reason: " + status);
+        //alert("Geocode was not successful for the following reason: " + status);
       }
     });
 		 }
@@ -589,6 +594,7 @@ function lay(){
 	for (i=0; i<qst.length; i++){
 		qdata += (qdata=="")?qst[i]:","+qst[i];
 		}
+	alert(qdata+"/"+$("#geop").val()+"/"+$("#idg").val());
 	$.ajax({
 		url: "index.php?m=geopuntos2&c=mPayload",
 		type: "GET",
@@ -775,7 +781,7 @@ function save_geo(){
 		p_r += p;
 		p_r += "^";
     });
-	alert(p_r);
+	//alert(p_r);
 	//alert(p_r.length)
 	pr = p_r.substring(0, p_r.length-1);
 	p_r = pr;
@@ -800,6 +806,7 @@ function save_geo(){
 		var nvr = ($("#gnvr").is(':checked'))?'S':'N';
 		
 		//alert(aes+","+nen+","+nsa+","+nat+","+nvr);
+		//alert(p_r)
 		
 	$.ajax({
 		url: "index.php?m=geopuntos2&c=mSave",
@@ -836,7 +843,7 @@ function save_geo(){
 			},
 		success: function(data) {
 			var result = data;
-			alert(result) 
+			//alert(result) 
 			if(result>0){
 				geo_load_datatable();
 				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Los datos han sido almacenados correctamente.</p>');

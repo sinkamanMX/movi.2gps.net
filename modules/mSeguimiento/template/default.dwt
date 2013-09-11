@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="{PATH}/js/highcharts.js"></script>
+<script src="{PATH}/js/highcharts-more.js"></script>
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+
+<link href='http://fonts.googleapis.com/css?family=Squada+One' rel='stylesheet' type='text/css'> 
+    <style>        
+	@font-face {           
+        font-family: "digital";           
+        src: url("{PATH}/css/digital.ttf") format("truetype");       }    
+	.seg_d1{width:100%; height:14%; border-bottom:#CCCCCC solid thin; }
+	.seg_d2{position:relative; width:64.5%;  float:left; color:#FFF; font-family:'Squada One';font-size:18px;}
+	.seg_d3{position:relative; width:35%;  float:right;font-family:digital; font-style:italic; font-size:20px; color:#FFF;}
+    </style>
+
+<div style="width:100%; height:100%; " id="seg_main">
+<div id="seg_values"></div>
+
+<div id="seg_tabs" style="width:100%; height:100%;">
+  <ul>
+    <li><a href="#seg_tabs1">Simulaci&oacute;n</a></li>
+    <li><a href="{PATH}/tTabdos.dwt" >Datos</a></li>
+  </ul>
+  <div id="seg_tabs1">
+<!--div widgets-->
+<div style="height:400px; width:75%; position:relative; float:left; border:#FF9900 solid thin; background:#767473;">
+
+<table width="100%;" style="background:#5c9ccc; color:#FFFFFF;">
+           <tr><td><label>Unidad:</label></td><td><label>Inicio:</label></td><td><label>Fin:</label></td></tr>
+           <tr>
+           <td>
+           
+           <select class="caja" id="seg_und">
+           
+           <!-- BEGIN dt3 -->
+           <option value="{dt3.I_D}" >{dt3.DSC}</option>
+           <!-- END dt3 -->
+           </select>
+           </td>
+           <td>
+           
+           <input type="text" class="caja_date ui-corner-all" id="seg_dti" value="{DATE}" readonly="readonly" />
+           <select id="seg_hri" class="mcaja">
+           <!-- BEGIN hrs -->
+           {hrs.NO}
+           <!-- END hrs -->
+           </select>
+           <span>&nbsp;:&nbsp;</span>
+           <select id="seg_mni" class="mcaja">
+           <!-- BEGIN min -->
+           {min.NO}
+           <!-- END min -->
+           </select>            
+
+           </td>
+           <td>
+           
+           <input type="text" class="caja_date ui-corner-all" id="seg_dtf" value="{DATE}" readonly="readonly" />
+           
+           <select id="seg_hrf" class="mcaja">
+           <!-- BEGIN hrs -->
+           {hrs.HF}
+           <!-- END hrs -->
+           </select>
+           <span>&nbsp;:&nbsp;</span>
+           <select id="seg_mnf" class="mcaja">
+           <!-- BEGIN min -->
+           {min.MF}
+           <!-- END min -->
+           </select>            
+           </td>
+           <td>
+           <button class="search small_btn" onclick="seg_getvalues();seg_get_data();" ></button>
+
+           </td>
+           </tr>
+
+           <!--<tr><td>Fecha</td><td>Cuestionario</td><td>Usuario</td>-->
+           </table>
+
+<div id="dseg_tmp" style="width: 215px; height: 325px; margin: 0 auto;  position:relative; float:left; "></div>
+<div id="dseg_vel" style="width: 325px; height: 325px; margin: 0 auto;  position:relative; float:left; "></div>
+
+<div id="dseg_km" style="position:absolute; left:47%; bottom:0%; color:#FFFFFF; font-family:'digital'; font-style:italic; font-size:36px; ">0 Km</div>
+
+<div  style="position:absolute; right:0%; top:50%; color:#FFF; font-family:'Squada One'; 
+font-size:14px; width:145px;">Rendimiento de combustible<div id="dseg_gas" style="font-family:digital; font-style:italic; font-size:32px;">0 km/l</div> </div>
+
+</div>
+<!--div widgets-->
+<!--div list_widgets-->
+<div id="dseg_lwdgt" style="height:400px; width:24%; position:relative; float:right; border:#69F solid thin; background:#767473;">
+<!--<table cellpadding="0" cellspacing="0" border="0" class="display" id="tseg_widget" width="100%" height="100%">
+<thead>
+
+
+<tr>
+
+<th>Descripci&oacute;n</th>
+<th>Valor</th>
+
+</tr>
+</thead>
+<tbody>
+
+</tbody>
+</table>-->
+<div class="seg_d1"><div class="seg_d2">Combustible usado</div>
+<div id="seg_tf" class="seg_d3">0 L</div></div>
+<div class="seg_d1"><div class="seg_d2">Horas de uso de combustible</div>
+<div id="seg_ifu" class="seg_d3">0.0 hr L</div></div>
+<div class="seg_d1"><div class="seg_d2">Presi&oacute;n de aceite</div><div id="seg_oil_pre" class="seg_d3">0</div></div>
+<div class="seg_d1"><div class="seg_d2">Tiempo total crucero</div><div id="seg_t_cru" class="seg_d3">0.0 hr</div></div>
+<div class="seg_d1"><div class="seg_d2">Tiempo motor detenido</div><div id="seg_e_idle" class="seg_d3">0.0 hr</div></div>
+<div class="seg_d1"><div class="seg_d2">Porcentaje carag motor</div><div id="seg_e_load" class="seg_d3">0 %</div></div>
+<div class="seg_d1"><div class="seg_d2">Tiempo total trabajo motor</div><div id="seg_e_time" class="seg_d3">0.0 hr</div></div>
+</div>
+<!--div list_widgets-->
+  </div>
+  
+  
+
+
+</div>
+
+
+
+ 
+
+            
+            
+                
+             
+           
+            <div id="seg_dialog" > </div>           
+            <div id="seg_dialog_img"></div>
+            <div id="seg_dialog_message" title="&iexcl;Aviso!"></div>
+            <div id="seg_dialog_confirm" title="&iexcl;Aviso!"></div>
+
+
+
+
+   </div>

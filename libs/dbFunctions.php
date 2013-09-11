@@ -183,7 +183,24 @@ class dbFunctions{
 			  return $tbl;
 		  }
 	  }
-	  
+//-----------------------------------------------------
+public function dragndropF($id,$des,$tbl,$whr,$pr,$txt,$fun,$ord){
+	global $db;
+	$p = '';
+	$com = ($pr=="")?"":" AND ".$id." NOT IN (".$pr.") ";
+	$w = ($txt=="")?"":" AND ".$des." LIKE '%".$txt."%' ";
+	$sql = "SELECT ".$id." AS ID, ".$des." AS DES FROM ".$tbl.$whr.$com.$w.$ord;
+	$qry = $db->sqlQuery($sql);
+	$cnt = $db->sqlEnumRows($qry);
+	if($cnt>0){
+		while($row = $db->sqlFetchArray($qry)){
+			$p.= '<div class="ui-corner-all" id="'.$row['ID'].'" '.$fun.' >'.$row['DES'].'</div>';
+			}
+		
+		return $p;	
+		}
+	}
+//-----------------------------------------------------	
 public function dragndrop($id,$des,$tbl,$whr,$pr,$txt){
 	global $db;
 	$p = '';
@@ -284,6 +301,96 @@ public function dragndrop($id,$des,$tbl,$whr,$pr,$txt){
 		$row 	= $db->sqlFetchArray($query);	
 	return $row['ID'];  	
   }
-  
+	public function utf8_encode_array($array){
+		if (is_array($array)){
+			$result_array = array();
+			foreach($array as $key => $value){
+				if ($this->array_type($array) == "map"){
+					// encode both key and value
+					if (is_array($value)){
+						// recursion
+						$result_array[utf8_encode($key)] = utf8_encode_array($value);
+						}
+					else{
+						// no recursion
+						if (is_string($value)){
+							$result_array[utf8_encode($key)] = utf8_encode($value);
+							}
+						else{
+							// do not re-encode non-strings, just copy data
+							$result_array[utf8_encode($key)] = $value;
+							}
+					}
+		}
+		else if ($this->array_type($array) == "vector"){
+			// encode value only
+			if (is_array($value)){
+				// recursion
+				$result_array[$key] = utf8_encode_array($value);
+			}
+			else{
+				// no recursion
+				if (is_string($value)){
+					$result_array[$key] = utf8_encode($value);
+					}
+				else{
+					// do not re-encode non-strings, just copy data
+					$result_array[$key] = $value;
+					}
+			}
+		} 
+    }
+	return $result_array;
+  }
+  return false;     // argument is not an array, return false
+}	  
+	
+	public function array_type($array){
+
+  if (is_array($array))
+
+  {
+
+    $next = 0;
+
+ 
+
+    $return_value = "vector";  // we have a vector until proved otherwise
+
+ 
+
+    foreach ($array as $key => $value)
+
+    {
+
+ 
+
+      if ($key != $next)
+
+      {
+
+        $return_value = "map";  // we have a map
+
+        break;
+
+      }
+
+ 
+
+      $next++;
+
+    }
+
+   
+
+    return $return_value;
+
+  }
+
+ 
+
+  return false;    // not array
+}
+	
 }
 ?>
