@@ -49,7 +49,7 @@ class cPositions{
 					IF ((e.VELOCITY < 5) AND (e.MOTOR = 'ON'),'#E86100',
 					IF((e.VELOCITY = 0) AND (e.MOTOR = 'OFF'),'#000000',
 					IF((e.VELOCITY > 5) AND (e.MOTOR = 'ON'),'#00FF00','#999999'))) AS COLOR,
-					IF( -1 <> ".$flagPosition." , (SUBSTRING(e.DIG_INPUT, ".$flagPosition.", 1))   , '2') AS BLOQUEO_MOTOR,					 e.BATTERY 
+					IF( -1 <> ".$flagPosition." , (SUBSTRING(e.DIG_INPUT, ".$flagPosition.", 1))   , '2') AS BLOQUEO_MOTOR, IF(e.BATTERY IS NULL,0,e.BATTERY) AS BATTERY  
 					FROM ADM_UNIDADES f  
 					LEFT JOIN LAST".$name_table." e ON e.COD_ENTITY = f.COD_ENTITY
 					LEFT JOIN ADM_EVENTOS g ON e.COD_EVENT  = g.COD_EVENT
@@ -81,8 +81,7 @@ class cPositions{
     //**Obtiene la tabla donde se almacenan los historicos de las unidades*************-//
 	function direccion($lati,$longi){
 		global $config_bd_sp;
-		return '';
-	/*$conexion = mysqli_connect($config_bd_sp['host'],$config_bd_sp['user'],$config_bd_sp['pass'],$config_bd_sp['bname']);				
+$conexion = mysqli_connect($config_bd_sp['host'],$config_bd_sp['user'],$config_bd_sp['pass'],$config_bd_sp['bname']);				
 		if($conexion){
 			$sql_stret	= "CALL SPATIAL_CALLES(".$longi.",".$lati.");";
 			$query 		= mysqli_query($conexion, $sql_stret);
@@ -92,13 +91,12 @@ class cPositions{
 			mysqli_close($conexion);
 		}else{
 			return false;
-		}*/
+		}
 	}	
 
     //**Obtiene la tabla donde se almacenan los historicos de las unidades*************-//
 	function direccion_no_format($lati,$longi){
-		return '';
-		/*global $config_bd_sp;
+		global $config_bd_sp;
 	$conexion = mysqli_connect( $config_bd_sp['host'],$config_bd_sp['user'],
 								$config_bd_sp['pass'],$config_bd_sp['bname']);				
 		if($conexion){
@@ -111,7 +109,7 @@ class cPositions{
 			mysqli_close($conexion);
 		}else{
 			return false;
-		}*/
+		}
 	}
 	
 	//**Calcula la distancia entre dos puntos, el valor lo regresa en kms**//
