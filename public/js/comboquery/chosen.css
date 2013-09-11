@@ -263,14 +263,14 @@
   background: transparent;
 }
 .chzn-container .chzn-results li.highlighted {
-  background-color: #AF117D;
-  background: #AF117D;
+  background-color: #47A3DA;
+  background: #47A3DA;
   color: #FFFFFF;  
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(20%, #AF117D), color-stop(90%, #AF117D));
-  background-image: -webkit-linear-gradient(#AF117D 20%, #AF117D 90%);
-  background-image: -moz-linear-gradient(#AF117D 20%, #AF117D 90%);
-  background-image: -o-linear-gradient(#AF117D 20%, #AF117D 90%);
-  background-image: linear-gradient(#AF117D 20%, #AF117D 90%);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(20%, #47A3DA), color-stop(90%, #47A3DA));
+  background-image: -webkit-linear-gradient(#47A3DA 20%, #47A3DA 90%);
+  background-image: -moz-linear-gradient(#47A3DA 20%, #47A3DA 90%);
+  background-image: -o-linear-gradient(#47A3DA 20%, #47A3DA 90%);
+  background-image: linear-gradient(#47A3DA 20%, #47A3DA 90%);
   /*color: #fff;*/
 }
 .chzn-container .chzn-results li.highlighted em {
