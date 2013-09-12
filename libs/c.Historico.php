@@ -137,32 +137,34 @@ class cHistorico{
 				//El evento es igual al anterior, por lo que se debe de sumar el tiempo
 				if(count($controlResumen)<=0){
 					$controlResumen = $element;
-				}else{					
-					$distancia = $Positions->distancia_entre_puntos($controlResumen['LATITUDE'],
-										$controlResumen['LONGITUDE'],$element['LATITUDE'],$element['LONGITUDE']);		
-					$aControl['recorrido'] += ($distancia>.05) ? $distancia : 0;
-																			            
-					//El evento tiene es el mismo, se debe de contar el tiempo
-					if($controlResumen['COD_EVENT']==$element['COD_EVENT']){
-						$diferenciaTiempo = $Positions->diferencia_tiempo($controlResumen['GPS_DATETIME'],
-																			            $element['GPS_DATETIME']);
-					}else{
-						$diferenciaTiempo =  rand(0, 60);						
-					}
-					
-					//Vehiculo Detenido
-					if($element['VELOCIDAD'] == 0){
-						$aControl['tiempoDetenido'] += $diferenciaTiempo; 
-					//Vehiculo en Ralenti 	
-					}else if($element['VELOCIDAD'] < 5 AND $element['VELOCIDAD'] >0){
-						$aControl['tiempoRalenti'] += $diferenciaTiempo;
-						$aControl['count']++;
-						$aControl['total']+=$element['VELOCIDAD'];
-					//Vehiculo en MOvimiento 	
-					}else if($element['VELOCIDAD'] > 5){
-						$aControl['tiempoMovimiento'] += $diferenciaTiempo;
-						$aControl['count']++;
-						$aControl['total']+=$element['VELOCIDAD'];	
+				}else{
+					if($controlResumen['LONGITUDE'] !="0.000000"  && $element['LATITUDE'] !="0.000000" ){
+						$distancia = $Positions->distancia_entre_puntos($controlResumen['LATITUDE'],
+											$controlResumen['LONGITUDE'],$element['LATITUDE'],$element['LONGITUDE']);
+						$aControl['recorrido'] += ($distancia>.05) ? $distancia : 0;
+																				            
+						//El evento tiene es el mismo, se debe de contar el tiempo
+						if($controlResumen['COD_EVENT']==$element['COD_EVENT']){
+							$diferenciaTiempo = $Positions->diferencia_tiempo($controlResumen['GPS_DATETIME'],
+																				            $element['GPS_DATETIME']);
+						}else{
+							$diferenciaTiempo =  rand(0, 60);						
+						}						
+				
+						//Vehiculo Detenido
+						if($element['VELOCIDAD'] == 0){
+							$aControl['tiempoDetenido'] += $diferenciaTiempo; 
+						//Vehiculo en Ralenti 	
+						}else if($element['VELOCIDAD'] < 5 AND $element['VELOCIDAD'] >0){
+							$aControl['tiempoRalenti'] += $diferenciaTiempo;
+							$aControl['count']++;
+							$aControl['total']+=$element['VELOCIDAD'];
+						//Vehiculo en MOvimiento 	
+						}else if($element['VELOCIDAD'] > 5){
+							$aControl['tiempoMovimiento'] += $diferenciaTiempo;
+							$aControl['count']++;
+							$aControl['total']+=$element['VELOCIDAD'];	
+						}
 					}
 				}
 				

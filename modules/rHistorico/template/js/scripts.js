@@ -611,10 +611,12 @@ function rhiDrawTableMap(){
 									'<tr><td align="left">Velocidad:</td><td align="left">'	+ velocidad	+' Km/h.</td></tr>'+
 									'<tr><td align="left">Dirección:</td><td align="left">'	+ direccion	+'</td></tr>'+
 				  					'</table>'+
-				  				'</div>';			
+				  				'</div>';	
 
-			points.push(new google.maps.LatLng(unitLatitude, unitLong));						
-			latlngbounds.extend( new google.maps.LatLng(unitLatitude, unitLong) ); 
+			if(unitLatitude!="0.000000" && unitLong!="0.000000"){
+				points.push(new google.maps.LatLng(unitLatitude, unitLong));						
+				latlngbounds.extend( new google.maps.LatLng(unitLatitude, unitLong) ); 
+			}		
 			
 			var colorCircle = '';
 			var image = '';
@@ -645,9 +647,12 @@ function rhiDrawTableMap(){
 				    position: new google.maps.LatLng(unitLatitude,unitLong),
 				    title: 	fecha
 				});	
-				marcadores.push(marker1);
+				
+				if(unitLatitude!="0.000000" && unitLong!="0.000000"){
+					marcadores.push(marker1);
 
-				add_info_marker(marker1,info);
+					add_info_marker(marker1,info);
+				}
 
 				var a_info= evento+"|"+fecha+"|"+velocidad+"|"+direccion;				
 
@@ -750,38 +755,44 @@ function add_info_marker(marker,content){
 
 function hist_center_map(lat,lon,info,title,show_info){
 	var unit_info = info.split("|");	
-	var info = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
-					'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
-				  			'<table><tr><th colspan="2">'+
-				  			'<tr><td align="left">Evento :</td><td align="left">'	+ unit_info[0]	+'</td></tr>'+
-				  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ unit_info[1]	+'</td></tr>'+
-							'<tr><td align="left">Velocidad:</td><td align="left">'	+ unit_info[2]	+' Km/h.</td></tr>'+
-							'<tr><td align="left">Dirección:</td><td align="left">'	+ unit_info[3]	+'</td></tr>'+
-		  					'</table>'+
-		  				'</div>';	
-	var image = new google.maps.MarkerImage('public/images/car.png',
-		new google.maps.Size(1, 1),
-		new google.maps.Point(0,0),
-		new google.maps.Point(0, 32));
-    var myLatLng 	= new google.maps.LatLng(lat,lon);
-    var beachMarker = new google.maps.Marker({
-        position: myLatLng,
-        map: 	map_rhi,
-        title: 	title,
-        icon:   image,
-    });
+	var info = '';
+	if(lat!="0.000000" && lon!="0.000000"){	
+		var info = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
+						'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
+					  			'<table><tr><th colspan="2">'+
+					  			'<tr><td align="left">Evento :</td><td align="left">'	+ unit_info[0]	+'</td></tr>'+
+					  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ unit_info[1]	+'</td></tr>'+
+								'<tr><td align="left">Velocidad:</td><td align="left">'	+ unit_info[2]	+' Km/h.</td></tr>'+
+								'<tr><td align="left">Dirección:</td><td align="left">'	+ unit_info[3]	+'</td></tr>'+
+			  					'</table>'+
+			  				'</div>';	
+		var image = new google.maps.MarkerImage('public/images/car.png',
+			new google.maps.Size(1, 1),
+			new google.maps.Point(0,0),
+			new google.maps.Point(0, 32));
+	    var myLatLng 	= new google.maps.LatLng(lat,lon);
+	    var beachMarker = new google.maps.Marker({
+	        position: myLatLng,
+	        map: 	map_rhi,
+	        title: 	title,
+	        icon:   image,
+	    });
 
-    marcadores.push(beachMarker);    
-	if(infowindow){infoWindow.close();infowindow.setMap(null);}
-		infowindow = new google.maps.InfoWindow({
-	    content: info
-	});
-	
-	if(show_info){infowindow.open(map_rhi,beachMarker);map_rhi.setZoom(18);}
+	    marcadores.push(beachMarker);    
+		if(infowindow){infoWindow.close();infowindow.setMap(null);}
+			infowindow = new google.maps.InfoWindow({
+		    content: info
+		});
+		
+		if(show_info){infowindow.open(map_rhi,beachMarker);map_rhi.setZoom(18);}
 
-	var positon = new google.maps.LatLng(lat, lon);
-	/*if(show_info){map_rhi.setZoom(18);}*/
-	map_rhi.setCenter(positon);	
+		var positon = new google.maps.LatLng(lat, lon);
+		/*if(show_info){map_rhi.setZoom(18);}*/
+		map_rhi.setCenter(positon);	
+	}else{
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Coordenadas Invalidas.</p>');
+		$("#dialog_message" ).dialog('open');
+	}
 }
 
 function rhiExportExcel(){
