@@ -31,7 +31,7 @@
     <li ><a href="#Monitoreo">Monitoreo</a></li>
     <li ><a href="#Admon">Administraci&oacute;n</a></li>
     <li ><a href="#Report">Reportes</a></li>
-    <!--<li ><a href="#Ajuste">Ajustes</a></li>-->
+    <li ><a href="#DashBoard">DashBoard</a></li>
   </ul>
 <div id="Monitoreo" class="pestana">
 <div id="mon_menu" class="menu_monitoreo">
@@ -84,6 +84,7 @@
 </div><!--Monitoreo-->
 <div id="Admon"  class="pestana"></div><!--Admon-->
 <div id="Report" class="pestana"></div><!--Report-->
+<div id="DashBoard" class="pestana_dashboard"></div><!--DashBoard-->
 <!--<div id="Ajuste" class="pestana"></div>Ajuste-->
 <div class="mon-user-info">
 	<span><b>Bienvenido(a) : {USER}</b></span>

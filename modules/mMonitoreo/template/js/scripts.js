@@ -10,8 +10,12 @@ $(document).ready(
             	if(tab_active==0){
 					mon_refresh_units();
             	}else{
-					stopTimer();
+            		stopTimer();
             	}
+
+				if(tab_active==3){
+					loadDashBoard()					
+				}	
         	} 
     	});
     	
@@ -201,6 +205,23 @@ function tabAj(){
 
 			}else{
 				$("#Ajuste").html("No se han Creado Grupos");
+			}
+			
+        }
+	});
+}
+
+function loadDashBoard(){
+	$("#DashBoard").html("");
+	$.ajax({
+		type: "GET",
+        url: "index.php?m=mReports&c=default",
+        data: "",
+        success: function(datos){
+			if(datos!=0){
+				$("#DashBoard").html(datos);
+			}else{
+				$("#DashBoard").html("");
 			}
 			
         }
