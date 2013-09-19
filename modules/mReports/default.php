@@ -8,49 +8,32 @@
 
 $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);
 	
-	$dashBoards = '';
-	$categorias = '';
-	$widgets	= '';
+    $currentWeek = date("W"); 
 	
 	$tpl->set_filenames(array('default'=>'default'));
-	/*
-	$widgetClass = new widgets();
-	$widgetClass->setIdCliente($userAdmin->user_info['ID_CLIENTE']);
-	$widgetClass->setIdUsuario($userAdmin->user_info['ID_USUARIO']);
-	
-	$widgetClass->getDashBoards();
-	$widgetClass->getWidgetsAvailable();
-	
-	$arrayWidgets 	 	= $widgetClass->arrayDashBoards;
-	$widgetsDisponibles	= $widgetClass->arrayWidgets;
-		
-	$totalDashBoards 	= count($arrayWidgets);
-	$totalWidgets		= count($widgetsDisponibles);
-		
-	$categorias 	 	= $widgetClass->getWidgetsCategorias();
-	
-	if($totalDashBoards>0){
-		for($i=0;$i<$totalDashBoards;$i++){
-			$dashBoards.='<li><a href="#">'.$arrayWidgets[$i]['NOMBRE'].'</a></li>';
-		}
-				
-		for($i=0;$i<$totalWidgets;$i++){			
-			$widgets.='<div class="widgetPanel class'.$widgetsDisponibles[$i]['ID_WIDGET'].'">
-						<input type="hidden" value="'.$widgetsDisponibles[$i]['ID_WIDGET'].'"/>
-                    <div class="widgetTittle">'.$widgetsDisponibles[$i]['NOMBRE'].'</div>
-                    <div class="widgetDesc">'.$widgetsDisponibles[$i]['DESCRIPCION'].'</div>
-                    <!--<div class="widgetImage1"></div>-->
-                </div>';
-		}
-	}*/
-		
+    
+    /*Centros de Salud*/
+    $sqlGeos = "FROM ADM_GEOREFERENCIA_RESPUESTAS ge
+                INNER JOIN ADM_GEOREFERENCIAS gr ON ge.ID_OBJECT_MAP = gr.ID_OBJECT_MAP
+                WHERE ID_CLIENTE = ".$userAdmin->user_info['ID_CLIENTE']."
+                GROUP BY gr.ID_OBJECT_MAP";    
+    $resultQuery = $dbf->cbo_from_query("gr.ID_OBJECT_MAP","gr.DESCRIPCION",$sqlGeos,'',true);               
+    
+    /*Numeros de Semana*/
+    $sqlWeek = "FROM CRM2_RESPUESTAS 
+                INNER JOIN CRM2_CUESTIONARIOS 
+                   ON CRM2_RESPUESTAS.ID_CUESTIONARIO =  CRM2_CUESTIONARIOS.ID_CUESTIONARIO
+                WHERE CRM2_CUESTIONARIOS.ID_TIPO  = 3
+                AND CRM2_CUESTIONARIOS.COD_CLIENT = ".$userAdmin->user_info['ID_CLIENTE']."
+                AND  NUM_SEMANA IS NOT NULL
+                GROUP BY NUM_SEMANA";
+    $resultWeek = $dbf->cbo_from_query("NUM_SEMANA","NUM_SEMANA",$sqlWeek,$currentWeek,true);    
+        
 	$tpl->assign_vars(array(
 		'PATH'			=> $dir_mod,
 		'PATH_IMG'		=> $dir_pimages,
-		'USER'			=> $userAdmin->user_info['NOMBRE_COMPLETO'],
-		'DASHBOARDS'	=> $dashBoards,
-		'CATEGORIAS'	=> $categorias,
-		'WIDGETS'		=> $widgets	
+        'CBO_GEOS'      => $resultQuery,
+        'CBO_WEEKS'     => $resultWeek
 	));
 	
 	$tpl->pparse('default');
