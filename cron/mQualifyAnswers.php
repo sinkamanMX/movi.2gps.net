@@ -5,7 +5,13 @@
   if($conexion){
     $dataBase = mysql_select_db("ALG_BD_CORPORATE_MOVI",$conexion);
     
-    $sqlRespuestas = '';
+    echo "Paso 1 Inicia el proceso ... <br>";
+    
+    $sqlRespuestas = 'SELECT ID_RES_CUESTIONARIO,CADENA_CUANTITATIVO,CALIFICADO 
+                       FROM CRM2_RESPUESTAS_CUANTITATIVO
+                       WHERE CALIFICADO = 0';
+                            
+    
     
     
     
