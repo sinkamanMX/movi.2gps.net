@@ -1,0 +1,29 @@
+<script type="text/javascript" src="http://jqueryrotate.googlecode.com/svn/trunk/jQueryRotate.js"></script>
+<input type="hidden" id="qst_src_val" value="{IMG}" />
+<input type="hidden" id="qst_grd_val" value="0" >
+<input type="hidden" id="qst_img_id" value="{ID}" />
+<img src="{IMG}" id="qst_img" width="96%" height="90%" />
+
+<div align="center"  style="position:absolute; left:0px; bottom:0px; width:98%; height:30px; ">
+
+<button  class="turn small_btn" onClick="qst_rotar_img()"  ></button>
+
+</div>
+<script>
+	//Definir botnes buscar
+	$( ".turn" ).button({
+      icons: {
+        primary: "ui-icon-refresh"
+      },
+      text: false
+    })
+var grados = 0;
+
+function qst_rotar_img(){
+
+	 grados += 90;
+	$("#qst_grd_val").val(grados);
+    $("#qst_img").rotate(grados);
+
+	}		
+</script>

@@ -31,7 +31,7 @@
     <li ><a href="#Monitoreo">Monitoreo</a></li>
     <li ><a href="#Admon">Administraci&oacute;n</a></li>
     <li ><a href="#Report">Reportes</a></li>
-    <li ><a href="#DashBoard">DashBoard</a></li>
+    <li class="{REPORTS}" ><a href="#DashBoard">DashBoard</a></li>
   </ul>
 <div id="Monitoreo" class="pestana">
 <div id="mon_menu" class="menu_monitoreo">

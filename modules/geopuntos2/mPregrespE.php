@@ -21,6 +21,7 @@
 
 
 	$cod_client =  $userAdmin->user_info['COD_CLIENT'];
+	$tpl->set_filenames(array('mPregrespE'=>'tPregrespE'));	
 
 	$result = array();
 	
@@ -30,7 +31,7 @@
 	INNER JOIN CRM2_TIPO_PREG TP ON P.ID_TIPO = TP.ID_TIPO
 	INNER JOIN CRM2_PREG_RES  PR ON PR.ID_PREGUNTA=P.ID_PREGUNTA
 	INNER JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON P.ID_PREGUNTA = CP.ID_PREGUNTA
-	WHERE PR.ID_RES_CUESTIONARIO = ".$_GET['id']."
+	WHERE PR.ID_RES_CUESTIONARIO = ".$_GET['idq']."
 	GROUP BY P.ID_PREGUNTA
 	ORDER BY CP.ORDEN;";
 					
@@ -41,12 +42,11 @@
 	if($cnt > 0){ 
 		while($row = $db->sqlFetchArray($qry)){
 			
-			//$result[] = $dbf->utf8_encode_array($row); // Inside while loop
-			$result[] = $row; // Inside while loop
 			}
 	}
-	echo json_encode( $result = array('aaData'=>$result ) );	 	
+	
 	$db->sqlClose();
+	$tpl->pparse('mPregrespE');
 
 
 	

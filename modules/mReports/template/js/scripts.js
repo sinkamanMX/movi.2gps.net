@@ -37,7 +37,7 @@ function rpsDrawTable(datainfo){
 	$("#rpsMessage").removeClass("visible").addClass("invisible");
 	$("#rpsTableContent").html(datainfo);
 
-	$('#rspTableDet').dataTable({ 
+	/*$('#rspTableDet').dataTable({ 
 	    "bDestroy": true,
 	    "bLengthChange": false,
 	    "bPaginate": false,
@@ -55,5 +55,5 @@ function rpsDrawTable(datainfo){
 	        "sSearch": "",
 	        "sZeroRecords": ""
 	    }
-	});	
+	});	*/
 }

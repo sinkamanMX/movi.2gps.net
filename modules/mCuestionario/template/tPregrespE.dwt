@@ -1,0 +1,26 @@
+<!--preguntas respuestas-->
+<div class="ui-corner all" style="border:#a6c9e2 solid thin; width:59.5%; height:98%; float:left;" id="qst_dpr">
+<!-- BEGIN R -->
+{R.PR}
+<!-- END R -->
+</div>
+
+<!--imagen-->
+<div class="ui-corner all" style="border:#a6c9e2 solid thin; width:40%; height:98%; float:right;">
+<!-- BEGIN I -->
+{I.IMG}
+<!-- END I -->
+</div>
+<input type="hidden" id="qst_dold">
+<script>
+$(document).ready(function () {
+var vl2 = "";
+$('.pr').each(function(index){
+	idp = $(this).attr("name");
+	vl2 += (vl2 == "")?idp+',"'+$(this).val()+'",'+qst_idq:'|'+idp+',"'+$(this).val()+'",'+qst_idq;
+});
+$("#qst_dold").val(vl2);
+//alert($("#qst_dold").val());
+});
+</script>
+

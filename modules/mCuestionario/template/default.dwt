@@ -28,9 +28,12 @@
       </table> 
 
 </div>
+<div id="qst_dialog_img"></div>
 <div id="qst_dialog_chart"></div>
 <div id="qst_dialog_formu"></div>
 <div id="qst_dialog_formp"></div>
+<div id="qst_dialog_pr"></div>
+<div id="qst_dia_log"></div>
 
 <div id="qst_dialog" > </div>
 

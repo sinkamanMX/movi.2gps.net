@@ -40,7 +40,7 @@ $(document).ready(function () {
 		});
 	
 	
-	
+	qst_load_preg_resp(0);
 	});
 </script>
 <div id="qst_tabs" style="width:100%; height:98%;">
@@ -240,10 +240,10 @@ $(document).ready(function () {
 <div id="qst_cnt_tbl_rsp" style="position:absolute; width:69%; left:31%; top: 0%;">
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="qst_table_preg_resp">
 <thead>
-<!--<tr>
-<th colspan="5"><div style="width:90%; float:left;"><h3>Cuestionarios</h3></div>
-<div style="width:9%;float:right;"><button id="qst_add" onClick="qst_tpl_nuevo()">Nuevo</button></div></th>
-</tr>-->
+<th colspan="5"><strong>Detalle evidencias</strong>
+<button class="edit small_btn" onclick="qst_fedit_pr();" title="Editar" style="float:right;"></button>
+<button class="note small_btn" onclick="qst_get_log();" title="Log" style="float:right;"></button>
+</th>
 <tr>
 <th>Pregunta</th>	
 <th>Respuesta</th>	

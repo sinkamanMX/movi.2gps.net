@@ -18,7 +18,8 @@
 	
 	//$prg = $dbf->qst_preguntas($cte,$_GET['pre'],$t);
 	
-	$prg = $dbf->dragndrop("ID_PREGUNTA","DESCRIPCION","CRM2_PREGUNTAS"," WHERE ACTIVO=1 AND COD_CLIENT =".$cte,$_GET['pre'],$t);
+	//$prg = $dbf->dragndrop("ID_PREGUNTA","DESCRIPCION","CRM2_PREGUNTAS"," WHERE ACTIVO=1 AND COD_CLIENT =".$cte,$_GET['pre'],$t);
+	$prg = $dbf->dragndropF("P.ID_PREGUNTA","P.DESCRIPCION","CRM2_PREGUNTAS P "," LEFT JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON CP.ID_PREGUNTA = P.ID_PREGUNTA WHERE ACTIVO=1 AND COD_CLIENT =".$cte,$_GET['pre'],$t,'ondblclick="form_preg(this.id,2)"'," ORDER BY CP.ORDEN;");
 
 	
 	

@@ -83,7 +83,7 @@
   </tr>
   <tr>
   <td><input type="checkbox"  id="gnat" {NAT}></td>
-  <td><label>Notificaci&oacute;n de atrazo.</label></td>  
+  <td><label>Notificaci&oacute;n de atraso.</label></td>  
   </tr>  
   <tr>
   <td><input type="checkbox"  id="gnvr" {NVR} ></td>

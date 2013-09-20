@@ -20,33 +20,31 @@
 
 
 
-	$cod_client =  $userAdmin->user_info['COD_CLIENT'];
 
-	$result = array();
+	$tpl->set_filenames(array('mGetLog'=>'tGetLog'));	
+	$data = "";
+
+	$sql = "SELECT L.FECHA,L.OBSERVACIONES, U.NOMBRE_COMPLETO FROM CRM2_LOG L
+	INNER JOIN ADM_USUARIOS U ON U.ID_USUARIO = L.ID_USER 
+	WHERE L.ID_RES_CUESTIONARIO = ".$_GET['idq']." ORDER BY L.FECHA;";
 	
-	$sql  = "SELECT P.DESCRIPCION AS PREGUNTA,
-	IF(TP.MULTIMEDIA=0,PR.RESPUESTA,CONCAT('<img src=\"',PR.RESPUESTA,'\" style=\"width:100px; height:100px;\">')) AS RESPUESTA
-	FROM CRM2_PREGUNTAS P 
-	INNER JOIN CRM2_TIPO_PREG TP ON P.ID_TIPO = TP.ID_TIPO
-	INNER JOIN CRM2_PREG_RES  PR ON PR.ID_PREGUNTA=P.ID_PREGUNTA
-	INNER JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON P.ID_PREGUNTA = CP.ID_PREGUNTA
-	WHERE PR.ID_RES_CUESTIONARIO = ".$_GET['id']."
-	GROUP BY P.ID_PREGUNTA
-	ORDER BY CP.ORDEN;";
-					
-						
+
 	$qry = $db->sqlQuery($sql);
 	$cnt = $db->sqlEnumRows($qry);
 	
 	if($cnt > 0){ 
 		while($row = $db->sqlFetchArray($qry)){
-			
-			//$result[] = $dbf->utf8_encode_array($row); // Inside while loop
-			$result[] = $row; // Inside while loop
-			}
-	}
-	echo json_encode( $result = array('aaData'=>$result ) );	 	
+			$data .= ($data!="") ? ', ': '';
+			$data .= '{"FECHA"   : "'.$row['FECHA'] 		   .'" , '.
+					 ' "USER"    : "'.$row['NOMBRE_COMPLETO'].'" , '.
+					 ' "OBS"     : "'.utf8_decode($row['OBSERVACIONES']).'" }';}
+	}	
+	$tpl->assign_vars(array(
+		'LOG'	=> $data
+	));		
+	
 	$db->sqlClose();
+	$tpl->pparse('mGetLog');
 
 
 	

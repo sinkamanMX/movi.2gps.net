@@ -1,0 +1,5 @@
+
+<table>
+<tr><td><label>Eje X:</label></td><td><select id="qst_X" class="caja_txt">{X}</select></td></tr>
+
+</table>

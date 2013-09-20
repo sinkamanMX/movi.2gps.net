@@ -60,25 +60,7 @@
 </style>
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
-		/*$('#example').dataTable({ 
-		    "bDestroy": true,
-		    "bLengthChange": false,
-		    "bPaginate": false,
-		    "bFilter": false,
-		    "bSort": true,
-		    "bAutoWidth": false,
-		    "bSortClasses": false,              
-		    "oLanguage": {
-		        "sInfo": "",
-		        "sEmptyTable": "",
-		        "sInfoEmpty" : "",
-		        "sInfoFiltered": "",
-		        "sLoadingRecords": "",
-		        "sProcessing": "",
-		        "sSearch": "",
-		        "sZeroRecords": ""
-		    }
-		});*/
+
 
 	    $(".chzn-select").chosen({width: "125px"});
 	    $(".chzn-select-cs").chosen({width: "250px"});	  

@@ -1,5 +1,7 @@
-var qstTable;
+var qstTable,qstlogtable;
 var data_qst_resp;
+var qst_idq = 0;
+var data_log;
 //var qst_preguntas;
 
 //variables mapa
@@ -16,6 +18,20 @@ var qst_infowindow;
 
 $(document).ready(function () {
 	//crear botones
+	//Definir botnes editar
+	$( ".edit" ).button({
+      icons: {
+        primary: "ui-icon-pencil"
+      },
+      text: false
+    })
+	//Definir botnes note
+	$( ".note" ).button({
+      icons: {
+        primary: "ui-icon-note"
+      },
+      text: false
+    })		
 	$(".boton").button();
 	//Cargar tabla principal
 	qst_load_datatable();
@@ -24,6 +40,47 @@ $(document).ready(function () {
 	h = window.innerHeight;
 	//alert(w+"/"+h)
 	
+	//Declara dialog editar preguntas respuestas
+	$("#qst_dialog_pr" ).dialog({
+		modal: true,
+		autoOpen:false,
+		overlay: { opacity: 0.2, background: "cyan" },
+		width:  900,
+		height: 400,
+		buttons: {
+			"Guardar": function(){
+				qst_validar_pr();
+				},
+			"Cancelar": function(){
+				if($("#qst_dialog_pr" ).dialog('isOpen')){
+					$("#dialog_message").dialog('close');
+					}
+					$("#qst_dialog_pr" ).dialog('close');
+				}
+				},
+		show: "blind",
+		hide: "blind"
+		});	
+	//Declara dialog editar preguntas respuestas
+	$("#qst_dia_log" ).dialog({
+		modal: true,
+		autoOpen:false,
+		overlay: { opacity: 0.2, background: "cyan" },
+		width:  680,
+		height: 400,
+		buttons: {
+			"Cancelar": function(){
+				if($("#qst_dia_log" ).dialog('isOpen')){
+					$("#dialog_message").dialog('close');
+					}
+					$("#qst_dia_log" ).dialog('close');
+				}
+				},
+		show: "blind",
+		hide: "blind"
+		});			
+		
+	//-------------------------------------------------------
 	$( "#qst_dialog_chart" ).dialog({
 		autoOpen:false,
 		title:"Estad\u00edstica",
@@ -39,7 +96,8 @@ $(document).ready(function () {
 				eqp_validar_ed();
 			}
 		}*/
-	});	
+	});
+		
 	//Crear dialog formulario
 	$( "#qst_dialog_formu" ).dialog({
 		autoOpen:false,
@@ -61,17 +119,35 @@ $(document).ready(function () {
 		autoOpen:false,
 		//title:"Estad\u00edstica",
 		modal: true,
-		width: 290,
-		height: 335,
+		width: 1000,
+		height: 500,
 		buttons: {
 			Cancelar: function() {
 				$(this).dialog( "close" );
 			},
 			Guardar: function() {				
-				val_data_preg();
+				val_data_pr();
 			}
 		}
 	});	
+	//--------------------------------------
+	//DECLARAR DIALOG IMAGEN	
+	$( "#qst_dialog_img" ).dialog({
+		autoOpen:false,
+		title:"Rotar imagen",
+		modal: true,
+		width: 800,
+		height: 600,
+		buttons: {
+			Cancelar: function() {
+				$(this).dialog( "close" );
+			},
+			Guardar: function() {				
+				qst_save_img();
+			}
+		}
+	});	
+	
 	});
 //----------------------------
 function qst_load_datatable(){
@@ -172,7 +248,7 @@ function qst_load_table_rdts(){
 			fch = '"'+full.FECHA+'"';
 			us  = '"'+full.USR+'"';
 			dr  = '"'+full.DIREC+'"';
-			gra = "<td><div onclick='qst_position("+fch+","+us+","+full.LATIT+","+full.LONGI+","+dr+");qst_load_preg_resp("+full.IDRC+");' class='custom-icon-copy'>"+
+			gra = "<td><div onclick='qst_position("+fch+","+us+","+full.LATIT+","+full.LONGI+","+dr+");qst_load_preg_resp("+full.IDRC+");qst_set_idq("+full.IDRC+");' class='custom-icon-copy'>"+
                     "<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+
                     "</div></td>";		
 
@@ -464,6 +540,21 @@ function qst_center_map(lat,lon,info,title,show_info){
 //------------------------------------------
 function qst_load_preg_resp(idrc){
 	
+	//Definir botnes editar
+	$( ".edit" ).button({
+      icons: {
+        primary: "ui-icon-pencil"
+      },
+      text: false
+    })	
+	//Definir botnes note
+	$( ".note" ).button({
+      icons: {
+        primary: "ui-icon-note"
+      },
+      text: false
+    })	
+	
 	scroll_table=($("#qst_cnt_tbl_rsp").height()-75)+"px";
 	//alert(scroll_table);
     qstTable = $('#qst_table_preg_resp').dataTable({
@@ -497,6 +588,8 @@ function qst_load_preg_resp(idrc){
 	}
 //-----------------------------------------------------------------------
 function qst_abrir_formulario(q){
+	if(q==""){$("#qst_dialog_formu").dialog('option', 'title', 'Agregar Cuestionario');}
+	if(q!=""){$("#qst_dialog_formu").dialog('option', 'title', 'Editar Cuestionario');}
 	      $.ajax({
           url: "index.php?m=mCuestionario&c=mFormulario",
           type: "GET",
@@ -577,6 +670,26 @@ function val_all_pes(){
 		$("#dialog_message" ).dialog('open');		
 		return false;
 		}
+	if($("#qst_type").val()==3){
+		if($("#qst_Y").val() < 1){
+			ifs=ifs+1;
+			$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un elemento del eje y.</p>');
+			$("#dialog_message" ).dialog('open');		
+			return false;
+			}
+		if($("#qst_Z").val() < 1){
+			ifs=ifs+1;
+			$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un elemento del eje z.</p>');
+			$("#dialog_message" ).dialog('open');		
+			return false;
+			}			
+		if($("#qst_X").val() < 1){
+			ifs=ifs+1;
+			$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un elemento del eje x.</p>');
+			$("#dialog_message" ).dialog('open');		
+			return false;
+			}			
+		}
 		
 	if($("input[type='radio'][name='tema']:checked").val() === undefined){
 		ifs=ifs+1;
@@ -617,6 +730,9 @@ function val_all_pes(){
 	}	
 //------------------------------------------------------------------------------
 function qst_guardar_form(op){
+	
+	var x = ($("#qst_type").val()==3)?$("#qst_X").val():"";
+	var y = ($("#qst_type").val()==3)?$("#qst_Y").val():"";
 	var mlt = ($('#qst_multi_resp').is(':checked'))?1:0;
 	var off = ($('#qst_offline').is(':checked'))?1:0;
 	//alert(mlt+"/"+off)
@@ -653,6 +769,8 @@ function qst_guardar_form(op){
 			  usr : usr,
 			  op  : op,
 			  idq : $("#qst_id").val(),
+			  x   : x,
+			  y   : y,
 			  
 			  otit : $("#qst_old_tit").val(),
 			  otyp : $("#qst_old_typ").val(),
@@ -660,12 +778,14 @@ function qst_guardar_form(op){
 			  ooff : ooff,
 			  otma : $("#qst_old_tma").val(),
 			  opre : $("#qst_old_pre").val(),
-			  ousr : $("#qst_old_usr").val()
+			  ousr : $("#qst_old_usr").val(),
+			  ox : $("#qst_old_x").val(),
+			  oy : $("#qst_old_y").val() 
 			    },
           success: function(data) {
             var result = data; 
-			alert(result);
-			if(result>0){
+			//alert(result);
+			if(result>0 && result!=""){
 				message = (op==1)?"El cuestionario ha sido almacenado satisfactoriamente.":"El cuestionario ha sido actualizado satisfactoriamente";
 				$('#qst_dialog_formu').dialog('close');
 				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>'+message+'</p>');
@@ -874,6 +994,7 @@ function preguntas_seleccionadas(){
 			},
         success: function(data) {
         var result = data;
+		//alert(result);
 		$("#qst_preg_sel").html(result);
           }
       });	
@@ -1012,6 +1133,7 @@ function qst_edt_pre(idp){
 //-----------------------------------------------------------
 //---------------------------------------
 function qst_ver_img(img,id){
+	//alert(img+"/"+id)
 	$.ajax({
 		url: "index.php?m=mCuestionario&c=mImage",
 		data : {
@@ -1021,7 +1143,7 @@ function qst_ver_img(img,id){
 		type: "GET",
 		success: function(data) {
 			var result = data; 
-			
+				
 				$("#qst_dialog_img").dialog("open");
 				$('#qst_dialog_img').html(""); 
 				$('#qst_dialog_img').html(result); 
@@ -1030,3 +1152,177 @@ function qst_ver_img(img,id){
 		});		
 
 	}	
+//-------------------------------------------------
+function qst_save_img(){
+	//alert($("#qst_src_val").val())
+	$.ajax({
+		url: "index.php?m=mCuestionario&c=mSaveImg",
+		data : {
+			img : $("#qst_src_val").val(),
+			grd : $("#qst_grd_val").val()
+			},
+		type: "GET",
+		success: function(data) {
+			var result = data; 
+			//alert(result)
+			/*if(result==1){
+				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La imagen ha sido almacenada correctamente.</p>');
+				$("#dialog_message" ).dialog('open');
+				//alert(ide)
+				//rev_get_preg_resp(ide);
+				$("#qst_dialog_img").dialog("close");
+				}
+			else{
+				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La imagen no ha podido ser almacenada.</p>');
+				$("#dialog_message" ).dialog('open');		
+				}		*/
+				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La imagen ha sido almacenada correctamente.</p>');
+				$("#dialog_message" ).dialog('open');
+				$("#qst_dialog_img").dialog("close");
+				$("#qst_dialog_img img").children().remove()
+				$("#qst_dialog_chart img").children().remove()
+				
+				qst_load_preg_resp($("#qst_img_id").val());
+				}
+				
+		});		
+
+	}	
+//------------------------------------------------------------
+function qst_fedit_pr(){
+	//alert("qst_fedit_pr");
+	//alert($("#qst_hidpr").val());
+	$.ajax({
+		url: "index.php?m=mCuestionario&c=mPregrespE",
+		type: "GET",
+		data: {
+			idq : qst_idq
+			},
+		success: function(data) {
+			var result = data; 
+			//alert(op)
+			
+			
+			$("#qst_dialog_pr").dialog("open");
+			$("#qst_dialog_pr").dialog('option', 'title', 'Editar Respuestas');
+			$('#qst_dialog_pr').html(""); 
+			$('#qst_dialog_pr').html(result); 
+				}
+		});	
+	}	
+//--------------------------------------------------------------
+function qst_set_idq(idq){
+	qst_idq = idq;
+	}	
+//--------------------------------------------------------------
+function qst_validar_pr(){
+	var ifs = 0;
+	$('.pr').each(function(index){
+		 //alert($(this).val()); 
+		 if($(this).val()==""){
+			 qstp =  $(this).attr('title');
+			 $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La pregunta "'+qstp+'" no ha sido contestada.</p>');
+			 $("#dialog_message" ).dialog('open');
+			 ifs++;
+			 }
+		 });
+		if(ifs == 0) {
+			save_set_pr();
+			}
+	}
+//--------------------------------------------------------------
+function save_set_pr(){
+	var vls = "";
+	$('.pr').each(function(index){
+		idp = $(this).attr("name");
+		//vls += (vls == "")?'('+idp+',"'+$(this).val()+'",'+qst_idq+')':',('+idp+',"'+$(this).val()+'",'+qst_idq+')';
+		vls += (vls == "")?idp+',"'+$(this).val()+'",'+qst_idq:'|'+idp+',"'+$(this).val()+'",'+qst_idq;
+	});
+	
+	$.ajax({
+		url: "index.php?m=mCuestionario&c=mSaveSetpr",
+		type: "GET",
+		data: {
+			idq  : qst_idq,
+			vls  : vls,
+			vl2  : $("#qst_dold").val()
+			},
+		success: function(data) {
+			var result = data; 
+			//alert(result)
+			if(result>0){
+				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Los cambios han sido almacenados correctamente.</p>');
+				$("#dialog_message" ).dialog('open');
+				$("#qst_dialog_pr").dialog("close");
+				qst_load_preg_resp(qst_idq);
+				}
+			else{
+				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Los cambios no han sido almacenados intentelo mas tarde.</p>');
+				$("#dialog_message" ).dialog('open');
+				}	
+			}
+		});	
+	}		
+//-------------------------------------------
+function qst_get_log(){
+	$.ajax({
+		url: "index.php?m=mCuestionario&c=mGetLog",
+		type: "GET",
+		data: {
+			idq  : qst_idq
+			},
+		success: function(data) {
+			var result = data; 
+			//alert(result)
+			$("#qst_dia_log").dialog("open");
+			$("#qst_dia_log").dialog('option', 'title', 'Editar Respuestas');
+			$('#qst_dia_log').html(""); 
+			$('#qst_dia_log').html(result); 
+			}
+		});		
+	}
+//---------------------------------------------------------------
+function qst_sb_combo(t,y,z){
+	if(t==3){
+		$.ajax({
+			url: "index.php?m=mCuestionario&c=mGetCbos",
+			type: "GET",
+			data: {
+				type  : t,
+				z : z,
+				y : y
+			},
+			success: function(data) {
+				var result = data; 
+				//alert(result)
+				$('#qst_combos').html(result); 
+			}
+		});	
+		}
+	else{
+		$('#qst_combos').html("");
+		$('#qst_dcbox').html("");
+		}	
+	}	
+//---------------------------------------------------------------
+function qst_cbo_x(t,x){
+	//alert(t)
+	if(t>0){
+		$.ajax({
+			url: "index.php?m=mCuestionario&c=mGetCbox",
+			type: "GET",
+			data: {
+				type  : t,
+				x : x
+			},
+			success: function(data) {
+				var result = data; 
+				//alert(result)
+				$('#qst_dcbox').html(result); 
+			}
+		});	
+		}
+	else{
+		$('#qst_dcbox').html("");
+		}		
+	}

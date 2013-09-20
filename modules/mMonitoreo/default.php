@@ -16,13 +16,16 @@
 	
 	$s_admin   = ($validate) ? 'visible': 'invisible';
 	
+    $aReports  = ($userAdmin->validar_submenu('mReports')) ? 'visible': 'invisible';
+    
 	$tpl->assign_vars(array(
 		'PAGE_TITLE'	=> 'Modulo Rastreo',
 		'PATH'			=> $dir_mod,
 		'PATH_IMG'		=> $dir_pimages,
 		'USER'			=> $userAdmin->user_info['NOMBRE_COMPLETO'],
 		'APIKEY'		=> $config['keyapi'],
-		'S_ADMIN'		=> $s_admin 
+		'S_ADMIN'		=> $s_admin,
+        'REPORTS'       => $aReports 
 	));
 	
 	$tpl->pparse('default');

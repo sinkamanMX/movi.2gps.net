@@ -21,7 +21,9 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 			'ID_TIPO'    			=> $_GET['typ'],
 			'MULTIPLES_RESPUESTAS'  => $_GET['mlt'],
 			'OFFLINE'	    		=> $_GET['off'],
-			'TEMA'   				=> $_GET['tma']
+			'TEMA'   				=> $_GET['tma'],
+			'ID_EJE_X'				=> $_GET['x'],
+			'ID_EJE_Y'				=> $_GET['y']			
 	);
 	if($dbf-> insertDB($data,'CRM2_CUESTIONARIOS',true) == true){
 		$sql = "SELECT LAST_INSERT_ID() AS ID";
@@ -78,6 +80,12 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 		if($_GET['tma'] != $_GET['otma']){
 			$cv .= ($cv=="")?" TEMA =".$_GET['tma']:" ,TEMA =".$_GET['tma'];
 			}
+		if($_GET['x'] != $_GET['ox'] && $_GET['x']!=""){
+			$cv .= ($cv=="")?" ID_EJE_X =".$_GET['x']:" ,ID_EJE_X =".$_GET['x'];
+			}
+		if($_GET['y'] != $_GET['oy'] && $_GET['y']!=""){
+			$cv .= ($cv=="")?" ID_EJE_Y =".$_GET['y']:" ,ID_EJE_Y =".$_GET['y'];
+			}						
 		
 		if($cv != ""){
 			$sql_u = "UPDATE CRM2_CUESTIONARIOS SET ".$cv." WHERE ID_CUESTIONARIO = ".$_GET['idq'];	
@@ -87,11 +95,13 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 			else{
 				echo 0;
 				}	
+			
 			}
+		else{
+			echo 2;	
+			}	
 						if($_GET['pre'] != $_GET['opre']){
-							echo $_GET['pre']." != ".$_GET['opre'];
-							echo "<br>";
-							echo $_GET['idq'];
+							
 					$where = " ID_CUESTIONARIO  = ".$_GET['idq'];
 					if($dbf->deleteDB('CRM2_CUESTIONARIO_PREGUNTAS',$where)==true){
 						$q = $_GET['idq'];

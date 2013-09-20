@@ -24,8 +24,19 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 	
 	
 	$result = '';
+	/*$sql="SELECT P.DESCRIPCION AS PREGUNTA,
+	IF(TP.MULTIMEDIA=0,PR.RESPUESTA,CONCAT('<img src=\"',PR.RESPUESTA,'\" style=\"width:100px; height:100px;\" onclick=\"qst_ver_img(\'',PR.RESPUESTA,'\',this.id)\" id=\"', REPLACE(REPLACE(SUBSTRING(PR.RESPUESTA,19),\".\",\"\"),\" \",\"\"),'
+	\">')) AS RESPUESTA
+	FROM CRM2_PREGUNTAS P 
+	INNER JOIN CRM2_TIPO_PREG TP ON P.ID_TIPO = TP.ID_TIPO
+	INNER JOIN CRM2_PREG_RES  PR ON PR.ID_PREGUNTA=P.ID_PREGUNTA
+	INNER JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON P.ID_PREGUNTA = CP.ID_PREGUNTA
+	WHERE PR.ID_RES_CUESTIONARIO = ".$_GET['idrc']."
+	GROUP BY P.ID_PREGUNTA
+	ORDER BY CP.ORDEN";*/
 	$sql="SELECT P.DESCRIPCION AS PREGUNTA,
-	IF(TP.MULTIMEDIA=0,PR.RESPUESTA,CONCAT('<img src=\"',PR.RESPUESTA,'\" style=\"width:100px; height:100px;\">')) AS RESPUESTA
+	IF(TP.MULTIMEDIA=0,PR.RESPUESTA,CONCAT('<img src=\"',PR.RESPUESTA,'\" style=\"width:100px; height:100px;\" onclick=\"qst_ver_img(\'',PR.RESPUESTA,'\',this.id)\" id=\"',".$_GET['idrc'].",'
+	\">')) AS RESPUESTA
 	FROM CRM2_PREGUNTAS P 
 	INNER JOIN CRM2_TIPO_PREG TP ON P.ID_TIPO = TP.ID_TIPO
 	INNER JOIN CRM2_PREG_RES  PR ON PR.ID_PREGUNTA=P.ID_PREGUNTA
