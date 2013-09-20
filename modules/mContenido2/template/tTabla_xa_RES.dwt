@@ -1,0 +1,15 @@
+<div id="myDiv">
+
+	<table id="MyDataxa"  class="usersTableInfo" width="100%">
+    <!-- BEGIN datosxa -->
+        <tr style="cursor:pointer;">
+         <td width="15%" onmouseup="change_id('{datosxa.IDE}')" >{datosxa.ENT}</td>
+         <td width="15%" onmouseup="change_id('{datosxa.IDE}')" >{datosxa.CTE}</td>
+         <td width="15%" onmouseup="change_id('{datosxa.IDE}')" >{datosxa.UND}</td>
+         <td width="30%" onmouseup="change_id('{datosxa.IDE}')" >{datosxa.OBS}</td>
+         <td width="10%" onmouseup="change_id('{datosxa.IDE}')" >{datosxa.EST}</td>
+         <td width="15%" onmouseup="change_id('{datosxa.IDE}')" >{datosxa.DTE}</td>                  
+     	</tr>
+	<!-- END datosxa -->
+    </table>
+</div>

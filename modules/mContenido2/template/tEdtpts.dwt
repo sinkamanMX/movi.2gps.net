@@ -1,0 +1,317 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+<script>
+$(document).ready(
+function(){
+		admap(1);
+	onload();
+		 /*var btn=$("#btn").val();
+		 switch(btn){
+			 case '0' :
+			 $('#bce').css("display","none");
+			 $('#bca').css("display","none");
+			 $('#can').css("display","none");
+			 $('#rep').css("display","none");
+			 break;
+			 case '1' :
+			 $('#bce').css("display","none");
+			 $('#bca').css("display","none");
+			 $('#can').css("display","");
+			 $('#rep').css("display","");
+			 break;
+			 case '2' :
+			 $('#bce').css("display","none");
+			 $('#bca').css("display","");
+			 $('#can').css("display","");
+			 $('#rep').css("display","");
+			 break;
+			 case '3' :
+			 $('#bce').css("display","");
+			 $('#bca').css("display","none");
+			 $('#can').css("display","");
+			 $('#rep').css("display","");
+			 break;			 		 		 
+			 }*/	
+});
+	$(function() {
+		var dt= $("#cte2").val()+'¬'+$("#idp2").val()+'¬'+$("#delivery-date2").val()+'¬'+$("#hi").val()+'¬'+$("#mi").val()+'¬'+$("#obs").val()+'¬'+$("#cst").val()+'¬'+$("#pld").val();
+		$("#data_edp").val(dt);
+		change_dt_cte($("#cte2").val());
+		$( "#start_date,#end_date,#delivery-date2,#departure_date" ).datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			buttonImageOnly: true,
+			minDate: '0',
+			dateFormat: "yy-mm-dd"
+		});
+		
+		$( "#panelPE" ).tabs();
+			   $('#confirmacion').panel({
+					
+
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+
+				});		
+
+
+		 $( ".b_ic" ).button();
+		 $(".b_op" ).button();
+
+		
+						
+	});
+
+
+
+
+function updateFields(latInt, lonInt){
+	var latInt = parseFloat(latInt);
+	var lonInt = parseFloat(lonInt);
+	
+	$("#txt_lat").val(latInt.toFixed(6));
+	$("#txt_lon").val(lonInt.toFixed(6));
+	
+	var point = new GLatLng(latInt,lonInt);
+	point_pan = point;
+	//map.setCenter(point, 15);
+}
+
+	</script>
+
+ <script type="text/javascript" src="public/js/jquery.timers-1.2.js"></script>
+    <script type="text/javascript" src="public/js/thickbox.js"></script>
+<link rel="stylesheet" type="text/css" href="public/css/thickbox.css"/>
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+
+<input type="hidden" id="ide_edt_pts" value="{IDE}" />
+<input type="hidden" id="btn" value="{BTN}"/>
+
+<div id="panelE" >
+
+<div style="position:absolute; top:43%; left:63%; " >
+  <button class="b_op" onclick="mostrar_notas($('#ide_edt_pts').val())"><span style="position:relative; left:-7px; " title="Mostar notas"  class="ui-icon ui-icon-note"></span><div style="position:relative; top:-15px; left:10px; ">Mostar notas</div></button> </div>
+
+<div style="position:absolute; top:43%; left:83%; " >
+  <button class="b_op" onclick="notes(1)"><span style="position:relative; left:-7px; " title="Agregar nota"  class="ui-icon ui-icon-note"></span><div style="position:relative; top:-15px; left:10px; ">Agregar nota</div></button> </div>
+  
+            <div id="addnote" class="box_an" style="position:absolute; top:20%; left:20%; height:270px;
+            width:300px;  border:#5c9ccc solid 2px; z-index:0; display:none;">
+            <div style=" position:relative; top:0px; height:30px; width:100%; background:#5c9ccc; ">
+            <div style="position:relative; top:7px; left:5px; color:#FFF; font-family:'Trebuchet MS', Arial, Helvetica, sans-serif;"><strong>Agregar Nota</strong></div><div class="ui-state-default ui-corner-all" style="position:absolute; top:1px; right:1px;  background:#d8e7f3;"><span class="  ui-icon ui-icon-close " title="Cerrar" style="float:left; z-index:1;" onclick="closeb('addnote'); document.getElementById('puntos').style.zIndex=0;document.getElementById('panelPE').style.zIndex=0;"></span></div>
+            </div>
+<br />
+			<input type="hidden" id="punto" value="{LAT}¬{LON}¬{RDO}" />
+        
+            <table style="position:relative; left:5%; top:1%;">
+            <tr>
+            <td>Tipo Nota:</td>
+            <td>   
+            <select class="caja" id="Ttnote">
+		    <option value="0" >Seleccione un tipo de nota</option>
+       		<!-- BEGIN tn -->      
+   			<option  value="{tn.IDT}">{tn.TNT}</option>      
+       		<!-- END tn -->  
+   			</select>
+   			</td>
+            </tr>
+            <tr>
+            <td valign="top">Nota:</td>
+            <td><textarea id="" style="width:175px; height:125px;" class="ui-corner-all"></textarea></td>
+            </tr>
+            </table>
+<div style="position:absolute; top:81%; left:55%;">
+  <button class="b_op" onclick="gdr_note(1)"><span style="position:relative; left:-7px; " title="Agregar nota"  class="ui-icon ui-icon-note"></span><div style="position:relative; top:-15px; left:10px; ">Guardar nota</div></button> </div>            
+            </div>   
+
+                      <!--  ---------------------------------panel PE------------------------------------- -->  
+<div id="panelPE" style="  width:94%; height:45%; left:1%; top:50%; position:absolute; z-index:0;">
+	<ul>
+		
+		<li><a href="#mapas" onclick="pestana1(1);" >Mapa</a></li>
+        <li><a href="#panos"  onclick="pestana1(2);">StreetView</a></li>
+        
+	</ul>
+                           
+            <input type="hidden" id="idd" value="{IDD}" />
+            
+               <table id="ptsTableTitle" style=" display:none; width:100%; background-color:#d0e5f5; border-color:#79b7e7; color:#1d5987; " align="center">
+               <tr>
+                <th width="10%">ID Pedido</th>
+                <!--<th width="15%">Cliente</th>-->
+                <th width="20%">Cliente</th>
+                <th width="20%">Fecha de entrega</th>
+                <th width="30%">Observaciones</th>
+                <th width="8%" style="{DSP_DOS}">Cuestionario</th>
+                <th width="10%" style="{DSP_DOS}">Patload</th>
+                <th width="2%"></th>
+              </tr>
+              </table>             
+                             
+			<div id="datagrid2" align="center" style="display:none;" >  
+            
+        
+           	  <!--<div id="list_points" align="center">-->
+
+<!--<ul id="sortable">
+	<li class="ui-state-default"><table width="100%"><tr><td width="10%">123000</td><td width="20%">Juan Perez</td><td width="20%">2012-09-23 20:00:00</td><td width="30%">puerta azul</td><td width="8%">2</td><td width="10%">xxx</td></tr></table></li>
+	<li class="ui-state-default">Item 2</li>
+	<li class="ui-state-default">Item 3</li>
+	<li class="ui-state-default">Item 4</li>
+
+</ul> -->             
+
+              
+              <!--</div>-->
+             <!-- <div id="info_formas" style="display:none;"></div>	-->
+			</div>
+                <div name="pano" id="pano" style=" display:none;  height:90px; width:800px; position:relative;" ></div> 
+            <!----------------------------------------------------------------------->    
+            <div id="mapa" align="center" style="  height:85%; width:99.5%; position:relative;">
+ 				
+			</div>         
+
+                         </div>
+					<!--  ------------------------------------------------------------------------------------ -->
+
+
+<div id="puntos" style="width:94%; height:36%; left:1%; top:1%; position:absolute; z-index:0;">
+
+
+<!------------------------------------------------------------------------------------------------->
+            <div style=" position:absolute; top:-10px; left:90%; cursor:pointer; display:none" onclick="cls_pto();">
+            <div style=" float:left;position:relative; top:2px; left:-3px;">Cerrar</div><span class="ui-icon ui-icon-close " title="Cerrar" style="float:left"></span>
+            </div>
+            
+<div style="position:absolute; top:72%; left:85%; display:none;">
+  <button class="b_op" onclick="validar_datos_p()"><span style="position:relative; left:-7px; " title="Agregar punto de entrega"  class="ui-icon ui-icon-circle-plus"></span><div style="position:relative; top:-15px; left:10px; ">Agregar</div></button> </div>            
+<!------------------------------------------------------------------------------------------------->
+  <fieldset style="height:100%;">
+    <legend>Datos del punto:</legend>
+<!--<div style="width:100%; height:65%; float:left">-->
+<table width="95%">
+   <tr>
+   <td>Cliente:</td>
+   <td >
+   <input type="hidden" id="dt_cte" />
+   <select class="caja" id="cte2" name="cte" onchange="mostrar_mapa(1,this.value);" o>
+       
+   <option value="0" style="z-index:-1">Seleccione un cliente</option>
+       <!-- BEGIN dt2 -->      
+   <option  value="{dt2.IDC}¬{dt2.LAT}¬{dt2.LON}¬{dt2.RDO}" {dt2.STD}>{dt2.CTE}</option>      
+       <!-- END dt2 -->  
+   </select>
+   </td>
+   <td width="45%">Observaciones:</td>
+   </tr>
+   <tr>
+   <td></td>
+   <td >
+   
+   </td>   
+   </tr>
+   <tr>
+   <td>ID punto:</td>
+   <td >
+   <input type="text" id="idp2" name="idp2" class="caja_txt" maxlength="45" value="{IDV}"/>
+   </td>
+   <td rowspan="2" valign="middle"><textarea  id="obs2"  cols="40" style="width:98%; height:98%; vertical-align:middle;">{OBS}</textarea></td>
+   </tr>
+   <tr>
+   <td>Fecha Entrega:</td>
+   <td >
+   <input type="text" class="caja_txt" id="delivery-date2"  readonly="readonly" value="{DTE}" ></td>
+  
+   </tr>
+   <tr>
+   <td></td>
+   <td >                  
+   <select id="hi2" class="mcaja">
+                    <!-- BEGIN hrs -->
+                    	{hrs.NO}
+                 	<!-- END hrs -->
+                 </select>
+                 <span>&nbsp;:&nbsp;</span>
+                  <select id="mi2" class="mcaja">
+                  <!-- BEGIN min -->
+                  	{min.NO}
+                  <!-- END min -->
+   </select>
+   </td>
+   <td>Cuestionario:</td>
+   </tr>
+   <tr>
+   <td colspan="2"></td>
+   </tr>  
+   
+    <!--<div style="float:left; width:85%; height:35%; {DSP_DOS};" id="dos" >-->
+    
+
+   <tr >
+   <td>Fecha Salida :</td>
+   <td >
+   <input type="text" class="caja_txt" id="departure_date"  readonly="readonly" value="{DTS}" >
+   </td>
+   <td style="{DSP_DOS};">
+   <select class="caja" id="cst2" name="cst">
+   <option value="0" >Seleccione un cuestionario</option>
+                    <!-- BEGIN dt4 -->
+                    	{dt4.OP}
+                 	<!-- END dt4 -->         
+   </select>   
+   </td>
+   </tr>
+   <tr>
+   <td></td>
+   <td>
+   <select id="his" class="mcaja">
+      <!-- BEGIN hrs -->
+          {hrs.N2}
+      <!-- END hrs -->
+   </select>
+   <span>&nbsp;:&nbsp;</span>
+   <select id="mis" class="mcaja">
+      <!-- BEGIN min -->
+        {min.N2}
+      <!-- END min -->
+   </select>   
+   </td>
+   </tr>
+<!--<tr style="{DSP_DOS};">
+   <td>Paitload:</td>
+   <td >
+   <input type="text" id="pld" name="pld" class="caja_txt" maxlength="45" value="{PTL}"/>
+   </td>  
+</tr>-->
+
+<!--</div>-->   
+   
+</table>
+	<!--</div>-->
+  
+<!--<div style="position:absolute; top:72%; left:82%;  ">
+<button class="b_op" style=" width:135px;" onclick="{FCN};"><span style="position:relative; left:-7px; " title="{TTL}"  class="ui-icon ui-icon-{ICN}"></span><div style="position:relative; top:-15px; left:10px; ">{TTL}</div></button>
+</div>-->
+<!--Boton A-->
+<div style="position:absolute; top:83%; left:30%;" id="bce">
+<button class="b_op" style=" width:135px;" onclick="confirmarE({EST},{IDE})"><span style="position:relative; left:-7px; " title=""  class="ui-icon ui-icon-check"></span><div style="position:relative; top:-15px; left:10px; ">Confirmar entrega</div></button>
+</div>
+<!--Boton B-->
+<div style="position:absolute; top:83%; left:48%;" id="bca">
+<button class="b_op" style=" width:135px;" onclick="confirmarA({EST},{IDE})"><span style="position:relative; left:-7px; " title=""  class="ui-icon ui-icon-check"></span><div style="position:relative; top:-15px; left:10px; ">Confirmar arribo</div></button>
+</div>
+<!--Boton C-->
+<div style="position:absolute; top:83%; left:67%;" id="can">
+<button class="b_op" style=" width:110px;" onclick="klr({IDE})"><span style="position:relative; left:-7px; " title=""  class="ui-icon ui-icon-closethick"></span><div style="position:relative; top:-15px; left:10px; ">Cancelar</div></button>
+</div>
+<!--Boton D-->
+<div style="position:absolute; top:83%; left:82%;" id="rep">
+<button class="b_op" style=" width:120px;" onclick="reprogramar({IDE})"><span style="position:relative; left:-7px; " title=""  class="ui-icon ui-icon-refresh"></span><div style="position:relative; top:-15px; left:10px; ">Reprogramar</div></button>
+</div>
+
+</fieldset>
+</div>

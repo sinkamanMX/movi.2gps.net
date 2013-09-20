@@ -1,0 +1,8 @@
+<div>
+<select id="cbo_mun_i" class="caja" onchange="busca_col_i();" >
+	<option value="0">Elegir Municipio</option>
+    <!-- BEGIN munis -->
+	<option value="{munis.ID}">{munis.NAME}</option>
+	<!-- END munis -->    
+</select>
+</div>

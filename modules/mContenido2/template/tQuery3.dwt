@@ -1,0 +1,12 @@
+   <!--<select class="caja" id="suc" name="suc">
+   <option value="0" >Seleccione un submen&uacute;</option>-->        
+   <!-- BEGIN q2 -->             
+   <!--<option value="{q2.IDSUC}">{q2.SUC}</option>-->
+   <!-- END q2 -->
+   <!--</select>-->
+   <select class="caja" id="cte" name="cte" onchange="change_dt_cte(this.value), mostrar_mapa(2);">      
+   <option value="0"  >Seleccione un cliente</option>
+       <!-- BEGIN dt2 -->      
+   <option  value="{dt2.IDC}¬{dt2.LAT}¬{dt2.LON}¬{dt2.RDO}">{dt2.CTE}</option>      
+       <!-- END dt2 -->  
+   </select>

@@ -1,0 +1,18 @@
+
+<br>
+<table width="95%" border="0" style="border:#CCF solid 1px;">
+  <tr style="background: #CCF; color:#FFF;" align="center"><td colspan="2">DETALLE</td></tr>
+ </table>
+<table width="95%" id="g_detalle" border="0" style="border:#CCF solid 1px; margin:2px;">
+  <tr><td width="50%">UNIDAD</td><td width="50%">{UNIDAD}</td></tr>
+  <tr><td>VIAJE</td><td>{VIAJE}</td></tr>
+  <tr><td>CLIENTES A VISITAR</td><td>{CLIENTES_VISITAR}</td></tr>
+  <tr><td>CLIENTES VISITADOS</td><td>{CLIENTES_VISITADOS}</td></tr>
+  <tr><td>VOLUMEN</td><td>{VOLUMEN}</td></tr>
+  <tr><td>% de Ocupacion de la unidad</td><td>{100_OCUPACION}</td></tr>
+  <tr><td>Distancia recorrida</td><td>{DISTANCIA}</td></tr>
+  <tr><td>Tiempo estimado del viaje</td><td>{TIEMPO1}</td></tr>
+  <tr><td>Tiempo de duracción real del viaje</td><td>{TIEMPO2}</td></tr>
+  <tr><td>Porcentaje de cumplimiento:</td><td>{100_CUMPLIMIENTO}%</td></tr>
+</table>
+

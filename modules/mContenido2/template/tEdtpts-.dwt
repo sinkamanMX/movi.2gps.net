@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style>
+	#sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+	/*#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }*/
+	/*#sortable li span { position: absolute; margin-left: -1.3em; }*/
+	</style>
+	<script>
+	$(function() {
+		$( "#sortable" ).sortable();
+		$( "#sortable" ).disableSelection();
+	});
+	</script>
+<script>
+	$(function() {
+		var st=($("#st").is(':checked'))?1:0;
+		var ex=($("#ex").is(':checked'))?1:0;
+		var dt= $("#dsp").val()+'¬'+$("#idv").val()+'¬'+$("#und").val()+'¬'+$("#dti").val()+'¬'+$("#dtf").val()+'¬'+$("#tl").val()+'¬'+$("#hri").val()+'¬'+$("#mni").val()+'¬'+$("#hrf").val()+'¬'+$("#mnf").val()+'¬'+st+'¬'+ex;
+		$("#data").val(dt);
+		$( "#start_date,#end_date,#delivery-date" ).datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			buttonImageOnly: true,
+			minDate: '0',
+			dateFormat: "yy-mm-dd"
+		});
+		
+		//$( "#panelPE" ).tabs();
+
+		$('#panelPE').panel({
+			controls:$('#cntrl').html(),
+    		collapsible:false
+				});
+		 $( ".b_ic" ).button();
+		 $(".b_op" ).button();
+		/*$('#panelE').panel({
+
+			'controls':$('#cntrl').html(),
+			'collapsible':false
+
+		});*/
+						
+	});
+
+	</script>
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<div id="panelE">
+<div id="tbl" style=" position:absolute; width:100%; height:23%; left:1%; top:2% ">
+<!--<table class="n_e_units">-->
+<table width="100%">
+   <tr>
+   <td width="2%">Nombre:</td>
+   <td width="25%">
+   <input type="text" id="dsp" name="cnt" class="caja_txt" maxlength="45" value="{DSP}"/>
+   </td>   
+   <td width="5%">Fecha Inicio:</td>
+   <td width="25%">
+   <input type="text" class="caja_txt" id="dti"  readonly="readonly" value="{DTI}"></td>
+   <td>
+                  <select id="hri" class="mcaja">
+                    <!-- BEGIN hri -->
+                    	{hri.HR}
+                 	<!-- END hri -->
+                 </select>
+                 <span>&nbsp;:&nbsp;</span>
+                  <select id="mni" class="mcaja">
+                  <!-- BEGIN mni -->
+                  	{mni.MN}
+                  <!-- END mni -->
+                  </select>   
+   </td>
+   <td width="2%"><input type="checkbox" id="st" {STP} /></td>
+   <td width="18%">Contabilizar paradas</td>
+   </tr>
+   <tr>
+   <td>Id viaje:</td>
+   <td ><input type="text" id="idv"  class="caja_txt" maxlength="45" value="{IDV}"/>
+</td>
+   <td>Fecha Fin:</td>
+   <td >
+   <div id="y">
+   <input type="text" class="caja_txt" id="dtf" readonly="readonly" value="{DTF}"></div>
+   </td>
+   <td>
+                  <select id="hrf" class="mcaja">
+					<!-- BEGIN hri -->
+                    	{hri.HR2}
+                  	<!-- END hri -->
+                  </select>
+                  <span>&nbsp;:&nbsp;</span>
+                  <select id="mnf" class="mcaja">
+                    <!-- BEGIN mni -->
+                    	{mni.MN2}
+                  	<!-- END mni -->                                             
+                  </select>
+   </td>
+   <td><input type="checkbox" id="ex" {EXC}/></td>
+   <td>Contabilizar excesos</td>   
+   </tr>   
+   <tr>
+   <td>Unidad:</td>
+   <td><select class="caja" id="und">
+   <option value="0" >Seleccione una unidad</option>
+   <!-- BEGIN dt3 -->             
+   <option value="{dt3.IDU}" {dt3.STD}>{dt3.UND}</option>
+   <!-- END dt3 -->        
+   </select></td>
+   <td>Tolerancia:</td>
+   <td colspan="2"><input type="text" id="tl" name="cnt" class="caja_txt" maxlength="3" value="{TOL}" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"/>
+   min(s).</td>
+   </tr>
+</table>
+<input type="hidden" id="data" />
+
+</div>
+                      <!--  ---------------------------------panel PE------------------------------------- -->  
+<div id="panelPE" style="  width:94%; height:33%; left:1%; top:62%; position:absolute;">
+                            <h2><table id="usersTableTitle" style=" width:100%" align="center">
+                  <tr><td align="center" valign="middle">Ubicaci&oacute;n del punto de entrega</td></tr>
+            </table></h2>
+                             
+				<div id="datagrid" align="center" style="" >
+           	  <div id="list_formas_xa" align="center">
+
+            
+
+              
+              </div>
+              <div id="info_formas" style="display:none;"></div>	
+			</div>
+                         
+
+                         </div>
+					<!--  ------------------------------------------------------------------------------------ -->
+<div id="panelbts" style="width:3%; height:33%; left:96%; top:62%; position:absolute; display:none; ">
+<div style="position:relative; top:45%; display:none" title="Agregar Punto"><button class="b_ic" onclick="nvo_pto()"><span style="position:relative; left:-7px; " title="Agregar punto de entrega"  class="ui-icon ui-icon-circle-plus"></span></button></div>
+<div style="position:relative; top:55%" title="Eliminar Punto"><button class="b_ic" ><span style="position:relative; left:-7px; top:-2px; " title="Eliminar punto de entrega" class="ui-icon ui-icon-trash"></span></button></div>
+</div>
+
+<div id="puntos" style="width:94%; height:35%; left:1%; top:25%; position:absolute; display:; ">
+
+
+<!------------------------------------------------------------------------------------------------->
+            <div style=" position:absolute; top:-10px; left:90%; cursor:pointer; display:none" onclick="cls_pto();">
+            <div style=" float:left;position:relative; top:2px; left:-3px;">Cerrar</div><span class="ui-icon ui-icon-close " title="Cerrar" style="float:left"></span>
+            </div>
+            
+<div style="position:absolute; top:72%; left:85%;">
+  <button class="b_op" onclick="validar_datos_p()"><span style="position:relative; left:-7px; " title="Agregar punto de entrega"  class="ui-icon ui-icon-circle-plus"></span><div style="position:relative; top:-15px; left:10px; ">Agregar</div></button> </div>            
+<!------------------------------------------------------------------------------------------------->
+  <fieldset>
+    <legend>Datos del punto:</legend>
+<div style="width:100%; height:65%; float:left">
+<table width="95%">
+   <tr>
+   <td>Cliente:</td>
+   <td >
+
+   <select class="caja" id="cte" name="cte">
+   <option value="0" >Seleccione un cliente</option>
+   <!-- BEGIN dt2 -->             
+   <option value="{dt2.IDC}">{dt2.CTE}</option>
+   <!-- END dt2 -->        
+   </select>
+   </td>
+   <td width="45%">Observaciones:</td>
+   </tr>
+   <tr>
+   <td></td>
+   <td >
+   
+   </td>   
+   </tr>
+   <tr>
+   <td>ID punto:</td>
+   <td >
+   <input type="text" id="idp" name="idp" class="caja_txt" maxlength="45" />
+   </td>
+   <td rowspan="2" valign="middle"><textarea id="obs"  cols="40" style="width:98%; height:98%; vertical-align:middle "></textarea></td>
+   </tr>
+   <tr>
+   <td>Fecha Entrega:</td>
+   <td >
+   <input type="text" class="caja_txt" id="delivery-date"  readonly="readonly" ></td>
+  
+   </tr>
+   <tr>
+   <td></td>
+   <td >                  
+   <select id="hi" class="mcaja">
+                    <!-- BEGIN hrs -->
+                    	{hrs.NO}
+                 	<!-- END hrs -->
+                 </select>
+                 <span>&nbsp;:&nbsp;</span>
+                  <select id="mi" class="mcaja">
+                  <!-- BEGIN min -->
+                  	{min.NO}
+                  <!-- END min -->
+   </select>
+   </td>
+   </tr>
+   <tr>
+   <td colspan="2"></td>
+   </tr>  
+   
+    <div style="float:left; width:85%; height:35%; {DSP_DOS} " id="dos" >
+
+   <tr>
+   <td>Cuestionario:</td>
+   <td >
+
+    
+   
+   <select class="caja" id="cst" name="cst">
+   <option value="0" >Seleccione un cuestionario</option>
+                    <!-- BEGIN dt4 -->
+                    	{dt4.OP}
+                 	<!-- END dt4 -->         
+   </select>
+   </td>
+   </tr>
+<tr>
+   <td>Patload:</td>
+   <td >
+   <input type="text" id="pld" name="pld" class="caja_txt" maxlength="45" />
+   </td>  
+</tr>
+
+</div>   
+    
+</table>
+	</div>
+
+</fieldset>
+</div>

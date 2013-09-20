@@ -1,0 +1,15 @@
+<div id="myDiv">
+
+	<table id="MyDataz"  class="usersTableInfo" width="100%">
+    <!-- BEGIN datosz -->
+        <tr style="cursor:pointer;">
+         <td width="20%" onDblClick="add_pts('{datosz.IDD}')" >{datosz.DSP}</td>
+         <td width="15%" onDblClick="add_pts('{datosz.IDD}')" >{datosz.UND}</td>
+         <td width="20%" onDblClick="add_pts('{datosz.IDD}')" >{datosz.IDV}</td>
+         <td width="20%" onDblClick="add_pts('{datosz.IDD}')" >{datosz.DTI}</td>
+         <td width="20%" onDblClick="add_pts('{datosz.IDD}')" >{datosz.DTF}</td>
+         <td width="5%"  onDblClick="add_pts('{datosz.IDD}')" >{datosz.TLR}</td>                           
+     	</tr>
+	<!-- END datosz -->
+    </table>
+</div>

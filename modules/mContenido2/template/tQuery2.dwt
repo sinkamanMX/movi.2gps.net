@@ -1,0 +1,6 @@
+   <select class="caja" id="suc" name="suc">
+   <option value="0" >Seleccione un submen&uacute;</option>            
+   <!-- BEGIN q2 -->             
+   <option value="{q2.IDSUC}">{q2.SUC}</option>
+   <!-- END q2 -->
+   </select>

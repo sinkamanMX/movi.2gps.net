@@ -1,0 +1,672 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{PAGE_TITLE}</title>
+<script type="text/javascript"  charset="ISO-8859-1" src="public/js/tigra_tables.js"></script>
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<!--<script type="text/javascript" src="public/js/frameV2.js"></script>-->
+<script type="text/javascript" src="public/js/ui/jquery.js"></script>
+<script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>
+<script type="text/javascript" src="public/js/ui/ui.selectmenu.js"></script>
+<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>
+
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key={APIKEY}" type="text/javascript"></script>
+
+<link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
+<link type="text/css" href="public/css/jqueryUI.css" rel="stylesheet" />
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<!--<link type="text/css" href="public/css/panelcuerpo.css" rel="stylesheet"/>-->
+
+	<script>
+	$(function() {
+		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+		$( "#dialog-message" ).dialog({
+			autoOpen:false,
+			modal: false,
+			buttons: {
+				Aceptar: function() {
+					$("#dialog-message" ).dialog( "close" );
+					//alert(save)
+					if(save==1){r_filtro(); save=0;}
+				}
+			}
+		});
+		$( "#dialog_pb" ).dialog({
+			autoOpen:false,
+			modal: false
+		});		
+	});
+	</script>
+<script>
+	$(function() {
+		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+	
+	});
+	</script>
+
+     
+
+
+
+<script type="text/javascript">
+var div='';
+function change_div(d){
+
+	div = d;
+	//alert(div);
+}
+
+$(document).keydown(function(tecla){
+    if (tecla.keyCode == 113) {
+        //alert('Tecla F2 presionada');
+		(div=="")?$('#bx').css("display",""):$('#'+div+'').css("display","");
+		$('#'+div+'').css("display","");
+    }
+});
+
+		$(document).ready(
+		
+
+			function(){
+							
+
+	           // panel1
+				$('#panel1').panel({
+
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+
+				});
+				
+				$('#panel2').panel({
+				'collapsed':true
+				});
+				//$('#panelx').tabs();
+				$( "#panelx" ).tabs({ active: -4 });
+				$( "#tabs" ).tabs();
+				//$( "#panelx" ).tabs( "option", "active", 1 );
+			   /* $('#panelx').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});*/
+			    $('#panelxa').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});
+			    $('#panelxb').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});
+			    $('#panelxc').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});								
+               // panel interno 2
+				$('#panel3').panel({
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+				});
+				// footer
+				/* $('#footer').panel({
+
+					'controls':$('#cntrl').html(),
+    				'collapsible':false
+
+				});*/
+				// botones
+              $( "input ubmit, a, button", ".demo" ).button();
+			  $( ".b_op" ).button();
+			  $( ".b_ic" ).button();
+				// combos
+				$('select#speedC').selectmenu({style:'dropdown'});
+				
+
+			/*$(".b_op" ).button();
+						var pickOp={
+						maxDate: new Date(),
+						showOn: "button",
+						buttonImage: "public/images/cal.gif",
+						buttonImageOnly: true,
+						dateFormat: "yy-mm-dd"
+						};*/				
+				//$("#start-date").datepicker(pickOp);
+				//$("#end-date").datepicker(pickOp);
+			///////DIALOG NUEVO	
+				$("#dialog" ).dialog({
+					title: "Nuevo Viaje",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan" },
+					width:  350,
+					height: 450,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_datos_d();
+						},
+			
+						"Cancelar": function(){
+							if($("#dialog" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							cerrar();
+						}
+					},
+					
+					show: "blind",
+					hide: "blind"
+				}
+				);
+			///////DIALOG crear	
+				$("#dialog-crear" ).dialog({
+					title: "Nuevo Geo-punto",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan" },
+					width:  700,
+					height: 600,
+					buttons: {
+						
+						"Guardar": function(){
+							AgregaGeoPunto_Acepta();
+						},
+			
+						"Cancelar": function(){
+							if($("#dialog" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							cerrar();
+						}
+					},
+					
+					show: "blind",
+					hide: "blind"
+				}
+				);				
+			///////DIALOG NUEVO	
+					
+//.......................................dialog editar..........................//
+				$("#dialog_edt" ).dialog({
+					title: "Editar {PAGE_TITLE}",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 350,
+					height: 455,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_datos(2);
+							
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog_edt" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog_edt" ).dialog('close');
+						
+						}
+					},
+					
+					show: "blind",
+					hide: "blind",
+				}
+				);
+//.......................................dialog puntos..........................//
+				$("#dialog_pts" ).dialog({
+					title: "Editar {PAGE_TITLE}",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 900,
+					height: 700,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_ed();
+							
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog_pts" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog_pts" ).dialog('close');
+						
+						}
+					},
+					
+					show: "blind",
+					hide: "blind",
+				}
+				);
+//.......................................dialog notas..........................//
+				$("#dialog-note" ).dialog({
+					title: "Nueva Nota",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 350,
+					height: 300,
+					buttons: {
+						
+						"Guardar": function(){
+							gdr_note();
+							
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog-note" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog-note" ).dialog('close');
+						
+						}
+					},
+					
+					show: "blind",
+					hide: "blind",
+				}
+				);	
+//.......................................dialog notas..........................//
+				$("#dialog_mnote" ).dialog({
+					title: "Historial de notas",
+					modal: false,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 350,
+					height: 300,
+					show: "blind",
+					hide: "blind",
+				}
+				);							
+//.......................................dialog puntos ed..........................//
+				$("#dialog_ptse" ).dialog({
+					title: "Editar Punto",
+					modal: true,
+					autoOpen:false,
+					overlay: { opacity: 0.2, background: "cyan", width:300 },
+					width: 900,
+					height: 600,
+					buttons: {
+						
+						"Guardar": function(){
+							validar_edp();
+							
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog_ptse" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog_ptse" ).dialog('close');
+						
+						}
+					},
+					
+					show: "blind",
+					hide: "blind",
+				}
+				);								
+//.......................................dialog alerta..........................//
+
+								
+
+			   //------------------------
+			   
+				//------------------------
+			});
+
+
+
+    function abrir(){
+		$( "#dialog" ).dialog('open');
+	}
+    function cerrar(){
+		$( "#dialog" ).dialog('close');
+	}	
+	
+	
+	  function imagenes2(){
+		document.forms["frm_graficas"].submit();  
+	  }
+	</script>
+
+
+
+
+</head>
+<!--<body onload="init('{URL}','{RM}','{UP}')" >-->
+<body onload="init()" >
+<div id="panel1" style="z-index:-5">
+   <h2 class="cabeceras">
+      
+        <table border="0" width="100%"> 
+          <tr>
+           <td width="35%"> 
+          <b>Bienvenido:<br /> {NAME}-({MAIL})</b>
+
+           </td>
+           <td width="30%" align="center"> 
+           {PAGE_TITLE}</td>
+           <td width="35%" align="right"> 
+         {FECHA}
+           </td>
+          </tr>
+        </table>
+      
+      
+  </h2>
+          <div id="contenedor" style="z-index:;">
+<div id="tabs" style=" position:absolute; width:98%; height:98%; left:1%; top:1%; border:#FFF; solid thin; z-index:1;">
+
+    <ul>
+        <li><a href="#tabs-01">Paneles</a></li>
+        <li><a href="#tabs-02" onclick="imagenes2();" >Graficas</a></li>
+    </ul>
+    
+  <div id="tabs-01">   
+                      <!--  ---------------------------------panel x------------------------------------- -->  
+<div id="panelx" onclick="change_div('bx')" style="z-index:-4;">
+                    <div style="font-size:10px; width:70px; position:absolute; left:70%; display:none" class="hb">
+                    <span id="icbr" class="ui-icon ui-icon-search " title="Buscar"></span>
+                    <div style="position:relative; top:3px; left:-4px;">Buscar</div>
+                    </div>  
+                     
+                     <button class="b_op"  style="font-size:12px; width:25px; height:25px; top:5px; position:absolute; right:6%; " onclick="dsp_b(1);"><div style="position:absolute; left:3px; top:3px;"><span class="ui-icon ui-icon-search"></span></div></button>
+                                   
+                     <button class="b_op"  style="font-size:12px; width:25px; height:25px; top:5px; position:absolute; right:2%; " onclick="nuevo();"><div style="position:absolute; left:3px; top:3px;"><span class="ui-icon ui-icon-plusthick"></span></div></button>
+
+    <ul>
+		<li><a href="#datagridx"  onclick="pestana(1)">Unidades Disponibles</a></li>
+		<li><a href="#datagridy"  onclick="pestana(2)">Viajes en Transito</a></li>
+		<li><a href="#datagridz"  onclick="pestana(2)">Viajes por Asignar</a></li>
+        <li><a href="#datagridim" onclick="pestana(3)">Importador</a></li>     
+	</ul>            
+ 				<table id="equis" style=" float:right; width:99.5%; background-color:#f5f8f9; color:#e17009; top:0px; border-bottom-color:#79b7e7; border-left-color:#79b7e7; border-right-color:#79b7e7; " align="center" >
+                             
+            	 <tr>
+             	  <th width="40%">Unidad</th>
+             	  <th width="60%">&Uacute;ltimo viaje asigando</th>
+            	</tr>
+            </table> 
+<table id="ye" style=" display:none; float:right; width:99.5%; background-color:#f5f8f9; color:#e17009; top:0px; border-bottom-color:#79b7e7; border-left-color:#79b7e7; border-right-color:#79b7e7; " align="center" >
+                <tr>
+                <th width="20%">Descripci&oacute;n</th>
+                <th width="15%">Unidad</th>
+                <th width="20%">Item Viaje</th>
+                <th width="20%">Fecha inicio</th>
+                <th width="20%">Fecha fin</th>
+                <th width="5%">Tolerancia</th>
+                </tr>
+            </table>                
+				<div id="datagridx" align="center" style="" >
+
+           	  <div id="list_formas" style="position:absolute; top:0%; left:0%; width:100%;" onkeydown="openb('bx');"></div>
+              <div id="info_formas" style="display:none;"></div>
+              
+
+              
+			</div>
+            <div id="datagridy">
+            <div id="list_formas_y" style="position:absolute; top:0%; left:0%; width:100%;" onkeydown="openb('bx');"></div>
+            </div>
+             <div id="datagridim">
+            <div id="imp" >
+                <div id="arc2" >
+                <form name="envi_excel" id="aver" action="index.php?m=mContenido&c=mImportFile" method="post" enctype="multipart/form-data" target="archivo" style="width:100%; height:90%; border:#3F3 solid 0px; " >
+                <table>
+                <!--<tr><td>Nombre:</td><td><input type="text" class="caja_txt" name="cto_imp" id="cto_imp"/></td></tr>-->
+                <tr><td>Archivo:</td><td><input type="file" id="excel" name="excel"/> </td><td><input type="button" class="b_op" value="Importar" onclick="enviar_excel()" /></td><td>&nbsp;</td><td align="right"><div id="clr" style="position:relative; top:50%; display:;" title="Descargar Formato"><button class="b_ic" onclick="down_format()"><span style="position:relative; left:-7px; " title="Descargar Formato"  class="ui-icon ui-icon-circle-arrow-s"></span></button></div></td></tr>
+                </table>
+                 </form>
+                
+
+                <input id="jota2" type="hidden" size="1" style="border:#fff solid 0px;"/>
+                <input type="hidden" id="usuario" value="{COD_USER}" size="20"/>
+                <input type="hidden" id="cliente" value="{COD_CLI}" size="20"/>
+               <div style="position:relative; top:100%; ">
+                <iframe name="archivo" id="archivo" style=" position:absolute; left:10%; top:90%; display:none;" width="700" height="100" frameborder="1"></iframe> </div>
+                </div>
+                <div id="console2">
+                Consola de eventos:
+                <div id="c_content2" class="ui-corner-all" >
+                </div>
+                </div>
+           	  <!--<div id="list_formas_xc" align="center"></div>
+              <div id="info_formas" style="display:none;"></div>-->
+			</div>
+            
+            </div>           
+            <div id="datagridz">
+            <div id="list_formas_z" style="position:absolute; top:0%; left:0%; width:100%;" onkeydown="openb('bx');"></div>
+            </div>
+                         </div>
+                      <!--  ---------------------------------panel xa------------------------------------- -->  
+<div id="panelxa" onclick="change_div('bxa')" style="z-index:-4;">
+                  <h2><table id="usersTableTitle" style=" width:100%" align="center">
+                 <tr>
+                   <td colspan="5" align="center" valign="middle">Entregas Retrasadas</td></tr>           
+            	 <tr>
+             	  <th width="15%">Item entrega</th>
+             	  <th width="15%">Cliente</th>
+                  <th width="15%">Unidad</th>
+                  <th width="30%">Observaciones</th>
+                  <th width="10%">Estatus</th>
+                  <th width="15%">Entregar</th>
+            	</tr>
+            </table>
+             <button class="b_op"  style="font-size:12px; width:25px; height:25px; top:5px; position:absolute; right:2%; " onclick="dsp_b(2);"><div style="position:absolute; left:3px; top:3px;"><span class="ui-icon ui-icon-search"></span></div></button>
+            </h2>
+                             
+				<div id="datagrid" align="center" style="" >
+           	  <div id="list_formas_xa" align="center"></div>
+              <div id="info_formas" style="display:none;"></div>	
+			</div>
+
+
+                         </div>
+
+                      <!--  ---------------------------------panel xb------------------------------------- -->  
+<div id="panelxb" onclick="change_div('bxb')" style="z-index:-4;">
+                <h2><table id="usersTableTitle" style=" width:100%" align="center">
+                 <tr>
+                   <td colspan="5" align="center" valign="middle">Entregas Terminadas/Canceladas</td></tr>           
+            	 <tr>
+             	  <th width="15%">Item entrega</th>
+             	  <th width="15%">Cliente</th>
+                  <th width="15%">Unidad</th>
+                  <th width="30%">Observaciones</th>
+                  <th width="10%">Estatus</th>
+                  <th width="15%">Entregar</th>
+            	</tr>
+            </table><button class="b_op"  style="font-size:12px; width:25px; height:25px; top:5px; position:absolute; right:2%; " onclick="dsp_b(3);"><div style="position:absolute; left:3px; top:3px;"><span class="ui-icon ui-icon-search"></span></div></button></h2>
+                             
+				<div id="datagrid" align="center" style="" >
+           	  <div id="list_formas_xb" align="center"></div>
+              <div id="info_formas" style="display:none;"></div>	
+			</div>
+                         
+
+                         </div>
+                      <!--  ---------------------------------panel xc------------------------------------- -->  
+<div id="panelxc" onclick="change_div('bxc')" style="z-index:-4;">
+                 <h2><table id="usersTableTitle" style=" width:100%" align="center">
+                 <tr>
+                   <td colspan="5" align="center" valign="middle">Entregas Pendientes</td></tr>           
+            	 <tr>
+             	  <th width="15%">Item entrega</th>
+             	  <th width="15%">Cliente</th>
+                  <th width="15%">Unidad</th>
+                  <th width="30%">Observaciones</th>
+                  <th width="10%">Estatus</th>
+                  <th width="15%">Entregar</th>
+            	</tr>
+            </table><button class="b_op"  style="font-size:12px; width:25px; height:25px; top:5px; position:absolute; right:2%; " onclick="dsp_b(4);"><div style="position:absolute; left:3px; top:3px;"><span class="ui-icon ui-icon-search"></span></div></button></h2>
+                             
+				<div id="datagrid" align="center" style="" >
+           	  <div id="list_formas_xc" align="center"></div>
+              <div id="info_formas" style="display:none;"></div>	
+			</div>
+                         
+
+                         </div>
+                   
+                         
+                         
+          <!--  --------------------------------Panel -------------------------------------- -->
+
+                        
+           		 	
+          <!--  ---------------------------------------------------------------------- -->  
+            <!------------------buscar----------------->
+            <div id="bx" class="box_sh" style="position:absolute; top:8%; left:25%; display:none">
+            <div style=" position:relative; top:5px;">
+            <span class="ui-icon ui-icon-search " title="Buscar" style="float:left"></span>
+            <div style=" float:left;position:relative; top:2px; left:-3px;">Buscar: <input type="text" id="flt_x" class="caja_txt" maxlength="45" onkeyup="r_filtro(),r_filtro_y(),r_filtro_z()" /></div><span class="ui-icon ui-icon-close " title="Buscar" style="float:left" onclick="closeb('bx')"></span>
+            </div>
+            </div>
+            
+            <div id="bxa" class="box_sh" style="position:absolute; top:59%; left:75%; display:none;">
+            <div style=" position:relative; top:5px;">
+            <span class="ui-icon ui-icon-search " title="Buscar" style="float:left"></span>
+            <div style=" float:left;position:relative; top:2px; left:-3px;">Buscar: <input type="text" id="flt_xa" class="caja_txt" maxlength="45" onkeyup="r_filtro_xa('');" /></div><span class="ui-icon ui-icon-close " title="Buscar" style="float:left" onclick="closeb('bxa')"></span>
+            </div>
+            </div>               
+            
+            <div id="bxc" class="box_sh" style="position:absolute; top:8%; left:75%; display:none;">
+            <div style=" position:relative; top:5px;">
+            <span class="ui-icon ui-icon-search " title="Buscar" style="float:left"></span>
+            <div style=" float:left;position:relative; top:2px; left:-3px;">Buscar: <input type="text" id="flt_xc" class="caja_txt" maxlength="45" onkeyup="r_filtro_xc('');" /></div><span class="ui-icon ui-icon-close " title="Buscar" style="float:left" onclick="closeb('bxc')"></span>
+            </div>
+            </div>
+            
+            <div id="bxb" class="box_sh" style="position:absolute; top:59%; left:25%; display:none;">
+            <div style=" position:relative; top:5px;">
+            <span class="ui-icon ui-icon-search " title="Buscar" style="float:left"></span>
+            <div style=" float:left;position:relative; top:2px; left:-3px;">Buscar: <input type="text" id="flt_xb" class="caja_txt" maxlength="45" onkeyup="r_filtro_xb('');" /></div><span class="ui-icon ui-icon-close " title="Buscar" style="float:left" onclick="closeb('bxb')"></span>
+            </div>
+            </div>
+                        
+            <!------------------/buscar----------------->               			
+			<div id="dialog_pb"></div>
+            <div id="dialog" > </div>
+            <div id="dialog_edt" > </div> 
+            <div id="dialog_pts" > </div>
+            <div id="dialog_ptse" > </div>
+            <div id="dialog-message" title="&iexcl;Aviso!">		</div>
+                       
+            <div id="dialog-confirm" title="&iexcl;Aviso!"></div>
+            <div id="dialog-crear" ></div>
+            <div id="dialog-note" ></div>
+            <div id="dialog_mnote" ></div>
+
+    </div> <!-- pestaña 1 paneles-->
+    <div id="tabs-02">
+      
+      <table border="1" style="border:#333 solid 0px; position:absolute; width:100%; height:90%;">
+        <tr>
+          <td rowspan="2" width="50%">   
+          
+           <div id="detalle_chart" style="border:#333 solid 0px; width:100%; height:100%;">  
+              <form name="frm_graficas"  target="grafikas" action="modules/mContenido/mGraficas.php"  method="get">
+               <input type="hidden" name="dbh" value="{DB_H}"  />
+               <input type="hidden" name="dbport" value="{DB_PORT}"  />
+               <input type="hidden" name="dbname" value="{DB_BN}"  />
+               <input type="hidden" name="dbuser" value="{DB_U}"  />
+               <input type="hidden" name="dbpass" value="{DB_PASS}"  />
+  
+                <input type="submit" value="Actualizar Graficas" class="caja_txt" />
+              </form>
+              <iframe  name="grafikas"  frameborder="0" style="position:relative; height:98%; width:99%; border:#CCF solid 1px;" align="middle"> </iframe>
+ 
+
+           </div>
+           
+          
+           </td>
+            <td height="50%">
+                  <div id="detalle_c" style="border: #0F6 solid 1px; position:relative; width:100%; height:100%;">  
+             Unidades
+             <select onchange="grafix_detalle(this.value);">
+                  <option value="-1">Elegir</option>
+                 <!-- BEGIN dato_x -->
+        		  <option value="{dato_x.ID}">{dato_x.UNIT}</option>
+         		 <!-- END dato_x -->
+            </select>
+             
+             <div id="unidades_z"> 
+              <br>
+                     <table width="100%" border="0" style="border:#CCF solid 1px;" id="g_detallex" >
+                      <tr style="background: #CCF; color:#FFF;" align="center"><td colspan="2">DETALLE</td></tr>
+                     </table>
+                    <table width="100%" border="0" style="border:#CCF solid 1px; margin:2px;">
+                      <tr><td>UNIDAD</td><td></td></tr>
+                      <tr><td>VIAJE</td><td></td></tr>
+                      <tr><td>CLIENTES A VISITAR</td><td></td></tr>
+                      <tr><td>CLIENTES VISITADOS</td><td></td></tr>
+                      <tr><td>VOLUMEN</td><td></td></tr>
+                      <tr><td>% de Ocupacion de la unidad</td><td></td></tr>
+                      <tr><td>Distancia recorrida (Estimada)</td><td></td></tr>
+                      <tr><td>Tiempo estimado del viaje</td><td></td></tr>
+                      <tr><td>Tiempo de duracción real del viaje</td><td></td></tr>
+                      <tr><td>Porcentaje de cumplimiento:</td><td></td></tr>
+                    </table>
+             </div>
+             
+             
+             
+           </div>
+           </td>
+        </tr>
+        <tr>
+          <td>
+              <form name="frm_graficas2"  target="grafikas2" action="modules/mContenido/mGraficas2.php"  method="get">
+               <input type="hidden" name="dbh" value="{DB_H}"  />
+               <input type="hidden" name="dbport" value="{DB_PORT}"  />
+               <input type="hidden" name="dbname" value="{DB_BN}"  />
+               <input type="hidden" name="dbuser" value="{DB_U}"  />
+               <input type="hidden" name="dbpass" value="{DB_PASS}"  />
+               <input type="hidden" name="cod_entity" id="cod_entity"  />
+                
+              </form> 
+       <iframe   name="grafikas2" src=""  frameborder="0" style=" height:98%; width:99%; border:#FC3 solid 0px;"> </iframe>
+           
+           
+          </td>
+        </tr>
+      </table>
+        
+        
+           
+           
+           
+           
+    </div>
+
+   </div> <!-- div de pestañas graficos y demas-->
+   
+ </div>
+   
+              <!--<div id="footer">
+                     <h3 style=" height:0px;">&nbsp;</h3>
+                    <div style="background:{PIE}; color:{PIEC}; font-size:9px;" align="center" id="contenido_footer"  >
+                        
+
+                    </div>
+               </div>-->
+              
+</div>
+<iframe name="destino" width="0" height="0"></iframe>
+</body>
+</html>

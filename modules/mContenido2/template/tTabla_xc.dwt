@@ -1,0 +1,21 @@
+<script>
+  $(".ide").mouseup(function (event){
+	var e = event;
+	dates(e,this.id);
+  });
+</script>
+<div id="myDiv" oncontextmenu='return false'>
+
+	<table id="MyDataxc"  class="usersTableInfo" width="100%" oncontextmenu='return false'>
+    <!-- BEGIN datosxc -->
+        <tr style="cursor:pointer;" oncontextmenu='return false' class="ide" id="{datosxc.IDE}">
+         <td width="15%" onClick="change_ide('{datosxc.IDE}');" onDblClick="edt_pts({datosxc.BTN})">{datosxc.ENT}</td>
+         <td width="15%" onClick="change_ide('{datosxc.IDE}');" onDblClick="edt_pts({datosxc.BTN})">{datosxc.CTE}</td>
+         <td width="15%" onClick="change_ide('{datosxc.IDE}');" onDblClick="edt_pts({datosxc.BTN})">{datosxc.UND}</td>
+         <td width="30%" onClick="change_ide('{datosxc.IDE}');" onDblClick="edt_pts({datosxc.BTN})">{datosxc.OBS}</td>
+         <td width="10%" onClick="change_ide('{datosxc.IDE}');" onDblClick="edt_pts({datosxc.BTN})">{datosxc.EST}</td>
+         <td width="15%" onClick="change_ide('{datosxc.IDE}');" onDblClick="edt_pts({datosxc.BTN})">{datosxc.DTE}</td>                  
+     	</tr>
+	<!-- END datosxc -->
+    </table>
+</div>
