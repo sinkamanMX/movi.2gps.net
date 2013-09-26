@@ -13,10 +13,13 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
     $aEjeX   = Array();
     $aEjeY   = Array();
     $aEjeZ   = Array();
+    $cEjeZ   = Array();
     
     if(isset($_GET['idWeek']) && isset($_GET['idGeo'])){
         $idWeek = $_GET['idWeek'];
         $idGeo  = $_GET['idGeo'];
+        
+        
         $sql = "SELECT 	CRM2_RESPUESTAS.ID_CUESTIONARIO, CRM2_CUESTIONARIOS.DESCRIPCION AS DES, 
                 	CRM2_RESPUESTAS.NUM_SEMANA, 
                 	CRM2_EJE_Z.ID_EJE_Z,
@@ -39,7 +42,8 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
                 AND CRM2_CUESTIONARIOS.ID_TIPO      = 3
                 AND CRM2_CUESTIONARIOS.COD_CLIENT   = ".$userAdmin->user_info['ID_CLIENTE']."
                 AND ADM_GEOREFERENCIA_RESPUESTAS.ID_OBJECT_MAP = ".$idGeo."
-                ORDER BY CRM2_EJE_Z.ID_EJE_Z, CRM2_RESPUESTAS.ID_EJE_X";
+                AND CRM2_EJE_Z.ID_EJE_Z IS NOT NULL
+                ORDER BY  CRM2_RESPUESTAS.ID_EJE_X, CRM2_EJE_Y.ID_EJE_Y";
         $query = $db->sqlQuery($sql);
         $count = $db->sqlEnumRows($query);
         if($count>0){
@@ -58,19 +62,25 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
                     $controlX=$row['ID_EJE_X'];
                 }
                 
-                if($controlY!=$row['ID_EJE_Y']){                    
-                    $aEjeY[] = Array(id=> $row['ID_EJE_Y'], name=>$row['NAMEY']); 
-                    $controlX=$row['ID_EJE_Y'];
+                if($controlY!=$row['ID_EJE_Y']){      
+                    $aRes    = Array(id=> $row['ID_EJE_Y'], idz=> $row['ID_EJE_Z'], name=>$row['NAMEY']); 
+                    $aEjeY[] = $aRes;
+                    $controlY=$row['ID_EJE_Y'];
                 }
                 
-                $amatriz[] = $row;  
+                $amatriz[] = $row;
+                  
             }
-            
+            //die();
             $result  = '<table id="rspTableDet" border="0" cellpadding="0" cellspacing="0" class="pretty">';
             $result .= '<thead><tr><th>Tecnologia</th><th>Area</th>';
             
+            $controlXX = 0;            
             for($i=0;$i<count($aEjeX);$i++){
-                $result .=  '<th>'.$aEjeX[$i][name].'</th>';
+                if($controlXX != $aEjeX[$i][id]){
+                    $result .=  '<th>'.$aEjeX[$i][name].'</th>';
+                    $controlXX  = $aEjeX[$i][id];
+                }                
             }
 
             $result .= '</thead><tbody>';
@@ -80,15 +90,15 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
             $controlZ = 0;
                 
             for($i=0;$i<count($aEjeZ);$i++){                
-                $result .= '<tr>';
+                $result .= '<tr>';                
                 if($controlZ!=$aEjeZ[$i][id]){
-                    $dataFilter  = findIdZ($aEjeZ[$i][id]);
-                    $totalFilter = $dataFilter['total'];    
-
-                    $result .= '<th rowspan="'.$totalFilter.'">'.$aEjeZ[$i][name].'</th>';
-                    $result .= $dataFilter['datos'];                     
-                    
-                    $controlZ=$row['ID_EJE_Z'];
+                    if(!validateZ($aEjeZ[$i][id])){
+                        $dataFilter  = findIdZ($aEjeZ[$i][id]); 
+                        $result .= '<th rowspan="'.$totalFilter.'">'.utf8_encode($aEjeZ[$i][name]).'</th>';
+                        $result .= $dataFilter;
+                        
+                        $controlZ=$row['ID_EJE_Z'];                        
+                    }
                 }
                 $result .= '</tr>';
             }
@@ -99,41 +109,51 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
     }
     
     echo $result;
+    
+    function validateZ($idIndex){
+       global $cEjeZ;
+       $respuesta = false;
+       for($i=0;$i<count($cEjeZ);$i++){
+            if($cEjeZ[$i]==$idIndex){
+                $respuesta = true;
+            }
+       }
+       return $respuesta;
+    }    
         
     function findIdZ($idIndex){
-        global $aEjeY, $aEjeX,$amatriz;
-        $result = array();
-        
-        for($i=0;$i<count($amatriz);$i++){
-            if($amatriz[$i]['ID_EJE_Z']==$idIndex){
-                $result[] = $amatriz[$i];
+        global $aEjeY, $aEjeX,$amatriz,$idWeek,$db,$cEjeZ;
+        $cEjeZ[] = $idIndex;        
+        $aFilterY = array();
+        $sDatos   = '';
+        for($i=0;$i<count($aEjeY);$i++){            
+            if($aEjeY[$i][idz]==$idIndex){
+                $aFilterY[] = $aEjeY[$i];
             }
         }
         
         $controlY = 0;
         $controlX = 0;
         
-        for($i=0;$i<count($aEjeY);$i++){ 
-            $controlY = $aEjeY[$i][id];
-            $result2['datos'] = "<td>".$aEjeY[$i][name]."</td>";
-            
+        for($i=0;$i<count($aFilterY);$i++){
+            $sDatos = "<td>".utf8_encode($aFilterY[$i][name])."</td>";
             for($ix=0;$ix<count($aEjeX);$ix++){
-                $controlX = $aEjeX[$ix][id];                               
-                
-                $resultXTotal = 0;
-                $resultX      = 0;
-                for($ir=0;$ir<count($result);$ir++){
-                    if($result[$ir]['ID_EJE_Y'] == $controlY && $result[$ir]['ID_EJE_X'] == $controlX){
-                        $resultXTotal++;
-                        $resultX         += $result[$ir]['CALIFICACION'];
-                    }
+                $sqlObtainR = "SELECT TRUNCATE( (( SUM(CRM2_PREG_RES.CALIFICACION) * 10 )/ COUNT(CRM2_PREG_RES.CALIFICACION))  ,2)  AS CALIFICA
+                                FROM CRM2_PREG_RES
+                                INNER JOIN CRM2_RESPUESTAS ON CRM2_PREG_RES.ID_RES_CUESTIONARIO = CRM2_RESPUESTAS.ID_RES_CUESTIONARIO
+                                WHERE NUM_SEMANA = ".$idWeek." 
+                                 AND ID_EJE_X    = ".$aEjeX[$ix][id]."
+                                 AND ID_EJE_Y    = ".$aFilterY[$i][id];
+                $query = $db->sqlQuery($sqlObtainR);
+                $count = $db->sqlEnumRows($query);
+                if($count>0){
+                    $rowResult = $db->sqlFetchAssoc($query);
+                    $sDatos  .= "<td>".$rowResult['CALIFICA']."</td>";
+                }else{ 
+                    $sDatos .= 'N/R'; 
                 }
-                
-                $promedio  = ($resultX*10) / $resultXTotal;
-                
-                $result2['datos'] .= "<td>".$promedio."</td>";
-                $result2['total'] = $resultXTotal;    
             }
-        }        
-        return $result2;   
+        }
+          
+        return $sDatos;
     }
