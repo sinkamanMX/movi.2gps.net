@@ -1,0 +1,7 @@
+  <select class="caja" id="gcol">
+  <option value="0" >Seleccionar Colonia</option>
+  <!-- BEGIN data -->
+  <option value="{data.IDC}" >{data.COL}</option>
+  <!-- END data -->
+  </select>
+

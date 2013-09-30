@@ -1,3 +1,4 @@
+var rev_markers = [];
 var rev_map;
 var ide = -1;
 var grados = 0;
@@ -102,26 +103,32 @@ function rev_get_evidencias(){
 		qstTable = $('#rev_evd_table').dataTable({
 		  "sScrollY": scroll_table,
 		  "bDestroy": true,
-		  "bLengthChange": true,
+		  "bLengthChange": false,
 		  "bPaginate": false,
 		  "bFilter": true,
 		  "bSort": true,
 		  "bJQueryUI": true,
-		  "iDisplayLength": 20,      
 		  "bProcessing": true,
-		  "bAutoWidth": false,
+		  "bAutoWidth": true,
 		  "bSortClasses": false,
+		  "sScrollX": "100%",
+		  "sScrollXInner": "150%",
+		  "bScrollCollapse": false,
 		  "sAjaxSource": "index.php?m=rEvidencia&c=mEvidencia&usr="+u+"&dti="+i+"&dtf="+f,
 		  "aoColumns": [
 			{ "mData": " ", sDefaultContent: "" },
 			{ "mData": "ID_RES_CUESTIONARIO", sDefaultContent: "","bSearchable": false,"bVisible":    false },
-			{ "mData": "FECHA", sDefaultContent: "" },
+			{ "mData": "FIC", sDefaultContent: "" },
+			{ "mData": "FFC", sDefaultContent: "" },
+			{ "mData": "FR", sDefaultContent: "" },
+			{ "mData": "TC", sDefaultContent: "" },
+			{ "mData": "TE", sDefaultContent: "" },
 			{ "mData": "QST", sDefaultContent: "" },
 			{ "mData": "NOMBRE_COMPLETO", sDefaultContent: ""}
 		  ] , 
 		  "aoColumnDefs": [
 			{"aTargets": [0],
-			  "sWidth": "65px",
+			  "sWidth": "50px",
 			  "bSortable": false,        
 			  "mRender": function (data, type, full) {
 				//var edit  = '';
@@ -137,7 +144,7 @@ function rev_get_evidencias(){
 				del = "<td><div onclick='geo_delete_function("+full.ID_OBJECT_MAP+");' class='custom-icon-delete-custom'>"+
 						"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+
 						"</div></td>";*/
-						date = "\'"+full.FECHA+"\'"
+						date = "\'"+full.FIC+"\'"
 						eqst = "'"+full.QST+"'"
 						user = "'"+full.NOMBRE_COMPLETO+"'"
 				gra = '<td><div onclick="rev_get_preg_resp('+full.ID_RES_CUESTIONARIO+'),rev_get_position('+full.LATITUD+','+full.LONGITUD+','+date+','+eqst+','+user+')" class="custom-icon-copy">'+
@@ -164,6 +171,8 @@ function rev_get_evidencias(){
 			  "sZeroRecords": "No hay registros",
 		  }
 		});	
+		//$('#equipment_table_wrapper div.dataTables_scrollHead table thead th:first').css("width", "240px");
+		//$('#equipment_table_wrapper div.dataTables_scrollHead table thead th:eq(1)').css("width", "159px");
 		$(document.body).css('cursor','default');	
 		//}
  
@@ -191,7 +200,7 @@ ide = idq;
 		  "bLengthChange": true,
 		  "bPaginate": false,
 		  "bFilter": true,
-		  "bSort": true,
+		  "bSort": false,
 		  "bJQueryUI": true,
 		  "iDisplayLength": 20,      
 		  "bProcessing": true,
@@ -219,6 +228,7 @@ ide = idq;
 	}			
 //-----------------------------------------------------------------------------
 function rev_get_position(lat,lon,fecha,qst,usr){
+	rev_clearOverlays();
 	//alert(geo_gmap)
 	var myLatlng = new google.maps.LatLng(lat,lon);	
 	var data = '<table width="100%"><tr><td colspan="2" align="center" style="background:#4297D7; color:#EAF5F7;"><strong>Datos de la evidencia</strong></td></tr><tr><td>Fecha:</td><td>'+fecha+'</td></tr><tr><td>Cuestionario:</td><td>'+qst+'</td></tr><tr><td>Usuario:</td><td>'+usr+'</td></tr></table>';
@@ -235,8 +245,18 @@ function rev_get_position(lat,lon,fecha,qst,usr){
 	rev_map.setZoom(18);	
 	marker.setMap(rev_map);
 	rev_map.setCenter(marker.getPosition());
+	rev_markers.push(marker);
 	
 	}	
+//---------------------------------------------------------------	
+function rev_clearOverlays() {
+  for (var i = 0; i < rev_markers.length; i++ ) {
+    rev_markers[i].setMap(null);
+  }
+
+  //reiniciar variables
+  rev_markers=[];
+}	
 ///----------------------------------------------------------------------------	
 function rev_reporte_pdf(id,date,qst,usr){
 	//alert(id+","+date+","+qst+","+usr);
@@ -319,7 +339,6 @@ function rev_export_excel(dti,dtf,u,q){
 	}
 //---------------------------------------
 function rev_ver_img(img,id){
-	//alert(id)
 	$.ajax({
 		url: "index.php?m=rEvidencia&c=mImage",
 		data : {
@@ -329,8 +348,6 @@ function rev_ver_img(img,id){
 		type: "GET",
 		success: function(data) {
 			var result = data; 
-			//alert(op)
-			
 			
 				$("#rev_dialog_img").dialog("open");
 				$('#rev_dialog_img').html(""); 
@@ -338,7 +355,6 @@ function rev_ver_img(img,id){
 				
 				}
 		});		
-	//alert(img);
 
 	}	
 //-------------------------------------------------
@@ -366,8 +382,7 @@ function rev_save_img(){
 			else{
 				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La imagen no ha podido ser almacenada.</p>');
 				$("#dialog_message" ).dialog('open');		
-				}	
-			}
+				}		}
 		});		
 
 	}

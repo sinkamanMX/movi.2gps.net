@@ -80,9 +80,11 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 		if($_GET['tma'] != $_GET['otma']){
 			$cv .= ($cv=="")?" TEMA =".$_GET['tma']:" ,TEMA =".$_GET['tma'];
 			}
+		//echo $_GET['x']." != ".$_GET['ox'] 	;
 		if($_GET['x'] != $_GET['ox'] && $_GET['x']!=""){
 			$cv .= ($cv=="")?" ID_EJE_X =".$_GET['x']:" ,ID_EJE_X =".$_GET['x'];
 			}
+		//echo $_GET['y']." != ".$_GET['oy']	;
 		if($_GET['y'] != $_GET['oy'] && $_GET['y']!=""){
 			$cv .= ($cv=="")?" ID_EJE_Y =".$_GET['y']:" ,ID_EJE_Y =".$_GET['y'];
 			}						

@@ -47,7 +47,7 @@
 	
 	$y = ( $_GET['cuestionario']!="" && @$qst['ID_EJE_Y']!="")?@$qst['ID_EJE_Y']:0;
 
-	$grz = ( $_GET['cuestionario']!="" && $x!=0)?$dbf->getRow('CRM2_EJE_X','ID_EJE_X = '.$x):0;
+	$grz = ( $_GET['cuestionario']!="" && $x!=0)?$dbf->getRow('CRM2_EJE_Y','ID_EJE_Y = '.$y):0;
 
 	$z = ( $_GET['cuestionario']!="" && @$grz['ID_EJE_Z']!="")?@$grz['ID_EJE_Z']:0;
 	
@@ -55,7 +55,7 @@
 		$mul = (@$qst['MULTIPLES_RESPUESTAS']!="")?'checked="checked"':"";
 		$off = (@$qst['OFFLINE']!="")?'checked="checked"':"";
 		$lps = ex_qry("ID_PREGUNTA"," CRM2_CUESTIONARIO_PREGUNTAS "," WHERE ID_CUESTIONARIO = ".$_GET['cuestionario']." ORDER BY ORDEN");
-		$lpd = ($lps!="")?ex_qry("ID_PREGUNTA"," CRM2_PREGUNTAS "," WHERE COD_CLIENT = ".$cte." AND ID_PREGUNTA NOT IN (".$lps.") ORDER BY DESCRIPCION "):'';
+		$lpd = ($lps!="")?ex_qry("ID_PREGUNTA"," CRM2_PREGUNTAS "," WHERE COD_CLIENT = ".$cte." AND ID_PREGUNTA NOT IN (".$lps.") GROUP BY ID_PREGUNTA ORDER BY DESCRIPCION "):'';
 		
 		$pgd = $dbf->dragndropF("ID_PREGUNTA","DESCRIPCION","CRM2_PREGUNTAS"," WHERE ACTIVO=1 AND COD_CLIENT =".$cte,$lps,"",'ondblclick="form_preg(this.id,2)"',' ORDER BY DES;');
 		$pgs = $dbf->dragndropF("P.ID_PREGUNTA","P.DESCRIPCION"," CRM2_PREGUNTAS P"," LEFT JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON CP.ID_PREGUNTA = P.ID_PREGUNTA WHERE ACTIVO=1 AND COD_CLIENT =".$cte,$lpd,"",'ondblclick="form_preg(this.id,2)"'," GROUP BY P.ID_PREGUNTA ORDER BY CP.ORDEN;");
@@ -77,7 +77,7 @@
 		}
 	else{
 		//vacia
-		$prg = $dbf->dragndropF("P.ID_PREGUNTA","P.DESCRIPCION","CRM2_PREGUNTAS P "," LEFT JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON CP.ID_PREGUNTA = P.ID_PREGUNTA WHERE ACTIVO=1 AND COD_CLIENT =".$cte,"","",'ondblclick="form_preg(this.id,2)"'," ORDER BY CP.ORDEN;");
+		$prg = $dbf->dragndropF("P.ID_PREGUNTA","P.DESCRIPCION","CRM2_PREGUNTAS P "," LEFT JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON CP.ID_PREGUNTA = P.ID_PREGUNTA WHERE ACTIVO=1 AND COD_CLIENT =".$cte,"","",'ondblclick="form_preg(this.id,2)"'," GROUP BY P.ID_PREGUNTA ORDER BY CP.ORDEN;");
 		$usr = $dbf->dragndrop("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS"," WHERE ESTATUS='Activo' AND ID_CLIENTE =".$cte,"","");
 		$tpl->assign_vars(array(
 		'PRG'      	=> $prg,

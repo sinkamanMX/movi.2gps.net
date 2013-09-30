@@ -51,9 +51,14 @@ $(document).ready(function () {
 	//alert(x+"/"+y+"/"+z);
 	
 	if (y!=0){
-		qst_sb_combo(3,y,z);
+		qst_sb_combo(3,x,z);
 	}
-	if (x!=0){qst_cbo_x(z,x);}
+	if (x!=0){
+		setTimeout(function(){qst_cbo_y(z,y);},1250);
+		
+		
+		
+		}
 	});
 </script>
 <input type="hidden" id="qst_op" value="{O_P}" />
@@ -69,6 +74,7 @@ $(document).ready(function () {
 
 <input type="hidden" id="qst_old_x" value="{X}" />
 <input type="hidden" id="qst_old_y" value="{Y}" />
+<!--z<input type="TEXT" id="qst_old_z" value="{Z}" />-->
 
 <div id="qst_tab_formulario" style="width:100%; height:98%;">
 

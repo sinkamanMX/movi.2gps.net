@@ -941,7 +941,7 @@ function nuevo(und){
 								buttons: {
 						
 						"Guardar": function(){
-							validar_datos_d();
+							validar_datos_d(0);
 							$("#dialog").dialog('close');
 						},
 			
@@ -949,6 +949,7 @@ function nuevo(und){
 						/*	if($("#dialog" ).dialog('isOpen')){
 								$("#dialog-message").dialog('close');
 							}*/
+							$("#dialog").dialog('close');
 							cerrar();
 						}
 					}
@@ -963,10 +964,10 @@ function nuevo(und){
 	}
 
 //........................................................................................//
-function validar_datos_d(){
+function validar_datos_d(xdr){
 var ifs=0;	
 
-if($('#vj').val().length==0){
+if($('#vj').val()==''){
 ifs=ifs+1;
 $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir una descripci\u00f3n</p>');
 $( "#dialog-message" ).dialog({
@@ -982,7 +983,7 @@ $( "#dialog-message" ).dialog({
 return false;
 	}
 
-if($('#un').val()==0){
+if($('#und').val()==0){
 ifs=ifs+1;
 $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar una unidad</p>');
 $( "#dialog-message" ).dialog({
@@ -998,7 +999,7 @@ $( "#dialog-message" ).dialog({
 return false;
 	}
 
-if($('#idv').val().length==0){	
+if($('#idv').val()==''){	
 ifs=ifs+1;
 $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir un identificador</p>');
 $( "#dialog-message" ).dialog({
@@ -1014,7 +1015,7 @@ $( "#dialog-message" ).dialog({
 return false;
 	}	
 
-if($('#start-date').val().length==0){
+if($('#start-date').val()==''){
 ifs=ifs+1;	
 $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar una fecha inicial</p>');
 $( "#dialog-message" ).dialog({
@@ -1030,7 +1031,7 @@ $( "#dialog-message" ).dialog({
 return false;
 	}
 	
-if($('#end-date').val().length==0){
+if($('#end-date').val()==''){
 ifs=ifs+1;	
 $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar una fecha final</p>');
 $( "#dialog-message" ).dialog({
@@ -1046,9 +1047,11 @@ $( "#dialog-message" ).dialog({
 return false;
 	}
 
+var iniciamel=Date.parse($('#start-date').val()+" "+$('#horaInicio').val()+":"+$('#minutoInicio').val()+":00");
+var finamel=Date.parse($('#end-date').val()+" "+$('#horaFin').val()+":"+$('#minutoFin').val()+":00");
 
 
-if( $('#start-date').val()+" "+$('#horaInicio').val()+":"+$('#minutoInicio').val()+":00" >= $('#end-date').val()+" "+$('#horaFin').val()+":"+$('#minutoFin').val()+":00"){
+if( iniciamel > finamel){
 ifs=ifs+1;	
 $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Seleccione un rango de fechas valido</p>');
 $( "#dialog-message" ).dialog({
@@ -1064,7 +1067,7 @@ $( "#dialog-message" ).dialog({
 return false;
 	}		
 
-if($('#tol').val().length==0){
+if($('#tl').val()==''){
 ifs=ifs+1;	
 $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir una tolerancia de arribo</p>');
 $( "#dialog-message" ).dialog({
@@ -1081,7 +1084,7 @@ return false;
 	}
 
 	if(ifs==0){
-	almacenar_nuevo();
+	almacenar_nuevo(xdr);
 		}
 	}
 //........................................................................................// 	
@@ -1104,13 +1107,13 @@ function barra_progress(){
                 }, 100);
 		}	
 //........................................................................................// 
-function almacenar_nuevo(){	
+function almacenar_nuevo(xdr){	
 var a=$('#vj').val();
-var b=$('#un').val();
+var b=$('#und').val();
 var c=$('#idv').val();
 var d=$('#start-date').val()+" "+$('#horaInicio').val()+":"+$('#minutoInicio').val()+":00";
 var e=$('#end-date').val()+" "+$('#horaFin').val()+":"+$('#minutoFin').val()+":00";
-var f=$('#tol').val();
+var f=$('#tl').val();
 ($('#stop').is(':checked'))? g=1: g=0;
 ($('#exc').is(':checked'))? h=1: h=0;
 var result=0;
@@ -1120,8 +1123,11 @@ var result=0;
 		
 barra_progress();
 
+
+
+
  var ajax = nuevoAjax();
-  ajax.open("GET", "index.php?m=mContenido2&c=mGdrNvo&dsc="+a+"&idv="+c+"&dti="+d+"&dtf="+e+"&stp="+g+"&exc="+h+"&tol="+f+"&und="+b ,true);
+  ajax.open("GET", "index.php?m=mContenido2&c=mGdrNvo&dsc="+a+"&idv="+c+"&dti="+d+"&dtf="+e+"&stp="+g+"&exc="+h+"&tol="+f+"&und="+b+"&tip="+xdr ,true);
   ajax.onreadystatechange=function() {
 
   	 if (ajax.readyState==4) {
@@ -1138,7 +1144,11 @@ barra_progress();
 				r_filtro_y();
 				//r_filtro_z();
 				//r_filtro();
+				
+				if(xdr==0){
 				add_pts(result);
+				}
+					
 			}
 
 						}
@@ -1176,13 +1186,16 @@ function add_pts(id){
 								buttons: {
 						
 						"Guardar": function(){
-							validar_datos_d();
+							var xdr=1;
+							validar_datos_d(id);
+							$("#dialog_agp").dialog('close');
 						},
 			
 						"Cancelar": function(){
 						/*	if($("#dialog" ).dialog('isOpen')){
 								$("#dialog-message").dialog('close');
 							}*/
+							$("#dialog_agp").dialog('close');
 							cerrar();
 						}
 					}
@@ -1461,7 +1474,13 @@ f=$('#release_date').val()+" "+$('#his').val()+":"+$('#mis').val()+":00";
 
 //alert($('#op').val())
 if($('#op').val()==1){
-if($('#cte').val()==0){
+	//alert($('#cte').val());
+	
+	if($('#tip_clits').val()==1){
+		//alert($('#cte').val());
+		var codse=$('#cte').val();
+		if($('#cte').val()==0 ){
+			//alert(codse);
 ifs=ifs+1;
 $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un cliente</p>');
 $( "#dialog-message" ).dialog({
@@ -1476,6 +1495,32 @@ $( "#dialog-message" ).dialog({
 		});		
 return false;
 	}
+	
+		}else{
+			
+			
+			if( $('#cte_3').val()==0){
+ifs=ifs+1;
+$('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un cliente</p>');
+$( "#dialog-message" ).dialog({
+			
+			buttons: {
+				Aceptar: function() {
+					$("#dialog-message" ).dialog( "close" );
+					//alert(save)
+					if(save==1){r_filtro(); save=0;}
+				}
+			}
+		});		
+return false;
+	}
+	
+			
+			}
+	
+
+	
+	
 
 if($('#delivery-date').val().length==0){	
 ifs=ifs+1;
@@ -1637,9 +1682,20 @@ for(x=0; x<$('#cnt').val(); x++){
 				var f="";
 				var g="";
 				var h="";		
+ 
+ var rhs=0;
+ if($('#tip_clits').val()==1){
+	 rhs=0;
  cte=$('#cte').val();
- ct=cte.split("¬")
- var a=ct[0];
+ ct=cte.split("¬");
+
+ }else{
+	  cte=$('#cte_3').val();
+ 	ct=cte.split("¬");
+	rhs=1;
+	 }
+  var a=ct[0];
+ 
  var b=$('#idp').val();
  var c=$('#delivery-date').val()+" "+$('#hi').val()+":"+$('#mi').val()+":00";
  var d=$('#obs').val();
@@ -1663,7 +1719,7 @@ barra_progress();
  var ajax = nuevoAjax();
   //ajax.open("GET", "index.php?m=mContenido2&c=mGdrPto&cte="+a+"&idp="+b+"&dte="+c+"&obs="+d+"&cst="+e+"&pld="+f+"&idd="+g+"&und="+h,true);
   //alert("index.php?m=mContenido2&c=mGdrPto&cte="+a+"&idp="+b+"&dte="+c+"&obs="+d+"&cst="+e+"&pld="+f+"&idd="+g+"&datap="+datap+"&dts="+h+"&tol="+i);
-  ajax.open("GET", "index.php?m=mContenido2&c=mGdrPto&cte="+a+"&idp="+b+"&dte="+c+"&obs="+d+"&cst="+e+"&idd="+g+"&datap="+datap+"&dts="+h+"&tol="+i,true);
+  ajax.open("GET", "index.php?m=mContenido2&c=mGdrPto&cte="+a+"&idp="+b+"&dte="+c+"&obs="+d+"&cst="+e+"&idd="+g+"&datap="+datap+"&dts="+h+"&tol="+i+"&rh="+rhs,true);
   ajax.onreadystatechange=function() {
 
   	 if (ajax.readyState==4) {
@@ -4027,7 +4083,7 @@ $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert"
 		ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 				var result =ajax.responseText;
-		//	console.log(result);
+		console.log(result);
 				if(result != 0){
 					
 					$('#tab_viaj').find(".inf_viaj").remove();
@@ -4038,7 +4094,7 @@ $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert"
 					
 					
 		var cadena ='<tr style="cursor:pointer; " class="inf_viaj">'+
- '<th width="15%" rowspan="2"   style="border:#FFFFFF solid 1px; background: #FFF url(public/images/1a.png);" bgcolor="#DBDBDB" id="des_cab_viaj" ></th>'+div[0]+
+ '<th width="15%" rowspan="2"   style="border:#FFFFFF solid 1px; bgcolor="#DBDBDB" id="des_cab_viaj" ></th>'+div[0]+
   '</tr><tr style="cursor:pointer;" class="inf_viaj">'+div[1]+'</tr>'+
   div[2];
 					
@@ -5176,24 +5232,7 @@ function autocompletarcte(x){
 			}
 		
 		}
-	//$("#cte option[value="+ x +"]").attr("selected",true);
-	
-//	alert($("#cte option:"+x).val());
-/*	$('#dpdi').html('<select class="caja" name="cte" id="cte" style="border:#FFF; width:100%"><option value="0"  >Buscando...</option></select>');
-	var ajax = nuevoAjax();
-		ajax.open("GET", "index.php?m=mContenido2&c=mPdi&txtfil="+x,true);
-		ajax.onreadystatechange=function() {
-		if (ajax.readyState==4) {
-				var result =ajax.responseText;
-				//alert(result);
-				if(result != 0){
-					$('#dpdi').html(ajax.responseText);
-				}else{
-					$('#dpdi').html('<select class="caja" name="cte" id="cte" style="border:#FFF; width:100%"><option value="0">Sin coincidencias</option></select>');
-				}
-			}			
-		}		
-	ajax.send(null);*/	
+
 	}
 	
 	 function abrir(){
@@ -5202,3 +5241,28 @@ function autocompletarcte(x){
     function cerrar(){
 		$( "#dialog" ).dialog('close');
 	}	
+	
+	
+	function change_tipo_geo(x){
+		
+		var resp=x;
+		
+		
+		if(resp==1){
+			$('#cte').css("display","");
+			$('#cte_3').css("display","none");
+			document.getElementById("cte").disabled=false;
+			document.getElementById("cte_3").disabled=true;
+			
+			
+			
+			}else{
+			
+				$('#cte').css("display","none");
+			$('#cte_3').css("display","");
+			document.getElementById("cte").disabled=true;
+			document.getElementById("cte_3").disabled=false;
+			
+			}
+		
+		}

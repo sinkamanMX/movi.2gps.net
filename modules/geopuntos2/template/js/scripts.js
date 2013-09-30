@@ -811,7 +811,18 @@ function save_geo(){
 		var p ="";
 		$('#t'+id+'').find(':input').each(function(index, element) {
 			//p_r += this.id+"|"+this.value+"¬";
-			p += (p=="")?this.id+"¬"+this.value:"|"+this.id+"¬"+this.value;
+			//p += (p=="")?this.id+"¬"+this.value:"|"+this.id+"¬"+this.value;
+			if(p==""){
+				if(this.value!=""){
+					p = this.id+"¬"+this.value
+					}
+				}
+			else{
+				//alert(this.value)
+				if(this.value!=""){
+					p += "|"+this.id+"¬"+this.value
+					}
+				}	
         });
 		/*if(c>0){
 			p_r += "°";
@@ -846,7 +857,7 @@ function save_geo(){
 		
 		//alert(aes+","+nen+","+nsa+","+nat+","+nvr);
 		//alert(p_r)
-		alert($("#gnip").val());
+		//alert($("#gnip").val());
 	$.ajax({
 		url: "index.php?m=geopuntos2&c=mSave",
 		type: "GET",
@@ -1002,7 +1013,7 @@ $("#geo_c_content2").html(g)
 }
 //------------------------------------------------------------
 function geo_fedit_pr(){
-	alert("geo_fedit_pr");
+	//alert("geo_fedit_pr");
 	//alert($("#geo_hidpr").val());
 	$.ajax({
 		url: "index.php?m=geopuntos2&c=mPregrespE",

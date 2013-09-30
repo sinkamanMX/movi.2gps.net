@@ -15,6 +15,7 @@
 	if(!$userAdmin->u_logged())  //Valida Usuario Logeado
 		echo '<script>window.location="index.php?m=login"</script>';  //Manda al login si no se ha Logeo.
 	//--------------------------- Modificada BD y Encabezado------------------------
+	$db ->sqlQuery("SET NAMES 'utf8'");
 	
 	$tpl->set_filenames(array(
 		'mPayload'=>'tPayload'
@@ -53,18 +54,22 @@
 			$html .= '<h3 style="height:30px;">&nbsp;&nbsp;&nbsp;'.$row['Q'].'<input style="float: right;" type="image" src="public/images/qricon.png" width="25px" height="25px" onclick="payload('.$row['ID_CUESTIONARIO'].')"></h3>';
 			$html .= '<div id="'.$row['ID_CUESTIONARIO'].'">';
 			$html .= '<table width="100%" id="t'.$row['ID_CUESTIONARIO'].'">';
+			
 			$val = ($_GET['op']==2)?get_value($_GET['idg'],$id):"";
 			$a = explode("|",$val);
 			$b = explode("¬",$a[$pp]);
+			
+			
 			$html .= '<tr><td><label>'.$row['PRE'].':</label></td><td><input type="text" class="caja" id="'.$row['IDP'].'" value="'.$b[1].'" /></td></tr>';
 			$pp++;
 			}
 		else{
-			//echo $id." == ".$row['ID_CUESTIONARIO']."<br>";
+			
 			if($id == $row['ID_CUESTIONARIO']){
 				$val = ($_GET['op']==2)?get_value($_GET['idg'],$id):"";
 				$a = explode("|",$val);
 				$b = explode("¬",$a[$pp]);
+				
 				$html .= '<tr><td><label>'.$row['PRE'].':</label></td><td><input type="text" class="caja" id="'.$row['IDP'].'" value="'.$b[1].'" /></td></tr>';
 				$pp++;
 				}
@@ -77,9 +82,10 @@
 				$html .= '<h3 style="height:30px;">&nbsp;&nbsp;&nbsp;'.$row['Q'].'<input style="float: right;" type="image" src="public/images/qricon.png" width="25px" height="25px" onclick="payload('.$row['ID_CUESTIONARIO'].')"></h3>';
 				$html .= '<div id="'.$row['ID_CUESTIONARIO'].'">';
 				$html .= '<table width="100%" id="t'.$row['ID_CUESTIONARIO'].'">';
-				$val = ($_GET['op']==2)?get_value($_GET['idg'],$id):"";
+				$val = ($_GET['op']==2)?get_value($_GET['idg'],$id):""; 
 				$a = explode("|",$val);
 				$b = explode("¬",$a[$pp]);
+				
 				$html .= '<tr><td><label>'.$row['PRE'].':</label></td><td><input type="text" class="caja" id="'.$row['IDP'].'" value="'.$b[1].'" /></td></tr>';
 				$pp++;
 				}	
@@ -99,8 +105,8 @@
 
 function get_value($pdi,$idc){
 	global $db;
-	$sql  = "SELECT CADENA_PAYLOAD FROM ADM_GEO_PAYLOAD WHERE ID_OBJECT_MAP = ".$pdi." AND ID_CUESTIONARIO = ".$idc;
-										
+	 $sql  = "SELECT CADENA_PAYLOAD FROM ADM_GEO_PAYLOAD WHERE ID_OBJECT_MAP = ".$pdi." AND ID_CUESTIONARIO = ".$idc;
+	//echo "\n";
 	$qry = $db->sqlQuery($sql);
 	$cnt = $db->sqlEnumRows($qry);
 	

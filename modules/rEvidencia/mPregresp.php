@@ -36,7 +36,7 @@
 	
 	if($cnt > 0){ 
 		while($row = $db->sqlFetchArray($qry)){
-			$result[] = $row; // Inside while loop
+			$result[] = $dbf->utf8_encode_array($row); // Inside while loop
 			}
 	}
 	echo json_encode( $result = array('aaData'=>$result ) );	 	

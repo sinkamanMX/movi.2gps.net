@@ -20,16 +20,16 @@
 
 	$tpl->set_filenames(array('mGetCbos'=>'tGetCbos'));	
 	
-	$sy = ($_GET['y']!="")?$_GET['y']:'';
+	$sx = ($_GET['x']!="")?$_GET['x']:'';
 	$sz = ($_GET['z']!="")?$_GET['z']:'';
 
 	$z = $dbf->cbo_from("ID_EJE_Z","DESCRIPCION","CRM2_EJE_Z"," ID_CLIENTE = ".$cte." ORDER BY DESCRIPCION ",$option=$sz);
-	$y = $dbf->cbo_from("ID_EJE_X","DESCRIPCION","CRM2_EJE_X"," ID_CLIENTE = ".$cte." ORDER BY DESCRIPCION ",$option=$sy);
+	$x = $dbf->cbo_from("ID_EJE_X","DESCRIPCION","CRM2_EJE_X"," ID_CLIENTE = ".$cte." ORDER BY DESCRIPCION ",$option=$sx);
 
 
 	$tpl->assign_vars(array(
 		'Z'	=> $z,
-		'Y' => $y
+		'X' => $x
 	));		
 	
 

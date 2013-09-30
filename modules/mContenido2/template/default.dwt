@@ -1,7 +1,7 @@
 
 <script type="text/javascript"  charset="ISO-8859-1" src="public/js/tigra_tables.js"></script>
 <script type="text/javascript" src="{PATH}/js/scripts.js"></script>
-<script  src="public/js/OpenLayers-2.11/OpenLayers.js" ></script>
+<!--<script  src="public/js/OpenLayers-2.11/OpenLayers.js" ></script>-->
 <!--<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key={APIKEY}" type="text/javascript"></script>-->
 <link type="text/css" href="{PATH}/css/styles.css" rel="stylesheet"/>
 
@@ -93,7 +93,7 @@ $(document).keydown(function(tecla){
       
       
   </h2>
-     <div id="contenedor" style="width: 99.9%; height: 600px;">
+     <div id="contenedor" style="width: 99.9%; height: 680px;">
           <div id="tabs-lp" style="z-index:1;">
           
             <table border="0" class="cabeceras" style="font-size:12px; font-stretch:narrower; z-index:2;  position:absolute; right:120px; top:1px; width:550px; height:30px; color:#FFF;  font-weight: bold;">
@@ -140,7 +140,7 @@ $(document).keydown(function(tecla){
 <div id="tabs-02" >
 
                       <!--  ---------------------------------ENTREGAS PENDIENTES------------------------------------- -->  
-<div id="panelxc" onclick="change_div('bxc')" style="z-index:1; float:right; position:relative;  top:0px; left:0px; width:510px; height:260px;">
+<div id="panelxc" onclick="change_div('bxc')" style="z-index:1; float:right; position:relative;  top:0px; left:0px; width:525px; height:310px;">
                  <h2><table id="usersTableTitle" style=" width:100%" align="center">
                  <tr>
                    <td colspan="5" align="center" valign="middle">Entregas Pendientes</td></tr>           
@@ -165,7 +165,7 @@ $(document).keydown(function(tecla){
 
 
                       <!--  ---------------------------------PLANIFICACIONES DE VIAJE---------------------------------- -->  
-<div id="panelx" onclick="change_div('bx')" style="z-index:1; position:relative;  top:0px; left:0px; width:510px; height:260px;">
+<div id="panelx" onclick="change_div('bx')" style="z-index:1; position:relative;  top:0px; left:0px; width:525px; height:310px;">
            
             <div style="font-size:10px; width:70px; position:absolute; left:70%; display:none" class="hb">
                     <span id="icbr" class="ui-icon ui-icon-search " title="Buscar"></span>
@@ -209,7 +209,7 @@ $(document).keydown(function(tecla){
               
 			</div>-->
             <div id="datagridy">
-            <div id="list_formas_y" style="position:relative; top:10px; left:0%; width:100%;" onkeydown="openb('bx');"></div>
+            <div id="list_formas_y" style="position:relative; top:5px; left:0%; width:100%;" onkeydown="openb('bx');"></div>
             </div>
             
             
@@ -248,7 +248,7 @@ $(document).keydown(function(tecla){
                          </div>
                          
                       <!--  --------------------------------ENTREGAS RETRASADAS------------------------------------- -->  
-<div id="panelxa" onclick="change_div('bxa')" style="z-index:1; position:relative; float:right; left:0px; width:510px; height:260px;">
+<div id="panelxa" onclick="change_div('bxa')" style="z-index:1; position:relative; float:right; left:0px; width:525px; height:310px;">
                   <h2><table id="usersTableTitle" style=" width:460px;" align="center">
                  <tr>
                    <td colspan="5" align="center" valign="middle">Entregas Retrasadas</td></tr>           
@@ -275,7 +275,7 @@ $(document).keydown(function(tecla){
                          
 
                       <!--  ---------------------------------ENTREGAS TERMINADAS------------------------------------- -->  
-<div id="panelxb" onclick="change_div('bxb')" style="z-index:1; position:relative;  top:0px; right:0px; width:510px; height:260px;">
+<div id="panelxb" onclick="change_div('bxb')" style="z-index:1; position:relative;  top:0px; right:0px; width:525px; height:310px;">
                 <h2><table id="usersTableTitle" style=" width:460px;" align="center">
                  <tr>
                    <td colspan="5" align="center" valign="middle">Entregas Terminadas/Canceladas</td></tr>           

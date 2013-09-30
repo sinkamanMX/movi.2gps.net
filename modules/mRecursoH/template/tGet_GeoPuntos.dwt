@@ -1,0 +1,50 @@
+<style type="text/css">
+#tabladatos{
+	width:100%;
+	/*//height:420px;*/
+	background-color:#FFF;
+	margin:0;
+	}
+#datashow{
+	font-family: Calibri, Arial;
+	font-size:12px;
+
+	background-color:#FFF; 
+	margin:auto;
+}
+</style>
+<script>
+$(function() {
+    $( ".edit" ).button({
+      icons: {
+        primary: "ui-icon-scissors"
+      },
+      text: false
+    });
+    $( ".del" ).button({
+      icons: {
+        primary: "ui-icon-trash"
+      },
+      text: false
+    });
+	});
+</script>
+<div id="tabladatos" >
+<table id="datashow" width="100%">
+    <!-- BEGIN geopuntos -->
+    <tr class="FontXD"  onMouseUp="centra_mapa({geopuntos.vlat},{geopuntos.vlon},'{geopuntos.vname}','{geopuntos.vnip}','{geopuntos.viconDESC}','{geopuntos.viconIMG}'),change_idev({geopuntos.vcode});">
+    <td width="14%" style="min-width:60px;">
+    <button class="edit small_btn" onclick="nuevo(2,{geopuntos.vcode});"></button>
+    <button class="del small_btn"  onclick="borrar();"></button>
+    </td>
+    <td width="38%">{geopuntos.vname}</td>
+    <td width="32%">{geopuntos.vnip}</td>
+    <td width="16%">{geopuntos.viconDESC}</td>
+    </tr>
+	<!-- END geopuntos -->
+</table>
+
+
+</div>
+
+

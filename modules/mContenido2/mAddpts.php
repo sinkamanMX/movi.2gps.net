@@ -108,6 +108,44 @@ if($row!='AVL'){
 										));
 	}
 
+
+	//////////////////////////////////////////////////////////////////////////////////////////R-H
+	 $sql_o="SELECT S.ID_OBJECT_MAP,R.DESCRIPCION, S.LONGITUDE, S.LATITUDE,S.RADIO
+	 FROM ADM_RH_PDI RP
+	 	INNER JOIN ADM_RH R ON R.ID_OBJECT_MAP=RP.ID_OBJECT_MAP
+	 	INNER JOIN ADM_GEOREFERENCIAS S ON S.ID_OBJECT_MAP=RP.ID_OBJECT_MAP
+	  WHERE RP.ORDEN=1 AND RP.ID_CLIENTE=".$idc;
+	$query_o = $db->sqlQuery($sql_o);
+	$count_o = $db->sqlEnumRows($query_o);		
+	$caden=' ';
+	if($count_o>0){
+		
+		while($row_o=$db->sqlFetchArray($query_o)){
+			 $tpl->assign_block_vars('dt_4_21',array(
+				'IDC'	=> $row_o['ID_OBJECT_MAP'],
+				'CTE'	=> utf8_encode($row_o['DESCRIPCION']),
+				'LAT'	=> $row_o['LATITUDE'],
+				'LON'	=> $row_o['LONGITUDE'],
+				'RDO'	=> $row_o['RADIO']
+				
+										));
+										
+										if($caden==' '){
+				$caden=$row_o['ID_OBJECT_MAP'].'¬'.$row_o['LATITUDE'].'¬'.$row_o['LONGITUDE'].'¬'.$row_o['RADIO'].','. utf8_encode($row_o['DESCRIPCION']);
+										}else{
+											$caden=$caden.'|'.$row_o['ID_OBJECT_MAP'].'¬'.$row_o['LATITUDE'].'¬'.$row_o['LONGITUDE'].'¬'.$row_o['RADIO'].','. utf8_encode($row_o['DESCRIPCION']);
+											}
+		
+		
+		}
+		
+		$tpl->assign_block_vars('dt_b_3',array(
+				'dat'	=>$caden
+				//{dt2.IDC}¬{dt2.LAT}¬{dt2.LON}¬{dt2.RDO}
+										));
+	}
+	
+
 ////////////////////////////////////////////////////////////////////////////
 $sql_k="SELECT COD_ENTITY FROM DSP_UNIDAD_ASIGNADA WHERE ID_DESPACHO=".$_GET['idd'];
 	$query_k = $db->sqlQuery($sql_k);

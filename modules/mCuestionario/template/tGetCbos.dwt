@@ -3,8 +3,8 @@
 <legend><strong>Elementos para la tabla cuantitativa</strong></legend>
 <br>
 <table>
-<tr><td><label>Eje Y:</label></td><td><select id="qst_Y" class="caja_txt">{Y}</select></td></tr>
-<tr><td><label>Eje Z:</label></td><td><select id="qst_Z" class="caja_txt" onChange="qst_cbo_x(this.value,'')">{Z}</select></td></tr>
+<tr><td><label>Eje X:</label></td><td><select id="qst_X" class="caja_txt">{X}</select></td></tr>
+<tr><td><label>Eje Z:</label></td><td><select id="qst_Z" class="caja_txt" onChange="qst_cbo_y(this.value,'')">{Z}</select></td></tr>
 </table>
 <div id="qst_dcbox"></div>
 <br>

@@ -19,16 +19,17 @@
 	$cte = $userAdmin->user_info['ID_CLIENTE'];
 
 	$tpl->set_filenames(array('mGetCbox'=>'tGetCbox'));	
-	$sx = ($_GET['x']!="")?$_GET['x']:'';
+	$sy = ($_GET['y']!="")?$_GET['y']:'';
 
-	$x = $dbf->cbo_from("ID_EJE_Y","DESCRIPCION","CRM2_EJE_Y"," ID_EJE_Z = ".$_GET['type']." ORDER BY DESCRIPCION ",$option=$sx);
+	$y = $dbf->cbo_from("ID_EJE_Y","DESCRIPCION","CRM2_EJE_Y"," ID_EJE_Z = ".$_GET['type']." ORDER BY DESCRIPCION ",$option=$sy);
 
 
 
 	$tpl->assign_vars(array(
-		'X'	=> $x
+		'Y'	=> $y
 	));		
 	
 
 	$tpl->pparse('mGetCbox');
 ?>
+

@@ -13,20 +13,42 @@ $idc   = $userAdmin->user_info['ID_CLIENTE'];
 	
 	$row_t='';
 if($_GET['datap']==""){	
-	    $data = Array(
-			'ID_DESPACHO'		=> $_GET['idd'], 
-			'ID_ESTATUS'   		=> 2,
-			'COD_GEO'    		=> $_GET['cte'],
-			'COD_USER'	    	=> $idu,
-			'ITEM_NUMBER'	    => $_GET['idp'],
-			'COMENTARIOS'	    => $_GET['obs'],
-			'FECHA_ENTREGA'	    => $_GET['dte'],
-			'FECHA_FIN'			=> $_GET['dts'],
-			'TOLERANCIA'		=> $_GET['tol'],
-			'ID_TIPO_VOLUMEN'		=> 1,
-			'CREADO'	        => date('Y-m-d H:i:s')
-		);
 
+		if($_GET['rh']==0){
+				$data = Array(
+					'ID_DESPACHO'		=> $_GET['idd'], 
+					'ID_ESTATUS'   		=> 2,
+					'COD_GEO'    		=> $_GET['cte'],
+					'COD_USER'	    	=> $idu,
+					'ITEM_NUMBER'	    => $_GET['idp'],
+					'COMENTARIOS'	    => $_GET['obs'],
+					'FECHA_ENTREGA'	    => $_GET['dte'],
+					'FECHA_FIN'			=> $_GET['dts'],
+					'TOLERANCIA'		=> $_GET['tol'],
+					'ID_TIPO_VOLUMEN'		=> 1,
+					'CREADO'	        => date('Y-m-d H:i:s'),
+					'TIPO_RH'	        => 'GP',
+					'COD_RH'	        => '0'
+				);
+		}else{
+			
+			$data = Array(
+					'ID_DESPACHO'		=> $_GET['idd'], 
+					'ID_ESTATUS'   		=> 2,
+					'COD_GEO'    		=> $_GET['cte'],
+					'COD_USER'	    	=> $idu,
+					'ITEM_NUMBER'	    => $_GET['idp'],
+					'COMENTARIOS'	    => $_GET['obs'],
+					'FECHA_ENTREGA'	    => $_GET['dte'],
+					'FECHA_FIN'			=> $_GET['dts'],
+					'TOLERANCIA'		=> $_GET['tol'],
+					'ID_TIPO_VOLUMEN'		=> 1,
+					'CREADO'	        => date('Y-m-d H:i:s'),
+					'TIPO_RH'	        => 'RH',
+					'COD_RH'	        => $_GET['cte']
+				);
+			
+			}
 
 			if($dbf-> insertDB($data,'DSP_ITINERARIO',true) == true){
 				if(isset($_GET['cst'])){

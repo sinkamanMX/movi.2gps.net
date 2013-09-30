@@ -119,14 +119,14 @@ $(document).ready(function () {
 		autoOpen:false,
 		//title:"Estad\u00edstica",
 		modal: true,
-		width: 1000,
-		height: 500,
+		width: 290,
+		height: 335,
 		buttons: {
 			Cancelar: function() {
 				$(this).dialog( "close" );
 			},
 			Guardar: function() {				
-				val_data_pr();
+				val_data_preg();
 			}
 		}
 	});	
@@ -1282,7 +1282,8 @@ function qst_get_log(){
 		});		
 	}
 //---------------------------------------------------------------
-function qst_sb_combo(t,y,z){
+function qst_sb_combo(t,x,z){
+	//alert(z)
 	if(t==3){
 		$.ajax({
 			url: "index.php?m=mCuestionario&c=mGetCbos",
@@ -1290,7 +1291,7 @@ function qst_sb_combo(t,y,z){
 			data: {
 				type  : t,
 				z : z,
-				y : y
+				x : x
 			},
 			success: function(data) {
 				var result = data; 
@@ -1305,7 +1306,7 @@ function qst_sb_combo(t,y,z){
 		}	
 	}	
 //---------------------------------------------------------------
-function qst_cbo_x(t,x){
+function qst_cbo_y(t,y){
 	//alert(t)
 	if(t>0){
 		$.ajax({
@@ -1313,7 +1314,7 @@ function qst_cbo_x(t,x){
 			type: "GET",
 			data: {
 				type  : t,
-				x : x
+				y : y
 			},
 			success: function(data) {
 				var result = data; 

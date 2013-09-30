@@ -1,5 +1,5 @@
 
 <table>
-<tr><td><label>Eje X:</label></td><td><select id="qst_X" class="caja_txt">{X}</select></td></tr>
+<tr><td><label>Eje Y:</label></td><td><select id="qst_Y" class="caja_txt">{Y}</select></td></tr>
 
 </table>

@@ -2,40 +2,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>{PAGE_TITLE}</title>
-<script type="text/javascript"  charset="ISO-8859-1" src="public/js/tigra_tables.js"></script>
+
+<!--<script type="text/javascript"  charset="ISO-8859-1" src="public/js/tigra_tables.js"></script>-->
 <script type="text/javascript" src="{PATH}/js/scripts.js"></script>
-
-
- 
-<script src="{PATH}/js/jquery.js"></script>
-<script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>
+<!--<script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>-->
 <script src="{PATH}/js/jquery.cookie.js"></script>
-
-
 <script src="{PATH}/js/jquery.treeview.js"></script>
-    <script src="{PATH}/js/demo.js"></script>
-
-    <script type="text/javascript" src="{PATH}/js/jquery.contextMenu.js" ></script>
-<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>
+<script src="{PATH}/js/demo.js"></script>
+<script type="text/javascript" src="{PATH}/js/jquery.contextMenu.js" ></script>
+<!--<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>-->
 
  
- <link href="{PATH}/css/jquery.contextMenu.css"  rel="stylesheet" type="text/css" />
+<link href="{PATH}/css/jquery.contextMenu.css"  rel="stylesheet" type="text/css" />
 <!--<link rel="stylesheet" href="{PATH}/css/coin-slider-styles.css" type="text/css" />-->
 <link type="text/css" href="{PATH}/css/menuV2.css" rel="stylesheet" />
 
-<link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
+<!--<link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
 <link type="text/css" href="public/css/jqueryUI.css" rel="stylesheet" />
-<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>-->
+
 <link type="text/css" href="{PATH}/css/styles.css" rel="stylesheet"/>
 <link type="text/css" href="{PATH}/css/jquery.treeview.css" rel="stylesheet"/>
-<link type="text/css" href="{PATH}/css/screen.css" rel="stylesheet"/>
+<!--<link type="text/css" href="{PATH}/css/screen.css" rel="stylesheet"/>-->
 
 
 <script>
 $(document).ready(
 function(){
  init();
-
+        $('.pasar').click(function() { return !$('#origen option:selected').remove().appendTo('#destino'); });  
+		$('.quitar').click(function() { return !$('#destino option:selected').remove().appendTo('#origen'); });
+		$('.pasartodos').click(function() { $('#origen option').each(function() { $(this).remove().appendTo('#destino'); }); });
+		$('.quitartodos').click(function() { $('#destino option').each(function() { $(this).remove().appendTo('#origen'); }); });
+		$('.submit').click(function() { $('#destino option').prop('selected', 'selected'); });
 
 	//onload();
 });
@@ -69,116 +68,162 @@ function(){
             setupLabel();
         });
         setupLabel(); 
+		
+		$( "button" )
+		  .button()
+		  .click(function( event ) {
+			$( "#dialog_nc" ).dialog( "open" );
+		  });
+
+		 		  
+		 $( "#dialog_nc" ).dialog({ 
+		               autoOpen: false,
+					   title: "Nuevo Catálogo", 
+		               buttons: {
+						Guardar: function() {
+							/* Do stuff */
+							CrearCatalogo();
+						},
+						Cancelar: function() {
+							$("#dialog_nc").dialog("close");
+						}
+    }
+		 
+		  }); 
     });
 </script>
 
-<!--<script>
-	$(function() {
-		$( "#start-date").datepicker({
-			showOn: "button",
-			buttonImage: "public/images/cal.gif",
-			startDate: (new Date('01/01/2000')),
-			buttonImageOnly: true,
-			//minDate: '0',
-			dateFormat: "yy-mm-dd"
-		});
-		
-		
-		 $( ".b_ic" ).button();
-		 $(".b_op" ).button();
 
-						
-	});
-
-	</script>-->
-
+<style>
+	
+	.selects0{width:120px;margin:0 0 20px 0;border:1px solid #ccc;padding:5px;border-radius:5px 0 0 5px;}
+	.selects1{width:100px;margin:0 0 5px 0;border:1px solid #ccc;border-radius:5px 0 0 5px;}
+	.clear{clear:both;text-align:center}
+	.divs{float:left;width:120px;text-align:center; border:#039 solid 0px;}
+	#dv{float:left;width:50px;text-align:center; border:#039 solid 0px;}
+	.izq{border-radius:10px 10px 10px 10px;}
+	.der{border-radius:10px 10px 10px 10px;}
+	.colores{
+		border: 1px solid #c5dbec;
+		background: #dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;
+		font-weight: bold;
+		color: #2e6e9e;
+	 }
+	 #xx{
+		border: 1px solid #c5dbec;
+		background: #dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;
+		font-weight: bold;
+		color: #2e6e9e;
+	 }
+</style>
 </head>
 <!--<body onload="init('{URL}','{RM}','{UP}')" >-->
 <body onload="" >
-
-<!--<div id="panel1" style="z-index:0; position:relative;">
-  
-<div id="contenedor" style=" height:90%; z-index:0; position:relative;">
-
----------------------------------panel x--------------------------------------
-<div id="panelx"  style="z-index:0; top:10px; width:95%; height:95%"> -->
 
                     <div style="font-size:10px; width:70px; position:absolute; z-index:0; left:70%; display:none" class="hb">
                                      <span id="icbr" class="ui-icon ui-icon-search " title="Buscar"></span>
                     <div style="position:relative; top:3px; left:-4px;">Buscar</div>
                     </div>
   
-<!--<div  id="column4" style="	border:1px solid #c5dbec; background:#dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x; font-family: Lucida Grande, Lucida Sans, Arial, sans-serif; min-height: 110px; position:relative; width:445px; z-index:99; height:50px; ">
-  		<h4 class="ui-widget-header">&nbsp;Variables</h4>
- 		<div style=" position:relative; left:110px;" id="selet" class="styled-select"></div>
-         
-        <div id="onj" style="position:relative; top:5px; left:160px; width:130px;  " align="center" ></div>
-</div>-->
-<div class="column" id="column1" style="width:100%; height:100%; overflow-x:auto; overflow-y:auto; ">
-<h4>&nbsp;&nbsp;Mis Carpetas</h4>
+<!--<button >Nuevo Cat&aacute;logo</button>-->
+<div id="column1" >
+
+<!--<select onchange="r_filtro1(this.value);" >
+ <option value="-1" style="color:#666;">Opci&oacute;n</option>
+	
+      <option value="{group.ID_CATALOGO}">{group.DESCRTIPCION}</option> 
+
+
+</select>-->
+     <div id="catalogos-combo" style="border:#333 solid 0px; width:250px;"> 
+     
+     </div>
+
 	<ul id="browser" class="filetree" style="position:relative; left:10px; ">
 		
 	</ul>
 	
 	</div>
 
-<!--     <div class="column" id="column5" style="width:30%; left:465px; position:absolute; top:46px; min-height:30px;  max-height:33px; " >
-	<h4 class="ui-widget-header">&nbsp;Creación de Alertas</h4>
-       <span id="etiqueta" style=" font-size:14px; font:bold; color:#CCC; height:10px; position:absolute; left:60px; top:50px; z-index:1;">>>Arrastre Aqui sus Variables<<</span>
-    </div>-->
+<div id="derecho" >
+        <div class="divs" id="conte_1">
+                 Usuarios Asignados
+                  <select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">
+                    <option value="-1"></option>
+                </select>
+  </div>
+            <div id="dv">
+               <input id="xx" type="button" class="pasar izq" value="&nbsp;>&nbsp;" >
+               <input id="xx" type="button" class="pasartodos izq" value=">>">
+                <input id="xx" type="button" class="quitartodos der" value="<<">
+               <input id="xx" type="button" class="quitar der" value="&nbsp;<&nbsp;">
+               
+            </div>
+         <div class="divs" id="conte_2">
+                Usuarios Disponibles
+                <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0"></select>
+         </div>
+         
+      <input type="button" id="guardar_datos"  onclick="recorre_select();" class="colores" value="Realizar cambios" />   
+   </div>
     
-<!--<div class="column" id="column2" style="width:30%; left:465px; min-height:341px; max-height:255px; top: 84px; position:absolute;" >
-
-	</div>-->
-<!--<div class="column" id="column6" style="width:30%; left:465px; position:absolute; top:431px; min-height:30px;  max-height:33px; " >
-	 <input type="button" style="position:absolute; left:10px; visibility:hidden;" id="bu_clear" class="b_op" value="Cancelar" onclick="clear_div()" />
-    <input type="button" style="position:absolute; right:125px; visibility:hidden;" id="bu_conf" class="b_op" value="Configurar" onclick="popup_conf()" />
-    <input type="button" style="position:absolute; right:10px; visibility:hidden;" id="bu_guar" class="b_op" value="Guardar"  onclick="guar_general()"/>
-    </div>-->
-<!--<div class="lista" id="column3" style="position:absolute; top:46px; width:28%; right:5px; min-height:530px;" >
-      <h4 class="ui-widget-header">&nbsp;Alertas de Usuario</h4>
-      <table border="0" id="bucara"><tr><td><input type="text" size="30" id="buck" title="Buscar" onkeyup="txtls(this.value)" /></td><td><a href="#" onclick="busque()" ><img title="Buscar" src="/public/images/search.png" style=" width:18px; "></a></td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td></td></tr></table>
-      <div id="alert_c" style=" position:relative; left:3px; width: 327px;  height: 460px; overflow-x:hidden; overflow:auto;" ><table border="0" id="cvs"></table></div>
-      </div>-->
-	
-<!--	<div id="dialog"  title=" &nbsp;&nbsp; Descripcion" style="  ">
+	<!--	<div id="dialog"  title=" &nbsp;&nbsp; Descripcion" style="  ">
   
     </div>
     <div id="dialogo"  title=" &nbsp;&nbsp; Configuracion" >
   
     </div>-->
-     <ul id="mycarp" class="contextMenu" >
+<ul id="mycarp" class="contextMenu" >
  			<li class="adfi"><a href="#addfi">Subir</a></li>
-			 <li class="adca"><a href="#addcar">Nueva</a></li>
+			 <li class="adca" id="nueva_carpeta"><a href="#addcar">Nueva</a></li>
 			<li class="edit"><a href="#renom">Renombrar</a></li>
 			<li class="delete"><a href="#delete">Eliminar</a></li>
  </ul> 
 <ul id="myfil" class="contextMenu" >
-			<li class="desca"><a href="#descar">Descargar</a></li>
-			<li class="edit"><a href="#edit">Editar</a></li>
+		<!--	<li class="desca"><a href="#descar">Descargar</a></li>
+			<li class="edit"><a href="#edit">Editar</a></li>-->
 			<li class="delete"><a href="#delete">Eliminar</a></li>
  </ul> 
 
  <ul id="mydocs" class="contextMenu" >
-			 <li class="desca"><a href="#descar">Descargar</a></li>
+			 <!--<li class="desca"><a href="#descar">Descargar</a></li>-->
 			<li class="delete"><a href="#delete">Eliminar</a></li>
  </ul> 
  
   <ul id="myimas" class="contextMenu" >
-			 <li class="desca"><a href="#desca">Descargar</a></li>
-             <li class="vist"><a href="#vist">Visualizar</a></li>
+			<!-- <li class="desca"><a href="#desca">Descargar</a></li>
+             <li class="vist"><a href="#vist">Visualizar</a></li>-->
 			<li class="delete"><a href="#delete">Eliminar</a></li>
  </ul> 
+ 
+   <ul id="mycat" class="contextMenu" >
+			 <li class="desca"><a href="#newcat">Nuevo Catálogo</a></li>
+  </ul>
  
  <div id="dialog" title="Subir"></div>
  <div id="dialog1" title="Eliminar"></div>
  <div id="dialog2" title="Confirmacion"></div>
- <div id="dialog3" title="Imagen" ><div id="coin-slider">
-</div></div>
+ <div id="dialog3" title="Imagen" >
+    <div id="coin-slider"></div>
+</div>
  <div id="dialog4" title="Nueva Carpeta"></div>
+ 
+ <!--  dialogo para creacion de un nuevo catálogo  -->
+ 
+ <div id="dialog_nc" title="Dialog Title">
+   Descripci&oacute;n <input type="text" id="des_catalogo"/>
+ </div>
  
 <iframe name="ifra" id="ifra" width="0" height="0" frameborder="0" >
 </iframe>
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<input type="text" value="{CLIENTE}" id="cliente" />
+<input type="text"  id="catalogos" />
+<input type="text"  id="id_menu" style=" position:relative; left:200px;"  value="0"/>
 </body>
 </html>

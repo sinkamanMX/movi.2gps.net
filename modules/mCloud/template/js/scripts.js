@@ -6,6 +6,13 @@
 
 var key_prin='';
 var key_prin1='';
+var cat = 0;
+var valores = 0;
+var valores2 = 0;
+var borrar_parametros='';
+var borrar_submenu = 0;
+var borrar_menu = 0;
+
 
 var Base64 = {
 
@@ -156,8 +163,43 @@ function change_ide(id){
 
 }
 
+function change_m(m){
+	valores = m;
+	valores2 = 0;
+	//alert(valores);
+}
+
+function change_n(n){
+	valores2 = n;
+	valores = 0;
+	if(n==99){
+	//	alert('busca usuarios para este submenu'+$("#id_menu").val());
+		usuario_submenu($("#id_menu").val());
+		usuario_submenu_comple($("#id_menu").val());
+		 borrar_submenu = $("#id_menu").val();
+         borrar_menu = 0;
+	}else{
+		 borrar_submenu = 0;
+         borrar_menu = $("#id_menu").val();
+	}
+	//alert(valores2);
+}
+
+function change_del(v){
+	
+ borrar_parametros = v;	
+// alert(borrar_parametros);
+}
+
+
+function change_idm(n){
+$("#id_menu").val(n);
+}
+
+
 function init(){
-	r_filtro1();
+	combo();
+	//r_filtro1();
 	/*//admap();
 	r_filtro5();
 	r_filtro2();*/
@@ -186,31 +228,37 @@ function nuevoAjax(){
 
 	var fecha='';
 /*-----------------------------------    -------------------------------------------- */
-function r_filtro1(){
-		document.getElementById('browser').innerHTML='';
+function r_filtro1(catalogo){
+	//alert('hola');
+	if(catalogo != -1){
+	cat = catalogo;
+	$("#catalogos").val(catalogo);
+	document.getElementById('browser').innerHTML='';
 	var ajax = nuevoAjax();
 	//var url = "index.php?m=rRsalida&c=mGetReport";
-		ajax.open("GET", "index.php?m=mCloud&c=mGetStruct",true);
+		ajax.open("GET", "index.php?m=mCloud&c=mGetStruct&catalogo="+catalogo,true);
 		ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 				var result =ajax.responseText;
 			//console.log(result);
-		//alert(result);
-				if(result != 0){
+	//	alert(result);
+				if(result != 0 || result != ""){
 								
 							$(result).appendTo("#browser");
 							$("#browser").treeview();
 							
-							contextenu();
+							contextenu(cat);
 						
 								
 							
+							}else{
+					alert('No existe información');			
 							}
 			}			
 		}		
 	ajax.send(null);	
 	
-
+	}
 }
 
 function get_download(urls){
@@ -230,12 +278,9 @@ function get_download(urls){
 		return result;
 		}
 
-function contextenu() {	
-
-		var arraydocs=new Array();
-
+function contextenu(cat) {	
+      	var arraydocs=new Array();
 		var arraydevel=new Array();
-
 		
 		arraydocs.push('.vid', '.aud', '.doc','.xls','.ppt','.file','.pdf');
 		arraydevel.push('.css','.php','.js','.htm','.dwt');
@@ -251,23 +296,22 @@ function contextenu() {
 			switch(action){
 				
 				case "addfi":
-					add_file();
+					add_file(cat);
 				 // muestra_editar_form(ide);
 				break;
 				case "addcar":
-				
-				nuwcarp(key_prin1);
+				//alert(' agregar elemento menu='+valores+', submenu='+valores2);
+				nuwcarp(key_prin1,cat,valores,valores2); 
 				 // muestra_editar_form(ide);
 				break;
-				
-				
-				
 				case "renom":
-					renombra(key_prin1);
+				//alert(' agregar elemento menu='+valores+', submenu='+valores2);
+					renombra(key_prin1,cat,valores,valores2);
 				 // muestra_editar_form(ide);
 				break;
 				
 				case "delete":
+				var bora = borrar_menu+','+borrar_submenu;
 				
 			document.getElementById('dialog1').innerHTML="<p align='center'>Desea eliminar la Carpeta?</p>";		
 				
@@ -275,7 +319,7 @@ function contextenu() {
 					width: 200,
 				 	 buttons: {
 						Aceptar: function() {
-   							elimina_fil(key_prin1,2);
+   							elimina_fil(key_prin1,2,cat,bora);
 			  				$( this ).dialog( "close" );
 			 
        						 },
@@ -285,8 +329,6 @@ function contextenu() {
 							}
 						  }
 						});	
-				
-				 	
 				break;
 			}
 			
@@ -298,7 +340,7 @@ function contextenu() {
 
 for(i=0;i<arraydocs.length;i++){
 			
-			$(arraydocs[i]).contextMenu({
+	    $(arraydocs[i]).contextMenu({
 		menu: 'mydocs'
 	},
 	
@@ -307,6 +349,10 @@ for(i=0;i<arraydocs.length;i++){
 		if(key_prin != 0){
 			
 			switch(action){
+				case "newcat":
+				  $( "#dialog_nc" ).dialog( "open" );
+				break;
+				
 				case "descar":
 					get_download(key_prin);
 				 // muestra_editar_form(ide);
@@ -320,7 +366,7 @@ for(i=0;i<arraydocs.length;i++){
 					width: 200,
 				 	 buttons: {
 						Aceptar: function() {
-   							elimina_fil(key_prin,1);
+   							elimina_fil(key_prin,1,cat,borrar_parametros);
 			  				$( this ).dialog( "close" );
 			 
        						 },
@@ -370,7 +416,7 @@ for(i=0;i<arraydocs.length;i++){
 					width: 200,
 				 	 buttons: {
 						Aceptar: function() {
-   							elimina_fil(key_prin,1);
+   							elimina_fil(key_prin,1,cat,borrar_parametros);
 			  				$( this ).dialog( "close" );
 			 
        						 },
@@ -417,7 +463,7 @@ for(i=0;i<arraydocs.length;i++){
 					width: 200,
 				 	 buttons: {
 						Aceptar: function() {
-   							elimina_fil(key_prin,1);
+   							elimina_fil(key_prin,1,cat,borrar_parametros);
 			  				$( this ).dialog( "close" );
 			 
        						 },
@@ -444,7 +490,7 @@ for(i=0;i<arraydocs.length;i++){
 		if(x==1){
 			
 			 $( "#dialog" ).dialog( "close" );
-			 r_filtro1();
+			 r_filtro1(cat);
 			 document.getElementById('dialog2').innerHTML='<p align="center">El archivo se cargo Correctamente</p>';	
 			  $( "#dialog2" ).dialog({
    	 	width: 200,
@@ -470,8 +516,14 @@ for(i=0;i<arraydocs.length;i++){
 	function add_file(){
 	
 	  //	console.log("holaaaa");
-		var dialogo_conf='<form action="index.php?m=mCloud&c=mGetSubir&url='+convert(key_prin1)+'" method="post" enctype="multipart/form-data" target="ifra"><input type="file" name="archivo" id="archivo"></input>'+
-						'<input type="submit" value="Cargar" style="position:absolute; top:35px; left:170px;" onclick="carga()"></input><div id="progressbar" style="display:none; position:absolute; top:59px; left:2px; width:310px; "><div id="progress-label">Cargando...</div></div></form>';
+/*		var dialogo_conf='<form action="index.php?m=mCloud&c=mGetSubir&url='+convert(key_prin1)+
+		                  '" method="post" enctype="multipart/form-data" target="ifra"><input type="file" name="archivo" id="archivo"></input>'+
+						  '<input type="submit" value="Subir Archivo" style="position:absolute; top:35px; left:170px;" onclick="carga()"></input><div id="progressbar"                           style="display:none; position:absolute; top:59px; left:2px; width:310px; "><div id="progress-label">Cargando...</div></div></form>';
+*/
+
+	var dialogo_conf='<form action="index.php?m=mCloud&c=mGetSubir&url='+convert(key_prin1)+'&id_menu='+$("#id_menu").val()+'" method="post" enctype="multipart/form-data" target="ifra">'+
+				     '<input type="file" name="archivo" id="archivo"></input>'+
+					 '</form>';
 
 		document.getElementById('dialog').innerHTML=dialogo_conf;		
 			
@@ -480,10 +532,10 @@ for(i=0;i<arraydocs.length;i++){
 			 $( "#dialog" ).dialog({
    	 	width: 400,height: 170,
       buttons: {
-        Aceptar: function() {
+        Subir: function() {
    
-  			  $( this ).dialog( "close" );
-			 
+  			 // $( this ).dialog( "close" );
+			$("form").submit();
         },
 		Cancelar: function() {
           $( this ).dialog( "close" );
@@ -495,14 +547,14 @@ for(i=0;i<arraydocs.length;i++){
 		}
 		
 
-function elimina_fil(x,t){
+function elimina_fil(x,t,cat,borrar_parametros){
 	
-	
+	//alert(x+','+t+','+cat+','+borrar_parametros);
 		var ulr=convert(x);
 		
 		var ajax = nuevoAjax();
 	//var url = "index.php?m=rRsalida&c=mGetReport";
-		ajax.open("GET", "index.php?m=mCloud&c=mGetDelet&ulr="+ulr+"&tipo="+t,true);
+		ajax.open("GET", "index.php?m=mCloud&c=mGetDelet&ulr="+ulr+"&tipo="+t+'&where='+borrar_parametros,true);
 		ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 				var result =ajax.responseText;
@@ -524,7 +576,7 @@ function elimina_fil(x,t){
    	 	width: 200,
       buttons: {
         OK: function() {
-  				 r_filtro1();
+  				 r_filtro1(cat);
   			  $( this ).dialog( "close" );
 			 
         }
@@ -583,7 +635,7 @@ function editphp(urls){
 	
 
 	
-	function nuwcarp(urls){
+	function nuwcarp(urls,catalogo,v1,v2){
 	
 	var result=Base64.decode(urls);
 	var gen=result.split('modules');
@@ -600,7 +652,7 @@ function editphp(urls){
   				
 				noms=$('#nufol').val();
 				var dir=downs+'/'+noms;
-  					afir_carp(dir);
+  					afir_carp(dir,catalogo,v1,v2);
 			  
 			  
 			  $( this ).dialog( "close" );
@@ -615,30 +667,36 @@ function editphp(urls){
     });
 
 		}
-		
-		function afir_carp(noms){
 
-			var dir=noms;
-	
+///-----------------------------------------
+		
+function afir_carp(noms,catalogo,v1,v2){
+
+	var dir=noms;
+	var cadenaz = v1+','+v2+','+$("#catalogos").val()+','+$("#nufol").val()+','+$("#id_menu").val();
+	//alert(cadenaz+','+dir);
 	var ajax = nuevoAjax();
 
-		ajax.open("GET", "index.php?m=mCloud&c=mGetNewDir&ulr="+dir,true);
+		ajax.open("GET", "index.php?m=mCloud&c=mGetNewDir&ulr="+dir+"&cade="+cadenaz,true);
 		ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 				var result =ajax.responseText;
-			console.log(result);
+				//alert(result);
+				console.log(result);
 				
 				if(result != 0){
-								document.getElementById('dialog2').innerHTML='<p align="center">La carpeta a sido creada Correctamente</p>';		
+							document.getElementById('dialog2').innerHTML='<p align="center">Elemento creado correctamente</p>';
+							document.getElementById('id_menu').value = result;	
 					}else{
-							document.getElementById('dialog2').innerHTML='<p align="center">No se a podido crear la carpeta</p>';	
+							document.getElementById('dialog2').innerHTML='<p align="center">No se a podido crear el elemento</p>';	
 					}
 	  
 			 $( "#dialog2" ).dialog({
    	 			width: 200,
       			buttons: {
        				 OK: function() {
-  						 r_filtro1();
+  						 r_filtro1(catalogo);
+						// cadena_menu(catalogo)
   			 		 $( this ).dialog( "close" );
 			 
 					}
@@ -653,7 +711,7 @@ function editphp(urls){
 			
 			
 			
-			function renombra(urls){
+			function renombra(urls,cat,valores,valores2){
 				
 				var result=Base64.decode(urls);
 				var gen=result.split('/');
@@ -671,7 +729,7 @@ function editphp(urls){
   				
 				noms=$('#refol').val();
 				//var dir=downs+'/'+noms;
-  					val_renom(downs,noms);
+  					val_renom(downs,noms,cat,valores,valores2);
 			  
 			  
 			  $( this ).dialog( "close" );
@@ -689,16 +747,18 @@ function editphp(urls){
 				
 				}
 			
-function val_renom(noms,names){
+function val_renom(noms,names,cat,valores,valores2){
 				
 		var dir=noms;
 		var ajax = nuevoAjax();
-					
-		ajax.open("GET", "index.php?m=mCloud&c=mGetRenm&ulr="+dir+'&nuws='+names,true);
+	    var id_menu_submenu = $("#id_menu").val();		
+				
+        ajax.open("GET", "index.php?m=mCloud&c=mGetRenm&ulr="+dir+'&nuws='+names+'&id_menu='+id_menu_submenu+'&v1='+valores+'&v2='+valores2,true);
 		ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 			var result =ajax.responseText;
 			console.log(result);
+			//alert(result);
 		   			if(result != 0){
 					 	document.getElementById('dialog2').innerHTML='<p align="center">La carpeta a cambiado de nombre</p>';		
 					}else{
@@ -709,7 +769,7 @@ function val_renom(noms,names){
 						width: 200,
 						buttons: {
 							 OK: function() {
-									r_filtro1();
+									r_filtro1(cat);
 									$( this ).dialog( "close" );
 										}
 								 }
@@ -751,7 +811,7 @@ function val_renom(noms,names){
 	
 	function downphp(urls){
 		
-		var result=Base64.decode(urls);
+	var result=Base64.decode(urls);
 	var gen=result.split('modules');
 	var downs=result;
 	
@@ -770,3 +830,180 @@ function val_renom(noms,names){
 	ajax.send(null);
 		
 		}
+
+//--------------------------------------- funciones de catalogo
+
+	function CrearCatalogo(){
+	//	alert($('#des_catalogo').val());
+	var descripcion = $('#des_catalogo').val();
+	var clientes = $('#cliente').val();
+	
+	var ajax = nuevoAjax();
+	
+	ajax.open("GET", "index.php?m=mCloud&c=mCrearCatalogo&descripcion="+descripcion+"&cliente="+clientes,true);
+		ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				console.log(result);
+				if(result>0){
+					//alert(result+'terminado');
+					 $("#dialog_nc").dialog("close");
+					 combo();
+				}
+				
+                
+			}			
+		}		
+	ajax.send(null);
+
+		}
+
+//********************+
+
+function combo(){
+	var ajax = nuevoAjax();
+	
+	var htmlx = '&nbsp;&nbsp;&nbsp;&nbsp;Cat&aacute;logos<select class="selects1"><option >Cargando...</option></select>';
+	var htmly = '&nbsp;&nbsp;&nbsp;&nbsp;Cat&aacute;logos<select class="selects1"><option >No hay Catálogos</option></select>';
+	
+	$("#catalogos-combo").html(htmlx);
+	
+	ajax.open("GET", "index.php?m=mCloud&c=CargaCombo",true);
+		ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				  console.log(result);
+				  if(result!=0){
+					 $("#catalogos-combo").html(result);  
+				  }else{
+					  $("#catalogos-combo").html(htmly);  
+				  }
+				 
+					//alert(result+'terminado');
+			}			
+		}		
+	ajax.send(null);
+
+
+
+}
+function cadena_menu(catalogo){
+	
+	var ajax = nuevoAjax();
+	ajax.open("GET", "index.php?m=mCloud&c=mCadenaMenu&catalogo="+catalogo,true);
+		ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				  console.log(result);
+				  if(result!=0){
+					 $("#id_menu").val(result);  
+				  }else{
+					 alert('Sin datos');
+				  }
+				 
+					//alert(result+'terminado');
+			}			
+		}		
+	ajax.send(null);
+}
+
+//----------------------
+
+function usuario_submenu(id_submenu){
+		var ajax = nuevoAjax();
+ 		
+		var htlm =' Usuarios Asignados <select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">'+
+                  '<option value="-1">Cargando Datos </option>'+
+                  '</select>';
+		var htlm2 ='Usuarios Asignados <select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">'+
+                   '</select>';		  
+				  
+				  
+		$("#conte_1").html(htlm); 
+	ajax.open("GET", "index.php?m=mCloud&c=mUsuarioSubmenu&id_submenu="+id_submenu,true);
+		ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				  console.log(result);
+				  if(result!=0){
+					 $("#conte_1").html(result);  
+				  }else{
+					 $("#conte_1").html(htlm2);  
+				  }
+				 
+					//alert(result+'terminado');
+			}			
+		}		
+	ajax.send(null);
+	
+}
+
+//----------------------------
+
+function usuario_submenu_comple(id_submenu){
+		var ajax = nuevoAjax();
+ 		
+		var htlm =' Usuarios Disponibles <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0">'+
+                  '<option value="-1">Cargando Datos </option>'+
+                  '</select>';
+		var htlm2 ='  Usuarios Disponibles <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0">'+
+                   '</select>';		  
+				  
+				  
+		$("#conte_2").html(htlm); 
+	ajax.open("GET", "index.php?m=mCloud&c=mUsuarioSubmenuComple&id_submenu="+id_submenu,true);
+		ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				  console.log(result);
+				  if(result!=0){
+					 $("#conte_2").html(result);  
+				  }else{
+					 $("#conte_2").html(htlm2);  
+				  }
+				 
+					//alert(result+'terminado');
+			}			
+		}		
+	ajax.send(null);
+}
+
+function recorre_select(){
+	var todos = '';
+  $("#origen option").each(function(){
+	if(todos == ''){
+		todos = $(this).attr('value');
+	}else{
+		todos = todos+','+$(this).attr('value');
+	}
+   
+  });
+  todos = todos +'|'+ $("#id_menu").val();
+  
+  var ajax = nuevoAjax();
+  
+  if($("#origen option").length > 0){
+	  //actualiza
+	  ajax.open("GET", "index.php?m=mCloud&c=mActualizaBase&datos="+todos,true);
+  }else{
+	  // borra todo
+	  var id_submenu = $("#id_menu").val();
+	  ajax.open("GET", "index.php?m=mCloud&c=mBorraTodoBase&id_submenu="+id_submenu,true);
+  }
+  
+  	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				  console.log(result);
+				  if(result!=0){
+					 alert('cambios realizados');
+				  }else{
+					 alert('falla al realizar cambios');  
+				  }
+				 
+					//alert(result+'terminado');
+			}			
+		}		
+	ajax.send(null);
+  //alert(todos+'|'+ $("#origen option").length);	
+}

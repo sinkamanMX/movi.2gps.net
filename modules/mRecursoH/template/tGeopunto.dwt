@@ -1,0 +1,254 @@
+<input type="hidden" id="geop" value="{OP}">
+<input type="hidden" id="idg" value="{IDG}">
+<div id="geo_tabs" style="width:95%; height:95%;">
+  <ul>
+    <li><a href="#geo_tabs1">Datos Generales</a></li>
+    <li><a href="#geo_tabs2" onClick="">Puntos de interes</a></li>
+    <li><a href="#geo_tabs3">Cuestionarios</a></li>
+    <li><a href="#geo_tabs4" onClick="rh_lay();">Payload</a></li>
+  </ul>
+  <div id="geo_tabs1">
+ <!-- <fieldset>-->
+  <!--<legend>Datos generales</legend>-->
+  <table width="70%">
+  <tr>
+  <td><label>Nombre:</label></td>
+  <td><input type="text" class="caja" id="rhdsc" value="{DSC}"></td>
+  </tr>
+  <tr>
+  <td><label>Tipo:</label></td>
+  <td>
+  <select class="caja" id="rhtyp">
+  <!-- BEGIN T -->
+  <option value="{T.ID}" {T.S} >{T.DES}</option>
+  <!-- END T -->
+  </select>
+  </td>
+  </tr>
+  <tr>
+  <td><label>NIP:</label></td>
+  <td><input type="text" class="caja" id="rhnip" value="{NIP}"></td>
+  </tr> 
+  <tr>
+  <td><label>Correo:</label></td>
+  <td><input type="text" class="caja" id="rhcor" value="{COR}"></td>
+  </tr>
+  <tr>
+  <td><label>Celular:</label></td>
+  <td><input type="text" class="caja" id="rhcel" value="{CEL}"></td>
+  </tr>  
+  <tr>
+  <td><label>Twitter:</label></td>
+  <td><input type="text" class="caja" id="rhtwt" value="{TWT}"></td>
+  </tr>   
+  </table> 
+  <!--</fieldset>--> 
+   <br><br>
+  <div style="float:left; width:49%">
+  <!--<fieldset>
+  <legend>Datos del responsable</legend>
+  <table width="70%">
+  <tr>
+  <td><label>Nombre:</label></td>
+  <td><input type="text" class="caja" id="gres" value="{RES}"></td>
+  </tr> 
+  <tr>
+  <td><label>Correo:</label></td>
+  <td><input type="text" class="caja" id="gcor" value="{COR}"></td>
+  </tr>
+  <tr>
+  <td><label>Celular:</label></td>
+  <td><input type="text" class="caja" id="gcel" value="{CEL}"></td>
+  </tr>  
+  <tr>
+  <td><label>Twitter:</label></td>
+  <td><input type="text" class="caja" id="gtwt" value="{TWT}"></td>
+  </tr>  
+  </table>  
+  </fieldset>-->
+  </div>
+  
+  <div style="float:right; width:49%;">
+  <!--<fieldset>
+  <legend>Itinerarios</legend>
+  <table width="100%">
+  <tr>
+  <td><input type="checkbox"  id="gaes" {AES}></td>
+  <td><label>Detecci&oacute;n de entrada y salida autom&aacute;tico.</label></td>
+  </tr>   
+  <tr>
+  <td><input type="checkbox"  id="gnen" {NEN}></td>  
+  <td><label>Notificaci&oacute;n de entrada.</label></td>
+  </tr> 
+  <tr>
+  <td><input type="checkbox"  id="gnsa" {NSA}></td>
+  <td><label>Notificaci&oacute;n de salida.</label></td>
+  </tr>
+  <tr>
+  <td><input type="checkbox"  id="gnat" {NAT}></td>
+  <td><label>Notificaci&oacute;n de atraso.</label></td>  
+  </tr>  
+  <tr>
+  <td><input type="checkbox"  id="gnvr" {NVR} ></td>
+  <td><label>Vista Ruta.</label></td>
+  </tr> 
+  <tr>
+  <td colspan="2"><label><strong>Nota:</strong> Para la correcta funcionalidad de estas opciones debe estar siempre activo el GPS dentro de la aplicaci&oacute;n "itinerarios Movilidad".</label></td>
+  </tr>      
+  </table>  
+  </fieldset>-->  
+  </div>
+
+
+  </div><!--tabs1-->
+  <div id="geo_tabs2">
+  <div id="location_data" style="width:40%; float:left;" class="ui-corner-all brdrc">
+    <!--pdis disponibles-->
+    <div class="ui-corner-all" style=" width:100%; height:49.5%; float:left; border:#a6c9e2 solid thin;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">PDIs Disponibles</span>
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(1,this.value);" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+
+    <div id="rh_pdi_dsp" class="dropme" style="min-height:135px; min-width:170px; width:100%;">
+    <!-- BEGIN PD -->
+    <div class="ui-corner-all" onClick="centra_punto({PD.LAT},{PD.LON})" id="{PD.ID}">{PD.DES}</div>
+    <!-- END PD -->
+    </div>
+
+    </div>   
+    <!--pdis disponibles-->  
+
+    <!--pdis seleccionados-->
+    <div class="ui-corner-all" style="width:100%; height:49.5%; float:left; border:#a6c9e2 solid thin;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">PDIs Seleccionados</span>
+    <!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>-->
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(2,this.value)" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+    <!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
+    
+    <div id="rh_pdi_sel" class="dropme" style="min-height:135px; min-width:170px; width:100%;">
+    <!-- BEGIN PS -->
+    <div class="ui-corner-all" onClick="centra_punto({PS.LAT},{PS.LON})" id="{PS.ID}">{PS.DES}</div>
+    <!-- END PS -->
+    </div>
+    </div>
+    <!--</div>-->
+    <!--cuestionarios seleccionados-->  
+  
+  </div><!--location_data-->
+  <div id="geo_location_map"  style="width:420px; height:440px; float:right; border:#a6c9e2 solid thin;" class="ui-corner-all brdrc"></div><!--location_map-->
+  </div><!--tabs2-->
+  <div id="geo_tabs3">
+    <div style="position:absolute; width:98%; height:90%;">
+    
+    <!--cuestionarios disponibles-->
+    <div style=" width:49.5%; height:100%; float:left; border:#00F0F0 solid thin;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">Cuestionarios Disponibles</span>
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(1,this.value);" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
+    <div id="rh_qst_dsp" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+    <!-- BEGIN U -->
+    <div class="ui-corner-all" id="{U.ID}">{U.DES}</div>
+    <!-- END U -->
+    </div>
+    </div>
+    </div>   
+    <!--cuestionarios disponibles-->
+    <!--cuestionarios seleccionados-->
+    <div style="width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">Cuestionarios Seleccionados</span>
+    <!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>-->
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(2,this.value)" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+    <!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
+    
+    <div id="rh_qst_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+    <!-- BEGIN U2 -->
+    <div class="ui-corner-all" id="{U2.ID}">{U2.DES}</div>
+    <!-- END U2 -->
+    </div>
+    </div>
+    <!--</div>-->
+    <!--cuestionarios seleccionados-->
+    
+    </div>
+  
+  </div><!--tabs3-->
+  <div id="geo_tabs4">
+  <br><br><br>
+  <h2 align="center" style="color:#CCC;">Seleccione al menos un cuestionario</h2>
+  </div><!--tabs4-->
+</div>
+<script>
+//$(document).ready(function(){
+	pgeo_gmapa();
+	$("#geo_tabs").tabs();
+	$("#location_data").height($("#geo_tabs").height()*0.9)
+	$("#geo_location_map").height($("#geo_tabs").height()*0.9)
+	$( ".buscar" ).button({
+      icons: {
+        primary: "ui-icon-search"
+      },
+      text: false
+    });
+	$( ".mapa" ).button({
+      icons: {
+        primary: "ui-icon-arrow-4"
+      },
+      text: false
+    })
+	
+	$('.dropme').sortable({
+		connectWith: '.dropme',
+		cursor: 'move'
+		}).droppable({
+			accept: '.dropme',
+			activeClass: 'highlight',
+			drop: function(event, ui) {
+				var $li = $('<div>').html('List ' + ui.draggable.html());
+				$li.appendTo(this);
+				}
+		});//alert($("#location_data").height());
+	//});
+</script>

@@ -11,7 +11,7 @@
 	
 	$tpl->set_filenames(array('default'=>'default'));	
 	$idc   = $userAdmin->user_info['ID_CLIENTE'];
-    
+       $idu   = $userAdmin->user_info['ID_USUARIO'];
 	   
 
       include('mFunciones_CV.php');
@@ -26,6 +26,8 @@
 
 	$T='';
 	$sumata='';
+		$maestre_array=array();
+		$maestre_cont=0;
 
 	//-----------------------------------------------------------------------------UNIDADES EN DESPACHADOR
 	$unidad='';
@@ -36,7 +38,7 @@
 			$marc=0;
 			$marc1=0;
 			$marc2=0;
-			echo $fecha=$_GET['date'];
+			 $fecha=$_GET['date'];
 			//$dayhr=date("Y-m-d");
 			if($fecha=='undefined'){
 			$dayhr=date("Y-m-d");
@@ -51,7 +53,7 @@
 			}
 			$oper=0;
 
-	
+	$rango_time=" e.GPS_DATETIME BETWEEN '".$dayhr." 00:00:00' AND '".$dayhr." 23:59:00' ";
 
 	
   $sql = "SELECT UA.COD_ENTITY,
@@ -66,14 +68,16 @@ D.TOLERANCIA,
   WHERE X.ID_DESPACHO = D.ID_DESPACHO AND
       ((X.FECHA_ARRIBO > X.FECHA_ENTREGA) OR
        ((X.FECHA_ARRIBO = '0000-00-00 00:00:00') AND (X.FECHA_ENTREGA <=
-CURRENT_TIMESTAMP)))) AS PENDIENTES
+CURRENT_TIMESTAMP)))) AS PENDIENTES,
+MM.TYPE AS TIPO_U
 FROM
    DSP_DESPACHO D
 INNER JOIN DSP_UNIDAD_ASIGNADA UA ON UA.ID_DESPACHO=D.ID_DESPACHO
 INNER JOIN ADM_UNIDADES UN ON UN.COD_ENTITY=UA.COD_ENTITY
+INNER JOIN ADM_MARCA_MODELO MM ON UN.COD_TRADEMARK_MODEL=MM.COD_TRADEMARK_MODEL
 INNER JOIN ADM_USUARIOS_GRUPOS GD ON GD.COD_ENTITY = UN.COD_ENTITY
 INNER JOIN ADM_GRUPOS G ON G.ID_GRUPO = GD.ID_GRUPO
-WHERE GD.ID_USUARIO=".$idc." AND
+WHERE GD.ID_USUARIO=".$idu." AND
 FECHA_INICIO BETWEEN '".$dayhr." 00:00:00' AND '".$dayhr." 23:59:00'
   ORDER BY PENDIENTES DESC";
 
@@ -90,6 +94,7 @@ FECHA_INICIO BETWEEN '".$dayhr." 00:00:00' AND '".$dayhr." 23:59:00'
 		$segmento[$contseg][1]=utf8_encode($row['UND']);
 		$segmento[$contseg][2]=utf8_encode($row['COD_ENTITY']);
 		$segmento[$contseg][3]=utf8_encode($row['ID_DESPACHO']);
+		$segmento[$contseg][4]=utf8_encode($row['TIPO_U']);
 					
 
 			$contseg++;					
@@ -182,22 +187,28 @@ FECHA_INICIO BETWEEN '".$dayhr." 00:00:00' AND '".$dayhr." 23:59:00'
 	
 
 ////--------------------------------------------------------------------------------TIEMPOS 
-  $sql1 = "SELECT CONCAT(PG.DESCRIPCION,' - ',P.VOLUMEN,' ',V.DESCRIPCION) AS
+ $sql1 = "SELECT  IF(P.TIPO_RH='GP', CONCAT(PG.DESCRIPCION,' - ',P.VOLUMEN,' ',V.DESCRIPCION), RH.DESCRIPCION ) AS
 DESCRIPTION,
    AU.COD_ENTITY,
    P.COD_GEO,
    P.ID_DESPACHO,
+   P.ID_ENTREGA,
    P.FECHA_ENTREGA,
    P.FECHA_FIN,
   TIME_TO_SEC(CAST(P.FECHA_ENTREGA AS TIME)) AS MINI,
   TIME_TO_SEC(CAST(P.FECHA_FIN AS TIME)) AS MAXI,
-  PG.ITEM_NUMBER
+  PG.ITEM_NUMBER, 
+  PG.LATITUDE,
+  PG.LONGITUDE,
+   IF(P.FECHA_ARRIBO = '0000-00-00 00:00:00', '0', '1') AS FECHA_ARRIBO,
+  IF(P.FECHA_SALIDA = '0000-00-00 00:00:00', '0', '1') AS FECHA_SALIDA
 FROM
    DSP_ITINERARIO P
    INNER JOIN DSP_UNIDAD_ASIGNADA AU ON (P.ID_DESPACHO = AU.ID_DESPACHO)
    INNER JOIN DSP_TIPO_VOLUMEN V ON P.ID_TIPO_VOLUMEN = V.ID_TIPO_VOLUMEN
-   LEFT OUTER JOIN ADM_GEOREFERENCIAS PG ON (P.COD_GEO = PG.ID_TIPO_GEO)
+   LEFT OUTER JOIN ADM_GEOREFERENCIAS PG ON (P.COD_GEO = PG.ID_OBJECT_MAP)
    INNER JOIN DSP_DESPACHO NS ON (P.ID_DESPACHO=NS.ID_DESPACHO)
+   INNER JOIN ADM_RH RH ON P.COD_GEO=RH.ID_OBJECT_MAP
 WHERE
    (FECHA_ENTREGA BETWEEN '".$dayhr." 00:00:00' AND '".$dayhr." 23:59:00')
 AND
@@ -211,6 +222,14 @@ GROUP BY
 			if($count>0){
 				//echo $count.',';
 				while($row1 = $db->sqlFetchArray($query1)){
+					
+			if(($row1['FECHA_ARRIBO']=='0' && $row1['FECHA_SALIDA']!='1')||($row1['FECHA_ARRIBO']=='1' && $row1['FECHA_SALIDA']=='0')||($row1['FECHA_ARRIBO']=='0' && $row1['FECHA_SALIDA']!='0')){
+				
+				 $maestre_array[$maestre_cont]=$row1['COD_GEO'].','.$row1['DESCRIPTION'].','.$row1['LATITUDE'].','.$row1['LONGITUDE'].','.$row1['ID_ENTREGA'].','.$row1['FECHA_ARRIBO'].','.$row1['FECHA_SALIDA'];
+				
+				$maestre_cont++;
+				}
+				
 					
 				 $cantidad=$cantidad+1;
 				
@@ -339,6 +358,25 @@ GROUP BY
 			$data_new='';
 			$repet='';
 			$put_ban=0;
+			
+			
+			//--------------------------------------------------------------VALIDACION SI ES CARRO O VEHICULO
+			
+if($segmento[$i][4]=='V'){
+	
+			
+				 $table_h= 'HIST'.$Positions->get_tablename($idc);
+			 $funciones_cv->trae_his_s($segmento[$i][2],$table_h,$rango_time,$maestre_array);
+	
+	}
+
+
+
+
+		$act_color=0;	
+		$flag_ini=0;
+		$flag_ini1=0;
+	
 	////--------------------------------------------------------------------------------TIEMPOS 
 
 $sql2 = "SELECT PG.DESCRIPCION,
@@ -346,6 +384,7 @@ $sql2 = "SELECT PG.DESCRIPCION,
   P.COD_GEO,
   P.ID_DESPACHO,
  P.FECHA_ARRIBO,
+ TIME_TO_SEC(CAST(P.FECHA_ENTREGA AS TIME)) AS ENT,
  IF(P.FECHA_SALIDA = '0000-00-00 00:00:00', 'SIGUE EN EL PUNTO', P.FECHA_SALIDA) AS FECHA_SALIDA,
  TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME)) AS MINI,
  IF(P.FECHA_SALIDA = '0000-00-00 00:00:00',TIME_TO_SEC(CAST(CURRENT_TIMESTAMP AS TIME)) , TIME_TO_SEC(CAST(FECHA_SALIDA AS TIME))) AS MAXI,
@@ -353,351 +392,90 @@ $sql2 = "SELECT PG.DESCRIPCION,
 FROM
   DSP_ITINERARIO P
   INNER JOIN DSP_UNIDAD_ASIGNADA AU ON (P.ID_DESPACHO = AU.ID_DESPACHO)
-  LEFT OUTER JOIN ADM_GEOREFERENCIAS PG ON (P.COD_GEO = PG.ID_TIPO_GEO)
+  LEFT OUTER JOIN ADM_GEOREFERENCIAS PG ON (P.COD_GEO = PG.ID_OBJECT_MAP)
   INNER JOIN DSP_DESPACHO NS ON (P.ID_DESPACHO=NS.ID_DESPACHO)
 WHERE
-  (FECHA_ARRIBO BETWEEN '".$dayhr." 00:00:00' AND '".$dayhr." 23:59:00') AND
+  (FECHA_ENTREGA BETWEEN '".$dayhr." 00:00:00' AND '".$dayhr." 23:59:00') AND
 P.ID_DESPACHO IN (".$segmento[$i][3].")
 GROUP BY
  FECHA_ARRIBO ASC";	
  
- $query2 = $db->sqlQuery($sql2);
+
+		$query2 = $db->sqlQuery($sql2);
 	$count2 = $db->sqlEnumRows($query2);
 			if($count2>0){
 				while($row2 = $db->sqlFetchArray($query2)){
-				$cantidad=$cantidad+1;
-				$color1='';
-				$color='';$cuenta=0;
+					$act_color=0;	
+					$flag_ini=0;
+					$flag_ini1=0;
 				for($k=$limit1;$k<$lim;$k++){
+					
 					$rest=$row2['MINI']-$frac[$k];
-					
-					
-					
-					if(($row2['MINI']<$frac[$k]) || ($row2['MINI']==$frac[$k])||$rest<1800){
+					$rest1=$row2['ENT']-$frac[$k];
 						
-							
-							if(($row2['MINI']==$frac[$k])&& $marc==0 ||$band1==1 && $marc==0){
-							 $marc1=$marc1+1;
-							 //echo $row2['MAXI'].'-'.$frac[$k].'=';
-							 $rest1=$row2['MAXI']-$frac[$k];
-					
-							$band1=1;
-							//temperatura
-							//obtiene la temperatura
-							//$ip = $funciones_cv->dame_ip($row2['COD_ENTITY'],$frac[$k],&$hora);
-						    //echo $ip." ---" .$dayhr.'-- '.$hora;
-						   // $temperatura.= $funciones_cv->dame_temperatura($dayhr.' '.$hora,$ip).",";
-							/////------------------------------------------QUERY
-							$qry="SELECT ID_ENTREGA, FECHA_ENTREGA, FECHA_FIN, FECHA_ARRIBO,
-								FECHA_SALIDA, TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME)) AS EP,
-								TIME_TO_SEC(CAST(FECHA_FIN AS TIME)) AS FP,
-								TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME)) AS ER,
-								TIME_TO_SEC(CAST(FECHA_SALIDA AS TIME)) AS AFR, 
-								IF((".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME))) AND 
-								  (".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME))) AND 
-								  (".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_FIN AS TIME))) AND (".$frac[$k]." <= TIME_TO_SEC(CAST(IF(FECHA_SALIDA='0000-00-00 00:00:00',CURRENT_TIMESTAMP,FECHA_SALIDA) AS TIME))),'#336600',
-							
-							IF((".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME))) AND 
-								  (".$frac[$k]." >= TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME))) AND 
-								  (".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_FIN AS TIME))) AND (".$frac[$k]." <= TIME_TO_SEC(CAST(IF(FECHA_SALIDA='0000-00-00 00:00:00',CURRENT_TIMESTAMP,FECHA_SALIDA) AS TIME))),'#336600',
-							   IF((".$frac[$k]." > TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME))) AND 
-								  (".$frac[$k]." = TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME))) AND 
-								  (".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_FIN AS TIME))) AND (".$frac[$k]." <= TIME_TO_SEC(CAST(IF(FECHA_SALIDA='0000-00-00 00:00:00',CURRENT_TIMESTAMP,FECHA_SALIDA) AS TIME))),'#b12300',  
-							  IF((".$frac[$k]." > TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME))) AND 
-								  (".$frac[$k]." > TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME))) AND 
-								  (".$frac[$k]." < TIME_TO_SEC(CAST(FECHA_FIN AS TIME))) AND (".$frac[$k]." < TIME_TO_SEC(CAST(IF(FECHA_SALIDA='0000-00-00 00:00:00',CURRENT_TIMESTAMP,FECHA_SALIDA) AS TIME))),'#336600', 
-							  IF((".$frac[$k]." > TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME))) AND 
-								  (".$frac[$k]." > TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME))) AND 
-								  (".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_FIN AS TIME))) AND (".$frac[$k]." = TIME_TO_SEC(CAST(IF(FECHA_SALIDA='0000-00-00 00:00:00',CURRENT_TIMESTAMP,FECHA_SALIDA) AS TIME))),'#336600', '#b12300'
-							))
-							)
-							)) as RESULTADO FROM DSP_ITINERARIO WHERE
-								ID_ENTREGA =".$row2['ID_ENTREGA'];
-							
-							$query5 = $db->sqlQuery($qry);
-							$count5 = $db->sqlEnumRows($query5);
-			
-							while($row5 = $db->sqlFetchArray($query5)){
-								
-								 $color.=$row5['RESULTADO'].',';
-								
-								}
-							
-							/////-----------------------------------------------
-							if(($row2['MAXI']==$frac[$k])&& $band2==0 ){
-								$marc=1;
-								$band2=1;
-								 $da=$marc1;
-								$sombra=$sombra+$da;
-								$color1=explode(',',$color);
-						        //$temp1=explode(',',$temperatura);
-								 
-								for($p=0;$p<$da;$p++){
-								
-								$cuenta=$cuenta+1;
-								if($da!=1){
-									if($cuenta<$da){
-										if($cuenta==1){
-								
-								$unidad.="<td  align='center'   class='car'  style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-											
-											}else{
-											
-									$unidad.="<td  align='center'    style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-											}
-										}else{
-											$unidad.="<td  align='center' class='car1'   style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-
-										} }else{
-											$unidad.="<td  align='center' class='car2'    style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='font-size:10px; left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-
-											
-								}
-								
-								
-								}
-								 
-								$limit1=$k+1;
-							}	
-							
-							if(($rest1<=1800)&& $band2==0 ){
-							$band2=1;
-							$marc=1;
-
-							 $da=$marc1;
-							$sombra=$sombra+$da;
-							$color1=explode(',',$color);
-				  for($p=0;$p<$da;$p++){
-								
-								$cuenta=$cuenta+1;
-								if($da!=1){
-									if($cuenta<$da){
-										if($cuenta==1){
-								
-								$unidad.="<td  align='center'   class='car'  style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-											
-											}else{
-											
-									$unidad.="<td  align='center'    style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-											}
-										}else{
-											$unidad.="<td  align='center' class='car1'   style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-
-										} }else{
-											$unidad.="<td  align='center' class='car2'    style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='font-size:10px; left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-
-											
-								}
-								
-								
-								}
-								 		$limit1=$o+1;
-								}
-							
+						if($rest1<=1800 && $rest>=1800){//------ VALIDA RETARDO
+							$unidad.="<td align='center' bgcolor='#B40404' style=' border-style: dashed; border-left : 0px dashed #B40404; border-width: 1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#B40404; border-style:hidden; width:3px;' readonly='readonly' ></td>";
+							$act_color=1;
 							}else{
-						
-						if(($row2['MINI']<$frac[$k]) && $marc==0 && $band1==0|| $rest<1800 && $marc==0 && $band1==0 ){
-						  $marc1=$marc1+1;
-						   //	echo $row2['MAXI'].'-'.$frac[$k].'=';
-						//	echo 
-							//echo '!!';
-						$rest1=$row2['MAXI']-$frac[$k];
-						
-						// temperatura
-						//obtiene la temperatura
-							//$ip = $funciones_cv->dame_ip($row2['COD_ENTITY'],$frac[$k],&$hora);
-						    //echo $ip." ---" .$dayhr.'-- '.$hora;
-						    //$temperatura.= $funciones_cv->dame_temperatura($dayhr.' '.$hora,$ip).",";
-						
-						/////------------------------------------------QUERY
-				 $qry1="SELECT ID_ENTREGA, FECHA_ENTREGA, FECHA_FIN, FECHA_ARRIBO,
-								FECHA_SALIDA, TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME)) AS EP,
-								TIME_TO_SEC(CAST(FECHA_FIN AS TIME)) AS FP,
-								TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME)) AS ER,
-								TIME_TO_SEC(CAST(FECHA_SALIDA AS TIME)) AS AFR, 
-								IF((".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME))) AND 
-								  (".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME))) AND 
-								  (".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_FIN AS TIME))) AND (".$frac[$k]." <= TIME_TO_SEC(CAST(IF(FECHA_SALIDA='0000-00-00 00:00:00',CURRENT_TIMESTAMP,FECHA_SALIDA) AS TIME))),'#336600',
 							
-							IF((".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME))) AND 
-								  (".$frac[$k]." >= TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME))) AND 
-								  (".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_FIN AS TIME))) AND (".$frac[$k]." <= TIME_TO_SEC(CAST(IF(FECHA_SALIDA='0000-00-00 00:00:00',CURRENT_TIMESTAMP,FECHA_SALIDA) AS TIME))),'#336600',
-							   IF((".$frac[$k]." > TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME))) AND 
-								  (".$frac[$k]." = TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME))) AND 
-								  (".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_FIN AS TIME))) AND (".$frac[$k]." <= TIME_TO_SEC(CAST(IF(FECHA_SALIDA='0000-00-00 00:00:00',CURRENT_TIMESTAMP,FECHA_SALIDA) AS TIME))),'#b12300',  
-							  IF((".$frac[$k]." > TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME))) AND 
-								  (".$frac[$k]." > TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME))) AND 
-								  (".$frac[$k]." < TIME_TO_SEC(CAST(FECHA_FIN AS TIME))) AND (".$frac[$k]." < TIME_TO_SEC(CAST(IF(FECHA_SALIDA='0000-00-00 00:00:00',CURRENT_TIMESTAMP,FECHA_SALIDA) AS TIME))),'#336600', 
-							  IF((".$frac[$k]." > TIME_TO_SEC(CAST(FECHA_ENTREGA AS TIME))) AND 
-								  (".$frac[$k]." > TIME_TO_SEC(CAST(FECHA_ARRIBO AS TIME))) AND 
-								  (".$frac[$k]." <= TIME_TO_SEC(CAST(FECHA_FIN AS TIME))) AND (".$frac[$k]." = TIME_TO_SEC(CAST(IF(FECHA_SALIDA='0000-00-00 00:00:00',CURRENT_TIMESTAMP,FECHA_SALIDA) AS TIME))),'#336600', '#b12300'
-							))
-							)
-							)) as RESULTADO FROM DSP_ITINERARIO WHERE
-								ID_ENTREGA =".$row2['ID_ENTREGA'];
-							
-							$query4 = $db->sqlQuery($qry1);
-							$count4 = $db->sqlEnumRows($query4);
-			
-							while($row4 = $db->sqlFetchArray($query4)){
-								
-								 $color.=$row4['RESULTADO'].',';
-								
-								}
-							
-							/////-----------------------------------------------
 						
-						
-						
-						
-							if(($rest1<1800) ){
-							$marc=1;
-							 $da=$marc1;
-							 $sombra=$sombra+$da;
-								//$temperatura=',';
-								$color1=explode(',',$color);
-								//$temp1=explode(',',$temperatura);
-								for($p=0;$p<$da;$p++){
+								if($rest<=1800){
 								
-								$cuenta=$cuenta+1;
-								if($da!=1){
-									if($cuenta<$da){
-										if($cuenta==1){
-								
-								$unidad.="<td  align='center'   class='car'  style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
+									if($act_color==0){$color1='#336600';}else{$color1='#B40404';}
+									$rest2=$row2['MAXI']-$frac[$k];
+										
+										if($rest2<=1800&&$rest<=1800){
 											
-											}else{
-											
-									$unidad.="<td  align='center'    style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-											}
+												if($flag_ini==0){	
+													$unidad.="<td  align='center'   class='car2'  style=' background-color:".$color1."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$row2['DESCRIPCION']."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";		
+														$limit1=$k;
+														$k=$k+$lim; //-------STOP
+													}else{
+															$unidad.="<td  align='center'   class='car1'  style=' background-color:".$color1."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$row2['DESCRIPCION']."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";		
+															$limit1=$k;
+															$k=$k+$lim;//-------STOP
+														}
 										}else{
-											$unidad.="<td  align='center' class='car1'   style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-
-										} }else{
-											$unidad.="<td  align='center' class='car2'    style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='font-size:10px; left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-
-											
-								}
-								
-								
-								}
-								 
-							
-							$limit1=$k+1;
-							}else{
-								if($k==$lim-1){
-								$marc=1;
-								 $da=$marc1;
-								 $sombra=$sombra+$da;
-							
-								$color1=explode(',',$color);
-								//echo $color1;
-								for($p=0;$p<$da;$p++){
-								
-								$cuenta=$cuenta+1;
-								if($da!=1){
-									if($cuenta<$da){
-										if($cuenta==1){
-								
-								            $unidad.="<td  align='center'   class='car'  style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-											
+											if($flag_ini==0){
+												$unidad.="<td  align='center'   class='car'  style=' background-color:".$color1."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$row2['DESCRIPCION']."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";	
+											$flag_ini=1;
 											}else{
+												$unidad.="<td  align='center'  style=' background-color:".$color1."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$row2['DESCRIPCION']."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";	
 											
-									$unidad.="<td  align='center'    style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
 											}
-										}else{
-											$unidad.="<td  align='center' class='car1'   style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-
-										} }else{
-											$unidad.="<td  align='center' class='car2'    style=' background-color:".$color1[$p]."; border-right:1px dashed black; border-style: dashed; border-left:0px; border-width: 0px; border-top : 0px dashed white;  border-bottom : 0px dashed white;'  id='toltip'><a href='#' class='tooltip' > <input type='text' style=' background-color:".$color1[$p]."; border-style:hidden; width:5px;' readonly='readonly' ><span  class='ui-corner-all' style='font-size:10px; left:250px; top:340px; height:inherit; z-index:999; position:absolute;'><table boder='0' ><tr><th>Unidad:</th><td>".$segmento[$i][1]."</td></tr><tr><th>GeoPunto:</th><td>".$userAdmin->codif($row2['DESCRIPTION'])."</td></tr><tr><th>Fecha/Hora llegada:</th><td>".$row2['FECHA_ARRIBO']."</td></tr><tr><th>Fecha/Hora salida:</th><td>".$row2['FECHA_SALIDA']."</td></tr></table></span></a></td>";
-
 											
-								}
-								
-								
-								}
-								 
-								 
-								$limit1=$k+1;
-								}
+										}
+									
+									}else{
+										
+										$unidad.="<td align='center' bgcolor='#A0A0A0' style=' border-style: dashed; border-left : 0px dashed #A0A0A0; border-width: 1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";
+										
+									}
+					
+						}//-------- VALIDA RETARDO
+					
+					
+					}//for
+					
+					
+					if($limit1<=$lim){///-------------VALIDA SI SE TERMINO DE PINTAR LA FILA
+					echo $marc2.','.$lim.',';
+						for($p=$limit1;$p<$lim-1;$p++){
 							
-								}
-						
-							}
-							}
-						
-						
-						}else{
-							
-							
-					$conta++;
-							//$nup=$limit-$da;
-							//echo $da.'s'.$conta.'!|';
-							if($conta>=$lim+1){
-								break;
-								}
-						//if($userAdmin->codif($row2['DESCRIPTION'])!=$data_new) {$cont_part=$cont_part+1;}
-						
-						
-							//$parte3=explode(',',$cad_plan);
-							//$num_part3=count($parte3);
-							//for($y=0;$y<$num_part3-1;$y++){
-								$valor='|'.$k.',';
-			
-						
-							 if (strstr($cad_plan,$valor)){
-       						  
-							     $unidad.="<td align='center' bgcolor='#b12300' style=' border-style: dashed; border-left : 0px dashed #b12300; border-width:1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#b12300; border-style:hidden; width:3px;' readonly='readonly' ></td>";	
-							
-  							  }else{
-						
-							
-						
-						if($put_ban==0){
-							if($conta==$lim){
-							$unidad.="<td align='center' bgcolor='#A0A0A0' style='border-color:#FF0000; border-style: solid; border-left : 0px dashed #A0A0A0; border-width: 2px; border-top : 0px dashed white;   border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";
-
+							if($p==$lim-2){
+							$unidad.="<td align='center' bgcolor='#A0A0A0' style=' border-color:#FF0000; border-style: solid; border-left : 0px dashed #FFFFFF; border-width: 2px; border-top : 0px dashed white;  border-bottom : 1px dashed black;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";
 							}else{
-								$unidad.="<td align='center' bgcolor='#A0A0A0' style=' border-style: dashed; border-left : 0px dashed #A0A0A0; border-width:1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";	
+								$unidad.="<td align='center' bgcolor='#A0A0A0' style=' border-style: dashed; border-left : 0px dashed #A0A0A0; border-width: 1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";
+								
 								}
-							}
-							//$user =true;
-						//	$pass =true;
-
-							}
-		
 							
-							}
+						}
+					}////-------------VALIDA SI SE TERMINO DE PINTAR LA FILA
 					
-
-					}
 					
-				$marc1=0;
-				$marc=0;
-				$band1=0;
-			$band2=0;
-				if($cantidad==$count2){
-					$sumar=$conta+$sombra;
 					
-				
-				if($sumar<$lim){
-					$restar=$lim-$sumar;
-					//echo $restar.'s'.$limit.'!|'.$conta.'*'. $sombra.'*';
-				for($com=0;$com<$restar;$com++){
-					if($com==$restar-1){
-							$unidad.="<td align='center' bgcolor='#A0A0A0' style='border-color:#FF0000; border-style: solid; border-left : 0px dashed #A0A0A0; border-width: 2px; border-top : 0px dashed white;   border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";
-
-					}else{
-		$unidad.="<td align='center' bgcolor='#A0A0A0' style=' border-style: dashed; border-left : 0px dashed #A0A0A0; border-width: 1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";	}
-				}
-					
-					}
-				
-					}
-				
-				}
-				
-			}else{
+			}//while
+			}/*else{
 			
 		
 				
@@ -707,42 +485,61 @@ GROUP BY
 			$valor='|'.$l.',';
 			
 						
-		if (strstr($cad_plan,$valor)){
-       						  
-							     $unidad.="<td align='center' bgcolor='#b12300' style=' border-style: dashed; border-left : 0px dashed #b12300; border-width:1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#b12300; border-style:hidden; width:3px;' readonly='readonly' ></td>";	
-							
-  							  }else{
-			
-				if($l==$lim-1){
+					if (strstr($cad_plan,$valor)){
+										  
+											 $unidad.="<td align='center' bgcolor='#b12300' style=' border-style: dashed; border-left : 0px dashed #b12300; border-width:1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#b12300; border-style:hidden; width:3px;' readonly='readonly' ></td>";	
+										
+										}else{
 				
-				
-						$unidad.="<td align='center' bgcolor='#A0A0A0' style='border-color:#FF0000; border-style: solid; border-left : 0px dashed #A0A0A0; border-width: 2px; border-top : 0px dashed white;   border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";
-
-				}else{
-					$unidad.="<td align='center' bgcolor='#A0A0A0' style=' border-style: dashed; border-left : 0px dashed #A0A0A0; border-width: 1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";	
-				}
-				
-				
-				}
-				
-				}
-			
-			}	
-			
-			if($lim<$limit){
-			
-					$restar=$limit-$lim;
-					//echo $restar.'s'.$limit.'!|'.$conta.'*'. $sombra.'*';
-				for($com=0;$com<$restar;$com++){
-					
-					$unidad.="<td align='center' bgcolor='#A0A0A0' style=' border-style: dashed; border-left : 0px dashed #A0A0A0; border-width: 1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";	
-					}
-
+										if($l==$lim-1){
+										
+										
+												$unidad.="<td align='center' bgcolor='#A0A0A0' style='border-color:#FF0000; border-style: solid; border-left : 0px dashed #A0A0A0; border-width: 2px; border-top : 0px dashed white;   border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";
 						
-				}
+										}else{
+											$unidad.="<td align='center' bgcolor='#A0A0A0' style=' border-style: dashed; border-left : 0px dashed #A0A0A0; border-width: 1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";	
+										}
+					
+									}
+					}//Forrr
+			
+			}*/	//else
 			
 			
-			$unidad.="</tr><tr>";
+			///----------------------------------------------------- CUAERDAS 
+					/*if($lim<$limit){
+					
+							$restar=$limit-$lim;
+							
+						for($com=0;$com<$restar;$com++){
+							
+							$unidad.="<td align='center' bgcolor='#A0A0A0' style=' border-style: dashed; border-left : 0px dashed #A0A0A0; border-width: 1px; border-top : 0px dashed white;  border-bottom : 0px dashed white;' ><input type='text' style=' background-color:#A0A0A0; border-style:hidden; width:3px;' readonly='readonly' ></td>";	
+							}
+		
+								
+						}
+			*/
+			
+			$unidad.="</tr><tr>";	
+			
+		
+				
+		
+				
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			echo 'hasta aqui';
+			
 		
 			///////-----------------------------------------------------------------------------------------------tercera linea
 			
@@ -947,6 +744,8 @@ GROUP BY
 						'HIST'          => $cadentab3
 						
 					)); 
+					
+					
 						$tpl->pparse('mViajeConst');*/
 $db->sqlClose();
 ?>

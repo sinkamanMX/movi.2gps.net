@@ -138,7 +138,7 @@ if(result == 0){
    <tr>
    <td width="2%">Nombre:</td>
    <td width="25%">
-   <input type="text" id="dsp" name="cnt" class="caja_txt" maxlength="45" value="{DSP}"/>
+   <input type="text" id="vj" name="cnt" class="caja_txt" maxlength="45" value="{DSP}"/>
    </td>   
    <td width="5%">Fecha Inicio:</td>
    <td width="25%">
@@ -265,9 +265,9 @@ if(result == 0){
     	
    <table width="98%" style="z-index:100;">
    <tr>
-   <td> &nbsp;</td>
+   <td>&nbsp; </td>
    <td >
-   <select class="caja" name="tip_clits" id="tip_clits" >
+   <select class="caja" name="tip_clits" id="tip_clits" onchange="change_tipo_geo(this.value)">
 	<option value="-1"  >Tipo Punto de Interes</option>
     <option  value="1">GeoPunto</option>
      <option  value="2">Recurso Humano</option>
@@ -286,13 +286,17 @@ if(result == 0){
    </td>   
    </tr>
    <tr>
-   <td> &nbsp;</td>
+   <td>&nbsp; </td>
    <td >
     <input type="hidden" id="dt_cte" />
    <div id="cbo_cliente" style="z-index:100;">
     <!-- BEGIN dt_b_2 --> 
     <input type="hidden" id="data_busc_rh" value="{dt_b_2.dat}" />
      <!-- END dt_b_2 --> 
+     
+        <!-- BEGIN dt_b_3 --> 
+    <input type="hidden" id="data_b_rh" value="{dt_b_3.dat}" />
+     <!-- END dt_b_3 --> 
   
 <div class="ui-corner-all" style="border:#CCC solid thin; width:205px; ">
 <div style="height:26px; width:205px; border-bottom:#CCC solid thin;">
@@ -305,7 +309,15 @@ if(result == 0){
 	<!-- BEGIN dt2 -->      
     <option  value="{dt2.IDC}¬{dt2.LAT}¬{dt2.LON}¬{dt2.RDO}">{dt2.CTE}</option>
     <!-- END dt2 --> 
-</select></div>
+</select>
+
+<select class="caja" name="cte_3" id="cte_3" style="border:#FFF; width:100%; display:none;" disabled>
+	<option value="0"  >Seleccione un cliente</option>
+	<!-- BEGIN dt_4_21 -->      
+    <option  value="{dt_4_21.IDC}¬{dt_4_21.LAT}¬{dt_4_21.LON}¬{dt_4_21.RDO}">{dt_4_21.CTE}</option>
+    <!-- END dt_4_21 --> 
+</select>
+</div>
 </div>
 <!--nuevo combo cliente autocompletador-->   
    </div>
@@ -313,7 +325,7 @@ if(result == 0){
    <td rowspan="0" colspan="2" valign="middle"><textarea id="obs"  cols="40" style="width:98%; height:98%; vertical-align:middle " placeholder="Anote sus Observaciones"></textarea></td>
    </tr>
    <tr>
-   <td> &nbsp;</td>
+   <td>&nbsp; </td>
    <td >&nbsp;</td>
    <td> <input type="text" class="caja_txt" id="delivery-date"  readonly="readonly" onchange="validar_dte()" placeholder="Fecha de Entrega"   /></td>
    <td ><input type="text" class="caja_txt" id="release_date"  readonly="readonly" placeholder="Fecha de Salida" /></td>
@@ -365,7 +377,7 @@ if(result == 0){
     <div style="float:left; width:85%; height:35%; {DSP_DOS}; " id="dos" >
 
    <tr >
-   <td style="{DSP_DOS};"> &nbsp;</td>
+   <td style="{DSP_DOS};">&nbsp; </td>
      <td >    
 
     

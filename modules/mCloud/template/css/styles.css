@@ -130,7 +130,7 @@
 		
 		
 			.caj_dia{
-  display: block;
+	  display: block;
   border: 1px solid silver;
   background: linear-gradient(#eee, #fff);
   transition: all 0.3s ease-out;
@@ -145,3 +145,24 @@
   background-position: 0 -1.7em;
 }
 	
+#column1{
+  border:#A6C9E2 solid 1px; 
+  position:relative; 
+  top:4%; left:1%;
+  width:260px; 
+  height:90%; 
+  overflow-x:auto; 
+  overflow-y:auto;
+  float:left;
+}
+
+#derecho{
+  border:#A6C9E2 solid 1px;
+  position:relative; 
+  top:4%; left:2%;
+   width:70%; 
+  height:90%; 
+  overflow-x:auto; 
+  overflow-y:auto;
+  float:left;
+}
