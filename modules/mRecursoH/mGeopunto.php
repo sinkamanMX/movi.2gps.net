@@ -26,12 +26,19 @@
 
 	if($_GET['op']==2){
 		//DATOS GENERALES
-		$sql_a  = "SELECT * FROM ADM_RH WHERE ID_OBJECT_MAP = ".$_GET['id'];
+		$sql_a  = "SELECT * FROM ADM_GEOREFERENCIAS WHERE ID_OBJECT_MAP = ".$_GET['id'];
 		$qry_a = $db->sqlQuery($sql_a);
 		$cnt_a = $db->sqlEnumRows($qry_a);
 		
 		if($cnt_a > 0){
 			$row_a = $db->sqlFetchArray($qry_a);
+			
+			$lus = ex_qry("ID_USUARIO","ADM_RH_USUARIO"," WHERE ID_RH = ".$_GET['id']);
+			$lus = ($lus!="")?$lus:0;
+			$lud = ex_qry("ID_USUARIO","ADM_USUARIOS"," WHERE ID_CLIENTE = ".$cod_client." AND ID_USUARIO NOT IN (".$lus.")");
+			
+			$usr_d = $dbf->dragndrop("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS"," WHERE ESTATUS='Activo' AND ID_CLIENTE =".$cod_client,$lus,"");
+			$usr_s = $dbf->dragndrop("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS"," WHERE ESTATUS='Activo' AND ID_CLIENTE =".$cod_client,$lud,"");
 			
 
 			
@@ -42,7 +49,8 @@
 				'COR'	=>	$row_a['CORREO'],
 				'CEL'	=>	$row_a['CELULAR'],
 				'TWT'	=>	$row_a['TWITTER'],
-				
+				'USD'      	=> $usr_d,
+				'USS'      	=> $usr_s,				
 				'OP'	=>  $_GET['op']
 				));
 			
@@ -51,8 +59,10 @@
 
 		
 		}else{
+			$usr = $dbf->dragndrop("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS"," WHERE ESTATUS='Activo' AND ID_CLIENTE =".$cod_client,"","");
 			$tpl->assign_vars(array(
-				'OP'	=>  $_GET['op']
+				'OP'	=> $_GET['op'],
+				'USD'	=> $usr
 				));
 			}
 	
@@ -89,7 +99,7 @@
 		//PDIs seleccionados
 		$sql_s = "SELECT G.ID_OBJECT_MAP,G.DESCRIPCION,G.LATITUDE,G.LONGITUDE FROM ADM_GEOREFERENCIAS G 
 		INNER JOIN ADM_RH_PDI P ON P.ID_OBJECT_MAP=G.ID_OBJECT_MAP
-		WHERE P.ID_RH = ".$_GET['id']." ORDER BY P.ORDEN"; 
+		WHERE G.TIPO != 'RH' AND P.ID_RH = ".$_GET['id']." ORDER BY P.ORDEN"; 
 		$qry_s = $db->sqlQuery($sql_s);
 		$cnt_s = $db->sqlEnumRows($qry_s);
 		$ps = "";
@@ -124,7 +134,7 @@
 		));
 		}
 	}
-	$sql_v  = "SELECT ID_OBJECT_MAP,DESCRIPCION,LATITUDE,LONGITUDE FROM ADM_GEOREFERENCIAS WHERE ID_CLIENTE = ".$cod_client.$ps." ORDER BY DESCRIPCION;";
+	$sql_v  = "SELECT ID_OBJECT_MAP,DESCRIPCION,LATITUDE,LONGITUDE FROM ADM_GEOREFERENCIAS WHERE TIPO != 'RH' AND  ID_CLIENTE = ".$cod_client.$ps." ORDER BY DESCRIPCION;";
 	$qry_v = $db->sqlQuery($sql_v);
 	$cnt_v = $db->sqlEnumRows($qry_v);
 	
@@ -182,4 +192,20 @@ function comparar($x,$y){
 		}
 	}	
 
+
+	 function ex_qry($id,$tbl,$w){
+		global $db;
+		$lp = "";
+		$sql = "SELECT ".$id." AS ID FROM ".$tbl.$w;
+		$qry = $db->sqlQuery($sql);
+		$cnt = $db->sqlEnumRows($qry);
+		if($cnt>0){
+			while($row = $db->sqlFetchArray($qry)){
+				$lp .= ($lp=="")?$row['ID']:",".$row['ID'];
+				}
+			}
+		return($lp);	
+		}
+
 ?>
+

@@ -12,6 +12,9 @@
 		
 	$emp = $userAdmin->user_info['ID_EMPRESA'];
 	$cte = $userAdmin->user_info['ID_CLIENTE'];
+	
+	$db ->sqlQuery("SET NAMES 'utf8'");
+	
 	$tpl->set_filenames(array('mFormulariop' => 'tFormulariop'));
 	
 	$idt = "";

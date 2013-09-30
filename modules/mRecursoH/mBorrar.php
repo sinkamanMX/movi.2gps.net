@@ -55,7 +55,8 @@ if(!$userAdmin->u_logged()){echo '<script>window.location="index.php?m=login"</s
 		}
 
 //Borrar rh.	
- $sql_d="DELETE FROM ADM_RH WHERE ID_OBJECT_MAP =".$_GET['id'];
+// $sql_d="DELETE FROM ADM_RH WHERE ID_OBJECT_MAP =".$_GET['id'];
+ $sql_d="DELETE FROM ADM_GEOREFERENCIAS WHERE ID_OBJECT_MAP =".$_GET['id'];
 				if ($qry_d = $db->sqlQuery($sql_d)){
 					echo 1;
 					}

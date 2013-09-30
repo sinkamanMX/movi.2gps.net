@@ -31,6 +31,13 @@
 		if($cnt_a > 0){
 			$row_a = $db->sqlFetchArray($qry_a);
 			
+			$lus = ex_qry("ID_USUARIO","ADM_RH_USUARIO"," WHERE ID_RH = ".$_GET['id']);
+			$lus = ($lus!="")?$lus:0;
+			$lud = ex_qry("ID_USUARIO","ADM_USUARIOS"," WHERE ID_CLIENTE = ".$cod_client." AND ID_USUARIO NOT IN (".$lus.")");
+			
+			$usr_d = $dbf->dragndrop("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS"," WHERE ESTATUS='Activo' AND ID_CLIENTE =".$cod_client,$lus,"");
+			$usr_s = $dbf->dragndrop("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS"," WHERE ESTATUS='Activo' AND ID_CLIENTE =".$cod_client,$lud,"");
+			
 			$aes = ($row_a['ITI_AUTO_E_S_GPS']=='S')?'checked="checked"':'';
 			$nen = ($row_a['ITI_NOTI_ENTRADA']=='S')?'checked="checked"':'';
 			$nsa = ($row_a['ITI_NOTI_SALIDA']=='S')?'checked="checked"':'';
@@ -55,6 +62,9 @@
 				'NSA'	=>	$nsa,
 				'NAT'	=>	$nat,
 				'NVR'	=>	$nvr,
+				
+				'USD'      	=> $usr_d,
+				'USS'      	=> $usr_s,
 				
 				'OP'	=>  $_GET['op']
 				));
@@ -113,8 +123,10 @@
 		}		
 		
 		}else{
+			$usr = $dbf->dragndrop("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS"," WHERE ESTATUS='Activo' AND ID_CLIENTE =".$cod_client,"","");
 			$tpl->assign_vars(array(
-				'OP'	=>  $_GET['op']
+				'OP'	=>  $_GET['op'],
+				'USD'	=> $usr
 				));
 			}
 	
@@ -240,5 +252,17 @@ function comparar($x,$y){
 		return 0;
 		}
 	}	
-
+	 function ex_qry($id,$tbl,$w){
+		global $db;
+		$lp = "";
+		$sql = "SELECT ".$id." AS ID FROM ".$tbl.$w;
+		$qry = $db->sqlQuery($sql);
+		$cnt = $db->sqlEnumRows($qry);
+		if($cnt>0){
+			while($row = $db->sqlFetchArray($qry)){
+				$lp .= ($lp=="")?$row['ID']:",".$row['ID'];
+				}
+			}
+		return($lp);	
+		}
 ?>

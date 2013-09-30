@@ -4,6 +4,7 @@
   <ul>
     <li><a href="#geo_tabs1">Datos Generales</a></li>
     <li><a href="#geo_tabs2" onClick="">Ubicaci&oacute;n</a></li>
+    <li><a href="#geo_tabs5">Cartera</a></li>
     <li><a href="#geo_tabs3">Cuestionarios</a></li>
     <li><a href="#geo_tabs4" onClick="lay();">Payload</a></li>
   </ul>
@@ -238,7 +239,62 @@
     </div>
   
   </div><!--tabs3-->
-  <div id="geo_tabs4"></div><!--tabs4-->
+  <div id="geo_tabs4">
+  <br><br><br>
+  <h2 align="center" style="color:#CCC;">Seleccione al menos un cuestionario</h2>
+  </div><!--tabs4-->
+<div id="geo_tabs5">
+  <div style="position:absolute; width:98%; height:90%;">
+    
+    <!--Usuarios disponibles-->
+    <div style=" width:49.5%; height:100%; float:left; border:#00F0F0 solid thin;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">Usuarios Disponibles</span>
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(1,this.value);" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
+    <div id="geo_usr_dsp" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+    {USD}
+    </div>
+    </div>
+    </div>   
+    <!--usuarios disponibles-->
+    <!--usuarios seleccionados-->
+    <div style="width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+    <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+    <span class="ui-dialog-title">Usuarios Seleccionados</span>
+    <!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>-->
+    </div>
+    <!--Buscador-->
+    <div>
+    <div style="width:96%;">
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(2,this.value)" style="width:90%;"/>
+    </div>
+    <div style="width:3%; position:relative; left:96%; top:-20px;">
+    <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+    </div>
+    </div>
+    <!--Buscador-->
+    <!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
+    
+    <div id="geo_usr_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+    {USS}
+    </div>
+    </div>
+    <!--</div>-->
+    <!--cuestionarios seleccionados-->
+    
+    </div>
+  </div><!--geo_tabs5-->  
 </div>
 <script>
 //$(document).ready(function(){

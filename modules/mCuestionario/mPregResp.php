@@ -9,27 +9,7 @@
 **/
 header("Content-Type: text/html;charset=utf-8");
 
-/*$db     = mysql_connect($config_bd['host'], $config_bd['user'],$config_bd['pass']);
-
-$result = '';
-
-	mysql_query("SET NAMES 'utf8'");
-	mysql_select_db($config_bd['bname'], $db); 
-	$sql = mysql_query("SELECT P.DESCRIPCION AS PREGUNTA,
-	IF(TP.MULTIMEDIA=0,PR.RESPUESTA,CONCAT('<img src=\"',PR.RESPUESTA,'\" style=\"width:100px; height:100px;\" onclick=\"qst_ver_img(\'',PR.RESPUESTA,'\',this.id)\" id=\"',".$_GET['idrc'].",'
-	\">')) AS RESPUESTA
-	FROM CRM2_PREGUNTAS P 
-	INNER JOIN CRM2_TIPO_PREG TP ON P.ID_TIPO = TP.ID_TIPO
-	INNER JOIN CRM2_PREG_RES  PR ON PR.ID_PREGUNTA=P.ID_PREGUNTA
-	INNER JOIN CRM2_CUESTIONARIO_PREGUNTAS CP ON P.ID_PREGUNTA = CP.ID_PREGUNTA
-	WHERE PR.ID_RES_CUESTIONARIO = ".$_GET['idrc']."
-	GROUP BY P.ID_PREGUNTA
-	ORDER BY CP.ORDEN", $db);
-	while($row = mysql_fetch_array($sql)){
-		$result[] = $row; // Inside while loop
-		}
-	echo json_encode( $result = array('aaData'=>$result ) );	 	
-	$db->sqlClose();*/	
+$db ->sqlQuery("SET NAMES 'utf8'");
  
 $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);
 	if(!$userAdmin->u_logged())

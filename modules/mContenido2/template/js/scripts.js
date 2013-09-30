@@ -523,6 +523,8 @@ barra_progress();
 		if (ajax.readyState==4) {
 				var result =ajax.responseText;
 				//alert(result);
+				
+				console.log(result);
 				if(result != 0){
 					$('#list_formas_xc').html(ajax.responseText);
 					tigra_tables('MyDataxc', 0, 0, '#ffffff', '#DDD', '#AEC7F3', '#5283D8');
@@ -926,7 +928,7 @@ function nuevo(und){
  ajax.onreadystatechange=function() {
   	 if (ajax.readyState==4) {
 		var result=ajax.responseText;
-		//console.log(result);
+		
 		  $('#dialog').html('');
 		  //$('#dialog').dialog('open');
 		 
@@ -4813,7 +4815,7 @@ case 1:
 			document.getElementById('fec').style.display='';
 			document.getElementById('comb').style.display='none';
 			document.getElementById('comb2').style.display='none';
-  cap_map_pan(0);
+  r_filtro1();
 break;
 case 2:
 			 document.getElementById('tabs-01').style.display = 'none'; 

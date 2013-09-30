@@ -124,7 +124,7 @@
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="geo_devd_table" width="100%" height="100%">
 <thead>
 <tr>
-<th colspan="5"><strong>Detalle evidencias</strong><button class="edit small_btn" onclick="geo_fedit_pr();" title="Editar" style="float:right;"></button></th>
+<!--<th colspan="5"><strong>Detalle evidencias</strong><button class="edit small_btn" onclick="geo_fedit_pr();" title="Editar" style="float:right;"></button></th>-->
 </tr>
 
 <tr>	

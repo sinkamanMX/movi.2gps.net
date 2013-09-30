@@ -3,17 +3,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript" src="{PATH}/js/scripts.js"></script>
 
-<div style="width:100%; height:100%; border:#066 solid thin;" id="geo_main">
+<div style="width:100%; height:100%; border:#066 solid thin;" id="rh_main">
 
 
-                      <!--  ---------------------------------panel x------------------------------------- -->  
-<div id="panelgeos" class="ui-corner-all" style="width:44.5%; height:100%; position:relative; float:left;"  >
+<!--  ---------------------------------panel x------------------------------------- -->  
+<div id="panelrh" class="ui-corner-all" style="width:44.5%; height:100%; position:relative; float:left;"  >
 
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="rh_table" width="100%">
 <thead>
 <tr>
 <th colspan="5"><div style="width:79%; float:left;"><h3>Recurso Humano</h3></div>
-<div style="width:20%;  float:right;"><button class="boton" id="geo_add" onClick="rh_nuevo(1,-1);">Nuevo</button><!--<button class="import small_btn" onclick="geo_imp_for();" title="Importar"></button>--></div></th>
+<div style="width:20%;  float:right;"><button class="boton" id="rh_add" onClick="rh_nuevo(1,-1);">Nuevo</button><!--<button class="import small_btn" onclick="geo_imp_for();" title="Importar"></button>--></div></th>
 </tr>
 <tr>
 <th></th>	
@@ -28,32 +28,19 @@
 </tr>
 </tbody>
 </table> 
-      
-
-
-<!--<div style="height:97%" id="divgeo">
-	<div id="c_data" style=" overflow:scroll; overflow-x:hidden;  ">
-    
-    </div>
-</div>-->
 
 </div>        
 
-             
-			
-            
+<!--  ---------------------------------panel xa mapa------------------------------------- -->  
+<div id="rh_mapa" class="ui-corner-all " style="width:55%; height:49.5%;  float:right; position:relative; " ></div>
 
-				
-                      <!--  ---------------------------------panel xa mapa------------------------------------- -->  
-           <div id="geo_mapa" class="ui-corner-all " style="width:55%; height:49.5%;  float:right; position:relative; " ></div>
-           
-           <div id="qstion" class="ui-corner-all " style="width:55%; height:49.5%; border:#a6c9e2 solid thin; float:right; position:relative; ">
+<div id="rh_qstion" class="ui-corner-all " style="width:55%; height:49.5%; border:#a6c9e2 solid thin; float:right; position:relative; ">
 <table width="100%;" style="background:#5c9ccc; color:#FFFFFF;">
            <tr><td><label>Usuario:</label></td><td><label>Inicio:</label></td><td><label>Fin:</label></td></tr>
            <tr>
            <td>
            
-           <select class="caja" id="user">
+           <select class="caja" id="rh_user">
            <option value="-1" >Todos</option>
            <!-- BEGIN dt3 -->
            <option value="{dt3.IDU}" >{dt3.USR}</option>
@@ -62,14 +49,14 @@
            </td>
            <td>
            
-           <input type="text" class="caja_date ui-corner-all" id="dti" value="{DATE}" readonly="readonly" />
-           <select id="hri" class="mcaja">
+           <input type="text" class="caja_date ui-corner-all" id="rh_dti" value="{DATE}" readonly="readonly" />
+           <select id="rh_hri" class="mcaja">
            <!-- BEGIN hrs -->
            {hrs.NO}
            <!-- END hrs -->
            </select>
            <span>&nbsp;:&nbsp;</span>
-           <select id="mni" class="mcaja">
+           <select id="rh_mni" class="mcaja">
            <!-- BEGIN min -->
            {min.NO}
            <!-- END min -->
@@ -77,21 +64,21 @@
            </td>
            <td>
            
-           <input type="text" class="caja_date ui-corner-all" id="dtf" value="{DATE}" readonly="readonly" />
-           <select id="hrf" class="mcaja">
+           <input type="text" class="caja_date ui-corner-all" id="rh_dtf" value="{DATE}" readonly="readonly" />
+           <select id="rh_hrf" class="mcaja">
            <!-- BEGIN hrs -->
            {hrs.HF}
            <!-- END hrs -->
            </select>
            <span>&nbsp;:&nbsp;</span>
-           <select id="mnf" class="mcaja">
+           <select id="rh_mnf" class="mcaja">
            <!-- BEGIN min -->
            {min.MF}
            <!-- END min -->
            </select>           
            </td>
            <td>
-           <button class="search small_btn" onclick="get_evidencias();validar_id()"></button>
+           <button class="search small_btn" onclick="rh_get_evidencias();validar_id_rh()"></button>
            </td>
            </tr>
            <!--<tr><td>Fecha</td><td>Cuestionario</td><td>Usuario</td>-->
@@ -99,9 +86,9 @@
            
 
 
-<div style="width:100%;" id="cnt_qstion">           
-<div id="ev" class=" ui-corner-all" style="position:relative; width:50%; float:left; border:#4297D7 solid thin;">
-<table cellpadding="0" cellspacing="0" border="0" class="display" id="geo_evd_table" width="100%" height="100%">
+<div style="width:100%;" id="rh_cnt_qstion">
+<div id="rh_ev" class=" ui-corner-all" style="position:relative; width:50%; float:left; border:#4297D7 solid thin;">
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="rh_evd_table" width="100%" height="100%">
 <thead>
 <tr>
 <th colspan="5"><strong>Evidencias</strong></th>
@@ -120,8 +107,8 @@
 </table>          
 </div>
            
-<div id="evc" class="evd ui-corner-all" style="position:relative; float:right; width:49%; border:#4297D7 solid thin; ">
-<table cellpadding="0" cellspacing="0" border="0" class="display" id="geo_devd_table" width="100%" height="100%">
+<div id="rh_evc" class="evd ui-corner-all" style="position:relative; float:right; width:49%; border:#4297D7 solid thin; ">
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="rh_devd_table" width="100%" height="100%">
 <thead>
 <tr>
 <!--<th colspan="5"><strong>Detalle evidencias</strong><button class="edit small_btn" onclick="geo_fedit_pr();" title="Editar" style="float:right;"></button></th>-->
@@ -139,21 +126,15 @@
 </div>
            </div><!--cnt_qstion-->
            </div>
-           
-          <!-- <div id="panelxxa" class="ui-corner-all" ></div>-->
 
- 
-
-            
-            
                 
              
-           <input type="hidden" id="geo_hidpr" />
+           <input type="hidden" id="rh_hidpr" />
             <div id="rh_dialog" > </div>
-            <div id="geo_dialog_pr"></div>
-            <div id="geo_dialog_import" > </div>           
-            <div id="geo_dialog_message" title="&iexcl;Aviso!"></div>
-            <div id="geo_dialog_confirm" title="&iexcl;Aviso!"></div>
+            <div id="rh_dialog_pr"></div>
+            <div id="rh_dialog_import" > </div>           
+            <div id="rh_dialog_message" title="&iexcl;Aviso!"></div>
+            <div id="rh_dialog_confirm" title="&iexcl;Aviso!"></div>
 
 
 

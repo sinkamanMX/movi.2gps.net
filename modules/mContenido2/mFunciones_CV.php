@@ -1195,7 +1195,7 @@ function trae_his_s($unit,$cliente,$rango_fechas,$maestre_array){
 	$coun_array=0;
 	
 
-			$sql = "SELECT e.GPS_DATETIME,
+			echo $sql = "SELECT e.GPS_DATETIME,
 				e.VELOCITY,
 				e.LONGITUDE,
 				e.LATITUDE,
@@ -1221,7 +1221,7 @@ function trae_his_s($unit,$cliente,$rango_fechas,$maestre_array){
 									$div=explode(',',$maestre_array[$i]);
 								$dist=$this->point_at_point($div[2],$div[3],$row['LATITUDE'],$row['LONGITUDE']);
 						
-								if($dist<=0.4){
+								if($dist<=0.1){
 										if($div[5]=='0'){
 									
 									 $datas ='UPDATE DSP_ITINERARIO SET
@@ -1243,28 +1243,18 @@ function trae_his_s($unit,$cliente,$rango_fechas,$maestre_array){
 						} 
 						
 						if($row['COD_EVENT']=='13'){
-							
-							
 								for($o=0;$o<$contase;$o++){
-									
-									
-									//echo $maestre_array[$o];
 									$div2=explode(',',$maestre_array[$o]);
-								//	echo $o.',';
-									
 									$num=count($div);
 									
-									
-										
 										$dist=$this->point_at_point($div[2],$div[3],$row['LATITUDE'],$row['LONGITUDE']);
-										if($dist<=0.4){
+										if($dist<=0.1){
 												if(($div[5]=='1' && $div[6]=='0')||$coun_array==1){
 												
 												 $datas ='UPDATE DSP_ITINERARIO SET
 												FECHA_SALIDA = \''.$row['GPS_DATETIME'].
 												'\' WHERE ID_ENTREGA  = '.$div[4];
-											
-										
+	
 														if(mysqli_query($conexion,$datas)){
 															$coun_array=0;
 															$maestre_array[$i]=$div[0].','.$div[1].','.$div[2].','.$div[3].','.$div[4].','.'2';
@@ -1273,16 +1263,45 @@ function trae_his_s($unit,$cliente,$rango_fechas,$maestre_array){
 													}
 												}//if dist
 								
-										}//for
-									}
+										}//for 1239
+						}
 						
+							
+							
+							if($row['COD_EVENT']=='1239'){
+								echo $row['COD_EVENT'].',';
+								for($o=0;$o<$contase;$o++){
+									$div2=explode(',',$maestre_array[$o]);
+									$num=count($div);
+									
+									
+										
+												if(($div[5]=='1' && $div[6]=='0')||$coun_array==1){
+												
+												 $datas ='UPDATE DSP_ITINERARIO SET
+												FECHA_SALIDA = \''.$row['GPS_DATETIME'].
+												'\' WHERE ID_ENTREGA  = '.$div[4];
+	
+														if(mysqli_query($conexion,$datas)){
+															$coun_array=0;
+															
+														}
+										
+													}
+											
+								
+										}//for 1239
+						}
+							
+							
+											
+									
 						
-						
+					
+					
 					
 					
 					}
-					
-					
 	
 	}
 }
@@ -1300,7 +1319,30 @@ return ($miles * 1.609344);
 
 }   
 
-
+function terminada_visita($des){
+	
+	global $config_bd;
+	$conexion = mysqli_connect($config_bd['host'],$config_bd['user'],$config_bd['pass'],$config_bd['bname']);
+	if($conexion){
+		
+		$datas1 ="SELECT 
+			 	IF(ID_ESTATUS = 3,1,IF(ID_ESTATUS = 5,1,0)) AS ESTADO,
+				 IF(P.FECHA_SALIDA = '0000-00-00 00:00:00', '0', '1') AS FECHA_SALIDA 
+				FROM DSP_ITINERARIO 
+				WHERE ID_ENTREGA  = ".$des;
+			 $query_hist = mysqli_query($conexion,$datas1);
+	 		$row = @mysqli_fetch_array($query_hist);
+			
+			//echo $row['ESTADO'];
+		if($row['ESTADO']=='0'&& $row['FECHA_SALIDA']=='0'){
+			$datas ='UPDATE DSP_ITINERARIO SET
+				 ID_ESTATUS = 3 WHERE ID_ENTREGA  = '.$des;
+												
+			mysqli_query($conexion,$datas);
+		}
+	}
+	
+	}
 
 
 

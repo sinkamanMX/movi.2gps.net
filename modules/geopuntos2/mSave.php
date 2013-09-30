@@ -65,6 +65,16 @@ if($_GET['op']==1){
 					}
 					}
 				
+			if($_GET['car']!=""){
+				$dcar = "";
+				$ecar = explode(",",$_GET['car']);
+				for($k=0; $k<count($ecar); $k++){
+					$dcar .= ($dcar=="")?'('.$idg.','.$ecar[$k].',"'.date('Y-m-d H:i:s').'")':',('.$idg.','.$ecar[$k].',"'.date('Y-m-d H:i:s').'")';
+					}
+				$sql_g = "INSERT INTO ADM_RH_USUARIO (ID_RH,ID_USUARIO,FECHA) VALUES ".$dcar;	
+				if($qry_g = $db->sqlQuery($sql_g)){echo 3;}else{echo -3;}
+				}				
+				
 			if($_GET['p_r']!=""){
 				$a =  explode("^",$_GET['p_r']);
 				
@@ -124,6 +134,38 @@ if($_GET['op']==2){
 	else{
 		echo 0;
 		}
+		
+	if($_GET['car']!=""){
+	//generar data rh-usuario
+	$dcar = "";
+	$ecar = explode(",",$_GET['car']);
+	for($k=0; $k<count($ecar); $k++){
+		$dcar .= ($dcar=="")?'('.$_GET['id'].','.$ecar[$k].',"'.date('Y-m-d H:i:s').'")':',('.$_GET['id'].','.$ecar[$k].',"'.date('Y-m-d H:i:s').'")';
+		}
+	//Obtener usuarios asignados al rh 
+	$sql_h = "SELECT ID_USUARIO FROM ADM_RH_USUARIO WHERE  ID_RH = ".$_GET['id'];
+	$qry_h = $db->sqlQuery($sql_h);
+	$cnt_h = $db->sqlEnumRows($qry_h);
+	if($cnt_h > 0){
+		//borrar usuarios
+		$sql_c="DELETE FROM ADM_RH_USUARIO WHERE ID_RH =".$_GET['id'];
+				if ($qry_c= $db->sqlQuery($sql_c)){
+					//INSERTAR NUEVOS CUESTIONARIOS
+					 $sql_d = "INSERT INTO ADM_RH_USUARIO (ID_RH,ID_USUARIO,FECHA) VALUES ".$dcar;  
+					if ($qry_d = $db->sqlQuery($sql_d)){
+						echo 2;
+						}
+					else{
+						echo -1;
+						}	
+					}
+		}
+	else{
+		$sql_g = "INSERT INTO ADM_RH_USUARIO (ID_RH,ID_USUARIO,FECHA) VALUES ".$dcar;	
+				if($qry_g = $db->sqlQuery($sql_g)){echo 3;}else{echo -3;}	
+		}		
+	}		
+		
 if($_GET['qst']!=""){			
 $qs = explode(',',$_GET['qst']);
 					$sgpc = "";

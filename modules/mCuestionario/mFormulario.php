@@ -10,6 +10,8 @@
 	if(!$userAdmin->u_logged())
 		echo '<script>window.location="index.php?m=login"</script>';	
 		
+	$db ->sqlQuery("SET NAMES 'utf8'");
+	
 	$emp = $userAdmin->user_info['ID_EMPRESA'];
 	$cte = $userAdmin->user_info['ID_CLIENTE'];
 	

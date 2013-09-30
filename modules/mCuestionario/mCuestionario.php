@@ -11,6 +11,9 @@
 $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);
 	if(!$userAdmin->u_logged())
 			echo '<script>window.location="index.php?m=login"</script>';
+			
+	$db ->sqlQuery("SET NAMES 'utf8'");			
+			
 	$client   = $userAdmin->user_info['ID_CLIENTE'];
 	
 	$iWeekNum = Date('W') - 1;

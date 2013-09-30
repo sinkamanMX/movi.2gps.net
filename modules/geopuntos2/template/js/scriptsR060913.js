@@ -23,13 +23,6 @@ $(document).ready(function () {
       },
       text: false
     })
-	//Definir botnes editar
-	$( ".edit" ).button({
-      icons: {
-        primary: "ui-icon-pencil"
-      },
-      text: false
-    })	
 	//Definir botones importar
 	$( ".import" ).button({
       icons: {
@@ -85,28 +78,7 @@ $(document).ready(function () {
 				},
 		show: "blind",
 		hide: "blind"
-		});	
-	//Declara dialog editar preguntas respuestas
-	$("#geo_dialog_pr" ).dialog({
-		modal: true,
-		autoOpen:false,
-		overlay: { opacity: 0.2, background: "cyan" },
-		width:  820,
-		height: 300,
-		buttons: {
-			"Guardar": function(){
-				geo_validar_pr();
-				},
-			"Cancelar": function(){
-				if($("#geo_dialog_pr" ).dialog('isOpen')){
-					$("#dialog_message").dialog('close');
-					}
-					$("#geo_dialog_pr" ).dialog('close');
-				}
-				},
-		show: "blind",
-		hide: "blind"
-		});				
+		});		
 	//MAPA PRINCIPAL
 	geo_mapa();
 	
@@ -263,9 +235,7 @@ function get_evidencias(){
 	}	
 //----------------------------
 function get_preg_resp(idq){
-	
 
-		$("#geo_hidpr").val(idq);
 		u = ($("#user").val() != -1)?$("#user").val():get_usr();
 		i = $("#dti").val()+" "+$("#hri").val()+":"+$("#mni").val()+":00";
 		f = $("#dtf").val()+" "+$("#hrf").val()+":"+$("#mnf").val()+":00";
@@ -279,7 +249,7 @@ function get_preg_resp(idq){
 		  "bLengthChange": true,
 		  "bPaginate": false,
 		  "bFilter": true,
-		  "bSort": false,
+		  "bSort": true,
 		  "bJQueryUI": true,
 		  "iDisplayLength": 20,      
 		  "bProcessing": true,
@@ -317,7 +287,6 @@ function get_usr(){
 	}	
 //-------------------------------------------------------------------------
 function geo_nuevo(op,id){
-	
 	$.ajax({
 		url: "index.php?m=geopuntos2&c=mGeopunto",
 		type: "GET",
@@ -331,8 +300,6 @@ function geo_nuevo(op,id){
 			
 			
 			$("#geo_dialog").dialog("open");
-			if(op==1){$("#geo_dialog").dialog('option', 'title', 'Agregar Geopunto');}
-			if(op==2){$("#geo_dialog").dialog('option', 'title', 'Editar Geopunto');}
 			$('#geo_dialog').html(""); 
 			$('#geo_dialog').html(result); 
 				}
@@ -432,11 +399,9 @@ function centra_mapa(lat,lon,dsc,nip,typ,rdo){
 	var myLatlng = new google.maps.LatLng(lat,lon);	
 	var data = '<table width="100%"><tr><td colspan="2" align="center" style="background:#4297D7; color:#EAF5F7;"><strong>Datos del geopunto</strong></td></tr><tr><td>Descripci&oacute;n:</td><td>'+dsc+'</td></tr><tr><td>NIP:</td><td>'+nip+'</td></tr><tr><td>Tipo:</td><td>'+typ+'</td></tr></table>';
 	//Pintar marcador
-	var image = 'public/images/Oficinas.png';
 	var marker = new google.maps.Marker({
 		position: myLatlng,
 		map: geo_map,
-		icon : image,
 		zoom: 8
 		});
 	google.maps.event.addListener(marker, 'click', function() {
@@ -472,14 +437,12 @@ function centra_mapa(lat,lon,dsc,nip,typ,rdo){
 //-----------------------------------------------------------------------------
 function get_position(lat,lon,fecha,qst,usr){
 	//alert(geo_gmap)
-	
 	var myLatlng = new google.maps.LatLng(lat,lon);	
 	var data = '<table width="100%"><tr><td colspan="2" align="center" style="background:#4297D7; color:#EAF5F7;"><strong>Datos de la evidencia</strong></td></tr><tr><td>Fecha:</td><td>'+fecha+'</td></tr><tr><td>Cuestionario:</td><td>'+qst+'</td></tr><tr><td>Usuario:</td><td>'+usr+'</td></tr></table>';
 	//Pintar marcador
 	var marker = new google.maps.Marker({
 		position: myLatlng,
 		map: geo_map,
-		
 		zoom: 8
 		});
 	google.maps.event.addListener(marker, 'click', function() {
@@ -487,8 +450,6 @@ function get_position(lat,lon,fecha,qst,usr){
 		infoWindow.open(geo_map, marker);
 		});	
 	marker.setMap(geo_map);
-	geo_map.setZoom(18);
-	geo_map.setCenter(marker.getPosition());
 	
 	}	
 //-----------------------------------------------------------------------------
@@ -573,7 +534,7 @@ function showAddress(){
 		marker.setMap(geo_gmap);
 		geof_marcadores.push(marker);
       } else {
-        //alert("Geocode was not successful for the following reason: " + status);
+        alert("Geocode was not successful for the following reason: " + status);
       }
     });
 		 }
@@ -633,7 +594,6 @@ function lay(){
 	for (i=0; i<qst.length; i++){
 		qdata += (qdata=="")?qst[i]:","+qst[i];
 		}
-	//alert(qdata+"/"+$("#geop").val()+"/"+$("#idg").val());
 	$.ajax({
 		url: "index.php?m=geopuntos2&c=mPayload",
 		type: "GET",
@@ -811,18 +771,7 @@ function save_geo(){
 		var p ="";
 		$('#t'+id+'').find(':input').each(function(index, element) {
 			//p_r += this.id+"|"+this.value+"¬";
-			//p += (p=="")?this.id+"¬"+this.value:"|"+this.id+"¬"+this.value;
-			if(p==""){
-				if(this.value!=""){
-					p = this.id+"¬"+this.value
-					}
-				}
-			else{
-				//alert(this.value)
-				if(this.value!=""){
-					p += "|"+this.id+"¬"+this.value
-					}
-				}	
+			p += (p=="")?this.id+"¬"+this.value:"|"+this.id+"¬"+this.value;
         });
 		/*if(c>0){
 			p_r += "°";
@@ -831,7 +780,7 @@ function save_geo(){
 		p_r += p;
 		p_r += "^";
     });
-	//alert(p_r);
+	alert(p_r);
 	//alert(p_r.length)
 	pr = p_r.substring(0, p_r.length-1);
 	p_r = pr;
@@ -854,18 +803,9 @@ function save_geo(){
 		var nsa = ($("#gnsa").is(':checked'))?'S':'N';
 		var nat = ($("#gnat").is(':checked'))?'S':'N';
 		var nvr = ($("#gnvr").is(':checked'))?'S':'N';
-
-		var car = $('#geo_usr_sel div').map(function(){
-		return this.id;
-		}).get();
-		car_data = "";
-		for(i=0; i < car.length; i++){
-			car_data += (car_data=="")?car[i]:','+car[i];
-		}	
 		
 		//alert(aes+","+nen+","+nsa+","+nat+","+nvr);
-		//alert(p_r)
-		//alert($("#gnip").val());
+		
 	$.ajax({
 		url: "index.php?m=geopuntos2&c=mSave",
 		type: "GET",
@@ -896,14 +836,12 @@ function save_geo(){
 			nat : nat,
 			nvr : nvr,
 			
-			car : car_data,
-			
 			id  : $("#idg").val()
 			
 			},
 		success: function(data) {
 			var result = data;
-			//alert(result) 
+			alert(result) 
 			if(result>0){
 				geo_load_datatable();
 				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Los datos han sido almacenados correctamente.</p>');
@@ -1021,25 +959,3 @@ function mensaje(g){
 $("#geo_c_content2").html(g)
 //document.getElementById('c_content2').innerHTML =g;	 
 }
-//------------------------------------------------------------
-function geo_fedit_pr(){
-	//alert("geo_fedit_pr");
-	//alert($("#geo_hidpr").val());
-	$.ajax({
-		url: "index.php?m=geopuntos2&c=mPregrespE",
-		type: "GET",
-		data: {
-			idq : $("#geo_hidpr").val()
-			},
-		success: function(data) {
-			var result = data; 
-			//alert(op)
-			
-			
-			$("#geo_dialog_pr").dialog("open");
-			$("#geo_dialog_pr").dialog('option', 'title', 'Editar Respuestas');
-			$('#geo_dialog_pr').html(""); 
-			$('#geo_dialog_pr').html(result); 
-				}
-		});	
-	}
