@@ -195,6 +195,7 @@
             $reg["dto_x"]=$dto_x;
             $reg["dto_y"]=$dto_y;
 
+
             //obtengo el id_respuesta para el nuevo cuestionario
             $reg['respuesta'  ]=inserta_respuestas($reg);
             if($reg['respuesta'  ]>0){
@@ -437,5 +438,172 @@
             }
         }
     }
+	
+    function dameItinerario($imei){
+        $con = mysql_connect("localhost","savl","397LUP");
+        if (!$con){
+            $res = '<?xml version="1.0" encoding="UTF-8"?> 
+                        <alert> 
+                             <id>-51</id> 
+                             <msg>Error de conexión</msg>
+                        </alert>';  
+        }else{
+            $base = mysql_select_db("ALG_BD_CORPORATE_MOVI",$con);
+            $res = "";
+            $sql=" SELECT D.ID_DESPACHO,
+                         D.DESCRIPCION AS VIAJE,
+                         D.ITEM_NUMBER AS ITEM_VIAJE,
+                         D.FECHA_INICIO,
+                         D.FECHA_FIN,
+                         D.TOLERANCIA,
+                         D.ID_ESTATUS,
+                         E.DESCRIPCION AS ESTATUS
+                  FROM DSP_DESPACHO D
+                         INNER JOIN DSP_UNIDAD_ASIGNADA U ON U.ID_DESPACHO = D.ID_DESPACHO AND U.ACTIVO = 1
+                         INNER JOIN DSP_ESTATUS E ON D.ID_ESTATUS = E.ID_ESTATUS
+                         INNER JOIN ADM_UNIDADES_EQUIPOS EN ON EN.COD_ENTITY = U.COD_ENTITY
+                         INNER JOIN ADM_UNIDADES_EQUIPOS UE ON UE.COD_ENTITY= EN.COD_ENTITY
+                         INNER JOIN ADM_EQUIPOS EQ ON EQ.COD_EQUIPMENT=UE.COD_EQUIPMENT
+                         INNER JOIN DSP_ITINERARIO I ON I.ID_DESPACHO = D.ID_DESPACHO
+                  WHERE EQ.IMEI =  '".$imei."' AND
+                         (D.ID_ESTATUS NOT IN (3,5) OR CURRENT_DATE BETWEEN CAST(D.FECHA_INICIO AS DATE) AND CAST(D.FECHA_FIN AS DATE) )
+                  GROUP BY D.ID_DESPACHO, D.DESCRIPCION
+                  ORDER BY D.FECHA_INICIO";
+            if ($query = mysql_query($sql)){
+                $res = '<?xml version="1.0" encoding="UTF-8"?>';
+                $res = $res.'<viajes>';
+                while ($row = mysql_fetch_object($query)){
+                    $id_despacho = $row->ID_DESPACHO;
+                    $x = $x."<viaje>";
+                    $x = $x."<id_viaje>".$row->ID_DESPACHO."</id_viaje>";
+                    $x = $x."<nombre>".$row->VIAJE."</nombre>";
+                    $x = $x."<item>".$row->ITEM_VIAJE."</item>";
+                    $x = $x."<inicio>".$row->FECHA_INICIO."</inicio>";
+                    $x = $x."<fin>".$row->FECHA_FIN."</fin>";
+                    $x = $x."<tolerancia>".$row->TOLERANCIA."</tolerancia>";
+                    $x = $x."<estatus>".$row->ESTATUS."</estatus>";
+                    $x = $x."<id_estatus>".$row->ID_ESTATUS."</id_estatus>";
+                    $x = $x."</viaje>";
+                }
+                $res = $res.$x."</viajes>";
+                mysql_free_result($query);
+            }else {
+                $res='<?xml version="1.0" encoding="UTF-8"?> 
+                      <alert> 
+                         <id>-50</id> 
+                         <msg>No es posible leer la los viajes</msg>
+                      </alert>';
+            }
+            return $res;
+        }
+    }
 
+    function dameEntregas($viaje){
+        $con = mysql_connect("localhost","savl","397LUP");
+        if (!$con){
+            $res = '<?xml version="1.0" encoding="UTF-8"?> 
+                        <alert> 
+                             <id>-51</id> 
+                             <msg>Error de conexión</msg>
+                        </alert>';  
+        }else{
+            $base = mysql_select_db("ALG_BD_CORPORATE_MOVI",$con);
+            $res = "";
+            $sql2 = "SELECT I.ID_DESPACHO,
+                            I.ID_ENTREGA,
+                            P.DESCRIPCION AS CLIENTE,
+                            P.CALLE, 
+                            P.COLONIA,
+                            P.CP,
+                            P.MUNICIPIO,
+                            P.ESTADO,
+                            P.LATITUDE,
+                            P.LONGITUDE,
+                            P.RADIO,
+                            I.ID_ESTATUS,
+                            IF(I.ITEM_NUMBER IS NULL,'SIN DATOS', IF (I.ITEM_NUMBER = '','SIN DATOS',I.ITEM_NUMBER) ) AS ITEM_ENTREGA,
+                            IF(I.COMENTARIOS IS NULL,'SIN DATOS', IF (I.COMENTARIOS = '','SIN DATOS',I.COMENTARIOS)) AS COMENTARIOS,
+                            I.FECHA_ENTREGA AS FECHA_PROGRAMADA,
+                            E.DESCRIPCION AS ESTATUS,
+                            IF (I.FECHA_ARRIBO IS NULL, 'NO HA LLEGADO A LA ENTREGA', I.FECHA_ARRIBO) AS ARRIBO_SITIO,
+                            IF (I.FECHA_SALIDA IS NULL, 'NO HA SALIDO DE LA ENTREGA', I.FECHA_SALIDA) AS SALIDA_SITIO,
+                            IF(D.ID_CUESTIONARIO IS NULL,-1,D.ID_CUESTIONARIO) AS ID_CUESTIONARIO
+                     FROM DSP_ITINERARIO I
+                            INNER JOIN DSP_ESTATUS E ON E.ID_ESTATUS = I.ID_ESTATUS
+                            INNER JOIN ADM_GEOREFERENCIAS P ON P.ID_OBJECT_MAP = I.COD_GEO
+                            LEFT JOIN DSP_DOCUMENTA_ITINERARIO D ON D.ID_ENTREGA = I.ID_ENTREGA
+                     WHERE   I.ID_DESPACHO IN(".$viaje.") 
+                     ORDER BY I.FECHA_ENTREGA ASC";
+            if ($qry2 = mysql_query($sql2)){
+                $res = '<?xml version="1.0" encoding="UTF-8"?>';
+                $res = $res.'<entregas>';
+                while ($row2 = mysql_fetch_object($qry2)){
+                    $x = $x.'<entrega>';
+                    $x = $x.'<id_viaje>'.$row2->ID_DESPACHO.'</id_viaje>';
+                    $x = $x."<id_entrega>".$row2->ID_ENTREGA."</id_entrega>";
+                    $x = $x."<cliente>".trim($row2->CLIENTE)."</cliente>"; 
+                    $x = $x."<direccion>".$row2->CALLE." ".$row2->COLONIA." ".$row2->CP." "
+                                         .$row2->MUNICIPIO." ".$row2->ESTADO.
+                             "</direccion>"; 
+                    $x = $x."<latitud>".$row2->LATITUDE."</latitud>"; 
+                    $x = $x."<longitud>".$row2->LONGITUDE."</longitud>"; 
+                    $x = $x."<item_entrega>".$row2->ITEM_ENTREGA."</item_entrega>"; 
+                    $x = $x."<comentarios>".$row2->COMENTARIOS."</comentarios>"; 
+                    $x = $x."<fecha_programada>".$row2->FECHA_PROGRAMADA."</fecha_programada>"; 
+                    $x = $x."<estatus_entrega>".$row2->ESTATUS."</estatus_entrega>"; 
+                    $x = $x."<fecha_arribo>".$row2->ARRIBO_SITIO."</fecha_arribo>"; 
+                    $x = $x."<fecha_salida>".$row2->SALIDA_SITIO."</fecha_salida>";
+                    $x = $x."<radio>".$row2->RADIO."</radio>";
+                    $x = $x."<id_estatus>".$row2->ID_ESTATUS."</id_estatus>";
+                    $x = $x."<id_cus>".$row2->ID_CUESTIONARIO."</id_cus>"; 
+                    $x = $x."</entrega>";
+                }
+                mysql_free_result($qry2);
+                $res = $res.$x."</entregas>";
+            }else{
+                $res = '<?xml version="1.0" encoding="UTF-8"?> 
+                        <alert> 
+                             <id>-50</id> 
+                             <msg>No es posible leer la las entregas</msg>
+                        </alert>';
+            }
+            return $res;
+        }
+    }
+	
+	
+	function putIncidenteEntrega($imei,$codUser,$idTipo,$idEntrega,$fecha,$Comentarios,$latitud,$longitud,$evento,$bateria,$velocidad){ 
+        $con = mysql_connect("localhost","savl","397LUP");
+        if (!$con){
+            $res = '<?xml version="1.0" encoding="UTF-8"?> 
+                        <alert> 
+                             <id>-51</id> 
+                             <msg>Error de conexión</msg>
+                        </alert>';  
+        }else{
+            $base = mysql_select_db("ALG_BD_CORPORATE_MOVI",$con);
+            $cod_user = existeCodUser($codUser);
+            if ($cod_user == $codUser){
+                if (valida_evento($evento) == 1){
+					$cod_client=dame_cod_client_usuario($codUser);
+					$cod_entity=dame_cod_entity($imei);
+                    $res = registraIncidente($imei,$codUser,$idTipo,$idEntrega,$fecha,$Comentarios,$latitud,$longitud,$evento,$bateria,$velocidad,$cod_client,$cod_entity);
+                }else{
+                    $res = '<?xml version="1.0" encoding="UTF-8"?> 
+                            <alert> 
+                              <id>-50</id> 
+                              <msg>El código de evento no existe</msg>
+                           </alert>';
+                }
+            }else{
+                $res = '<?xml version="1.0" encoding="UTF-8"?> 
+                        <alert> 
+                             <id>-51</id> 
+                             <msg>El código usuario es incorrecto</msg>
+                        </alert>';  
+            }
+        }
+        return $res;
+    }
+	
 ?>

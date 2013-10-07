@@ -77,4 +77,15 @@
     if ($_REQUEST['fun'] == 'archivo_cat'){	
         echo dame_archivo_catalogos($_REQUEST["sub_menu"]);
     }
+
+    if($_REQUEST['fun'] == 'Itinerarios'){
+        echo dameItinerario($_REQUEST['imei']);
+    }
+
+    if ($_REQUEST['fun'] == 'Entregas'){
+        echo dameEntregas($_REQUEST['viaje']);
+    }
+    if($_REQUEST['fun'] == 'Incidencia'){	
+        echo putIncidenteEntrega($_GET['imei'],$_GET['codUser'],$_GET['idTipo'],$_GET['idEntrega'],$_GET['fecha'],$_GET['Comentarios'],$_GET['latitud'],$_GET['longitud'],$_GET['idEvento'],$_GET['bateria'],$_GET['velocidad']);
+    }
 ?>

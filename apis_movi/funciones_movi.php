@@ -418,6 +418,7 @@
                        GL_MAC_ADD='". $reg["macc"]."',
                        GL_DBM_W=". $reg["senal_w"]."
                 WHERE COD_ENTITY=".$reg['cod_entity'];	
+        //echo $sql;
         $qry = mysql_query($sql);
         if($qry){
             $resultado = true;
@@ -590,4 +591,120 @@
         }
         return $resultado;
     }
+	
+  function existeCodUser($cod_user){
+    $result = -1;
+	$sql = "SELECT ID_USUARIO AS EXISTE 
+	        FROM ADM_USUARIOS 
+		    WHERE ID_USUARIO = ".$cod_user; 
+	if ($qry = mysql_query($sql)){
+	  $row = mysql_fetch_object($qry);
+	  if ($row->EXISTE > 0){
+	    $result = $row->EXISTE;
+	  }
+	  mysql_free_result($qry);
+	}
+	return $result;
+  }
+  
+  
+   function valida_evento($evento){
+	$res = 0;
+    $sql = "SELECT 1 AS EXISTE 
+	         FROM ADM_EVENTOS
+			 WHERE COD_EVENT = ".$evento;
+	if ($qry = mysql_query($sql)){
+	  $row = mysql_fetch_object($qry);
+	  $res = $row->EXISTE;
+	  mysql_free_result($qry);	
+	}
+	return $res;
+  }
+  
+function registraIncidente($imei,$user,$tipo,$entrega,$fecha,$comentarios,$latitud,$longitud,$evento,$bateria,$velocidad,$cod_client,$cod_entity){
+    $res = "";
+	
+	     $reg['respuesta']=0;
+        $reg["imei"]=$imei;
+        $reg["feh"]=$fecha;
+        $reg["bat"]=$bateria;
+        $reg['cod_event']=$evento;
+        $reg['cellid']="";
+        $reg['lac']="";
+        $reg['mcc_mnc']="";
+        $reg['senal']="0";
+        $reg['macc']="";
+        $reg['senal_w']="-20";
+        $reg["vel"]=$velocidad;
+        $reg["lon"]=$longitud;
+        $reg["lat"]=$latitud;
+        $reg["alt"]="0";
+        $reg["ang"]="0";
+        $reg["prov"]="S/P";
+        $reg["fecha_red"]=$fecha;
+        $reg["mts_error"]="0";
+        $reg["GC"]="";
+        $reg["mcc"]= "";
+        $reg["mnc"]= "";
+		$reg['cod_client']=$cod_client;
+	    $reg['cod_entity']=$cod_entity;
+	
+	$ok = 0;
+	if ($tipo == 0){
+      if (strlen($comentarios) > 0 ){
+	    $sql = "INSERT INTO DSP_INCIDENCIA_ITINERARIO (ID_ENTREGA,ID_TIPO,COD_USER,COMENTARIOS,FECHA) 
+		        VALUES (".$entrega.",1,".$user.",'".$comentarios."','".$fecha."');";
+		$ok = 1;
+	  } else {
+	    $res = '<?xml version="1.0" encoding="UTF-8"?> 
+	           <alert> 
+				    <id>-50</id> 
+					<msg>Debe incluir un comentario</msg>
+                </alert>';
+	  }
+	} else if ($tipo == 1) {
+	  $sql = "UPDATE DSP_ITINERARIO SET FECHA_ARRIBO = '".$fecha."', ID_ESTATUS = 4 WHERE ID_ENTREGA = ".$entrega;
+	  $ok = 1;
+	} else if ($tipo == 2){
+	  $sql = "UPDATE DSP_ITINERARIO SET FECHA_SALIDA = '".$fecha."', ID_ESTATUS = 3 WHERE ID_ENTREGA = ".$entrega;
+	  //REVISA SI ES EL ULTIMO, S
+	  //$x = fin_viaje($entrega,$fecha);
+	  $ok = 1; 	
+	}
+	//
+	//echo $ok." tipo ".$tipo." sql ".$sql;
+	
+	
+	if ($ok == 1){
+      if ($qry = mysql_query($sql)){
+		  //echo $ok;
+		  if (inst_evento($reg)>0){
+			$res = 'Guardada Correctamente';
+		  } else {
+		    $res = "Se registro incidencia, fallo evento";
+		  }
+	   /*  $res = '<?xml version="1.0" encoding="UTF-8"?> 
+	             <alert> 
+			  	      <id>1</id> 
+					  <msg>Guardada Correctamente</msg>
+                 </alert>';*/	
+	  } else {
+		  $res = 'No fue posible guardar incidencias';
+	    /*$res = '<?xml version="1.0" encoding="UTF-8"?> 
+	              <alert> 
+				    <id>-50</id> 
+					<msg>No fue posible guardar incidencias</msg>
+                  </alert>';*/  
+	  }
+    } else {
+		 $res = 'Sucedio un problema al guardar al guardar el evento';
+	  /*$res = '<?xml version="1.0" encoding="UTF-8"?> 
+	              <alert> 
+				    <id>-50</id> 
+					<msg>Sucedio un problema al guardar al guardar el evento</msg>
+                  </alert>';  */
+	}
+	return $res;
+  }  
+  
 ?>

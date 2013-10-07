@@ -136,6 +136,92 @@ $conexion = mysqli_connect($config_bd_sp['host'],$config_bd_sp['user'],$config_b
 		$salida = round($salida*100)/100;
     	return $salida;
   }
+	
+		/*--------------------------------------------------------FUNCIONES VIAJE ----- */
+
+public function obtener_ureporte_222($id_unit,$fecha, $id_clien){
+		global $config_bd;
+		$table_last = $this->get_tablename($id_clien);
+		$conta=0;
+		$conexion = mysqli_connect($config_bd['host'],$config_bd['user'],$config_bd['pass'],$config_bd['bname']);
+		if($conexion){
+	  $sql	= "SELECT f.DESCRIPTION,
+			                  IF (e.GPS_DATETIME IS NULL, '0000-00-00 00:00:00',e.GPS_DATETIME) AS GPS_DATETIME ,
+							  IF(g.DESCRIPTION IS NULL,'NO HA REPORTADO',g.DESCRIPTION) AS DESC_EVT,
+							  IF(e.VELOCITY IS NULL,0,e.VELOCITY) AS VELOCITY,
+                              IF(e.LATITUDE IS NULL,0,e.LATITUDE) AS LATITUDE,
+						      IF(e.LONGITUDE IS NULL,0,e.LONGITUDE) AS LONGITUDE,
+					          f.COD_ENTITY,
+							  TIME_TO_SEC(CAST(GPS_DATETIME AS TIME)) AS MINI,
+						      IF (g.PRIORITY is null,0,g.PRIORITY) as PRIORITY,
+							   g.COD_EVENT,
+							  e.VELOCITY AS TURN,
+							  e.ANGLE,
+							   g.ICO_ITE AS ICOS
+						FROM  ADM_UNIDADES f
+						LEFT JOIN HIST".$table_last." e ON e.COD_ENTITY = f.COD_ENTITY
+						LEFT JOIN ADM_EVENTOS g ON e.COD_EVENT  = g.COD_EVENT
+						WHERE e.COD_ENTITY = ".$id_unit." AND g.TYPE_ITINE=1 AND
+                        GPS_DATETIME BETWEEN '".$fecha." 00:00:00' AND '".$fecha." 23:59:00'
+						ORDER BY GPS_DATETIME  ASC";				
+		
+			$query   = mysqli_query($conexion, $sql);
+			$count = @mysqli_num_rows($query);		
+		
+		
+			while($row = @mysqli_fetch_array($query)){	
+			
+				 $arreglo[$conta][0] = 's';
+				 $arreglo[$conta][1] = $row['DESCRIPTION'];
+				 $arreglo[$conta][2] = $row['GPS_DATETIME'];
+				 $arreglo[$conta][3] = $row['DESC_EVT'];
+				 $arreglo[$conta][4] = $sql;
+				 $arreglo[$conta][5] = $row['LATITUDE'];
+				 $arreglo[$conta][6] = $row['LONGITUDE'];
+				 $arreglo[$conta][7] = $row['ANGLE'];
+				 $arreglo[$conta][8] = $row['MINI'];
+				 $arreglo[$conta][9] = $row['ICOS'];
+				 $arreglo[$conta][10] = $row['COD_EVENT'];
+				 $conta++;
+				
+			
+			}		 
+			
+				if($count>0){	
+				return $arreglo;				
+			}else{
+				return 0;
+			}
+			mysqli_close($conexion);			
+		}else{
+			return 0;
+		}
+	}
+	
+	//	--------------------------------------------------------------------------------------------------DIRECCION---
+	function direccion_s1($lati,$longi){
+		global $config_bd2;
+		$conexion = mysqli_connect($config_bd2['host'],$config_bd2['user'],$config_bd2['pass'],$config_bd2['bname']);		
+		if($conexion){
+		
+			$geoCodeURL = "http://maps.googleapis.com/maps/api/geocode/json?latlng=".$lati.",".$longi."&sensor=false"; 
+
+    		$direccion = json_decode(file_get_contents($geoCodeURL), true); 
+			$row = mysql_fetch_assoc($direccion);
+   
+			$dir=$row['formatted_address'];
+			
+			return $dir;
+			mysqli_close($conexion);
+		}else{
+			return 0;
+		}
+	}
+	
+/*--------------------------------------------------------F------------------------ ----- */
+	
+	
+	
 	////------------------------------------------------------------------------------Alertas
 	
 	public function prob_nom($cli,$nam){
@@ -569,7 +655,7 @@ function get_num_hist26($hist, $idunit, $rtime, $filtro, $cliente,$radio){
 		$conexion = mysqli_connect($config_bd['host'],$config_bd['user'],$config_bd['pass'],$config_bd['bname']);		
 	   if($conexion){
 		   //for($a=0;$a<count($cant_histo);$a++){   			
-$sql="SELECT 
+echo $sql="SELECT 
 E.COD_ENTITY,
 CAST(E.GPS_DATETIME AS DATE) AS FECHA, 
 G.DESCRIPTION,
