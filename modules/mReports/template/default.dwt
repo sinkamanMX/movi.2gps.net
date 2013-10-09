@@ -65,7 +65,7 @@
 	    $(".chzn-select").chosen({width: "125px"});
 	    $(".chzn-select-cs").chosen({width: "250px"});	  
 
-		$( "#btnSearch" ).button({
+		$( "#rptbtnSearch" ).button({
 			icons: { primary: "ui-icon-search" }
 		}).click(function() {
 			rptsSearchResumen()		
@@ -95,7 +95,7 @@
 			    </select>
 		    </div>
 		    <div class="styleButton">
-		    	<button id="btnSearch">Buscar</button>	
+		    	<button id="rptbtnSearch">Buscar</button>	
 		    </div>
 	</div>
 	<span id="rpsMessage" class="rpsMessage visible">Favor de seleccionar No. de Semana y un Centro de Salud</span>

@@ -39,6 +39,7 @@ function onload_map(){
 	$('#mon_chk_c').change(function() {
 		mon_draw_table()
 	});
+	google.maps.event.trigger(map, 'resize');
 }
 
 function mon_load_units(){
@@ -384,7 +385,7 @@ function mon_draw_table(){
 		mon_table.appendTo(mon_div_area);
 		$("#mon_div_area").scrollTop(currentScroll);
 
-		if(mon_total_alertas>0 && tab_active==0){
+		if(mon_total_alertas>1 && tab_active==1){
 			mon_alerta_unidades += '</table>';
 			$("#dialog_message").html(mon_alerta_unidades);
 			$("#dialog_message").dialog('open');
