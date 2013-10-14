@@ -106,6 +106,9 @@
                         $typeLoc = 3;
                     }                    
                 }
+            }else if($upos['LATITUDE'] != "0.000000" && $upos['LONGITUDE'] != "0.000000" 
+                                                     && $typeLoc =="NULL" || $typeLoc =="0"){         
+                $typeLoc = 1;  
             }                
 			
             if($upos['LATITUDE'] != "0.000000" && $upos['LONGITUDE'] != "0.000000"){

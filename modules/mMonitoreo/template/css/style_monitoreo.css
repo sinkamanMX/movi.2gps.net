@@ -24,9 +24,9 @@
   * html .mon_div_acordeon {
     height: 95%;
   }  
-  .menu_monitoreo{width:20%; height:100%; float:left; }
+  .menu_monitoreo{width:28%; height:100%; float:left; }
 
-  .pestana_monitoreo{width:79%; height:100%; float:left;  border:#A6C9E2 solid thin; top:0%; left:1%;}
+  .pestana_monitoreo{width:71%; height:100%; float:left;  border:#A6C9E2 solid thin; top:0%; left:1%;}
   .div_unit_info{
     height: 210px
   }

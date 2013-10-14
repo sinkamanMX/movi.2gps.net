@@ -1,4 +1,4 @@
-var arrayunits 		= Array();
+var arrayunits 		= new Array();
 var draw_acordion	= 0;
 var array_selected  = Array();
 var markers = [];
@@ -267,9 +267,10 @@ function mon_draw_table(){
 			var colprio = unit_info[4];//--
 			var imei 	= unit_info[18];
 			var blockMotor = unit_info[19];
-			var type    = unit_info[20];
-			var battery = unit_info[21];
-
+			var type     = unit_info[20];
+			var battery  = unit_info[21];
+			var type_loc = unit_info[22];
+			var distancia= unit_info[23];
 
 			if(unit_info[17]!="SC"){
 				aComandosAll = aComandosAll + ( (aComandosAll!="") ? '||': '');
@@ -283,6 +284,7 @@ function mon_draw_table(){
 			var colorImage 		= '';
 			var textoMensaje 	= '';
 			var otrosCampos		= '';
+			var typeLoc  		= '';
 
 			if(type=='V'){
 				if(blockMotor!=1 ){
@@ -316,11 +318,27 @@ function mon_draw_table(){
 						colorImage = "width:12px;' src='public/images/geo_icons/battery.png";	
 					}
 				}else{
-					console.log("No hya nada");
+					console.log("No hay nada");
 				}
 
 				otrosCampos= '<tr><td align="left">Nivel de Bateria:</td><td align="left">'	+ battery	+'% </td></tr>';
 			}
+
+			/*Se valida el tipo de localizacion.*/
+			if(type_loc == 1){
+				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_gps.png";	
+			}else if(type_loc == 2){
+				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_wifi.png";	
+			}else if(type_loc == 3){
+				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_gci.png";	
+			}else if(type_loc == 4){	
+				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_lai.png";	
+			}else if(type_loc == 5){
+				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_net.png";	
+			}else{
+				typeLoc = "height:20px;width:20px;' src='public/images/geo_icons/antena_problem.png";
+			}	
+			
 
 
 			var content = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
@@ -359,6 +377,7 @@ function mon_draw_table(){
 				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+	
 				"</div>"+
 				"<td><img style='height:16px;"+colorImage+"'/></td>"+
+				"<td><img style='"+typeLoc+"'/></td>"+
 				validateInfo+
 				"<td><div id='mon_div_iconi"+unit_info[2]+"' class='mon_units_info' onclick='mon_get_info(\""+array_selected[i]+"\")'>"+
 				"<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+"</div>"+				
