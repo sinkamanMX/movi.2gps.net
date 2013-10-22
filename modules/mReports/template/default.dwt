@@ -60,9 +60,6 @@
 </style>
 <script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
-
-
-	    $(".chzn-select").chosen({width: "125px"});
 	    $(".chzn-select-cs").chosen({width: "250px"});	  
 
 		$( "#rptbtnSearch" ).button({
@@ -81,12 +78,9 @@
 		</div>
 
 		<div class="tittleCombo ">
-			<div class="styleTittle">Semana</div>
+			<div class="styleTittle"></div>
 
 			<div class="c-Combo">
-			    <select id="rptsCboWeek" data-placeholder="Semana..." class="chzn-select" style="width:125px;" tabindex="2">
-			    	{CBO_WEEKS}
-			    </select>
 			</div>
 			<div class="styleTittle">Centro de Salud</div>
 			<div class="c-Combo">
@@ -98,7 +92,7 @@
 		    	<button id="rptbtnSearch">Buscar</button>	
 		    </div>
 	</div>
-	<span id="rpsMessage" class="rpsMessage visible">Favor de seleccionar No. de Semana y un Centro de Salud</span>
+	<span id="rpsMessage" class="rpsMessage visible">Favor de seleccionar un Centro de Salud</span>
 	<div id="rpsTableContent">
 		
 	</div>
