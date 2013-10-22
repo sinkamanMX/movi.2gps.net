@@ -15,8 +15,7 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
     $aEjeZ   = Array();
     $cEjeZ   = Array();
     
-    if(isset($_GET['idWeek']) && isset($_GET['idGeo'])){
-        $idWeek = $_GET['idWeek'];
+    if(isset($_GET['idGeo'])){
         $idGeo  = $_GET['idGeo'];
         
         
@@ -38,8 +37,8 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
                 LEFT JOIN CRM2_EJE_Z ON CRM2_EJE_Y.ID_EJE_Z      = CRM2_EJE_Z.ID_EJE_Z
                 LEFT JOIN ADM_GEOREFERENCIA_RESPUESTAS ON CRM2_RESPUESTAS.ID_RES_CUESTIONARIO = ADM_GEOREFERENCIA_RESPUESTAS.ID_RES_CUESTIONARIO
                 LEFT JOIN ADM_GEOREFERENCIAS ON ADM_GEOREFERENCIAS.ID_OBJECT_MAP = ADM_GEOREFERENCIA_RESPUESTAS.ID_OBJECT_MAP
-                WHERE NUM_SEMANA = ".$idWeek."
-                AND CRM2_CUESTIONARIOS.ID_TIPO      = 3
+                WHERE /*NUM_SEMANA = ".$idWeek."
+                AND */CRM2_CUESTIONARIOS.ID_TIPO      = 3
                 AND CRM2_CUESTIONARIOS.COD_CLIENT   = ".$userAdmin->user_info['ID_CLIENTE']."
                 AND ADM_GEOREFERENCIA_RESPUESTAS.ID_OBJECT_MAP = ".$idGeo."
                 AND CRM2_EJE_Z.ID_EJE_Z IS NOT NULL
@@ -141,8 +140,8 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
                 $sqlObtainR = "SELECT TRUNCATE( (( SUM(CRM2_PREG_RES.CALIFICACION) * 10 )/ COUNT(CRM2_PREG_RES.CALIFICACION))  ,2)  AS CALIFICA
                                 FROM CRM2_PREG_RES
                                 INNER JOIN CRM2_RESPUESTAS ON CRM2_PREG_RES.ID_RES_CUESTIONARIO = CRM2_RESPUESTAS.ID_RES_CUESTIONARIO
-                                WHERE NUM_SEMANA = ".$idWeek." 
-                                 AND ID_EJE_X    = ".$aEjeX[$ix][id]."
+                                WHERE /*NUM_SEMANA = ".$idWeek." 
+                                 AND */ID_EJE_X    = ".$aEjeX[$ix][id]."
                                  AND ID_EJE_Y    = ".$aFilterY[$i][id];
                 $query = $db->sqlQuery($sqlObtainR);
                 $count = $db->sqlEnumRows($query);
