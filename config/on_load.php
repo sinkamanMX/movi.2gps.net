@@ -43,6 +43,7 @@
 			'pdf'		   	=> $config['libPath'].'/pdf/fpdf.php',
 			'comands'	   	=> $config['libPath'].'c.Commands.php',
 			'historico'	   	=> $config['libPath'].'c.Historico.php',
+            'PositionsLbs' 	=> $config['libPath'].'c.LocationBasedService.php'
 			);
 
 		foreach($classes AS $i => $v){
