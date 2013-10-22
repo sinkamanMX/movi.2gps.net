@@ -82,7 +82,7 @@ class cPositions{
     //**Obtiene la tabla donde se almacenan los historicos de las unidades*************-//
 	function direccion($lati,$longi){
 		global $config_bd_sp;
-/*$conexion = mysqli_connect($config_bd_sp['host'],$config_bd_sp['user'],$config_bd_sp['pass'],$config_bd_sp['bname']);				
+        $conexion = mysqli_connect($config_bd_sp['host'],$config_bd_sp['user'],$config_bd_sp['pass'],$config_bd_sp['bname']);				
 		if($conexion){
 			$sql_stret	= "CALL SPATIAL_CALLES(".$longi.",".$lati.");";
 			$query 		= mysqli_query($conexion, $sql_stret);
@@ -92,13 +92,13 @@ class cPositions{
 			mysqli_close($conexion);
 		}else{
 			return false;
-		}*/
+		}
 	}	
 
     //**Obtiene la tabla donde se almacenan los historicos de las unidades*************-//
 	function direccion_no_format($lati,$longi){
 		global $config_bd_sp;
-	/*$conexion = mysqli_connect( $config_bd_sp['host'],$config_bd_sp['user'],
+	   $conexion = mysqli_connect( $config_bd_sp['host'],$config_bd_sp['user'],
 								$config_bd_sp['pass'],$config_bd_sp['bname']);				
 		if($conexion){
 			$sql_stret	= "CALL SPATIAL_CALLES(".$longi.",".$lati.");";
@@ -110,7 +110,7 @@ class cPositions{
 			mysqli_close($conexion);
 		}else{
 			return false;
-		}*/
+		}
 	}
 	
 	//**Calcula la distancia entre dos puntos, el valor lo regresa en kms**//
