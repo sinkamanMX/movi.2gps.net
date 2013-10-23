@@ -111,7 +111,7 @@ body{ font-size: 10px; font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verd
 
 .pestana_principal{position:absolute; width:98%; height:99%; top:0%; left:1%;}
 
-.pestana{width:97%; height:90%;}
+.pestana{width:99%; height:90%;}
 
 .menu{width:15%; height:100%; float:left;  border:#A6C9E2 solid thin;}
 
@@ -313,7 +313,7 @@ border-radius:3px;
 	bottom: 30px;
 	height: 20px;
 	position: absolute;
-	right: 35%;
+	right: 30%;
 	width: 200px;
 	color: white;
 	font-weight:bold;
@@ -376,7 +376,7 @@ border-radius:3px;
 	top: 40px;
 	height: 20px;
 	position: absolute;
-	right: 35%;
+	right: 25%;
 	width: 280px;
 	color: white;
 	font-weight:bold;

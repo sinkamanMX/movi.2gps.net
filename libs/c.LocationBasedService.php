@@ -16,22 +16,22 @@ class LocationBasedService{
      * Parametros de Conexion
      * @var Array
     */
-	public $bdParametros  = 0;
+	public $bdParametros  = Array();
     /**
      * Variable de Conexion a BD
      * @var Conexion
     */ 
-    public $conexion;       
+    public $conexion=null;       
     /**
      * Parametros de Conexion Espacial
      * @var Array
     */    
-    public $bdParametrosSp  = 0;    
+    public $bdParametrosSp  = Array();
     /**
      * Variable de Conexion a BD Espacial
      * @var Conexion
     */ 
-    public $conexionSpatial;    
+    public $conexionSpatial=null;       
     /**
      * Indica la Mac Address a buscar.
      * @var String
@@ -58,14 +58,14 @@ class LocationBasedService{
      * @var $params Array 
      * @return void
     */        
-    public function setConfigBdParams($iparams=Array()){ $this->$bdParametros = $iparams;}
+    public function setConfigBdParams($iparams=Array()){$this->bdParametros = $iparams;}
 
     /**
      * Establece los datos de conexion a la bd Espacial.
      * @var $params Array 
      * @return void
     */            
-    public function setConfigBdSpParams($iparams=Array()){ $this->$bdParametrosSp = $iparams;}
+    public function setConfigBdSpParams($iparams=Array()){$this->bdParametrosSp = $iparams;}
     
     /**
      * Establece la Mac Address
@@ -100,8 +100,8 @@ class LocationBasedService{
      * @return conexion
     */     
 	public function startConexion(){
-	  $this->conexion = mysqli_connect($this->$bdParametros['host'],
-	  			$this->$bdParametros['user'],$this->$bdParametros['pass'],$this->$bdParametros['bname']);	
+	  $this->conexion = mysqli_connect($this->bdParametros['host'],
+	  			$this->bdParametros['user'],$this->bdParametros['pass'],$this->bdParametros['bname']);     	
 	}
 	
     /**
@@ -119,8 +119,8 @@ class LocationBasedService{
      * @return conexion
     */     
 	public function startConexionSp(){
-	  $this->conexion = mysqli_connect($this->$bdParametrosSp['host'],
-	  			$this->$bdParametrosSp['user'],$this->$bdParametrosSp['pass'],$this->$bdParametrosSp['bname']);	
+	  $this->conexionSpatial = mysqli_connect($this->bdParametrosSp['host'],
+	  			$this->bdParametrosSp['user'],$this->bdParametrosSp['pass'],$this->bdParametrosSp['bname']);
 	}
 	
     /**
@@ -128,8 +128,8 @@ class LocationBasedService{
      * @return conexion
     */      
 	public function closeConexionSp(){
-		if($this->conexion){
-			mysqli_close($this->conexion);	
+		if($this->conexionSpatial){
+			mysqli_close($this->conexionSpatial);	
 		}		
 	}
     
@@ -141,27 +141,27 @@ class LocationBasedService{
         $result = Array();
         $this->startConexion(); 
         if($this->conexion){
-            $sql = "CALL POSICION('".$this->lbsMacAddress."',".$this->lbsGci.",".$this->lbsLai.")";
-			$query = mysqli_query($this->conexion, $sql);
-			$count = @mysqli_num_rows($query);  
-            if($count>0){
-                $row = @mysqli_fetch_object($query);
-                if($row->ORIGEN != 'no-info'){
+            $sql = "CALL POSICION('".$this->lbsMacAddress."',".$this->lbsGci.",".$this->lbsLai.");";
+            $query = mysqli_query($this->conexion, $sql);
+            if($query){
+               if(!$query){echo mysqli_error();}            
+                $row = @mysqli_fetch_array($query);  
+                if($row['ORIGEN'] != 'no-info'){
                     $result['status']   = 'ok-info';  
-                    $result['origen']   = $row->ORIGEN;
-                    $result['latittud'] = $row->LATITUD;
-                    $result['longitud'] = $row->LONGITUD;
-                    
+                    $result['origen']   = $row['ORIGEN'];
+                    $result['latittud'] = $row['LATITUD'];
+                    $result['longitud'] = $row['LONGITUD'];
                     if($this->getDireccion){
-                        $direccion = $this->getDireccionResult($row->LATITUD,$row->LONGITUD);
+                        $direccion = $this->getDireccionResult($row['LATITUD'],$row['LONGITUD']);
                         $result['DIRECCION'] = $direccion;
                     }                  
                 }else{
                     $result['status'] = 'no-info';
-                }
+                } 
             }else{
-                $result['status'] = 'no-info';    
-            }
+                $result['status'] = 'error-query';    
+            } 
+            $this->closeConexion();                
         }else{
             $result['status'] = 'error-conexion';
         }

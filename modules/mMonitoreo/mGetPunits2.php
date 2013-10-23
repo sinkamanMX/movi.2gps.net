@@ -109,7 +109,9 @@
             }else if($upos['LATITUDE'] != "0.000000" && $upos['LONGITUDE'] != "0.000000" 
                                                      && ($typeLoc =="NULL" || $typeLoc =="0")){         
                 $typeLoc = 1;  
-            }                
+            }   
+            
+            echo "<h1>".$typeLoc."</h1>  -- ".$upos['LATITUDE']." ".$upos['LONGITUDE']." ->".$row['COD_ENTITY']."<br>";             
 			
             if($upos['LATITUDE'] != "0.000000" && $upos['LONGITUDE'] != "0.000000"){
                 $querys="SELECT CONCAT('A ', TRUNCATE(DISTANCIA(".$upos['LONGITUDE'].",".$upos['LATITUDE'].

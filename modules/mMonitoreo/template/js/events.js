@@ -14,8 +14,7 @@ $(document).ready(function(){
 		}
 	});	
 	$( "#evts_cancel" ).button({
-	  icons: {
-	    primary: "ui-icon-volume-off"
+	  icons: {	    primary: "ui-icon-volume-off"
 	  },
 	  text: "Silenciar"
 	}).click(function( event ) {
