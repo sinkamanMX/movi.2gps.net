@@ -272,6 +272,7 @@ function mon_draw_table(){
 			var battery  = unit_info[21];
 			var type_loc = unit_info[22];
 			var distancia= unit_info[23];
+			var radioLbs = 0;
 
 			if(unit_info[17]!="SC"){
 				aComandosAll = aComandosAll + ( (aComandosAll!="") ? '||': '');
@@ -286,7 +287,8 @@ function mon_draw_table(){
 			var textoMensaje 	= '';
 			var otrosCampos		= '';
 			var typeLoc  		= '';
-
+			var stringLoc		= '';
+			
 			if(type=='V'){
 				if(blockMotor!=1 ){
 					if(vel<5 && priory==0){
@@ -311,10 +313,10 @@ function mon_draw_table(){
 					if(battery < 33){
 						image = 'public/images/geo_icons/phone_red.png';
 						colorImage = "width:12px;' src='public/images/geo_icons/battery_low.png";	
-					}else if(battery>34 && battery < 66){
+					}else if(battery>33 && battery < 66){
 						image = 'public/images/geo_icons/phone_orange.png';
 						colorImage = "width:12px;' src='public/images/geo_icons/battery_medium.png";	
-					}else if(battery>67){						
+					}else if(battery>66){						
 						image = 'public/images/geo_icons/phone_green.png';
 						colorImage = "width:12px;' src='public/images/geo_icons/battery.png";	
 					}
@@ -327,31 +329,41 @@ function mon_draw_table(){
 
 			/*Se valida el tipo de localizacion.*/
 			if(type_loc == 1){
-				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_gps.png";	
+				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_gps.png";		
+				stringLoc = 'GPS';	
 			}else if(type_loc == 2){
 				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_wifi.png";	
+				radioLbs = 50;
+				stringLoc = 'WIFI';
 			}else if(type_loc == 3){
 				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_gci.png";	
+				radioLbs = 200;
+				stringLoc = 'GCI';
 			}else if(type_loc == 4){	
 				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_lai.png";	
+				radioLbs = 1000;
+				stringLoc = 'LAI';
 			}else if(type_loc == 5){
 				typeLoc = "height:25px;width:25px;' src='public/images/geo_icons/antena_net.png";	
+				radioLbs = distancia;
+				stringLoc = 'NETWORK';
 			}else{
 				typeLoc = "height:20px;width:20px;' src='public/images/geo_icons/antena_problem.png";
+				stringLoc = 'NO LOCALIZADO';
 			}	
-			
 
 
 			var content = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
 							'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
-						  			'<table width="400"><tr><th colspan="2">'+
+						  			'<table width="400"><tr><th colspan="2">'+						  			
+						  			'<tr><td align="left">Localizado por:</td><td align="left">'+stringLoc+'</td></tr>'+
 									'<tr><td align="left">Unidad :</td><td align="left">'	+ dunit +'</td></tr>'+
 									'<tr><td align="left">IMEI :</td><td align="left">'  	+ imei +'</td></tr>'+
 						  			'<tr><td align="left">Evento :</td><td align="left">'	+ textoMensaje + evt	+'</td></tr>'+
 						  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ fecha	+'</td></tr>'+
 									otrosCampos+								
 									'<tr><td align="left">Dirección:</td><td align="left">'	+ dire	+'</td></tr>'+
-									'<tr><td>&nbsp;</td><td align="rigth" colspan="2"<td align="left">'		+ pdi	+'</td></tr>'+
+									'<tr><td>&nbsp;</td><td align="rigth" colspan="2"<td align="left">'		+ pdi	+'</td></tr>'+									
 				  					'</table>'+
 				  				'</div>';
 
@@ -367,6 +379,22 @@ function mon_draw_table(){
 				validateInfo = 
 					"<td onclick='mon_center_map(\""+array_selected[i]+"\");'>"+unit_info[3]+"</td> "+
 					"<td onclick='mon_center_map(\""+array_selected[i]+"\");'>"+unit_info[5]+ "</td>";
+
+				if(type_loc > 0 && type_loc < 6){
+				    var populationOptions = {
+				      strokeColor: '#0026FF',
+				      strokeOpacity: 0.5,
+				      strokeWeight: 2,
+				      fillColor: '#546EFF',
+				      fillOpacity: 0.10,
+				      map: map,
+				      center: new google.maps.LatLng(unit_info[12],unit_info[13]),
+				      radius: radioLbs
+				    };
+				    var cityCircle = new google.maps.Circle(populationOptions);	
+					arraygeos.push(cityCircle);				    	
+				}				
+
 			}else{
 				validateInfo = 
 					"<td  onclick='monMessageValidate(\""+unit_info[3]+"\");'>"+unit_info[3]+"</td> "+
@@ -540,8 +568,11 @@ function mon_center_map(unitsinfo){
 	var colprio = unit_info[4];//--
 	var imei 	= unit_info[18];
 	var blockMotor = unit_info[19];
-	var type    = unit_info[20];
-	var battery = unit_info[21];
+	var type     = unit_info[20];
+	var battery  = unit_info[21];
+	var type_loc = unit_info[22];
+	var distancia= unit_info[23];
+	var radioLbs = 0;
 
 	var textoMensaje = (blockMotor==1) ? 'MOTOR BLOQUEADO -': '';
 	var image = new google.maps.MarkerImage('public/images/car.png',
@@ -562,6 +593,7 @@ function mon_center_map(unitsinfo){
 	var colorImage 		= '';
 	var textoMensaje 	= '';
 	var otrosCampos		= '';
+	var stringLoc		= '';
 
 	if(type=='V'){
 		otrosCampos= '<tr><td align="left">Velocidad:</td><td align="left">'	+ vel	+' Km/h.</td></tr>'+
@@ -571,9 +603,25 @@ function mon_center_map(unitsinfo){
 	}
 
 
+	/*Se valida el tipo de localizacion.*/
+	if(type_loc == 1){
+		stringLoc = 'GPS';	
+	}else if(type_loc == 2){
+		stringLoc = 'WIFI';
+	}else if(type_loc == 3){
+		stringLoc = 'GCI';
+	}else if(type_loc == 4){	
+		stringLoc = 'LAI';
+	}else if(type_loc == 5){
+		stringLoc = 'NETWORK';
+	}else{
+		stringLoc = 'NO LOCALIZADO';
+	}	
+
 	var info = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
 					'<div class="ui-widget-header ui-corner-all" align="center">Información de la Unidad</div>'+
 				  			'<table width="400"><tr><th colspan="2">'+
+				  			'<tr><td align="left">Localizado por:</td><td align="left">'+stringLoc+'</td></tr>'+
 							'<tr><td align="left">Unidad :</td><td align="left">'	+ dunit +'</td></tr>'+
 							'<tr><td align="left">IMEI :</td><td align="left">'  	+ imei +'</td></tr>'+
 				  			'<tr><td align="left">Evento :</td><td align="left">'	+ textoMensaje + evt	+'</td></tr>'+
