@@ -362,7 +362,7 @@ function mon_draw_table(){
 						  			'<tr><td align="left">Evento :</td><td align="left">'	+ textoMensaje + evt	+'</td></tr>'+
 						  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ fecha	+'</td></tr>'+
 									otrosCampos+								
-									'<tr><td align="left">Dirección:</td><td align="left">'	+ dire	+'</td></tr>'+
+									'<tr rowspan="3"><td align="left">Dirección:</td><td align="left">'	+ dire	+'</td></tr>'+
 									'<tr><td>&nbsp;</td><td align="rigth" colspan="2"<td align="left">'		+ pdi	+'</td></tr>'+									
 				  					'</table>'+
 				  				'</div>';
@@ -627,7 +627,7 @@ function mon_center_map(unitsinfo){
 				  			'<tr><td align="left">Evento :</td><td align="left">'	+ textoMensaje + evt	+'</td></tr>'+
 				  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ fecha	+'</td></tr>'+
 							otrosCampos+								
-							'<tr><td align="left">Dirección:</td><td align="left">'	+ dire	+'</td></tr>'+
+							'<tr rowspan="3"><td align="left">Dirección:</td><td align="left">'	+ dire	+'</td></tr>'+
 							'<tr><td>&nbsp;</td><td align="rigth" colspan="2"<td align="left">'		+ pdi	+'</td></tr>'+
 		  					'</table>'+
 		  				'</div>';
