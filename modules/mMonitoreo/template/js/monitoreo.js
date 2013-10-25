@@ -12,6 +12,10 @@ var arrayReferencias= Array();
 var listReferencias = 0;
 var aComandosAll = '';
 var UnitsString  = '';
+var monGeoZoom   ;
+var monGeoBnds   ;
+var monMarkers = [];
+
 function mon_init(){
 	$("#mon_tabs").tabs();
     $( ".tabs-bottom .ui-tabs-nav, .tabs-bottom .ui-tabs-nav > *" ).removeClass( "ui-corner-all ui-corner-top" ).addClass( "ui-corner-bottom" );
@@ -28,18 +32,30 @@ function onload_map(){
 	map = new google.maps.Map(document.getElementById('mon_content'),mapOptions);
     google.maps.event.addListener(map, 'click', function() {
       infoWindow.close();
-    });			
+    });	
+
+	google.maps.event.addListener(map, 'idle', showM);
+
 	mon_load_units();
 	mon_init();
 
-	$('#mon_chk_g').change(function() {
+	/*$('#mon_chk_g').change(function() {
 		mon_draw_table()
-	});
+	});*/
 
 	$('#mon_chk_c').change(function() {
 		mon_draw_table()
 	});
 	google.maps.event.trigger(map, 'resize');
+}
+
+function showM(){
+	var bounds = map.getBounds();
+	var zoomLevel = map.getZoom();
+
+	monGeoZoom   = zoomLevel;
+	monGeoBnds   = bounds;
+	drawGeos();	
 }
 
 function mon_load_units(){
@@ -752,22 +768,43 @@ function getGeos(){
 }
 
 function drawGeos(){
-	var checkPuntos = $('input[name=mon_chk_g]').is(':checked');
 	var checkCercas = $('input[name=mon_chk_c]').is(':checked');
+
+	if(monMarkers || monMarkers.length>-1){
+		for (var i = 0; i < monMarkers.length; i++) {
+	          monMarkers[i].setMap(null);
+		}	
+		monMarkers = [];
+	}
+
 	for(var i=0;i<arrayReferencias.length;i++){
 		var arrayGeoInfo = arrayReferencias[i].split('!');
-		if(arrayGeoInfo[0]=='G' && checkPuntos){
-			var image = 'public/images/geo_icons/'+arrayGeoInfo[2];	
-		    var marker1 = new google.maps.Marker({
-			    map: map,
-			    position: new google.maps.LatLng(arrayGeoInfo[4],arrayGeoInfo[5]),
-			    title: 	arrayGeoInfo[3],
-				icon: 	image
-		    });
-		    markers.push(marker1);
+
+		if(arrayGeoInfo[0]=='G'){
+			if(monGeoZoom>13){
+				var pointU = new google.maps.LatLng(arrayGeoInfo[4],arrayGeoInfo[5]);
+
+				if(monGeoBnds.contains(pointU)){
+					var image = 'public/images/geo_icons/'+arrayGeoInfo[2];	
+				    var marker1 = new google.maps.Marker({
+					    map: map,
+					    position: new google.maps.LatLng(arrayGeoInfo[4],arrayGeoInfo[5]),
+					    title: 	arrayGeoInfo[3],
+						icon: 	image
+				    });
+					var content = '<br><div class="div_unit_info ui-widget-content ui-corner-all">'+
+						'<div class="ui-widget-header ui-corner-all" align="center">Información del Geo Punto</div>'+
+								'<table width="400"><tr><th colspan="2">'+						  			
+								'<tr><td align="left">Punto de Interes:</td><td align="left">'+arrayGeoInfo[3]+'</td></tr>'+									
+								'</table>'+
+							'</div>';
+				    add_info_marker(marker1,content);
+				    monMarkers.push(marker1);
+				}
+			}
 		}
 
-		if(arrayGeoInfo[0]=='C' && checkCercas){ 
+	if(arrayGeoInfo[0]=='C' && checkCercas){ 
 			var arrayGeoInfoLats = null;
 			arrayGeoInfoLats = arrayGeoInfo[6].split('&');
 			var geos_points_polygon = [];
@@ -795,7 +832,7 @@ function drawGeos(){
 			geos_polygon.setMap(map);
 			arraygeos.push(geos_polygon);
 		}
-	}	
+	}		
 }
 
 function monMessageValidate(dUnit){

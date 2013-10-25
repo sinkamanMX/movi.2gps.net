@@ -71,7 +71,7 @@
 <div id="mon_content" class="pestana_monitoreo">
 </div><!--mon_content-->
 <div  class="ui-widget-header mon_div_geos">
-	<input type="checkbox" name="mon_chk_g" id="mon_chk_g">GeoPuntos
+	<!--<input type="checkbox" name="mon_chk_g" id="mon_chk_g">GeoPuntos-->
 	<input type="checkbox" name="mon_chk_c" id="mon_chk_c">GeoCercas
 	<div id="gral_button_events" class="ui-state-default ui-corner-all mon-close-evts">
 		<span class="ui-icon ui-icon-alert float_left"></span>
