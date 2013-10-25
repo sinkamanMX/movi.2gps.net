@@ -785,7 +785,7 @@ function drawGeos(){
 				var pointU = new google.maps.LatLng(arrayGeoInfo[4],arrayGeoInfo[5]);
 
 				if(monGeoBnds.contains(pointU)){
-					var image = 'public/images/geo_icons/'+arrayGeoInfo[2];	
+					var image = 'public/images/'+arrayGeoInfo[2];	
 				    var marker1 = new google.maps.Marker({
 					    map: map,
 					    position: new google.maps.LatLng(arrayGeoInfo[4],arrayGeoInfo[5]),

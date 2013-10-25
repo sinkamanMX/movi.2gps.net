@@ -35,12 +35,12 @@ if($conexion){
     /**
     * PROCESO PARA GEOLOC_GCI
     * */    
-    analizaGeocGci();
+    //analizaGeocGci();
     
     /**
     * PROCESO PARA WIFI
     * */    
-    analizaGeocWifi();    
+    //analizaGeocWifi();    
     
 }else{
     echo "<br> No se conecto a ninguna <br>";
@@ -51,31 +51,25 @@ function analizaGeocLaic(){
     /**
      * Se buscan los registros no procesados
     */     
-    $sqlControl="SELECT CONCAT(GEOLOC_MEDCEL.MCC,GEOLOC_MEDCEL.MNC,GEOLOC_MEDCEL.LAC) AS LAI,
-           			  AVG(GEOLOC_MEDCEL.LATITUD) AS LATITUD,
-                      AVG(GEOLOC_MEDCEL.LONGITUD) AS LONGITUD
-               FROM GEOLOC_MEDCEL
-               WHERE GEOLOC_MEDCEL.PROCESADO='N'
-               GROUP BY LAI LIMIT 100";
+    $sqlControl="SELECT DISTINCT CONCAT(GEOLOC_MEDCEL.MCC,GEOLOC_MEDCEL.MNC,GEOLOC_MEDCEL.LAC) AS LAI
+                 FROM GEOLOC_MEDCEL
+                 WHERE GEOLOC_MEDCEL.PROCESADO='N' 
+                 LIMIT 100";
     $queryControl = mysqli_query($conexion,$sqlControl);
     if($queryControl){
         while($rowControl = mysqli_fetch_object($queryControl)){
             
-            $sqlLai="SELECT COUNT(GEOLOC_LAI.LAI) AS CUENTA
+            $sqlLai="SELECT COUNT(1) AS CUENTA
                     FROM GEOLOC_LAI
                     WHERE GEOLOC_LAI.LAI='".$rowControl->LAI."'";
             if($queryLai = mysqli_query($conexion,$sqlLai)){
                 $rowLai  = mysqli_fetch_object($queryLai);
-                
+                //Promedio de lai para lat y lon
+                $dataLai = getMedCel($rowControl->LAI);
+                $dataLai['IDLAI'] = $rowControl->LAI;
                 if($rowLai->CUENTA > 0){
-                    $dataLai = getMedCel($rowControl->LAI);
-                    $dataLai['IDLAI'] = $rowControl->LAI;
-                    
                     updateLai($dataLai,'update');
                 }else{
-                    $dataLai['IDLAI']  = $rowControl->LAI;
-                    $dataLai['LAT']    = $rowControl->LATITUD;
-                    $dataLai['LON']    = $rowControl->LONGITUD;                    
                     updateLai($dataLai,'insert');
                 }
             }else{
@@ -142,33 +136,23 @@ function analizaGeocGci(){
     /**
      * Se buscan los registros no procesados
     */     
-    $sqlControl="SELECT CONCAT(GEOLOC_MEDCEL.MCC,GEOLOC_MEDCEL.MNC,GEOLOC_MEDCEL.LAC,GEOLOC_MEDCEL.CELLID) AS GCI,
-	               CONCAT(GEOLOC_MEDCEL.MCC,GEOLOC_MEDCEL.MNC,GEOLOC_MEDCEL.LAC) AS LAI,
-       			   AVG(GEOLOC_MEDCEL.LATITUD) AS LATITUD,
-                   AVG(GEOLOC_MEDCEL.LONGITUD) AS LONGITUD
-           FROM GEOLOC_MEDCEL
-           WHERE GEOLOC_MEDCEL.PROCESADO='L'
-           GROUP BY GCI LIMIT 100";
+    $sqlControl="SELECT DISTINCT CONCAT(GEOLOC_MEDCEL.MCC,GEOLOC_MEDCEL.MNC,GEOLOC_MEDCEL.LAC,GEOLOC_MEDCEL.CELLID) AS GCI
+                 FROM GEOLOC_MEDCEL
+                 WHERE GEOLOC_MEDCEL.PROCESADO='L'";
     $queryControl = mysqli_query($conexion,$sqlControl);
     if($queryControl){
         while($rowControl = mysqli_fetch_object($queryControl)){
-            
-           $sqlGci="SELECT COUNT(GEOLOC_GCI.LAI) AS CUENTA
+           $sqlGci="SELECT COUNT(1) AS CUENTA
                     FROM GEOLOC_GCI
                     WHERE GEOLOC_GCI.GCI='".$rowControl->GCI."'";
            if($queryGci = mysqli_query($conexion,$sqlGci)){
                 $rowGci  = mysqli_fetch_object($queryGci);
                 
+                $dataCgi = getMedCelCgi($rowControl->GCI);
+                $dataCgi['GCI'] = $rowControl->GCI;
                 if($rowGci->CUENTA > 0){
-                    $dataCgi = getMedCelCgi($rowControl->GCI);
-                    $dataCgi['GCI'] = $rowControl->GCI;
-                    
                     updateCgi($dataCgi,'update');
                 }else{
-                    $dataCgi['IDLAI']    = $rowControl->LAI; 
-                    $dataCgi['GCI']    = $rowControl->GCI;
-                    $dataCgi['LAT']    = $rowControl->LATITUD;
-                    $dataCgi['LON']    = $rowControl->LONGITUD;                    
                     updateCgi($dataCgi,'insert');
                 }
             }else{
@@ -188,7 +172,7 @@ function getMedCelCgi($cgi){
      * Se buscan el registro en base al campo LAI
     */     
     $sql ="SELECT AVG(GEOLOC_MEDCEL.LATITUD) AS PROM_LATITUD,
-                              AVG(GEOLOC_MEDCEL.LONGITUD) AS PROM_LONGITUD
+                  AVG(GEOLOC_MEDCEL.LONGITUD) AS PROM_LONGITUD
            FROM GEOLOC_MEDCEL
            WHERE CONCAT(GEOLOC_MEDCEL.MCC,GEOLOC_MEDCEL.MNC,GEOLOC_MEDCEL.LAC,GEOLOC_MEDCEL.CELLID)='".$cgi."'";
     if($query = mysqli_query($conexion,$sql)){
@@ -206,10 +190,9 @@ function updateCgi($data,$operation){
    
     if($operation='insert'){
         $sqlUpdate="INSERT INTO GEOLOC_GCI 
-                    SET LAI  = '".$data['IDLAI']."', 
                     GCI      = '".$data['GCI']."',
-				    LATITUD  = ".$data['LAT'].", 
-				    LONGITUD = ".$data['LON'];
+                    LATITUD  = ".$data['LAT'].", 
+                    LONGITUD = ".$data['LON'];
     }else{
         $sqlUpdate="UPDATE GEOLOC_GCI 
                     SET LATITUD  = ".$data['LAT'].",
@@ -237,10 +220,9 @@ function analizaGeocWifi(){
     /**
      * Se buscan los registros no procesados
     */     
-    $sqlControl="SELECT MAC_ADD, AVG(LATITUD) AS LATITUD, AVG(LONGITUD) AS LONGITUD, MAC_ADD
+    $sqlControl="SELECT DISTINCT MAC_ADD
                 FROM GEOLOC_MEDWIFI
                 WHERE PROCESADO = 'N'
-                GROUP BY MAC_ADD 
                 LIMIT 1000";
     $queryControl = mysqli_query($conexion,$sqlControl);
     if($queryControl){
@@ -249,16 +231,12 @@ function analizaGeocWifi(){
                     FROM GEOLOC_WIFI
                     WHERE MAC_ADD ='".$rowControl->MAC_ADD."'";
            if($queryGci = mysqli_query($conexion,$sqlGci)){
-                $rowGci  = mysqli_fetch_object($queryGci);                
+                $rowGci  = mysqli_fetch_object($queryGci);
+                $dataWifi = getMedCelWifi($rowControl->MAC_ADD);
+                $dataWifi['MAC'] = $rowControl->MAC_ADD;
                 if($rowGci->CUENTA > 0){
-                    $dataWifi = getMedCelWifi($rowControl->MAC_ADD);
-                    $dataWifi['MAC'] = $rowControl->MAC_ADD;
-                    
                     updateWifi($dataWifi,'update');
                 }else{
-                    $dataWifi['MAC']  = $rowControl->MAC_ADD; 
-                    $dataWifi['LAT']  = $rowControl->LATITUD;
-                    $dataWifi['LON']  = $rowControl->LONGITUD;                    
                     updateWifi($dataWifi,'insert');
                 }
             }else{
@@ -279,7 +257,7 @@ function getMedCelWifi($mac){
     */     
     $sql ="SELECT AVG(LATITUD)  AS PROM_LATITUD,
                   AVG(LONGITUD) AS PROM_LONGITUD
-           FROM GEOLOC_WIFI
+           FROM GEOLOC_MEDWIFI
            WHERE MAC_ADD ='".$mac."'";
     if($query = mysqli_query($conexion,$sql)){
         $row  = mysqli_fetch_object($query);
