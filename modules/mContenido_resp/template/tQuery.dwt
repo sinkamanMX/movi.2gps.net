@@ -1,0 +1,13 @@
+	<table id="MyDatap" width="100%">
+    <!-- BEGIN q -->  
+    <tr style="cursor:pointer;">
+    <td width="10%" onClick="change_ide('{q.IDE}');" onDblClick="edt_pts()">{q.IDP}</td>
+    <td width="20%" onClick="change_ide('{q.IDE}');" onDblClick="edt_pts()">{q.CTE}</td>
+    <td width="20%" onClick="change_ide('{q.IDE}');" onDblClick="edt_pts()">{q.DTD}</td>
+    <td width="30%" onClick="change_ide('{q.IDE}');" onDblClick="edt_pts()">{q.OBS}</td>
+   <!-- <td width="8%" onClick="change_idp('{q.IDE}');" style="{DSP_DOS}">{q.CUE}</td>
+    <td width="10%" style="{DSP_DOS}" onClick="change_idp('{q.IDE}');">xxx</td>-->
+    </tr>
+	<!-- END q -->   
+    </table>
+    

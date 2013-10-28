@@ -1,0 +1,11 @@
+<div id="myDiv"> 
+
+	<table id="MyDatas"  class="usersTableInfo" width="100%" >
+    <!-- BEGIN datos2 -->
+        <tr style="cursor:pointer;">
+         <td width="40%" onDblClick="nuevo('{datos2.IDU}')">{datos2.UND}</td>
+         <td width="60%" onDblClick="nuevo('{datos2.IDU}')">{datos2.VJE}</td>
+     	</tr>
+	<!-- END datos2 -->
+    </table>
+</div>

@@ -1,0 +1,8 @@
+<div>
+<select id="cbo_col_i" class="caja" onchange="pinta_cp_i(this.value);" >
+    <option value="0">Elegir Colonia</option>
+  	<!-- BEGIN colony -->
+	<option value="{colony.ID}|{colony.CP}">{colony.NAME}</option>
+	<!-- END colony -->    
+</select>
+</div>

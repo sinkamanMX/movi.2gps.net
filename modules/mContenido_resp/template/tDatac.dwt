@@ -1,0 +1,41 @@
+<script>
+$( ".calendar" ).datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			buttonImageOnly: true,
+			minDate: '{IDD}',
+			dateFormat: "yy-mm-dd"
+		});		
+</script>
+<input type="hidden" id="cnt" value="{CNT}" height="0" />
+	<table id="Mydatac" width="100%">
+    <!-- BEGIN datac -->
+        <tr style="cursor:pointer;" onClick="change_idpo({datac.COM})">
+         <td width="9%" title="{datac.PTO}">{datac.PTO} <input type="hidden" id="pto{datac.C}" value="{datac.COM}" /></td>
+         <!--<td width="%">{datac.ZNA}</td>-->
+         <td width="11%"><input type="text" class="caja_txt calendar" id="dt{datac.C}" value="{IDD}"   readonly="readonly" style="width:75px;" ></td>
+         <td width="13%">
+		 {datac.H}
+         <span>&nbsp;:&nbsp;</span>
+ 		 {datac.M}
+   		 </td>
+         <td width="11%"><input type="text" class="caja_txt calendar" id="dtf{datac.C}" value="{IDD}"  style="width:75px;" readonly ></td>
+		 <td width="13%">
+		 {datac.HF}
+         <span>&nbsp;:&nbsp;</span>
+ 		 {datac.MF}
+   		 </td>         
+         <td width="5%"><input type="text" id="tol{datac.C}" class="caja_txt" style="width:30px;" maxlength="3" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"></td>
+         <td width="10%"><input type="text" id="itm{datac.C}" class="caja_txt" style="width:75px;"></td>
+         <td width="13%"><input type="text" class="caja_txt" id="obs{datac.C}"></td>
+         <td width="13%" style="{STL}">
+        <!-- <div style="{STL}">-->
+         <select class="caja" id="cst{datac.C}">
+   		 	<option value="0" >Seleccione un cuestionario</option>
+            {CST}        
+   		 </select>
+         <!--</div>-->
+         </td>                       
+     	 </tr>
+	<!-- END datac -->
+    </table>

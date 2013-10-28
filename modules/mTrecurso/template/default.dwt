@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="public/js/general.js"></script>
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+
+
+<div style="width:100%; height:100%;" id="trh_main">
+
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="trh_table">
+<thead>
+<tr>
+<th colspan="5"><div style="width:90%; float:left;"><h3>Tipo de recurso humano</h3></div>
+	<div style="width:9%;  float:right;"><button class="boton" id="trh_add" onClick="trh_abrir_formulario(1,0)">Nuevo</button>
+    </div>
+</th>
+</tr>
+<tr>
+ 
+<th></th>	
+<th></th>	
+<th>Icono</th>
+<th>Descripci&oacute;n</th>
+
+</tr>
+</thead>
+<tbody>
+<tr>
+  
+</tr>
+</tbody>
+</table> 
+
+</div>
+
+<div id="trh_dialog_form"></div>
+<div id="trh_dialog_confirm"></div>

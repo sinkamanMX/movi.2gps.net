@@ -1,0 +1,6 @@
+            <table width="100%"><tr bordercolor="#CCCCCC">
+            <td width="25%">{DTE}</td>
+            <td width="25%">{DTA}</td>
+            <td width="25%">{DTS}</td>
+            <td width="25%">{DTF}</td>
+            </tr></table>

@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="public/js/general.js"></script>
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+
+
+<div style="width:100%; height:100%;" id="xyz_main">
+
+<div id="tabs_xyz" style="width:100%; height:100%;">
+  <ul>
+    <li><a href="#tabs_xyz1">Eje X</a></li>
+    <li><a href="#tabs_xyz2" onclick="xyz_load_datatable_z()">Eje Z</a></li>
+    <li><a href="#tabs_xyz3" onclick="xyz_load_datatable_y()">Eje Y</a></li>
+  </ul>
+  <div id="tabs_xyz1">
+  <table cellpadding="0" cellspacing="0" border="0" class="display" id="xyz_table_x">
+  <thead>
+  <tr>
+  <th colspan="5"><div style="width:90%; float:left;"><h3>Eje X</h3></div>
+  	<div style="width:9%;  float:right;"><button class="boton" onClick="xyz_abrir_formulario(1,0,'x')">Nuevo</button>
+    </div>
+  </th>
+  </tr>
+  <tr>
+  <th></th>	
+  <th></th>	
+  <th>Descripci&oacute;n</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  </tr>
+  </tbody>
+  </table> 
+    
+  </div><!--tabs_xyz1-->
+  
+  <div id="tabs_xyz2">
+  <table cellpadding="0" cellspacing="0" border="0" class="display" id="xyz_table_z">
+  <thead>
+  <tr>
+  <th colspan="5"><div style="width:90%; float:left;"><h3>Eje Z</h3></div>
+  	<div style="width:9%;  float:right;"><button class="boton" onClick="xyz_abrir_formulario(1,0,'z')">Nuevo</button>
+    </div>
+  </th>
+  </tr>
+  <tr>
+  <th></th>	
+  <th></th>	
+  <th>Descripci&oacute;n</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  </tr>
+  </tbody>
+  </table> 
+  </div><!--tabs_xyz2-->
+  <div id="tabs_xyz3">
+  <table cellpadding="0" cellspacing="0" border="0" class="display" id="xyz_table_y">
+  <thead>
+  <tr>
+  <th colspan="5"><div style="width:90%; float:left;"><h3>Eje Y</h3></div>
+  	<div style="width:9%;  float:right;"><button class="boton" onClick="xyz_abrir_formulario(1,0,'y')">Nuevo</button>
+    </div>
+  </th>
+  </tr>
+  <tr>
+  <th></th>	
+  <th></th>	
+  <th>Descripci&oacute;n</th>
+  <th>Componente eje Z</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  </tr>
+  </tbody>
+  </table>    
+  </div><!--tabs_xyz3-->
+</div><!--tabs_xyz-->
+
+</div>
+
+<div id="xyz_dialog_form"></div>
+<!--<div id="xyz_dialog_form"></div>-->
+<div id="xyz_dialog_confirm"></div>

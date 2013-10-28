@@ -1,0 +1,37 @@
+<script>
+$(document).ready(
+	function() {
+		$('#cfn').dialog('option', 'title', 'Confirmar arribo');
+		$( ".calendar" ).datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			buttonImageOnly: true,
+			minDate: '0',
+			dateFormat: "yy-mm-dd"
+		});	
+	});
+</script>
+
+            <table width="100%" style="{V_1}">
+            <tr>
+            <td>Fecha arribo:</td>
+            <td>
+            <input type="text" class="caja_txt calendar" id="fecha_arribo"  readonly="readonly" value="{DTA}" >
+               <select id="hi_dt" class="mcaja">
+                    <!-- BEGIN hrs -->
+                    	{hrs.NO}
+                 	<!-- END hrs -->
+                 </select>
+                 <span>&nbsp;:&nbsp;</span>
+                  <select id="mi_dt" class="mcaja">
+                  <!-- BEGIN min -->
+                  	{min.NO}
+                  <!-- END min -->
+   </select>
+            </td>
+            </tr></table>
+            
+                        
+            
+            <input type="hidden" id="status" value="{EST}">
+            <input type="hidden" id="identrega" value="{IDE}">

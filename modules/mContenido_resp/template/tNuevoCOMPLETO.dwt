@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style>
+	#sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+	/*#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }*/
+	/*#sortable li span { position: absolute; margin-left: -1.3em; }*/
+	</style>
+	<script>
+	$(function() {
+		$( "#sortable" ).sortable();
+		$( "#sortable" ).disableSelection();
+	});
+	</script>
+<script>
+	$(function() {
+		$( "#start-date,#end-date,#delivery-date" ).datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			buttonImageOnly: true,
+			minDate: '0'
+		});
+		
+		
+		$('#panelPE').panel({
+			controls:$('#cntrl').html(),
+    		collapsible:false
+				});
+		 $( ".b_ic" ).button();
+		 $(".b_op" ).button();
+		/*$('#panelE').panel({
+
+			'controls':$('#cntrl').html(),
+			'collapsible':false
+
+		});*/
+						
+	});
+
+	</script>
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<div id="panelE">
+<!--<form  id="contenido" name="contenido"  method="POST" action="index.php?m=mContenido&c=mGdrNvo" target="destino" enctype="multipart/form-data"  >-->
+<div id="tbl" style=" position:absolute; width:100%; height:23%; left:1%; top:2% ">
+<!--<table class="n_e_units">-->
+<table width="100%">
+   <tr>
+   <td width="2%">Nombre:</td>
+   <td width="25%">
+   <input type="text" id="vj" name="cnt" class="caja_txt" maxlength="45" />
+   </td>   
+   <td width="5%">Fecha Inicio:</td>
+   <td width="25%">
+   <input type="text" class="caja_txt" id="start-date"  readonly="readonly" ></td>
+   <td width="2%"><input type="checkbox" id="stop" /></td>
+   <td width="18%">Contabilizar paradas</td>
+   </tr>
+   <tr>
+   <td>Unidad:</td>
+   <td >
+   <div id="x">
+   <select class="caja" id="un" name="smn">
+   <option value="0" >Seleccione una unidad</option>
+   <!-- BEGIN dt3 -->             
+   <option value="{dt3.IDU}">{dt3.UND}</option>
+   <!-- END dt3 -->        
+   </select>
+   </div></td>
+   <td>Fecha Fin:</td>
+   <td >
+   <div id="y">
+   <input type="text" class="caja_txt" id="end-date" readonly="readonly"></div>
+   </td>
+   <td><input type="checkbox" id="exc" /></td>
+   <td>Contabilizar excesos</td>   
+   </tr>   
+   <tr>
+   <td>Id viaje:</td>
+   <td><input type="text" id="cnt" name="cnt" class="caja_txt" maxlength="45" /></td>
+   <td>Tolerancia:</td>
+   <td colspan="2"><input type="text" id="cnt" name="cnt" class="caja_txt" maxlength="45" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"/>
+   min(s).</td>
+   </tr>
+</table>
+
+
+</div>
+                      <!--  ---------------------------------panel PE------------------------------------- -->  
+<div id="panelPE" style="  width:94%; height:39%; left:1%; top:22%; position:absolute;">
+                            <h2><table id="usersTableTitle" style=" width:100%" align="center">
+                  <tr>
+                    <td colspan="6" align="center" valign="middle">Puntos de entrega</td></tr>
+            	 <tr>
+             	  <th width="10%">ID Pedido</th>
+             	  <th width="20%">Cliente</th>
+                  <th width="20%">Fecha de entrega</th>
+             	  <th width="30%">Observaciones</th>
+             	  <th width="10%">Cuestionario</th>
+                  <th width="8%">Patload</th>
+                  <th width="2%"></th>
+            	</tr>
+            </table></h2>
+                             
+				<div id="datagrid" align="center" style="" >
+           	  <div id="list_formas_xa" align="center">
+
+<ul id="sortable">
+	<li class="ui-state-default"><table width="100%"><tr><td width="10%">123000</td><td width="20%">Juan Perez</td><td width="20%">2012-09-23 20:00:00</td><td width="30%">puerta azul</td><td width="8%">2</td><td width="10%">xxx</td></tr></table></li>
+	<li class="ui-state-default">Item 2</li>
+	<li class="ui-state-default">Item 3</li>
+	<li class="ui-state-default">Item 4</li>
+	<li class="ui-state-default">Item 5</li>
+	<li class="ui-state-default">Item 6</li>
+	<li class="ui-state-default">Item 7</li>
+</ul>              
+
+              
+              </div>
+              <div id="info_formas" style="display:none;"></div>	
+			</div>
+                         
+
+                         </div>
+					<!--  ------------------------------------------------------------------------------------ -->
+<div id="panelbts" style="width:3%; height:39%; left:96%; top:22%; position:absolute; ">
+<div style="position:relative; top:45%" title="Agregar Punto"><button class="b_ic" onclick="nvo_pto()"><span style="position:relative; left:-7px; " title="Agregar punto de entrega"  class="ui-icon ui-icon-circle-plus"></span></button></div>
+<div style="position:relative; top:55%" title="Eliminar Punto"><button class="b_ic" ><span style="position:relative; left:-7px; top:-2px; " title="Eliminar punto de entrega" class="ui-icon ui-icon-trash"></span></button></div>
+</div>
+<div id="puntos" style="width:98%; height:27%; left:1%; top:73%; position:absolute; display:; ">
+<!------------------------------------------------------------------------------------------------->
+            <div style=" position:absolute; top:-10px; left:90%; cursor:pointer;" onclick="cls_pto();">
+            <div style=" float:left;position:relative; top:2px; left:-3px;">Cerrar</div><span class="ui-icon ui-icon-close " title="Cerrar" style="float:left"></span>
+            </div>
+            
+<div style="position:absolute; top:83%; left:75%;">
+  <button class="b_op" onclick="nvo_pto()"><span style="position:relative; left:-7px; " title="Agregar punto de entrega"  class="ui-icon ui-icon-circle-plus"></span><div style="position:relative; top:-15px; left:10px; ">Agregar</div></button> </div>            
+<!------------------------------------------------------------------------------------------------->   
+<div style="width:50%; float:left">
+<table>
+   <tr>
+   <td>Cliente:</td>
+   <td >
+   <div id="x">
+   <select class="caja" id="cte" name="cte">
+   <option value="0" >Seleccione un cliente</option>
+   <!-- BEGIN dt3 -->             
+   <option value="{dt3.IDMN}">{dt3.MN}</option>
+   <!-- END dt3 -->        
+   </select>
+   </div></td>
+   </tr>
+   <tr>
+   <td>ID pedido:</td>
+   <td >
+   <input type="text" id="idp" name="idp" class="caja_txt" maxlength="45" />
+   </td>
+   </tr>
+   <tr>
+   <td>Fecha Entrega:</td>
+   <td colspan="2">
+   <input type="text" class="caja_txt" id="delivery-date"  readonly="readonly" ></td>      
+   </tr>
+   <tr>
+   <td colspan="2">Observaciones:</td>
+   </tr>
+   <tr>
+   <td colspan="2"><textarea id="obs" rows="2" cols="40" style="width:90%; height:25px; "></textarea></td>
+   </tr>   
+</table>
+	</div>
+    
+<div style="float:right; width:50%" id="dos">
+<table>
+   <tr>
+   <td>Cuestionario:</td>
+   <td >
+   <div id="x">
+   <select class="caja" id="cst" name="cst">
+   <option value="0" >Seleccione un cliente</option>
+   <!-- BEGIN dt3 -->             
+   <option value="{dt3.IDMN}">{dt3.MN}</option>
+   <!-- END dt3 -->        
+   </select>
+   </div></td>
+   </tr>
+<tr>
+   <td>Patload:</td>
+   <td >
+   <input type="text" id="pld" name="pld" class="caja_txt" maxlength="45" />
+   </td>  
+</tr>
+</table>
+</div>
+         
+</div>               
+<!--<input name="action" type="hidden" value="444"/>
+</form>-->
+</div>

@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<input type="hidden" id="pre_hid" value="{ID}" />
+<input type="hidden" id="pre_hop" value="{OP}" />
+<input type="hidden" id="pre_hcmp" value="{CMP}" />
+<input type="hidden" id="pre_hqst" value="" />
+<input type="hidden" id="pre_hdsc" />
+<div id="pre_tabs" style="width:100%; height:98%;">
+
+<ul>
+    <li><a href="#pre_tabs1">Datos generales</a></li>
+    <li><a href="#pre_tabs2">Cuestionarios</a></li>
+</ul>
+
+<div id="pre_tabs1">
+<table >
+<tr>
+<td>Descripci&oacute;n:</td>
+<td colspan="2"><input type="text" id="pre_tit" class="caja_txt" value="{DSC}" onkeyup="pre_validar_dsc(this.value)" />
+</td> 
+</tr>
+<tr>
+<td>Tipo:</td>
+<td colspan="2">
+<select name="pre_tp" id="pre_typ" class="caja" onChange="pre_selec_preg(this.value);">
+<option value="0" >Seleccione un tipo.</option>
+<!-- BEGIN tipo -->
+<option value="{tipo.IDTP}" {tipo.S}>{tipo.TP}</option>
+<!-- END tipo -->
+</select>
+</td>
+</tr>
+<tr><td>Activo:</td>
+<td colspan="2"> 
+<select name="pre_act" id="pre_act" class="caja">
+<option value="1" {SAC} >SI</option>
+<option value="0" {NAC}>NO</option>
+</select></td>
+</tr> 
+<tr><td>Recordado:</td>
+<td colspan="2"> 
+<select name="pre_reco" id="pre_rec" class="caja">
+<option value="1" {SRC}>SI</option>
+<option value="0" {NRC}>NO</option>
+</select></td>
+</tr> 
+<tr>
+<td>Requerido:</td>
+<td>
+<select id="pre_req" class="caja">
+<option value="1" {SRQ}>SI</option>
+<option value="0" {NRQ}>NO</option>
+</select>
+</td>
+</tr>
+<tr>
+<td style="height:50px;" valign="top">Complemento:</td>
+<td colspan="2" valign="top">
+<div id="pre_com" style="width:100%; border:#06 solid 1px; height:20px; " >{HTML}
+</div>
+<div id="pre_sis_t" ></div>
+</td>
+</tr>
+</table>
+
+</div><!--pre_tabs1-->
+<div id="pre_tabs2">
+<div style="position:absolute; width:98%; height:90%; ">
+
+<!--cuestionarios disponibles-->
+<div class="ui-corner-all" style="width:49.25%; height:99.5%; float:left; border:#A6C9E2 solid thin;">
+<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+<span class="ui-dialog-title">cuestionarios Disponibles</span>
+</div>
+<!--Buscador-->
+<div>
+<div style="width:96%;">
+<label>Buscar:</label><input type="text" id="pre_bscdr_d" class="caja_txt" onkeyup="buscador_preguntas(1,this.value);" style="width:90%;"/>
+</div>
+<div style="width:3%; position:relative; left:96%; top:-20px;">
+<span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+</div>
+</div>
+<!--Buscador-->
+<div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
+<div id="pre_qst_dsp" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+    {Q_D}
+</div>
+</div>
+</div>   
+<!--cuestionarios disponibles-->
+<!--cuestionarios seleccionadas-->
+<div class="ui-corner-all" style="width:49.25%; height:99.5%; float:right; border:#a6c9e2 solid thin;">
+<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+<span class="ui-dialog-title">cuestionarios Seleccionadas</span>
+<!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg(0,1);"><span class="ui-icon ui-icon-plusthick"></span></a>-->
+</div>
+<!--Buscador-->
+<div >
+<div style="width:96%;">
+<label>Buscar:</label><input type="text" id="geo_bscdr_s" class="caja_txt" onkeyup="buscador_preguntas(2,this.value)" style="width:90%;"/>
+</div>
+<div style="width:3%; position:relative; left:96%; top:-20px;">
+<span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
+</div>
+</div>
+<!--Buscador-->
+<!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
+
+<div id="pre_qst_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+{Q_S}    
+</div>
+</div>
+<!--</div>-->
+<!--cuestionarios seleccionadas-->
+
+</div>
+</div><!--pre_tabs2-->
+</div><!--pre_tabs-->
+
+<script>
+$(document).ready(function () {
+	$( "#pre_tabs" ).tabs();
+	//Llenar arreglo cuestionarios seleccionados para posteriores busquedas 
+	pre_acs = $('#pre_qst_sel div').map(function() {
+		return this.id;
+		}).get();
+	
+	//Llenar arreglo cuestionarios disponibles para posteriores busquedas 
+	pre_acd = $('#pre_qst_dsp div').map(function() {
+		return this.id;
+		}).get();
+	
+	var pre_qstsel = $('#pre_qst_sel div').map(function() {
+		return this.id;
+		}).get();
+	pre_q = "";	
+	for (i=0; i<pre_qstsel.length; i++){
+		pre_q += (pre_q=="")?pre_qstsel[i]:","+pre_qstsel[i];
+		}
+	$("#pre_hqst").val(pre_q);
+	$('.dropme').droppable({
+			accept: '.dropme',
+			activeClass: 'highlight',
+			drop: function() {
+				//alert( "dropped" );
+				}
+	}).sortable({
+		connectWith: '.dropme',
+		cursor: 'move',
+		 	
+		stop: function( event, ui ) {
+			//alert("[" + this.id + "] received [" + ui.item.attr("id") + "]");
+			//alert(ui.item.parent().attr("id") )
+			//alert("[" + this.id + "] received [" + ui.item.attr("id") + "] from [" + ui.item.parent().attr("id") + "]");
+			
+			var div_src = this.id;
+			var div_dst = ui.item.parent().attr("id");
+			var idp = ui.item.attr("id");
+			
+			
+			
+			if(div_src == 'pre_qst_sel' && div_src!=div_dst){
+				var index = pre_acs.indexOf(idp);
+				//qst_aps.pop(idp);
+				if (index > -1) {
+					pre_acs.splice(index, 1);
+				}
+				pre_acd.push(idp);
+				}
+			if(div_src == 'pre_qst_dsp' && div_src!=div_dst){
+				var index = pre_acd.indexOf(idp);
+				//qst_apd.pop(idp);
+				if (index > -1) {
+					pre_acd.splice(index, 1);
+				}
+				
+				pre_acs.push(idp);
+				
+				
+				}
+			}	
+		});	
+	comp = $("#pre_hcmp").val();
+	//alert(comp)
+	$("#qst_comp").val(comp);
+	});
+</script>
+<style>
+.dropme {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    /*margin-top: 20px;*/
+}
+
+.dropme div {
+    display: block;
+    width: 100%;
+    border: 1px solid #ccc;
+	/*cursor: move;*/
+}
+
+.highlight {
+    padding: 1px;
+    border: solid thin #fff09f;
+    background: #fffef5;
+}
+
+</style>

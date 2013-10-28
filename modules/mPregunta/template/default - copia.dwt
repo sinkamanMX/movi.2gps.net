@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+
+<div style="width:100%; height:100%;" id="qst_main">
+
+          
+      <table cellpadding="0" cellspacing="0" border="0" class="display" id="qst_table">
+        <thead>
+        <tr>
+        <th colspan="5"><div style="width:90%; float:left;"><h3>Cuestionarios</h3></div>
+        <div style="width:9%;  float:right;"><button class="boton" id="qst_add" onClick="qst_abrir_formulario('')">Nuevo</button></div></th>
+        </tr>
+        <tr>
+        
+          <th></th>	
+          <th></th>	
+          <th>Cuestionario</th>
+          <th>Uso ultima semana</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+            
+          </tr>
+        </tbody>
+      </table> 
+
+</div>
+<div id="qst_dialog_img"></div>
+<div id="qst_dialog_chart"></div>
+<div id="qst_dialog_formu"></div>
+<div id="qst_dialog_formp"></div>
+<div id="qst_dialog_pr"></div>
+<div id="qst_dia_log"></div>
+
+<div id="qst_dialog" > </div>
+
+<div id="qst_dialog_message" title="&iexcl;Aviso!"></div> 
+<div id="qst_dialog_confirm"></div> 

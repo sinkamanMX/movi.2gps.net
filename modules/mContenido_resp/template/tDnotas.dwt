@@ -1,0 +1,17 @@
+	<table id="MyDatan" width="100%">
+    <tr>
+    <td width="10%">Fecha</td>
+    <td width="20%">Descripci&oacute;n</td>
+    <td width="20%">Tipo de nota</td>
+    <td width="30%">Usuario</td>
+    </tr>    
+    <!-- BEGIN q -->  
+    <tr style="cursor:pointer;">
+    <td width="10%">{q.FDC}</td>
+    <td width="20%">{q.NOT}</td>
+    <td width="20%">{q.TNT}</td>
+    <td width="30%">{q.USR}</td>
+    </tr>
+	<!-- END q -->   
+    </table>
+    

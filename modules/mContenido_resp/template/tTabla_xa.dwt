@@ -1,0 +1,22 @@
+<script>
+  $(".ide").mouseup(function (event){
+	var e = event;
+	dates(e,this.id);
+  });
+</script>
+<div id="myDiv">
+
+	<table id="MyDataxa"  class="usersTableInfo" width="100%">
+    <!-- BEGIN datosxa -->
+    
+        <tr style="cursor:pointer;" oncontextmenu='return false' class="ide" id="{datosxa.IDE}">
+         <td width="15%" onmouseup="change_ide('{datosxa.IDE}')" onDblClick="edt_pts({datosxa.BTN})">{datosxa.ENT}</td>
+         <td width="15%" onmouseup="change_ide('{datosxa.IDE}')" onDblClick="edt_pts({datosxa.BTN})">{datosxa.CTE}</td>
+         <td width="15%" onmouseup="change_ide('{datosxa.IDE}')" onDblClick="edt_pts({datosxa.BTN})">{datosxa.UND}</td>
+         <td width="30%" onmouseup="change_ide('{datosxa.IDE}')" onDblClick="edt_pts({datosxa.BTN})">{datosxa.OBS}</td>
+         <td width="10%" onmouseup="change_ide('{datosxa.IDE}')" onDblClick="edt_pts({datosxa.BTN})">{datosxa.EST}</td>
+         <td width="15%" onmouseup="change_ide('{datosxa.IDE}')" onDblClick="edt_pts({datosxa.BTN})">{datosxa.DTE}</td>                  
+     	</tr>
+	<!-- END datosxa -->
+    </table>
+</div>

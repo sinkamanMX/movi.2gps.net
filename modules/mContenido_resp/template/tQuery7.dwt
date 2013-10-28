@@ -1,0 +1,55 @@
+<script>
+$(document).ready(
+	function() {
+		$('#cfe').dialog('option', 'title', 'Confirmar entrega');
+		$( ".calendar" ).datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			buttonImageOnly: true,
+			minDate: '0',
+			dateFormat: "yy-mm-dd"
+		});	
+	});
+</script>
+
+<table width="100%" >
+            <!--<tr>
+            <td>Fecha arribo:</td>
+            <td>
+            <input type="text" class="caja_txt calendar" id="fecha_arribo2"  readonly="readonly" value="{DTA}" >
+               <select id="hi_dt2" class="mcaja">-->
+                    <!-- BEGIN hrs -->
+                    	<!--{hrs.NO}-->
+                 	<!-- END hrs -->
+                 <!--</select>
+                 <span>&nbsp;:&nbsp;</span>
+                  <select id="mi_dt2" class="mcaja">-->
+                  <!-- BEGIN min -->
+                  	<!--{min.NO}-->
+                  <!-- END min -->
+  <!-- </select>
+            </td>
+            </tr>-->
+            <tr>
+            <td>Fecha Salida:</td>
+            <td>
+            <input type="text" class="caja_txt calendar" id="fecha_salida"  readonly="readonly" value="{DTS}" >
+               <select id="hi_dt3" class="mcaja">
+                    <!-- BEGIN hrs2 -->
+                    	{hrs2.NO}
+                 	<!-- END hrs2 -->
+                 </select>
+                 <span>&nbsp;:&nbsp;</span>
+                  <select id="mi_dt3" class="mcaja">
+                  <!-- BEGIN min2 -->
+                  	{min2.NO}
+                  <!-- END min2 -->
+   </select>
+            </td>
+            </tr></table>
+            
+                        
+            
+            <input type="hidden" id="status" value="{EST}">
+            <input type="hidden" id="identrega" value="{IDE}">
+            

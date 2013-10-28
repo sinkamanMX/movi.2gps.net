@@ -1,0 +1,7 @@
+<select class="caja" name="cte" id="cte" style="border:#FFF; width:100%">
+	<option value="0"  >Seleccione un cliente</option>
+	<!-- BEGIN dt2 -->      
+    <option  value="{dt2.IDC}¬{dt2.LAT}¬{dt2.LON}¬{dt2.RDO}">{dt2.CTE}</option>
+    <!-- END dt2 --> 
+</select>
+    

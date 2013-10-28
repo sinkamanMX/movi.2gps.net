@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<table >
+            <tr>
+            <td>Tipo Nota:</td>
+            <td>   
+            <select class="caja" id="tnote">
+		    <option value="0" >Seleccione un tipo de nota</option>
+       		<!-- BEGIN tn -->      
+   			<option  value="{tn.IDT}">{tn.TNT}</option>      
+       		<!-- END tn -->  
+   			</select>
+   			</td>
+            </tr>
+            <tr>
+            <td valign="top">Nota:</td>
+            <td><textarea id="note" style="width:175px; height:125px;" class="ui-corner-all"></textarea></td>
+            </tr>
+            <tr><td><input type="hidden" id="op_note" value="{OP}"/></td></tr>
+            </table>
+
+            

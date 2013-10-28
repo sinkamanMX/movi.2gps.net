@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<form  id="contenido" name="contenido_edt"  method="POST" action="index.php?m=mContenido&c=mGdrEdt" target="destino" enctype="multipart/form-data"  >
+<div id="tbl">
+  <table class="n_e_units">
+   
+   
+   
+   <tr>
+   <td>Men&uacute;:</td>
+   <td colspan="2">
+   <select class="caja" id="mnu" name="mnu" onchange="query(this.value)">
+   <option value="0" >Seleccione un men&uacute;</option>            
+   <!-- BEGIN dt -->             
+   <option value="{dt.IDMN}" {dt.S}>{dt.MN}</option>
+   <!-- END dt -->
+   </select></td>   
+   </tr>
+   <tr>
+   <td>Submen&uacute;:</td>
+   <td colspan="2">
+   <div id="x">
+   <select class="caja" id="smn" name="smn">
+   <option value="0" >Seleccione un submen&uacute;</option>
+   <!-- BEGIN q -->             
+   <option value="{q.IDSMN}" {q.S}>{q.SMN}</option>
+   <!-- END q -->        
+   </select>
+   </div></td>   
+   </tr>
+   <tr>
+   <td>Empresa:</td>
+   <td colspan="2">
+   <select class="caja" id="emp" name="emp" onchange="query2(this.value)">
+   <option value="0" >Seleccione una empresa</option>            
+   <!-- BEGIN dt2 -->             
+   <option value="{dt2.IDEMP}" {dt2.S}>{dt2.EMP}</option>
+   <!-- END dt2 -->
+   </select></td>   
+   </tr>
+   <tr>
+   <td>Sucursal:</td>
+   <td colspan="2">
+   <div id="y">
+   <select class="caja" id="suc" name="suc"> 
+   <option value="0" >Seleccione una sucursal</option>
+   <!-- BEGIN q2 -->             
+   <option value="{q2.IDSUC}"{q2.S}>{q2.SUC}</option>
+   <!-- END q2 -->         
+   </select></div>
+   </td>   
+   </tr>
+   
+   <tr>
+   <td>Contenido:</td>
+   <td colspan="2"><input type="text" id="cnt" name="cnt" class="caja_txt" maxlength="45" value="{CNT}" /></td>
+   </tr>
+   <tr>
+   <td>Ruta Local:</td>
+   <td colspan="2"><input type="text" id="lcl" name="lcl" class="caja_txt" maxlength="45" value="{LCL}"/></td>
+   </tr>
+   <tr>
+   <td>Ruta Remota:</td>
+   <td colspan="2"><input type="file" accept="image/gif,image/jpeg,image/x-png" id="rmt" name="rmt" class="caja_txt" disabled="disabled"/></td>
+   </tr>
+  <tr>
+    <td height="15"></td>
+    <td><input type="checkbox" id="ch_img" onchange="ch_rmt()"/> Cambiar Imagen</td>
+  </tr>
+  <tr>
+        <td colspan="2" align="center"><a href="{RMT}" target="_blank"><img src="{RMT}" height="100" width="100"></a>
+    <br />
+    <strong>Imagen actual:</strong> {RMT}</td>
+  </tr>
+</table>
+</div>
+<input name="id" type="hidden" value="{ID}"/>
+</form>

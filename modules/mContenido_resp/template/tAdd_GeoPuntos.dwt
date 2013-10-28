@@ -1,0 +1,204 @@
+<html>
+<head>
+<script language="javascript">
+//tigra_tables('datashowadd', 0, 0, '#ffffff', '#DDD', '#AEC7F3', '#5283D8');
+leemapaAdd();
+</script>
+</head>
+
+<style type="text/css">
+#datashowAdd{
+	font-family: Calibri, Arial;
+	/*font-size:12px;*/
+	/*height:420px;*/
+}
+#buttons{
+	font-family: Calibri, Arial;
+	/*font-size:12px;*/
+	/*height:420px;*/
+}
+buttons
+</style>
+
+<div id="datashowAdd"  style="height:450px; width:660px; border:#000 solid 0px;">
+<table height="325px">
+<tr>
+	<td width="320px" valign="top" height="100%">
+    <fieldset style="height:100%;">
+    <legend><b>Datos Generales.</b></legend>
+    <table width="331">
+        <tr>
+         
+            <td width="84">
+            	Nombre: 
+            </td>
+            <td width="163">
+            	<input type="text" id="txtname" class="caja_txt">
+            </td>
+        </tr>
+        <tr>
+        
+            <td>
+                Tipo:
+            </td>
+            <td>
+                <select id="txttype" class="caja">
+                <!-- BEGIN numType -->
+                <option value="{numType.vcode}">{numType.vdesc}</option>
+                <!-- END numType -->
+                </select>
+            </td>
+        </tr>
+        <tr>
+         
+            <td>
+            	NIP:
+            </td>
+            <td>
+                <input type="text" id="txtnip" class="caja_txt">
+            </td>
+        </tr>
+        <tr>
+          
+            <td colspan="2">
+		               
+                
+ 
+                
+                
+            </td>
+        </tr>
+        <tr>
+          
+            <td>
+                Radio:
+            </td>
+            <td>
+                <select id="txtradio" class="caja">
+                <option value="50">50</option>
+                <!-- BEGIN numRadio -->
+                <option value="{numRadio.vradio}">{numRadio.vradio}</option>
+                <!-- END numRadio -->
+                </select>
+            </td>
+        </tr>
+    </table>
+   
+    </fieldset>
+    </td>
+    <td width="20px">
+    </td>
+    <td width="320px" valign="top">
+    <div id="divdireccionAdd">
+    <fieldset>
+    <legend><b>Datos de Ubicacion.</b></legend>
+    <table width="290px">
+    <tr>
+        <td>
+        	Calle:
+        </td>
+        <td>
+        <input type="text" id="address" size="35px" class="caja_txt">
+        </td>
+    </tr>
+    <tr>
+        <td>
+        	Estado:
+        </td>
+    	<td>
+    	<select id="cbo_edo_i" onChange="busca_mun_i();" class="caja">
+            <option value="0">Elegir Estado</option>
+            <!-- BEGIN states -->
+            <option value="{states.ID}">{states.NAME}</option>
+            <!-- END   states -->
+            </select>
+    	</td>
+    </tr>
+    <tr>
+        <td>
+        	Municipio:
+        </td>
+        <td>
+            <div id="Munis_i"> 
+            <select id="cbo_mun_i" class="caja" onChange="busca_col();">	
+            <option value="0">Elegir Municipio</option>	
+            </select>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        	Colonia:
+        </td>
+    	<td>
+        <div id="Colony_i">
+    	<select id="cbo_col_i" class="caja"  >
+       <option value="0">Elegir Colonia</option>	
+		</select>
+        </div>
+        </td>
+	</tr>
+	<tr>
+        <td>
+        	C.P:
+        </td>
+		<td>
+			<input type="text" size="16" id="txt_cp_i" value="{CP}" onkeypress="return validarIE(event)" class="caja_txt"/>&nbsp;
+			<input type="button" onClick="busca_por_cp()" value="Buscar por C.P." style="font:Calibri, 'Times New Roman', 'Palatino Linotype'; font-size:11px;" class="b_op">
+            <input type="button" value="Ir" onClick="showAddress(1)" style=" font:Calibri, 'Times New Roman', 'Palatino Linotype'; font-size:11px;" class="b_op">
+		</td>
+	</tr>
+    </table>
+    <br>
+    </fieldset>
+    </div>
+    </td>
+</tr>
+<tr>
+	<td colspan="3" height="225px">
+    <div id="divmapaAdd" style="height:225px">
+    <br><br><br><br>
+    <center><input type="button" value="Empezar a Dibujar" onClick="leemapaAdd()" class="b_op"></center>
+    </div>
+    </td>
+</tr>
+</table>
+</div>
+<div id="buttons" style="width:660px; border:#000 solid 0px;">
+<table width="100%">
+<tr>
+	<td>
+    	<font face="Calibri", size="2">Buscar por coordenadas: &nbsp;</font>
+    </td>
+    <td>
+    	LAT 
+    </td>
+    <td>
+    	<div id="divtxtlat">
+    	<input type="text" id="txtlatsearch" style="font-family:Verdana, Geneva, sans-serif; font-size:10px;" class="caja_txt">
+    	</div>
+    </td>
+    <td>
+    	LON 
+    </td>
+    <td>
+        <div id="divtxtlon">
+        <input type="text" id="txtlonsearch" style="font-family:Verdana, Geneva, sans-serif; font-size:10px;" class="caja_txt">
+        </div>
+    </td>
+    <td>
+    	<input type="button" value="Ir" onClick="centra_punto()" style=" font:Calibri, 'Times New Roman', 'Palatino Linotype'; font-size:11px;" class="b_op">
+    </td>
+    <td width="">
+    </td>
+    <td >
+    <input type="button" value="Guardar" onClick="AgregaGeoPunto_Acepta()" class="cosplayB" style="display:none;">
+    </td>
+    <td>
+    <input type="button" value="Cancelar"  onClick="AgregaGeoPunto_Cancela()" class="cosplayB" style="display:none;">
+    </td>
+</tr>
+</table>
+</div>
+
+

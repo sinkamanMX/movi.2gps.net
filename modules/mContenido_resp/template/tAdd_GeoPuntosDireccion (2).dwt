@@ -1,0 +1,64 @@
+<div id="divdireccionAdd">
+    <fieldset>
+    <legend><b>Datos de Ubicacion.</b></legend>
+    <table width="290px">
+    <tr>
+        <td>
+        	Calle:
+        </td>
+        <td>
+        <input type="text" id="address" value="{STREET}" size="35px" class="caja_txt">
+        </td>
+    </tr>
+    <tr>
+        <td>
+        	Estado:
+        </td>
+    	<td>
+    	<select id="cbo_edo_i" onChange="busca_mun_i();" class="caja">
+            <option value="0">{STA}</option>
+            <!-- BEGIN states -->
+            <option value="{states.ID}">{states.NAME}</option>
+            <!-- END   states -->
+            </select>
+    	</td>
+    </tr>
+    <tr>
+        <td>
+        	Minicipio:
+        </td>
+        <td>
+            <div id="Munis_i"> 
+            <select id="cbo_mun_i" onChange="busca_col();" class="caja">	
+            <option value="1">{MUN}</option>	
+            </select>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        	Colonia:
+        </td>
+    	<td>
+        <div id="Colony_i">
+    	<select id="cbo_col_i" onChange="pinta_cp_i();" class="caja">
+        <option value="1">{COL}</option>				
+		</select>
+        </div>
+        </td>
+	</tr>
+	<tr>
+        <td>
+        	C.P:
+        </td>
+		<td>
+			<input type="text" size="13" id="txt_cp_i" value="{CP}" class="caja_txt"/>&nbsp;
+			<input type="button" onClick="busca_por_cp()" value="Buscar por C.P." class="b_op">
+            <input type="button" value="Ir" onClick="showAddress(1)" class="b_op">
+		</td>
+	</tr>
+    </table>
+    <br>
+    </fieldset>
+    </div>
+

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<input type="hidden" id="trh_hid" value="{ID}" />
+<input type="hidden" id="trh_hop" value="{OP}" />
+<input type="hidden" id="trh_hdsc" />
+<input type="hidden" id="trh_himg" value="{IMG}" />
+<div>
+<table>
+<tr>
+<td><label>Descripci&oacute;n:</label></td>
+<td><input type="text" id="trh_dsc" class="caja_txt" value="{DSC}" onkeyup="trh_validar_dsc(this.value)" /></td>
+</tr>
+<tr>
+<td><label>Observaciones:</label></td>
+<td><textarea  rows="5" id="trh_obs" class="ui-corner-all" style="width:170px; border:#aaaaaa solid thin;">{OBS}</textarea></td>
+</tr>
+</table>
+
+
+</div>
+<br />
+<div>
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="trh_imgTable" height="100%">
+<thead>
+<tr>
+<th colspan="5"><div style="width:90%; float:left;"><h3>Iconos Disponibles</h3></div>
+	<div style="width:9%;  float:right;"><!--<button class="boton" id="trh_add" onClick="trh_abrir_formulario(1,0)">Nuevo</button>-->
+    </div>
+</th>
+</tr>
+<tr>
+ 
+<th></th>	
+<th></th>
+<th>Icono</th>
+
+</tr>
+</thead>
+<tbody>
+<tr>
+  
+</tr>
+</tbody>
+</table> 
+</div>
+<style>
+textarea
+{
+   resize: none;
+}
+</style>
+<script>
+//Definir boton uso general	
+gral_boton();
+//Pintar tabla botones
+trh_img_load_datatable();
+//En el caso de editar cambiar el icono por defecto
+if($("#trh_hop").val()==2){
+	//alert("cambiar radio seleccionado")
+	
+	setTimeout(function(){
+		//quitar radio seleccionado
+		$("input[name='trh_rimg']:checked").prop('checked', false);
+		//cambiar radio seleccionado
+		var img = $("#trh_himg").val();
+		//alert("cambiar radio seleccionado "+img)
+		$("input[name='trh_rimg'][value='"+img+"']").prop('checked', true);
+		},750)
+	
+	
+	}
+
+</script>

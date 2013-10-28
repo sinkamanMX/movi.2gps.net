@@ -1,0 +1,21 @@
+<script>
+  $(".ide").mouseup(function (event){
+	var e = event;
+	dates(e,this.id);
+  });
+</script>
+<div id="myDiv" oncontextmenu='return false'>
+
+	<table id="MyDataxb"  class="usersTableInfo" width="100%" oncontextmenu='return false'>
+    <!-- BEGIN datosxb -->
+        <tr style="cursor:pointer;" oncontextmenu='return false' class="ide" id="{datosxb.IDE}" >
+         <td width="15%" class=""  >{datosxb.ENT}</td>
+         <td width="15%" class=""  >{datosxb.CTE}</td>
+         <td width="15%" class=""  >{datosxb.UND}</td>
+         <td width="30%" class=""  >{datosxb.OBS}</td>
+         <td width="10%" class=""  >{datosxb.EST}</td>
+         <td width="15%" class=""  >{datosxb.DTA}</td>                  
+     	</tr>
+	<!-- END datosxb -->
+    </table>
+</div>

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style>
+	#sortable { list-style-type: none; margin: 0; padding: 0; : 100%; }
+	/*#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }*/
+	/*#sortable li span { position: absolute; margin-left: -1.3em; }*/
+	</style>
+	<script>
+	$(function() {
+		$( "#sortable" ).sortable();
+		$( "#sortable" ).disableSelection();
+	});
+	</script>
+<script>
+	$(function() {
+		$( "#start-date,#end-date" ).datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			buttonImageOnly: true,
+			minDate: '0',
+			dateFormat: "yy-mm-dd"
+		});
+		
+		
+		 $( ".b_ic" ).button();
+		 $(".b_op" ).button();
+		/*$('#panelE').panel({
+
+			'controls':$('#cntrl').html(),
+			'collapsible':false
+
+		});*/
+						
+	});
+
+	</script>
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+
+<!--<form  id="contenido" name="contenido"  method="POST" action="index.php?m=mContenido&c=mGdrNvo" target="destino" enctype="multipart/form-data"  >-->
+<div >
+<table class="n_e_units">
+<!--<table ="100%">-->
+   <tr>
+   <td >Nombre:</td>
+   <td >
+   <input type="text" id="vj" name="cnt" class="caja_txt" maxlength="45"  />
+   </td>   
+   </tr>
+   <tr>
+   <td>Unidad:</td>
+   <td >
+   <div id="x">
+   <select class="caja" id="und" name="un">
+   <option value="0" >Seleccione una unidad</option>
+   <!-- BEGIN dt3 -->             
+   <option value="{dt3.IDU}" {dt3.STD}>{dt3.UND}</option>
+   <!-- END dt3 -->        
+   </select>
+   </div></td>
+   </tr>   
+   <tr>
+   <td>Id viaje:</td>
+   <td><input type="text" id="idv" name="idv" class="caja_txt" maxlength="45" /></td>
+   </tr>
+   <tr>
+   <td>Fecha Inicio:</td>
+   <td>
+   <input type="text" class="caja_txt" id="start-date"  readonly="readonly" ></td>
+   <tr><td>&nbsp;</td><td>
+                  <select id="horaInicio" class="mcaja">
+                    <!-- BEGIN hrs -->
+                    	{hrs.NO}
+                 	<!-- END hrs -->
+                 </select>
+                 <span>&nbsp;:&nbsp;</span>
+                  <select id="minutoInicio" class="mcaja">
+                  <!-- BEGIN min -->
+                  	{min.NO}
+                  <!-- END min -->
+                  </select>   
+   </td></tr>
+   </tr>
+   <tr>
+   <td>Fecha Fin:</td>
+   <td >
+   <div id="y">
+   <input type="text" class="caja_txt" id="end-date" readonly="readonly"></div>
+   </td>
+   <tr><td>&nbsp;</td><td>
+                  <select id="horaFin" class="mcaja">
+					<!-- BEGIN hrs -->
+                    	{hrs.NO}
+                  	<!-- END hrs -->
+                  </select>
+                  <span>&nbsp;:&nbsp;</span>
+                  <select id="minutoFin" class="mcaja">
+                    <!-- BEGIN min -->
+                    	{min.NO}
+                  	<!-- END min -->                                             
+                  </select>
+   </td></tr>                 
+   </tr>
+   <tr>
+   <td>Tolerancia:</td>
+   <td><input type="text" id="tl" name="tol" class="caja_txt" maxlength="45" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"/>
+   min(s).</td>   
+   </tr>
+   <tr>
+   <td><input type="checkbox" id="stop" /></td>
+   <td>Contabilizar paradas no autorizadas</td>   
+   </tr>
+   <tr>
+   <td><input type="checkbox" id="exc" /></td>
+   <td>Contabilizar excesos de velocidad</td>      
+   </tr> 
+</table>
+</div>   
+
+<!--<input name="action" type="hidden" value="444"/>
+</form>-->
+

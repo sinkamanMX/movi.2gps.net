@@ -1,0 +1,512 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+
+<style>
+a.tooltip span {
+display:none; 
+margin:0 0 0 10px; 
+padding:5px 5px; 
+} 
+
+a.tooltip:hover span {
+display:inline; 
+position:absolute; 
+border:1px solid #79b7e7; 
+background:#d0e5f5; 
+color:#1d5987; 
+}
+</style>
+<script>
+$(document).ready(
+function(){
+/*	if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("mapa2"));
+        map.setCenter(new GLatLng(21.698265,-103.447266), 3);
+        map.setUIToDefault();
+	}*/
+	
+id=$('#idd').val();
+$('#list_points').html('<div class="demo"><br/><br/><br/><br/>Cargando Datos<br/><div id="progressbar" style=" width:300px;" ></div></div>');
+barra_progress();
+
+ var ajax = nuevoAjax();
+ ajax.open("GET", "index.php?m=mContenido2&c=mQuery&idd="+id,true);
+ ajax.onreadystatechange=function() {
+  	 if (ajax.readyState==4) {
+		   //alert(ajax.responseText);
+	      var result =ajax.responseText;
+if(result == 0){						
+				$('#list_points').html('No existen puntos asociados');			
+						}
+				else{
+					$('#list_points').html(result);
+					tigra_tables('MyDatap', 0, 0, '#ffffff', '#DDD', '#AEC7F3', '#5283D8');
+					}
+				
+	 }	
+ 
+ }
+
+	
+ ajax.send(null);				
+				
+				});
+				
+	</script>
+<script>
+	$(function() {
+		var st=($("#st").is(':checked'))?1:0;
+		var ex=($("#ex").is(':checked'))?1:0;
+		var dt= $("#dsp").val()+'¬'+$("#idv").val()+'¬'+$("#und").val()+'¬'+$("#dti").val()+'¬'+$("#dtf").val()+'¬'+$("#tl").val()+'¬'+$("#hri").val()+'¬'+$("#mni").val()+'¬'+$("#hrf").val()+'¬'+$("#mnf").val()+'¬'+st+'¬'+ex;
+		$("#data").val(dt);
+		$( "#start_date,#end_date,#delivery-date,#dti,#dtf,#dtep,#release_date" ).datepicker({
+			showOn: "button",
+			buttonImage: "public/images/cal.gif",
+			buttonImageOnly: true,
+			minDate: '0',
+			dateFormat: "yy-mm-dd"
+		});
+		
+		$( "#panelPEx" ).tabs();
+		$( "#panelPD" ).tabs();
+		
+
+		/*$('#panelPEx').panel({
+			controls:$('#cntrl').html(),
+    		collapsible:false
+				});*/
+		 $( ".b_ic" ).button();
+		 $(".b_op" ).button();
+		/*$('#panelE').panel({
+
+			'controls':$('#cntrl').html(),
+			'collapsible':false
+
+		});*/
+						
+	});
+
+	</script>
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>
+<div id="panelE">
+
+<div style="position:absolute; top:13%; left:63%; z-index:5;" >
+  <button class="b_op" onclick="mostrar_notas_dsp($('#idd').val())" style="height:40px;"><span style="position:relative; left:-7px; " title="Mostrar notas"  class="ui-icon ui-icon-note"></span><div style="position:relative; top:-15px; left:10px; ">Mostrar notas</div></button> </div>
+
+<div style="position:absolute; top:13%; left:83%; z-index:5;" >
+  <button class="b_op" onclick="notes(2)" style="height:40px;"><span style="position:relative; left:-7px; " title="Agregar nota"  class="ui-icon ui-icon-note"></span><div style="position:relative; top:-15px; left:10px; ">Agregar nota</div></button> </div>
+  
+<div id="addnote" class="box_an" style="position:absolute; top:40%; left:25%; height:270px;
+            width:300px;  border:#5c9ccc solid 2px; z-index:0; display:none;">
+            <div style=" position:relative; top:0px; height:30px; width:100%; background:#5c9ccc; ">
+            <div style="position:relative; top:7px; left:5px; color:#FFF; font-family:'Trebuchet MS', Arial, Helvetica, sans-serif;"><strong>Agregar Nota</strong></div><div class="ui-state-default ui-corner-all" style="position:absolute; top:1px; right:1px;  background:#d8e7f3; z-index:10;"><span class="  ui-icon ui-icon-close " title="Cerrar" style="float:left; z-index:1;" onclick="closeb('addnote'); document.getElementById('puntos').style.zIndex=0;document.getElementById('panelPEx').style.zIndex=0;"></span></div>
+            </div>
+<br />
+            <table style="position:relative; left:5%; top:1%;">
+            <tr>
+            <td>Tipo Nota:</td>
+            <td>   
+            <select class="caja" id="Ttnote">
+		    <option value="0" >Seleccione un tipo de nota</option>
+       		<!-- BEGIN tn -->      
+   			<option  value="{tn.IDT}">{tn.TNT}</option>      
+       		<!-- END tn -->  
+   			</select>
+   			</td>
+            </tr>
+            <tr>
+            <td valign="top">Nota:</td>
+            <td><textarea id="" style="width:175px; height:125px;" class="ui-corner-all"></textarea></td>
+            </tr>
+            </table>
+<!-------------------------------Botones---------------------------------------------------------->            
+<div style="position:absolute; top:81%; left:20%;">
+  <button class="b_op" onclick="gdr_note(2)"><span style="position:relative; left:-7px; " title="Agregar nota"  class="ui-icon ui-icon-note"></span><div style="position:relative; top:-15px; left:10px; ">Guardar nota</div></button> </div>
+  
+<div style="position:absolute; top:81%; left:55%;">
+  <button class="b_op" onclick="closeb('addnote'); document.getElementById('puntos').style.zIndex=0;document.getElementById('panelPEx').style.zIndex=0;"><span style="position:relative; left:-7px; " title="Agregar nota"  class="ui-icon ui-icon-close"></span><div style="position:relative; top:-15px; left:10px; ">Cancelar</div></button> </div>
+<!-------------------------------/Botones---------------------------------------------------------->  
+                
+            </div>  
+
+<div id="tbl" style=" position:absolute; width:100%; height:23%; left:1%; top:2% ">
+<!--<table class="n_e_units">-->
+<table width="100%">
+   <tr>
+   <td width="2%">Nombre:</td>
+   <td width="25%">
+   <input type="text" id="vj" name="cnt" class="caja_txt" maxlength="45" value="{DSP}"/>
+   </td>   
+   <td width="5%">Fecha Inicio:</td>
+   <td width="25%">
+   <input type="text" class="caja_txt" id="dti"  readonly="readonly" value="{DTI}"></td>
+   <td>
+                  <select id="hri" class="mcaja">
+                    <!-- BEGIN hri -->
+                    	{hri.HR}
+                 	<!-- END hri -->
+                 </select>
+                 <span>&nbsp;:&nbsp;</span>
+                  <select id="mni" class="mcaja">
+                  <!-- BEGIN mni -->
+                  	{mni.MN}
+                  <!-- END mni -->
+                  </select>   
+   </td>
+   <td width="2%"><input type="checkbox" id="st" {STP} /></td>
+   <td width="18%">Contabilizar paradas</td>
+   </tr>
+   <tr>
+   <td>Id viaje:</td>
+   <td ><input type="text" id="idv"  class="caja_txt" maxlength="45" value="{IDV}"/>
+</td>
+   <td>Fecha Fin:</td>
+   <td >
+   <div id="y">
+   <input type="text" class="caja_txt" id="dtf" readonly="readonly" value="{DTF}"></div>
+   </td>
+   <td>
+                  <select id="hrf" class="mcaja">
+					<!-- BEGIN hri -->
+                    	{hri.HR2}
+                  	<!-- END hri -->
+                  </select>
+                  <span>&nbsp;:&nbsp;</span>
+                  <select id="mnf" class="mcaja">
+                    <!-- BEGIN mni -->
+                    	{mni.MN2}
+                  	<!-- END mni -->                                             
+                  </select>
+   </td>
+   <td><input type="checkbox" id="ex" {EXC}/></td>
+   <td>Contabilizar excesos</td>   
+   </tr>   
+   <tr>
+   <td>Unidad:</td>
+   <td><select class="caja" id="und">
+   <option value="0" >Seleccione una unidad</option>
+   <!-- BEGIN dt3 -->             
+   <option value="{dt3.IDU}" {dt3.STD}>{dt3.UND}</option>
+   <!-- END dt3 -->        
+   </select></td>
+   <td>Tolerancia:</td>
+   <td colspan="2"><input type="text" id="tl" name="cnt" class="caja_txt" maxlength="3" value="{TOL}" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"/>
+   min(s).</td>
+   </tr>
+</table>
+<input type="hidden" id="data" />
+
+</div>
+                      <!--  ---------------------------------panel PD------------------------------------- -->  
+<div id="panelPD" style="  width:94%; height:38%; left:1%; top:21%; position:absolute; z-index:0;">
+	<ul>
+		<li><a href="#datagridp" onclick="mostrar();">Agregar Puntos</a></li>
+		<!--<li><a href="#datagridc" onclick="ocultar();" >Agregar puntos por circuito</a></li>-->
+        <li><a href="#imp_punto" >Importar Puntos</a></li>
+      <!--  <li><a href="#imp_payld" >Importar Payload</a></li>-->
+	</ul>
+    <input type="hidden" id="op" value="1" />
+            <!--<input type="hidden" id="idd" value="{IDD}" />-->
+    <!--<div id="imp_payld">
+    <div id="imp_p" >
+    	<div>
+        <form name="env_excel_pld" id="pld" action="index.php?m=mContenido2&c=mImportFilePld" method="post" enctype="multipart/form-data" target="trt_pld" style="width:100%; height:90%; border:#3F3 solid 0px;">
+        <table>
+        <tr><td>Archivo:</td><td><input type="file" id="excel_pld" name="excel_pld"/> </td><td><input type="button" class="b_op" value="Importar" onclick="enviar_excel_pld()" /></td><td>&nbsp;</td><td align="right"><div id="clr" style="position:relative; top:50%; display:;" title="Descargar Formato"><button class="b_ic" onclick="down_format_pld()"><span style="position:relative; left:-7px; " title="Descargar Formato"  class="ui-icon ui-icon-circle-arrow-s"></span></button></div></td></tr>
+        </table>
+        </form>
+        
+        <input id="jota2" type="hidden" size="1" style="border:#fff solid 0px;"/>
+        <input type="hidden" id="usuario" value="{COD_USER}" size="20"/>
+        <input type="hidden" id="cliente" value="{COD_CLI}" size="20"/>
+        <div style="position:relative; top:100%; ">
+        <iframe name="trt_pld" id="trt_pld" style=" position:absolute; left:10%; top:90%; display:none;" width="700" height="100" frameborder="1"></iframe> </div>
+                </div>
+                <div id="console2">
+                Consola de eventos:
+                <div id="c_content4" class="ui-corner-all" >
+                </div>
+                </div>
+			</div>
+    </div>-->
+
+    
+    <div id="imp_punto">
+    <div id="imp_p" >
+    	<div>
+        <form name="env_excel_pto" id="form_pto" action="index.php?m=mContenido2&c=mImportFilePto" method="post" enctype="multipart/form-data" target="trt_pto" style="width:100%; height:90%; border:#3F3 solid 0px;">
+        <input type="hidden" name="id_dsp_pto" id="id_dsp_pto" value="{IDD}" /> 
+        <input type="hidden" name="dsp_fiv" id="dsp_fiv" value="{DTI}" />
+        <input type="hidden" name="dsp_ffv" id="dsp_ffv" value="{DTF}" />
+        <table>
+        <tr><td>Archivo:</td><td><input type="file" id="excel_pto" name="excel_pto"/> </td><td><input type="button" class="b_op" value="Importar" onclick="enviar_excel_pto()" /></td><td>&nbsp;</td><td align="right"><div id="clr" style="position:relative; top:50%; display:;" title="Descargar Formato"><button class="b_ic" onclick="down_format_pto()"><span style="position:relative; left:-7px; " title="Descargar Formato"  class="ui-icon ui-icon-circle-arrow-s"></span></button></div></td></tr>
+        </table>
+        </form>
+        
+        <input id="jota2" type="hidden" size="1" style="border:#fff solid 0px;"/>
+        <input type="hidden" id="usuario" value="{COD_USER}" size="20"/>
+        <input type="hidden" id="cliente" value="{COD_CLI}" size="20"/>
+        <div style="position:relative; top:100%; ">
+        <iframe name="trt_pto" id="trt_pto" style=" position:absolute; left:10%; top:90%; display:none;" width="700" height="100" frameborder="1"></iframe> </div>
+                </div>
+                <div id="console2">
+                Consola de eventos:
+                <div id="c_content3" class="ui-corner-all" >
+                </div>
+                </div>
+			</div>
+            
+    </div><!--imp_punto-->                        
+	
+    <div id="datagridp" align="center" style=" " >
+    	
+   <table width="98%" style="z-index:100;">
+   <tr>
+   <td>&nbsp; </td>
+   <td >
+   <select class="caja" name="tip_clits" id="tip_clits" onchange="change_tipo_geo(this.value)">
+	<option value="-1"  >Tipo Punto de Interes</option>
+    <option  value="1">GeoPunto</option>
+     <option  value="2">Recurso Humano</option>
+     
+</select>
+ </td>
+   <td>   <a href="#" class="tooltip">
+   
+   <input type="text" id="idp" name="idp" class="caja_txt" maxlength="45" onblur="valida_punto(this.value)" placeholder="Identificador de la Entrega"/><span  class="ui-corner-all" style="height:25px;">En caso de ser una entrega representa el ID de los documentos a entregar</span></a>
+  </td>
+   </tr>
+   <tr>
+   <td></td>
+   <td >
+   
+   </td>   
+   </tr>
+   <tr>
+   <td>&nbsp; </td>
+   <td >
+    <input type="hidden" id="dt_cte" />
+   <div id="cbo_cliente" style="z-index:100;">
+    <!-- BEGIN dt_b_2 --> 
+    <input type="hidden" id="data_busc_rh" value="{dt_b_2.dat}" />
+     <!-- END dt_b_2 --> 
+     
+        <!-- BEGIN dt_b_3 --> 
+    <input type="hidden" id="data_b_rh" value="{dt_b_3.dat}" />
+     <!-- END dt_b_3 --> 
+  
+<div class="ui-corner-all" style="border:#CCC solid thin; width:205px; ">
+<div style="height:26px; width:205px; border-bottom:#CCC solid thin;">
+<div style="width:185px; float:left;"><input type="text" autocomplete="on"  style="width:100%;border:#FFF;" placeholder="Buscar" class="caja_txt" id="" onkeyup="autocompletarcte(this.value)"/></div><div style="width:7%; float:right;"><span class="ui-icon ui-icon-search" title="Buscar"></span></div>
+</div>
+
+<div id="dpdi">
+<select class="caja" name="cte" id="cte" style="border:#FFF; width:100%" disabled>
+	<option value="0"  >Seleccione un cliente</option>
+	<!-- BEGIN dt2 -->      
+    <option  value="{dt2.IDC}¬{dt2.LAT}¬{dt2.LON}¬{dt2.RDO}">{dt2.CTE}</option>
+    <!-- END dt2 --> 
+</select>
+
+<select class="caja" name="cte_3" id="cte_3" style="border:#FFF; width:100%; display:none;" disabled>
+	<option value="0"  >Seleccione un cliente</option>
+	<!-- BEGIN dt_4_21 -->      
+    <option  value="{dt_4_21.IDC}¬{dt_4_21.LAT}¬{dt_4_21.LON}¬{dt_4_21.RDO}">{dt_4_21.CTE}</option>
+    <!-- END dt_4_21 --> 
+</select>
+</div>
+</div>
+<!--nuevo combo cliente autocompletador-->   
+   </div>
+   </td>
+   <td rowspan="0" colspan="2" valign="middle"><textarea id="obs"  cols="40" style="width:98%; height:98%; vertical-align:middle " placeholder="Anote sus Observaciones"></textarea></td>
+   </tr>
+   <tr>
+   <td>&nbsp; </td>
+   <td >&nbsp;</td>
+   <td> <input type="text" class="caja_txt" id="delivery-date"  readonly="readonly" onchange="validar_dte()" placeholder="Fecha de Entrega"   /></td>
+   <td ><input type="text" class="caja_txt" id="release_date"  readonly="readonly" placeholder="Fecha de Salida" /></td>
+   </tr>
+   <tr>
+   <td></td>
+               
+   <td style="{DSP_DOS};">
+
+    
+   
+<!--   <select class="caja" id="cst" name="cst">
+   <option value="0" >Seleccione un cuestionario</option>
+                 
+                  
+   </select>-->
+   </td>
+   
+   <td>  <select id="hi" class="mcaja" onchange="validar_dte()">
+                    <!-- BEGIN hrs -->
+                    	{hrs.NO}
+                 	<!-- END hrs -->
+                 </select>
+                 <span>&nbsp;:&nbsp;</span>
+                  <select id="mi" class="mcaja" onchange="validar_dte()">
+                  <!-- BEGIN min -->
+                  	{min.NO}
+                  <!-- END min -->
+   </select></td>
+   <td >                  
+   <select id="his" class="mcaja" onchange="validar_dte()">
+                    <!-- BEGIN hrs -->
+                    	{hrs.NO}
+                 	<!-- END hrs -->
+                 </select>
+                 <span>&nbsp;:&nbsp;</span>
+                  <select id="mis" class="mcaja" onchange="validar_dte()">
+                  <!-- BEGIN min -->
+                  	{min.NO}
+                  <!-- END min -->
+   </select>
+   </td>   
+   </tr>
+   <tr>
+   <td colspan="2"></td>
+   </tr>  
+   
+    <div style="float:left; width:85%; height:35%; {DSP_DOS}; " id="dos" >
+
+   <tr >
+   <td style="{DSP_DOS};">&nbsp; </td>
+     <td >    
+
+    
+   </td>
+   <td></td><td>Tolerancia: &nbsp;<input align="middle" type="text" id="tol_ent" class="caja_txt" style="width:35px;" maxlength="3" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;"/> min(s).
+   
+   </td>
+   </tr>
+<tr style="display:none;">
+   <td>Patload:</td>
+   <td >
+   <input type="text" id="pld" name="pld" class="caja_txt" maxlength="45" />
+   </td>  
+</tr>
+
+</div>   
+    
+</table> 
+           	  <!--<div id="list_points" style="position:absolute; top:0%; left:0%; width:100%;">
+              </div>-->
+             
+			</div>
+            <!----------------------------------------------------------------------->    
+            <div id="datagridc" align="center" style=" height:74%; width:96.5%; position:relative; display:none;">
+ 			<div style="position:absolute; top:2%; left:1%;">
+            <label>Circuito:</label>
+            <select class="caja" onchange="ob_datac(this.value,$('#idd').val())" id="cto">
+            <option value="0">Seleccionar Circuito</option>
+            <!-- BEGIN C -->             
+   			<option value="{C.CTO}">{C.DSC}</option>
+   			<!-- END C -->        
+            </select>
+            <input type="hidden" id="ptoso"/>
+            </div>
+            
+            <div style=" position:absolute; top:18%; left:1%; width:98%;">
+               <table id="" style=" width:100%; background-color:#d0e5f5; border-color:#79b7e7; color:#1d5987;" align="left">
+               <tr>
+              <!-- <th width="{A}" bordercolor="#333333" align="center">PDI</th>
+               <th width="{B}" bordercolor="#333330"align="center">Fecha de entrega</th>
+               <th width="{C}" bordercolor="#333303"align="center">Fecha fin</th>
+               <th width="{D}" bordercolor="#333033" align="center">Tol</th>
+               <th width="{E}" bordercolor="#330333"align="center">Identificador</th>
+               <th width="{F}" bordercolor="#303333"align="center">Observaciones</th>
+               <th width="" align="left" style="{DSP_DOS}">Cuestionario</th>
+               <th width="" align="left"></th>-->
+               {TBL}
+               </tr>
+               </table> 
+            </div>  
+                        
+            <div style="position:absolute; top:28%; left:1%; width:98%; height:65%; overflow-y:scroll; border:#A6C9E2 solid thin;"  id="datac"> 
+            <div id="list_points_c" style="position:absolute; top:0%; left:0%; width:100%;"></div>            
+            </div>
+
+			</div>         
+
+</div>
+					<!--  ------------------------------------------------------------------------------------ -->
+
+                      <!--  ---------------------------------panel PE------------------------------------- -->  
+<div id="panelPEx" style="  width:94%; height:34%; left:1%; top:62%; position:absolute;">
+	<ul>
+		<li><a href="#datagrid2" onclick="mostrar2();">Puntos de entrega</a></li>
+		<!--<li><a href="#mapa2" onclick="ocultar2();" >Mapa</a></li>-->
+	</ul>
+                           
+            <input type="hidden" id="idd" value="{IDD}" />
+            
+               <table id="ptsTableTitle" style=" width:100%; background-color:#d0e5f5; border-color:#79b7e7; color:#1d5987; " align="center">
+               <tr>
+                <th width="10%">ID Pedido</th>
+                <!--<th width="15%">Cliente</th>-->
+                <th width="20%">Cliente</th>
+                <th width="20%">Fecha de entrega</th>
+                <th width="30%">Observaciones</th>
+                <!--<th width="8%" style="{DSP_DOS}">Cuestionario</th>
+                <th width="10%" style="{DSP_DOS}">Patload</th>-->
+                <th width="2%"></th>
+              </tr>
+              </table>             
+                             
+			<div id="datagrid2" align="center" style="" >  
+           	  <div id="list_points" style="position:relative; top:5px;; left:0%; width:100%;">
+
+        
+
+              
+              </div>
+             <!-- <div id="info_formas" style="display:none;"></div>	-->
+			</div>
+            <!----------------------------------------------------------------------->    
+            <div id="mapa2" align="center" style=" height:74%; width:96.5%; position:relative; display:none;">
+ 				
+			</div>         
+
+                         </div>
+					<!--  ------------------------------------------------------------------------------------ -->
+<div id="panelbts" style="width:3%; height:33%; left:96%; top:62%; position:absolute; ">
+
+<div style="position:relative; top:30%" title="Importar a excel"><button class="b_ic" onclick="exportar($('#idd').val());" ><span style="position:relative; left:-7px; top:-2px; " title="Importar a excel" class="ui-icon ui-icon-document"></span></button></div>
+
+<div style="position:relative; top:40%" title="Eliminar Punto"><button class="b_ic" onclick="borrar();" ><span style="position:relative; left:-7px; top:-2px; " title="Eliminar punto de entrega" class="ui-icon ui-icon-trash"></span></button></div>
+
+<div id="clr" style="position:relative; top:50%; display:;" title="Cancelar Punto"><button class="b_ic" onclick="cancelar()"><span style="position:relative; left:-7px; " title="Cancelar punto de entrega"  class="ui-icon ui-icon-closethick"></span></button></div>
+
+</div>
+
+<!-- ----------------------------------------------------------------------------------------------------- -->
+
+<div id="panelbts2" style="width:3%; height:33%; left:96%; top:32%; position:absolute; ">
+
+<div style="position:relative; top:40%" title="Omitir Punto"><button class="b_ic" onclick="omitir_punto();" ><span style="position:relative; left:-7px; top:-2px; " title="Omitir punto de entrega" class="ui-icon ui-icon-trash"></span></button></div>
+
+</div>
+
+<div id="puntos" style="width:40%; height:5%; left:54%; top:22%; position:absolute; display:; z-index:0; ">
+
+
+<!------------------------------------------------------------------------------------------------->
+            <div style=" position:absolute; top:-10px; left:90%; cursor:pointer; display:none" onclick="cls_pto();">
+            <div style=" float:left;position:relative; top:2px; left:-3px;">Cerrar</div><span class="ui-icon ui-icon-close " title="Cerrar" style="float:left"></span>
+            </div>
+            
+<div style="position:absolute; top:0%; left:72%; z-index:1;">
+  <button class="b_op" onclick="validar_datos_p()" style="width:110px;"><span style="position:relative; left:-7px; " title="Agregar punto de entrega"  class="ui-icon ui-icon-circle-plus"></span><div style="position:relative; top:-15px; left:10px; ">Agregar</div></button> </div>
+  
+<!--<div style="position:absolute; top:0%; left:40%; z-index:1;">
+  <button class="b_op" onclick="crear_punto()" style="width:110px;"><span style="position:relative; left:-7px; " title="Crear Nuevo Punto"  class="ui-icon ui-icon-pin-s"></span><div style="position:relative; top:-15px; left:10px; ">Crear Punto</div></button> </div>     -->         
+<!------------------------------------------------------------------------------------------------->
+<!-- pegar aqui-->
+<!-- pegar aqui-->
+</div>

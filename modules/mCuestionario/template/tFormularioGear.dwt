@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+<!--cuestionarios-->
+<div style=" width:100%; height:98%; float:left; border:#a6c9e2 solid thin;" class="ui-corner-all">
+<!--<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
+<span class="ui-dialog-title"><table width="100%"><tr><td width="33%">Cuestionario</td><td width="33%">Por defecto</td><td width="33%">Activo</td></tr></table></span>
+</div>-->
+<table class="ui-corner-top" bgcolor="#5c9ccc" style="color:#FFF;" width="100%" height="25px;"><tr><td width="60%"><strong>Cuestionario</strong></td><td width="20%"><strong>Por defecto</strong></td><td width="20%"><strong>Activo</strong></td></tr></table>
+<div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
+<div id="qst_cuestionarios" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+    {QST}
+</div>
+</div>
+</div>   
+<!--cuestionarios-->
+
+<style>
+.dropme {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    /*margin-top: 20px;*/
+}
+
+.dropme div {
+    display: block;
+    width: 100%;
+    border: 1px solid #ccc;
+	/*cursor: move;*/
+}
+
+.highlight {
+    padding: 5px;
+    border: 2px dotted #fff09f;
+    background: #fffef5;
+}
+
+</style>
+<script>
+$(document).ready(function () {
+
+		
+		
+		
+	$('.dropme').droppable({
+			accept: '.dropme',
+			activeClass: 'highlight',
+			drop: function() {
+				//alert( "dropped" );
+				}
+	}).sortable({
+		connectWith: '.dropme',
+		activeClass: 'highlight',
+		cursor: 'move',
+		 	
+		/*stop: function( event, ui ) {
+			//alert("[" + this.id + "] received [" + ui.item.attr("id") + "]");
+			//alert(ui.item.parent().attr("id") )
+			//alert("[" + this.id + "] received [" + ui.item.attr("id") + "] from [" + ui.item.parent().attr("id") + "]");
+			
+			var div_src = this.id;
+			var div_dst = ui.item.parent().attr("id");
+			var idp = ui.item.attr("id");
+			
+			
+			
+			if(div_src == 'qst_preg_sel' && div_src!=div_dst){
+				var index = qst_aps.indexOf(idp);
+				//qst_aps.pop(idp);
+				if (index > -1) {
+					qst_aps.splice(index, 1);
+				}
+				qst_apd.push(idp);
+				}
+			if(div_src == 'qst_preg_dsp' && div_src!=div_dst){
+				var index = qst_apd.indexOf(idp);
+				//qst_apd.pop(idp);
+				if (index > -1) {
+					qst_apd.splice(index, 1);
+				}
+				qst_aps.push(idp);
+				}
+			}*/	
+		});
+
+	});
+</script>
+ 
