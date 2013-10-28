@@ -7,8 +7,8 @@
 <script>
 $(document).ready(
 function(){
-		admap(1);
-	onload();
+	/*	admap(1);
+	onload();*/
 		 /*var btn=$("#btn").val();
 		 switch(btn){
 			 case '0' :
@@ -69,7 +69,7 @@ function(){
 
 
 
-function updateFields(latInt, lonInt){
+/*function updateFields(latInt, lonInt){
 	var latInt = parseFloat(latInt);
 	var lonInt = parseFloat(lonInt);
 	
@@ -79,7 +79,7 @@ function updateFields(latInt, lonInt){
 	var point = new GLatLng(latInt,lonInt);
 	point_pan = point;
 	//map.setCenter(point, 15);
-}
+}*/
 
 	</script>
 
@@ -93,11 +93,11 @@ function updateFields(latInt, lonInt){
 
 <div id="panelE" >
 
-<div style="position:absolute; top:43%; left:63%; " >
-  <button class="b_op" onclick="mostrar_notas($('#ide_edt_pts').val())"><span style="position:relative; left:-7px; " title="Mostar notas"  class="ui-icon ui-icon-note"></span><div style="position:relative; top:-15px; left:10px; ">Mostar notas</div></button> </div>
+<!--<div style="position:absolute; top:43%; left:63%; " >
+  <button class="b_op" onclick="mostrar_notas($('#ide_edt_pts').val())"><span style="position:relative; left:-7px; " title="Mostar notas"  class="ui-icon ui-icon-note"></span><div style="position:relative; top:-15px; left:10px; ">Mostar notas</div></button> </div>-->
 
-<div style="position:absolute; top:43%; left:83%; " >
-  <button class="b_op" onclick="notes(1)"><span style="position:relative; left:-7px; " title="Agregar nota"  class="ui-icon ui-icon-note"></span><div style="position:relative; top:-15px; left:10px; ">Agregar nota</div></button> </div>
+<!--<div style="position:absolute; top:43%; left:83%; " >
+  <button class="b_op" onclick="notes(1)"><span style="position:relative; left:-7px; " title="Agregar nota"  class="ui-icon ui-icon-note"></span><div style="position:relative; top:-15px; left:10px; ">Agregar nota</div></button> </div>-->
   
             <div id="addnote" class="box_an" style="position:absolute; top:20%; left:20%; height:270px;
             width:300px;  border:#5c9ccc solid 2px; z-index:0; display:none;">
@@ -129,53 +129,7 @@ function updateFields(latInt, lonInt){
             </div>   
 
                       <!--  ---------------------------------panel PE------------------------------------- -->  
-<div id="panelPE" style="  width:94%; height:45%; left:1%; top:50%; position:absolute; z-index:0;">
-	<ul>
-		
-		<li><a href="#mapas" onclick="pestana1(1);" >Mapa</a></li>
-        <li><a href="#panos"  onclick="pestana1(2);">StreetView</a></li>
-        
-	</ul>
-                           
-            <input type="hidden" id="idd" value="{IDD}" />
-            
-               <table id="ptsTableTitle" style=" display:none; width:100%; background-color:#d0e5f5; border-color:#79b7e7; color:#1d5987; " align="center">
-               <tr>
-                <th width="10%">ID Pedido</th>
-                <!--<th width="15%">Cliente</th>-->
-                <th width="20%">Cliente</th>
-                <th width="20%">Fecha de entrega</th>
-                <th width="30%">Observaciones</th>
-                <th width="8%" style="{DSP_DOS}">Cuestionario</th>
-                <th width="10%" style="{DSP_DOS}">Patload</th>
-                <th width="2%"></th>
-              </tr>
-              </table>             
-                             
-			<div id="datagrid2" align="center" style="display:none;" >  
-            
-        
-           	  <!--<div id="list_points" align="center">-->
 
-<!--<ul id="sortable">
-	<li class="ui-state-default"><table width="100%"><tr><td width="10%">123000</td><td width="20%">Juan Perez</td><td width="20%">2012-09-23 20:00:00</td><td width="30%">puerta azul</td><td width="8%">2</td><td width="10%">xxx</td></tr></table></li>
-	<li class="ui-state-default">Item 2</li>
-	<li class="ui-state-default">Item 3</li>
-	<li class="ui-state-default">Item 4</li>
-
-</ul> -->             
-
-              
-              <!--</div>-->
-             <!-- <div id="info_formas" style="display:none;"></div>	-->
-			</div>
-                <div name="pano" id="pano" style=" display:none;  height:90px; width:800px; position:relative;" ></div> 
-            <!----------------------------------------------------------------------->    
-            <div id="mapa" align="center" style="  height:85%; width:99.5%; position:relative;">
- 				
-			</div>         
-
-                         </div>
 					<!--  ------------------------------------------------------------------------------------ -->
 
 
@@ -190,7 +144,7 @@ function updateFields(latInt, lonInt){
 <div style="position:absolute; top:72%; left:85%; display:none;">
   <button class="b_op" onclick="validar_datos_p()"><span style="position:relative; left:-7px; " title="Agregar punto de entrega"  class="ui-icon ui-icon-circle-plus"></span><div style="position:relative; top:-15px; left:10px; ">Agregar</div></button> </div>            
 <!------------------------------------------------------------------------------------------------->
-  <fieldset style="height:100%;">
+  <fieldset style="height:200px;">
     <legend>Datos del punto:</legend>
 <!--<div style="width:100%; height:65%; float:left">-->
 <table width="95%">
@@ -198,7 +152,7 @@ function updateFields(latInt, lonInt){
    <td>Cliente:</td>
    <td >
    <input type="hidden" id="dt_cte" />
-   <select class="caja" id="cte2" name="cte" onchange="mostrar_mapa(1,this.value);" o>
+   <select class="caja" id="cte2" name="cte" >
        
    <option value="0" style="z-index:-1">Seleccione un cliente</option>
        <!-- BEGIN dt2 -->      
@@ -242,7 +196,7 @@ function updateFields(latInt, lonInt){
                   <!-- END min -->
    </select>
    </td>
-   <td>Cuestionario:</td>
+   <td></td>
    </tr>
    <tr>
    <td colspan="2"></td>
@@ -257,12 +211,7 @@ function updateFields(latInt, lonInt){
    <input type="text" class="caja_txt" id="departure_date"  readonly="readonly" value="{DTS}" >
    </td>
    <td style="{DSP_DOS};">
-   <select class="caja" id="cst2" name="cst">
-   <option value="0" >Seleccione un cuestionario</option>
-                    <!-- BEGIN dt4 -->
-                    	{dt4.OP}
-                 	<!-- END dt4 -->         
-   </select>   
+   
    </td>
    </tr>
    <tr>
@@ -297,19 +246,19 @@ function updateFields(latInt, lonInt){
 <button class="b_op" style=" width:135px;" onclick="{FCN};"><span style="position:relative; left:-7px; " title="{TTL}"  class="ui-icon ui-icon-{ICN}"></span><div style="position:relative; top:-15px; left:10px; ">{TTL}</div></button>
 </div>-->
 <!--Boton A-->
-<div style="position:absolute; top:83%; left:30%;" id="bce">
+<div style="position:absolute;  top:180px; left:30%;" id="bce">
 <button class="b_op" style=" width:135px;" onclick="confirmarE({EST},{IDE})"><span style="position:relative; left:-7px; " title=""  class="ui-icon ui-icon-check"></span><div style="position:relative; top:-15px; left:10px; ">Confirmar entrega</div></button>
 </div>
 <!--Boton B-->
-<div style="position:absolute; top:83%; left:48%;" id="bca">
+<div style="position:absolute; top:180px; left:48%;" id="bca">
 <button class="b_op" style=" width:135px;" onclick="confirmarA({EST},{IDE})"><span style="position:relative; left:-7px; " title=""  class="ui-icon ui-icon-check"></span><div style="position:relative; top:-15px; left:10px; ">Confirmar arribo</div></button>
 </div>
 <!--Boton C-->
-<div style="position:absolute; top:83%; left:67%;" id="can">
+<div style="position:absolute;  top:180px; left:67%;" id="can">
 <button class="b_op" style=" width:110px;" onclick="klr({IDE})"><span style="position:relative; left:-7px; " title=""  class="ui-icon ui-icon-closethick"></span><div style="position:relative; top:-15px; left:10px; ">Cancelar</div></button>
 </div>
 <!--Boton D-->
-<div style="position:absolute; top:83%; left:82%;" id="rep">
+<div style="position:absolute; top:180px; left:82%;" id="rep">
 <button class="b_op" style=" width:120px;" onclick="reprogramar({IDE})"><span style="position:relative; left:-7px; " title=""  class="ui-icon ui-icon-refresh"></span><div style="position:relative; top:-15px; left:10px; ">Reprogramar</div></button>
 </div>
 

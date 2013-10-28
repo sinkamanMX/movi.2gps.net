@@ -1,4 +1,4 @@
-Usuarios Asignados
+ Asignados
 <select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">
       <!-- BEGIN submenu -->
       <option value="{submenu.ID_SUBMENU}">{submenu.NOMBRE}</option> 

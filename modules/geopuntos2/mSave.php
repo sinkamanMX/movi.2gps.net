@@ -8,6 +8,7 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 	//--------------------------- Modificada BD y Encabezado------------------------
 	$idc   = $userAdmin->user_info['ID_CLIENTE'];
 	$idu   = $userAdmin->user_info['ID_USUARIO'];
+	$db ->sqlQuery("SET NAMES 'utf8'");
 
 	 $idp = "";
 	 
@@ -28,6 +29,7 @@ if($_GET['op']==1){
 			'CP'				=> $_GET['c_p'],
 			'ITEM_NUMBER'	    => $_GET['nip'],
 			'RADIO'	       		=> $_GET['rdo'],
+			'ACTIVO'			=> $_GET['act'],
 			'LONGITUDE'	        => $_GET['lon'],
 			'LATITUDE'	        => $_GET['lat'],
 			'RESPONSABLE'	    => $_GET['res'],
@@ -210,7 +212,7 @@ if($_GET['p_r']!=""){
 					for($j=0; $j<count($a); $j++){
 						$b = explode("~",$a[$j]);
 						
-						$sgp .= ($sgp=="")?"(".$b[0].",".$_GET['id'].",'".utf8_decode($b[1])."','".date('Y-m-d H:i:s')."')":",(".$b[0].",".$_GET['id'].",'".utf8_decode($b[1])."','".date('Y-m-d H:i:s')."')";
+						$sgp .= ($sgp=="")?"(".$b[0].",".$_GET['id'].",'".$b[1]."','".date('Y-m-d H:i:s')."')":",(".$b[0].",".$_GET['id'].",'".$b[1]."','".date('Y-m-d H:i:s')."')";
 					}
 					//echo $sgp;
 //obtener payload asignado al punto 

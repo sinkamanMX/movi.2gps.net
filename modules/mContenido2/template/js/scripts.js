@@ -7,8 +7,7 @@ var idd = 0;
 var ide = 0;
 var idp = 0;
 //var div='';
-var map;
-var map2;
+var map, controls;
 var u='';
 var style_blue;
 var point;
@@ -80,18 +79,19 @@ function init(){
 	$('#dialog-acott').find('#tab_cotta').remove();
 
 var cadena='<table border="0" id="tab_cotta" >'+
-'<tr><td><img src="public/images/nar_neg.png" style="width:15px;"></img></td><td style=" font-weight: bold;">ENTREGA TERMINADA, FUERA DE CLIENTE</td></tr>'+
-'<tr><td><img src="public/images/nar_roj.png" style="width:15px;"></img></td><td style=" font-weight: bold;">ENTREGA TERMINADA, FUERA DE CLIENTE, CON RETARDO</td></tr>'+
-	'<tr><td><img src="public/images/ver_neg.png" style="width:15px;"></img></td><td style=" font-weight: bold;">ENTREGA TERMINADA, DENTRO DE CLIENTE</td></tr>'+
-	'<tr><td><img src="public/images/roj_neg.png" style="width:15px;"></img></td><td style=" font-weight: bold;">ENTREGA TERMINADA, DENTRO DE CLIENTE, CON RETARDO</td></tr>'+
-	'<tr><td><img src="public/images/az_ver.png" style="width:15px;"></img></td><td style=" font-weight: bold;">ENTREGA EN PROCESO, FUERA DE CLIENTE</td></tr>'+
-	'<tr><td><img src="public/images/az_roj.png" style="width:15px;"></img></td><td style=" font-weight: bold;">ENTREGA EN PROCESO, FUERA DE CLIENTE, CON RETARDO</td></tr>'+
-	'<tr><td><img src="public/images/verd.png" style="width:15px;"></img></td><td style=" font-weight: bold;">ENTREGA EN PROCESO, DENTRO DE CLIENTE</td></tr>'+
-	'<tr><td><img src="public/images/roj_verd.png" style="width:15px;"></img></td><td style=" font-weight: bold;">ENTREGA EN PROCESO, DENTRO DE CLIENTE, CON RETARDO</td></tr>'+
+'<tr><td><img src="public/images/nar_neg.png" style="width:15px;"></img></td><td style=" font-weight: bold;">VISITA TERMINADA, FUERA DE CLIENTE</td></tr>'+
+'<tr><td><img src="public/images/nar_roj.png" style="width:15px;"></img></td><td style=" font-weight: bold;">VISITA TERMINADA, FUERA DE CLIENTE, CON RETARDO</td></tr>'+
+	'<tr><td><img src="public/images/ver_neg.png" style="width:15px;"></img></td><td style=" font-weight: bold;">VISITA TERMINADA, DENTRO DE CLIENTE</td></tr>'+
+	'<tr><td><img src="public/images/roj_neg.png" style="width:15px;"></img></td><td style=" font-weight: bold;">VISITA TERMINADA, DENTRO DE CLIENTE, CON RETARDO</td></tr>'+
+	'<tr><td><img src="public/images/az_ver.png" style="width:15px;"></img></td><td style=" font-weight: bold;">VISITA EN PROCESO, FUERA DE CLIENTE</td></tr>'+
+	'<tr><td><img src="public/images/az_roj.png" style="width:15px;"></img></td><td style=" font-weight: bold;">VISITA EN PROCESO, FUERA DE CLIENTE, CON RETARDO</td></tr>'+
+	'<tr><td><img src="public/images/verd.png" style="width:15px;"></img></td><td style=" font-weight: bold;">VISITA EN PROCESO, DENTRO DE CLIENTE</td></tr>'+
+	'<tr><td><img src="public/images/roj_verd.png" style="width:15px;"></img></td><td style=" font-weight: bold;">VISITA EN PROCESO, DENTRO DE CLIENTE, CON RETARDO</td></tr>'+
 	'<tr><td><img src="public/images/ince.png" style="width:15px;"></img></td><td style=" font-weight: bold;">INCIDENCIAS</td></tr>';
 $(cadena).appendTo('#dialog-acott');
 
 if(contas==0){
+
  $( "#dialog-acott" ).dialog({
 								width:300,
 								buttons: {
@@ -360,38 +360,13 @@ contas=1;
 				}
 				);																		
 //.......................................dialog puntos ed..........................//
-				$("#dialog_ptse" ).dialog({
-					title: "Editar Punto",
-					modal: true,
-					autoOpen:false,
-					overlay: { opacity: 0.2, background: "cyan", width:300 },
-					width: 900,
-					height: 600,
-					buttons: {
-						
-						"Guardar": function(){
-							validar_edp();
-							
-						},
-			
-						"Cancelar": function(){
-							
-							if($("#dialog_ptse" ).dialog('isOpen')){
-							$("#dialog-message").dialog('close');
-							}
-							$("#dialog_ptse" ).dialog('close');
-						
-						}
-					},
-					
-					show: "blind",
-					hide: "blind",
-				}
-				);								
+											
 
 
 
 
+
+///---------Creando EL mapa
 
 
 
@@ -468,7 +443,7 @@ barra_progress();
 /*-----------------------------------    -------------------------------------------- */
 function r_filtro_y(){
 	var text = $('#flt_x').val();
-	$('#list_formas_y').html('<div class="demo"><br/><br/><br/><br/>Cargando Datos<br/><div id="progressbar" style=" width:300px;" ></div></div>');
+	$('#datagridy').html('<div class="demo"><br/><br/><br/><br/>Cargando Datos<br/><div id="progressbar" style=" width:300px;" ></div></div>');
 barra_progress();
 	var ajax = nuevoAjax();
 	//var url = "index.php?m=rRsalida&c=mGetReport";
@@ -478,7 +453,7 @@ barra_progress();
 				var result =ajax.responseText;
 				//alert(result);
 				if(result != 0){
-					$('#list_formas_y').html(ajax.responseText);
+					$('#datagridy').html(ajax.responseText);
 					tigra_tables('MyDatay', 0, 0, '#ffffff', '#DDD', '#AEC7F3', '#5283D8');
 				}else{
 					$('#list_formas_y').html("<br><br><br><br><center>La busqueda no obtuvo resultados</center>");
@@ -524,9 +499,9 @@ barra_progress();
 				var result =ajax.responseText;
 				//alert(result);
 				
-				console.log(result);
+				//console.log(result);
 				if(result != 0){
-					$('#list_formas_xc').html(ajax.responseText);
+					$('#list_formas_xc').html(result);
 					tigra_tables('MyDataxc', 0, 0, '#ffffff', '#DDD', '#AEC7F3', '#5283D8');
 				}else{
 					$('#list_formas_xc').html("<br><br><br><br><center>La busqueda no obtuvo resultados</center>");
@@ -547,7 +522,8 @@ barra_progress();
 		ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 				var result =ajax.responseText;
-				//alert(result);
+				//alert(result)
+				console.log(result);
 				if(result != 0){
 					//$('#list_formas').html(ajax.responseText);
 					//tigra_tables('MyData', 0, 0, '#ffffff', '#DDD', '#AEC7F3', '#5283D8');
@@ -934,7 +910,7 @@ function nuevo(und){
 		 
 		  $(result).appendTo('#dialog');
 
- $( "#dialog" ).dialog({
+ 			$( "#dialog" ).dialog({
 								title: "Nuevo Viaje",
 					modal: true,
 					overlay: { opacity: 0.2, background: "cyan" },
@@ -944,7 +920,7 @@ function nuevo(und){
 						
 						"Guardar": function(){
 							validar_datos_d(0);
-							$("#dialog").dialog('close');
+							//$("#dialog").dialog('close');
 						},
 			
 						"Cancelar": function(){
@@ -1087,6 +1063,8 @@ return false;
 
 	if(ifs==0){
 	almacenar_nuevo(xdr);
+	$("#dialog").dialog('close');
+	$("#dialog_agp").dialog('close');
 		}
 	}
 //........................................................................................// 	
@@ -1120,13 +1098,10 @@ var f=$('#tl').val();
 ($('#exc').is(':checked'))? h=1: h=0;
 var result=0;
 
-  $('#dialog_pb').html('<p align="center">Guardando Datos...<div id="progressbar"></div></p>');
-  		$("#dialog_pb" ).dialog('open');
+  //$('#dialog_pb').html('<p align="center">Guardando Datos...<div id="progressbar"></div></p>');
+  	//	$("#dialog_pb" ).dialog('open');
 		
-barra_progress();
-
-
-
+//barra_progress();
 
  var ajax = nuevoAjax();
   ajax.open("GET", "index.php?m=mContenido2&c=mGdrNvo&dsc="+a+"&idv="+c+"&dti="+d+"&dtf="+e+"&stp="+g+"&exc="+h+"&tol="+f+"&und="+b+"&tip="+xdr ,true);
@@ -1190,7 +1165,7 @@ function add_pts(id){
 						"Guardar": function(){
 							var xdr=1;
 							validar_datos_d(id);
-							$("#dialog_agp").dialog('close');
+							
 						},
 			
 						"Cancelar": function(){
@@ -1224,9 +1199,39 @@ idd=(idd==0)?$('#idd').val():idd;
  ajax.open("GET", "index.php?m=mContenido2&c=mEdtpts&idd="+idd+"&ide="+ide+"&btn="+x,true);
  ajax.onreadystatechange=function() {
   	 if (ajax.readyState==4) {
+		 var result=ajax.responseText;
 		  $('#dialog_ptse').html('');
-		  $('#dialog_ptse').dialog('open');
-		  $('#dialog_ptse').html(ajax.responseText);
+		
+		  $('#dialog_ptse').html(result);
+		  
+		  $( "#dialog_ptse" ).dialog({
+								title: "Editar Punto",
+					modal: true,
+					overlay: { opacity: 0.2, background: "cyan" },
+					width:  1000,
+					height: 300,
+								buttons: {
+						
+						"Guardar": function(){
+								validar_edp();
+							//$("#dialog").dialog('close');
+						},
+			
+						"Cancelar": function(){
+							
+							if($("#dialog_ptse" ).dialog('isOpen')){
+							$("#dialog-message").dialog('close');
+							}
+							$("#dialog_ptse" ).dialog('close');
+							
+							}
+					}
+									});
+		  
+		  
+		  
+		 	
+		  
 		  	//alert(ajax.responseText);	  
    }
   }
@@ -1727,6 +1732,7 @@ barra_progress();
   	 if (ajax.readyState==4) {
 		$("#dialog_pb" ).dialog('close');				
 	      result =ajax.responseText;
+		  console.log(result);
 		  //alert(result)
 		   	if(result>0){
 				
@@ -3286,16 +3292,21 @@ function pestana(x){
 switch(x)
 {
 case 1:
+
   document.getElementById('pritm').style.display = 'none'; 
   document.getElementById('ye').style.display = '';
+
+  
   break;
 case 2:
   document.getElementById('ye').style.display = ''; 
   document.getElementById('pritm').style.display = 'none';
+//document.getElementById('list_formas_y').style.display = '';
   break;
 case 3:
   document.getElementById('ye').style.display = 'none'; 
   document.getElementById('pritm').style.display = 'none';
+ //   document.getElementById('list_formas_y').style.display = 'none';
 }
 	}
 	
@@ -3323,7 +3334,7 @@ case 2:
 function down_format()
 {
 	//window.location="modules/AdRutas/template/descargable/layout.xls";
-   window.location="public/Despacho/descargable/layout.xls";
+   window.location="public/Descargas/layout.xls";
 }	
 //---------------------------------------------
 function down_format_2()
@@ -4119,141 +4130,6 @@ $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert"
 /////---------------------------------------------------------------------------------------------------
 
 var tipo2=0;
-function admap(tipo){	
-	
-	OpenLayers.Control.CustomNavToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
-	
-					
-				    initialize: function(options) {
-				        OpenLayers.Control.Panel.prototype.initialize.apply(this, [options]);
-				        this.addControls([
-				          new OpenLayers.Control.Navigation(),
-						  //Here it come
-				          new OpenLayers.Control.ZoomBox({alwaysZoom:true})
-				        ]);
-						// To make the custom navtoolbar use the regular navtoolbar style
-						this.displayClass = 'olControlNavToolbar'
-				    },
-					
-					
-				
-				   
-				    draw: function() {
-				        var div = OpenLayers.Control.Panel.prototype.draw.apply(this, arguments);
-                        this.defaultControl = this.controls[0];
-				        return div;
-				    }
-				});
-	
-	
-			var layer_ms = new OpenLayers.Layer.MapServer("Vectorial", 
-		"http://201.131.96.16/cgi-bin/mapserv", 	 {map: '/var/www/html/ssp/shapes/emapas.map'} , { numZoomLevels: 20 , minZoomLevel: 5 , maxZoomLevel:19}                                               //{ numZoomLevels: 30 , minZoomLevel: 9 , maxZoomLevel: 30} 
-                                              );
-
- var ghyb = new OpenLayers.Layer.Google(
-                "Google Hybrid",
-                {type: G_HYBRID_MAP, minZoomLevel: 5, maxZoomLevel: 19, numZoomLevels: 20 }
-            );
-
-var mas= new OpenLayers.Layer.Google(
-"Google Maps",{ minZoomLevel: 5, maxZoomLevel: 19, numZoomLevels: 20  } // the default
-); 
-var lonLat = new OpenLayers.LonLat(-101.62354,21.64307);
-var zoom;
-	
-	
-	if(tipo==1){
-		map = new OpenLayers.Map('mapa', {
- 				controls: [
- 					
- 				
-				new OpenLayers.Control.PanPanel(),
-               		 	
-                                new OpenLayers.Control.LayerSwitcher({'ascending':false}),
-                                new OpenLayers.Control.ScaleLine(),
-                                new OpenLayers.Control.MousePosition(),
-                      
-				new OpenLayers.Control.ZoomPanel()
-					
- 				]
- 				
- 			});
-		
-			zoom=3;		
-  			map.addLayers([mas,layer_ms,ghyb]);
-			map.setCenter (lonLat, 0);
-			var layer = new OpenLayers.Layer.Vector();
-			
-			var panel = new OpenLayers.Control.CustomNavToolbar();
-			
-
-				map.addControl(panel);
-				
-						   AutoSizeFramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
-            'autoSize': true
-       		 });
-		
-
-		
-		
-		
-		}else{
-				if(tipo==0){
-					if(tipo2==0){
-					map2 = new OpenLayers.Map('tabs-04', {
- 				controls: [
- 					
- 				
-				new OpenLayers.Control.PanPanel(),
-               		 	
-                                new OpenLayers.Control.LayerSwitcher({'ascending':false}),
-                                new OpenLayers.Control.ScaleLine(),
-                                new OpenLayers.Control.MousePosition(),
-                      
-				new OpenLayers.Control.ZoomPanel()
-					
- 				]
- 				
- 			});
-					
-					zoom=3;		
-  			map2.addLayers([mas,layer_ms,ghyb]);
-			map2.setCenter (lonLat, 0);
-			var layer = new OpenLayers.Layer.Vector();
-			
-			var panel = new OpenLayers.Control.CustomNavToolbar();
-			
-
-			map2.addControl(panel);
-				
-						   AutoSizeFramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
-            'autoSize': true
-        });
-		tipo2=1;
-					
-					}
-					
-					}
-				}
-		
-
- 			
-		
-
-			
-				renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
-                renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-				
-				layer_style = OpenLayers.Util.extend({}, OpenLayers.Feature.Vector.style['default']);
-                 layer_style.fillOpacity = 0.2;
-                layer_style.graphicOpacity = 1;
-				
-				latlngbounds=new OpenLayers.Bounds();
-				
-			
-				
-	
-}
 
 function onPopupClose(evt) {
             select.unselectAll();
@@ -4285,257 +4161,22 @@ function onPopupClose(evt) {
 		}
 /////---------------------------------------------------------------------------------------------------
 var flag_p=0;
-function endload(){
 
-	try{
-	
-		vectorLayer.removeFeatures(polygonFeature);
-				
-
-	 		 map2.removeLayer(vectorLayer);
-			 
-	   
-	  		 vectorLayer=null;
-				renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
-                renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-				
-				layer_style = OpenLayers.Util.extend({}, OpenLayers.Feature.Vector.style['default']);
-                 layer_style.fillOpacity = 0.2;
-                layer_style.graphicOpacity = 1;
-	  vectorLayer = new OpenLayers.Layer.Vector("Linea", {style: layer_style,
-                renderers: renderer
-				
-                        });
-	  
-	  map2.addLayers([vectorLayer]);
-		
-	points.splice(0,points.length);
-		units2.splice(0,units2.length);
-			
-	}catch(e){
-		
-		vectorLayer=null;
-			renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
-                renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-				
-				layer_style = OpenLayers.Util.extend({}, OpenLayers.Feature.Vector.style['default']);
-                 layer_style.fillOpacity = 0.2;
-                layer_style.graphicOpacity = 1;
-	  vectorLayer = new OpenLayers.Layer.Vector("Linea", {style: layer_style,
-                renderers: renderer
-                        });
-	  
-	  map2.addLayers([vectorLayer]);	
-			
-		}
-		
-		
-/*if(flag_p==0){
-document.getElementById('combo').innerHTML="Cargando...";
-}*/
-	
-	var date = $("#start-dates").val();
-	if(date==''){
-		date='undefined';
-		}
-		var id=$("#selectunit").val();
-
-
-	 var path = "index.php?m=mContenido2&c=mGetXML&day="+date+"&idunit="+id ;
-	
-$.getJSON(path,function(data) {
-		
-		$.each(data.items, function(i,item){
-			
-			var unitLatitude =  item.lat;
-	        var unitLong  =  item.lon;
-			//var point = new OpenLayers.Geometry.Point(item.lat,item.lon );	
-			points.push(new OpenLayers.Geometry.Point(unitLong, unitLatitude));
-		//	latlngbounds.extend(new OpenLayers.LonLat(item.unitLong, item.unitLatitude  ));
-				   // points.push(point);
-					
-			var info2 = '<table style="font:10px Verdana, Geneva, sans-serif;" class="infoGlobe"><tr><th colspan="2">Informacion de la Unidad</th></tr>'+'<tr><td align="left">Unidad   	 :</td><td align="left">'+ item.dunit	+'</td></tr>'+
-				  '<tr><td align="left">Evento       :</td><td align="left">'+ item.evt	+'</td></tr>'+
-				  '<tr><td align="left">Velocidad	 :</td><td align="left">'+ item.vel	+'</td></tr>'+
-				  '<tr><td align="left">Fecha/Hora :</td><td align="left">'+ item.fecha	+'</td></tr>'+
-				  '<tr><td align="left">Latitud	 :</td><td align="left">'+ item.lat+'</td></tr>'+  
-				  '<tr><td align="left">Longitud :</td><td align="left">'+ item.lon	+'</td></tr>'+  
-'</table>';
-
-				
-					  valid.push(item.unitd);
-						units2.push(item.entity+'!'+item.dunit+'!'+item.lon+','+item.lat+'!'+item.ico+'!'+info2+'!'+item.angle);
-						
-						
-						 
-						
-			
-		});
-		
-		createVisits(id) ;
-		var colortrue= "#F32424";
-		style_blue = OpenLayers.Util.extend({}, layer_style);
-            style_blue.strokeColor = colortrue;
-            style_blue.fillColor = colortrue;
-			style_blue.strokeOpacity= 0.3 ;
-			
-			style_blue.strokeWidth = 3;
-		 polygonFeature = new OpenLayers.Feature.Vector(
-                new OpenLayers.Geometry.LineString(points),null,style_blue);
-            vectorLayer.addFeatures([polygonFeature]);
-		});
-			
-		
-
-	}
 	
 	
+//--------------------------------------------------//--------------------------------------------------//--------------------------------------------------
+//--------------------------------------------------//--------------------------------------------------//--------------------------------------------------
+//--------------------------------------------------//--------------------------------------------------//--------------------------------------------------
+//--------------------------------------------------//--------------------------------------------------//--------------------------------------------------
 //--------------------------------------------------
-//--------------------------------------------------
+
 	var flag_p1=0;
 	
 	
 	var tipo3=0;
-function onload1(uno){
-	
-	if(uno==0){}else{
-	
-	try{
-		
-		units.splice(0,units.length);
-		infos.splice(0,infos.length);
-		iconos.splice(0,iconos.length);
-		valid.splice(0,valid.length);
-		
-	
-			
-	}catch(e){
-		
-			
-			
-		}
 
-//if(flag_p1==0){
-document.getElementById('combo').innerHTML="Cargando...";
-//}
-	var colortrue= "#F32424";
-	var dateq = $("#start-dates").val();
-	if(dateq==''){
-		dateq='undefined';
-		}
 	
 
-	 var path = "index.php?m=mContenido2&c=mGetPoints&date="+dateq;
-	
-
-$.getJSON(path,function(data) {
-		
-		$.each(data.items, function(i,item){
-			
-			if(item.ident=='0'){
-					var point = new OpenLayers.Geometry.Point(item.unitLong,item.unitLatitude );			
-	
-					 var divi=item.fecha;
-					 var divi1=divi.split('!!');
-					 var planeado=divi1[0].split(',');
-					 var real=divi1[1].split(',');
-					 
-				var info = '<table style="font:10px Verdana, Geneva, sans-serif;" class="infoGlobe"><tr><th colspan="2">Informacion de la Visita</th></tr>'+'<tr><td align="left">Cliente  	 :</td><td align="left">'+ item.dunit	+'</td></tr>'+
-				  '<tr><td align="left">Estatus       :</td><td align="left">'+ item.estatus	+'</td></tr>'+
-				  '<tr><td align="left">Fecha Entrada	 :</td><td align="left">'+ planeado[0]	+'</td></tr>'+
-				  '<tr><td align="left">Fecha Salida	 :</td><td align="left">'+ planeado[1]	+'</td></tr>'+
-				  '<tr><td align="left">Fecha Arribo	 :</td><td align="left">'+ real[0]	+'</td></tr>'+
-				  '<tr><td align="left">Fecha Fin	 :</td><td align="left">'+ real[1]	+'</td></tr>'+
-				  '<tr><td align="left">Latitud	 :</td><td align="left">'+ item.unitLatitude+'</td></tr>'+  
-				  '<tr><td align="left">Longitud :</td><td align="left">'+ item.unitLong	+'</td></tr>'+  
-				  '</table>';
-				 
-				  var icon='';
-				var nue=item.color.indexOf('/');
-				 
-				if(nue=='-1'){
-					
-					icon='public/images/BUTTON_'+item.color+'.png';
-					}else{
-						
-						correcto=item.color.split('/');
-						icon='public/images/BUTTON_'+correcto[0]+'-'+correcto[1]+'.png'
-						}
-				 infos.push(item.unitd+'!'+item.unitLong+','+item.unitLatitude+'!'+icon+'!'+info);
-				 //iconos.push(icon);	
-				
-				}else{
-					if(item.ident=='1'){
-						
-						var point = new OpenLayers.Geometry.Point(item.unitLong,item.unitLatitude );			
-			
-				  
-					
-					var info2 = '<table style="font:10px Verdana, Geneva, sans-serif;" class="infoGlobe"><tr><th colspan="2">Informacion de la Unidad</th></tr>'+'<tr><td align="left">Unidad   	 :</td><td align="left">'+ item.dunit	+'</td></tr>'+
-				  '<tr><td align="left">Evento       :</td><td align="left">'+ item.evt	+'</td></tr>'+
-				  '<tr><td align="left">Velocidad	 :</td><td align="left">'+ item.vel	+'</td></tr>'+
-				  '<tr><td align="left">Fecha/Hora :</td><td align="left">'+ item.fecha	+'</td></tr>'+
-				  '<tr><td align="left">Latitud	 :</td><td align="left">'+ item.unitLatitude+'</td></tr>'+  
-				  '<tr><td align="left">Longitud :</td><td align="left">'+ item.unitLong	+'</td></tr>'+  
-'</table>';
-						
-					
-					var validacion=cambiar(item.unitd);
-					//alert(validacion);
-					if(validacion){
-						
-						}else{
-						icon_new='public/images/movila.png';
-						
-					 // points.push(point);	
-					  valid.push(item.unitd);
-						units.push(item.unitd+'!'+item.nomunid+'!'+item.unitLong+','+item.unitLatitude+'!'+icon_new+'!'+info2);
-						
-					iconos.push(icon_new);
-				
-					//infos.push(item.info2);
-						}
-					
-					}
-					}
-	
-
-					
-		
-			updateFields(item.unitLatitude, item.unitLong);
-	    	});
-		
-			
-		//if(flag_p1==0){
-	
-	
-			var textselec=" <select name='selectunid' id='selectunit' style='width: 170px;' >"+
-                    "<option value='0'>Seleccione una unidad</option>";
-			for(i=0;i<units.length;i++){
-				var estsel=units[i].split('!');
-				textselec+="<option value='"+estsel[0]+"'>"+estsel[1]+"</option>";
-				}
-				textselec+="</select>";
-				
-				document.getElementById('combo').innerHTML=textselec;
-				flag_p1=1;
-		//}
-		
-  	});
-	 
-	 if(bandertime==0){
-		 recarga();
-		 bandertime=1;
-		 }else{
-			 clearInterval(temporizador);
-			recarga();
-			 }
-		
-		}
-
-	}
-	
-	
 	//--------------------------------------------------
 //--------------------------------------------------
 	
@@ -4788,7 +4429,7 @@ function recarga1(){
 //----------------------------------------------------------------------------------------------------------------------
 function recharging() {
 	
-	onload1();
+	//onload1();
 	var t=$("#selectunit").val();
 		//endload(t);
 	
@@ -4802,6 +4443,7 @@ function recharging() {
 	var fecha='';
 	///-------
 	///-------
+	var contmap=0;
 	function pestanaControl(p){
 		//alert(p);
 		switch(p)
@@ -4811,7 +4453,7 @@ case 1:
 			document.getElementById('pft').style.display='';
 			document.getElementById('tabs-02').style.display = 'none';
 			document.getElementById('tabs-03').style.display = 'none';
-			document.getElementById('tabs-04').style.display = 'none';
+		/*	document.getElementById('tabs-04').style.display = 'none';*/
 			document.getElementById('fec').style.display='';
 			document.getElementById('comb').style.display='none';
 			document.getElementById('comb2').style.display='none';
@@ -4820,7 +4462,7 @@ break;
 case 2:
 			 document.getElementById('tabs-01').style.display = 'none'; 
 		 	 document.getElementById('tabs-02').style.display = '';
-		/*	 document.getElementById('tabs-03').style.display = 'none';*/
+				document.getElementById('tabs-03').style.display = 'none';
 			 document.getElementById('pft').style.display='none';
  		/*	 document.getElementById('tabs-04').style.display = 'none';*/
  			 document.getElementById('fec').style.display='none';
@@ -4832,7 +4474,7 @@ case 2:
 	case 3:
 	 		 document.getElementById('tabs-01').style.display = 'none'; 
 		 	 document.getElementById('tabs-02').style.display = 'none';
-/*			 document.getElementById('tabs-03').style.display = '';*/
+		 document.getElementById('tabs-03').style.display = '';
 			 document.getElementById('pft').style.display='none';
  		/*	 document.getElementById('tabs-04').style.display = 'none';*/
  			 document.getElementById('fec').style.display='none';
@@ -4844,17 +4486,24 @@ case 2:
   break;
   case 4:
 document.getElementById('tabs-01').style.display = 'none'; 
-/*document.getElementById('tabs-02').style.display = 'none';*/
+document.getElementById('tabs-02').style.display = 'none';
 document.getElementById('tabs-03').style.display = 'none';
-/*document.getElementById('tabs-04').style.display = '';*/
+document.getElementById('tabs-04').style.display = '';
 document.getElementById('pft').style.display='';
 document.getElementById('fec').style.display='';
 document.getElementById('comb').style.display='';
 document.getElementById('comb2').style.display='';
+if(contmap==0){
+	onload_map();
 
-  	admap(0);
-	onload1(1);
-	cap_map_pan(1);
+contmap=1;
+}
+carga_viajes();
+
+//onload1(1);
+  /*	admap(0);
+	
+	cap_map_pan(1);*/
   break;
   
 }
@@ -4869,10 +4518,10 @@ document.getElementById('comb2').style.display='';
 		function omap_opanel(){
 
 			if(omap==0){
-				r_filtro1();
+				//r_filtro1();
 				}else{
 		
-					endload();
+					//endload();
 					}
 			}
 			
@@ -5268,3 +4917,378 @@ function autocompletarcte(x){
 			}
 		
 		}
+		
+		
+
+
+function onload_map(){
+
+
+			OpenLayers.Control.CustomNavToolbar = OpenLayers.Class(OpenLayers.Control.Panel, {
+				    initialize: function(options) {
+				        OpenLayers.Control.Panel.prototype.initialize.apply(this, [options]);
+				        this.addControls([
+				          new OpenLayers.Control.Navigation(),
+						  //Here it come
+				          new OpenLayers.Control.ZoomBox({alwaysZoom:true})
+				        ]);
+						// To make the custom navtoolbar use the regular navtoolbar style
+						this.displayClass = 'olControlNavToolbar'
+				    },
+				    draw: function() {
+				        var div = OpenLayers.Control.Panel.prototype.draw.apply(this, arguments);
+                        this.defaultControl = this.controls[0];
+				        return div;
+				    }
+				});
+
+map = new OpenLayers.Map('map', {
+        projection: 'EPSG:3857',
+        layers: [
+           new OpenLayers.Layer.Google(
+                "Google Streets", // the default
+                {minZoomLevel: 5, maxZoomLevel: 19, numZoomLevels: 20}
+            ),
+            new OpenLayers.Layer.Google(
+                "Google Hybrid",
+                {type: google.maps.MapTypeId.HYBRID, minZoomLevel: 5, maxZoomLevel: 19, numZoomLevels: 20}
+            )
+        ],
+        center: new OpenLayers.LonLat(-101.62354,21.64307)
+            // Google.v3 uses web mercator as projection, so we have to
+            // transform our coordinates
+            .transform('EPSG:4326', 'EPSG:3857'),
+        zoom: 0
+    });
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
+    map.addControl( new OpenLayers.Control.MousePosition());
+    // add behavior to html
+ 
+	var panel = new OpenLayers.Control.CustomNavToolbar();
+	map.addControl(panel);
+		
+				 
+}
+
+function carga_viajes(uno){
+
+
+var opts = {
+  lines: 10, // The number of lines to draw
+  length: 5, // The length of each line
+  width: 2, // The line thickness
+  radius: 6, // The radius of the inner circle
+  corners: 0, // Corner roundness (0..1)
+  rotate: 0, // The rotation offset
+  direction: 1, // 1: clockwise, -1: counterclockwise
+  color: '#FFF', // #rgb or #rrggbb or array of colors
+  speed: 1, // Rounds per second
+  trail: 100, // Afterglow percentage
+  shadow: false, // Whether to render a shadow
+  hwaccel: true, // Whether to use hardware acceleration
+  className: 'spinner', // The CSS class to assign to the spinner
+  zIndex: 2e9, // The z-index (defaults to 2000000000)
+  top: 'auto', // Top position relative to parent in px
+  left: '10%' // Left position relative to parent in px
+};
+
+$('#combo').html('<div id="progressbar" style="position: relative; top:-1px; width:100px; height:10px;">Cargando &nbsp;<div id="progress-label" style="position: relative; top:-7px; left:65px;"></div></div>');
+var target = document.getElementById('progress-label');
+var spinner = new Spinner(opts).spin(target);
+
+var colortrue= "#F32424";
+	var dateq = $("#start-dates").val();
+	if(dateq==''){
+		dateq='undefined';
+		}
+	
+	
+	var size = new OpenLayers.Size(32,35);
+	var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+
+	 var path = "index.php?m=mContenido2&c=mGetPoints&date="+dateq;
+		var ajax = nuevoAjax();
+	//var url = "index.php?m=rRsalida&c=mGetReport";
+		ajax.open("GET", path,true);
+		ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				//alert(result);
+				
+				if(result != 0){
+					console.log(result);
+						 onload1(result);		
+					
+				}else{
+					$('#combo').html('<div style="position: relative; top:-1px; width:100px; height:10px;">No hay Viajes &nbsp;</div>');
+
+				}
+			}			
+		}		
+	ajax.send(null);
+
+/*
+	if(uno==0){}else{
+	
+	try{
+		
+	
+		
+	
+			
+	}catch(e){
+		
+			
+			
+		}
+
+//if(flag_p1==0){
+
+	 
+	 if(bandertime==0){
+		 recarga();
+		 bandertime=1;
+		 }else{
+			 clearInterval(temporizador);
+			recarga();
+			 }
+		
+		}
+*/
+	}
+	
+	
+	function onload1(result){
+		
+			try{
+							  map.removeLayer(vectorLayer);
+							vectorLayer=null;
+							vectorLayer = new OpenLayers.Layer.Vector("Nombres", {style: layer_style,
+							 renderers: renderer
+										});
+					  
+							  map.addLayers([vectorLayer]);
+							var lonLat = new OpenLayers.LonLat(-101.62354,21.64307) .transform('EPSG:4326', 'EPSG:3857');
+							//map.setCenter (lonLat, 0);
+							marker2.destroy();
+							marker2 ='';
+							marker2 = new OpenLayers.Layer.Markers( "Unidades" );
+							map.addLayer(marker2);
+							latlngbounds='';
+							latlngbounds=new OpenLayers.Bounds();
+							
+					}catch(e){
+								
+								vectorLayer=null;
+							vectorLayer = new OpenLayers.Layer.Vector("Nombres", {style: layer_style,
+							 renderers: renderer
+										});
+					  
+							  map.addLayers([vectorLayer]);
+							var lonLat = new OpenLayers.LonLat(-101.62354,21.64307).transform('EPSG:4326', 'EPSG:3857');
+							//map.setCenter (lonLat, 0);
+							marker2 ='';
+							marker2 = new OpenLayers.Layer.Markers( "Unidades" );
+							map.addLayer(marker2);
+							latlngbounds='';
+							latlngbounds=new OpenLayers.Bounds();
+					
+						}
+				
+						units.splice(0,units.length);
+						infos.splice(0,infos.length);
+						iconos.splice(0,iconos.length);
+						valid.splice(0,valid.length);
+					
+					var div=result.split('|');
+					for(i=0;i<div.length;i++){
+							var items=div[i].split(',');
+							if(items[0]=='0'){
+								//alert(items[11]+'-'+items[10]);
+								//var point = new OpenLayers.Geometry.Point(items[10],items[11]).transform('EPSG:4326', 'EPSG:3857');
+								 var divi=items[5];
+								 var divi1=divi.split('!!');
+								 var planeado=divi1[0].split('#');
+					 			var real=divi1[1].split('#');
+								var id=items[1];
+								var lat=items[10];
+								var lon=items[11];
+							
+								var info = '<table style="font:10px Verdana, Geneva, sans-serif;" class="infoGlobe"><tr><th colspan="2">Informacion de la Visita</th></tr>'+'<tr><td align="left">Cliente  	 :</td><td align="left">'+ items[2]	+'</td></tr>'+
+							  '<tr><td align="left">Estatus       :</td><td align="left">'+ items[4]	+'</td></tr>'+
+							  '<tr><td align="left">Fecha Entrada	 :</td><td align="left">'+ planeado[0]	+'</td></tr>'+
+							  '<tr><td align="left">Fecha Salida	 :</td><td align="left">'+ planeado[1]	+'</td></tr>'+
+							  '<tr><td align="left">Fecha Arribo	 :</td><td align="left">'+ real[0]	+'</td></tr>'+
+							  '<tr><td align="left">Fecha Fin	 :</td><td align="left">'+ real[1]	+'</td></tr>'+
+							  '<tr><td align="left">Latitud	 :</td><td align="left">'+ items[10]+'</td></tr>'+  
+							  '<tr><td align="left">Longitud :</td><td align="left">'+ items[11]	+'</td></tr>'+  
+							  '</table>';
+							  
+									  var icon='';
+										var nue=items[7].indexOf('/');
+									  
+									  if(nue=='-1'){
+							
+										icon='public/images/BUTTON_'+items[7]+'.png';
+										}else{
+											
+											correcto=items[7].split('/');
+											icon='public/images/BUTTON_'+correcto[0]+'-'+correcto[1]+'.png'
+											}
+									 infos.push(items[1]+'!'+items[11]+','+items[10]+'!'+icon+'!'+info);
+							 
+									 	/*	var icon = new OpenLayers.Icon(icon,size,offset);
+													/*latlngbounds.extend(new OpenLayers.LonLat(items[11],items[10]).transform('EPSG:4326', 'EPSG:3857'));
+													latlngbounds.transform('EPSG:4326', 'EPSG:3857');
+														globo1(id,lon,lat,info,icon);*/
+							 
+								}else{
+									
+									if(items[0]=='1'){
+									
+						
+												var point = new OpenLayers.Geometry.Point(items[11],items[10] );			
+									
+										  
+											
+											var info2 = '<table style="font:10px Verdana, Geneva, sans-serif;" class="infoGlobe"><tr><th colspan="2">Informacion de la Unidad</th></tr>'+'<tr><td align="left">Unidad   	 :</td><td align="left">'+ items[3]	+'</td></tr>'+
+										  '<tr><td align="left">Evento       :</td><td align="left">'+ items[6]	+'</td></tr>'+
+										  '<tr><td align="left">Velocidad	 :</td><td align="left">'+ items[8]	+'</td></tr>'+
+										  '<tr><td align="left">Fecha/Hora :</td><td align="left">'+ items[5]	+'</td></tr>'+
+										  '<tr><td align="left">Latitud	 :</td><td align="left">'+ items[10]+'</td></tr>'+  
+										  '<tr><td align="left">Longitud :</td><td align="left">'+ items[11]	+'</td></tr>'+  
+						'</table>';
+												
+											
+											/*var validacion=cambiar(items[1]);
+											//alert(validacion);
+											if(validacion){
+												
+												}else{*/
+												icon_new='public/images/movila.png';
+												
+											 // points.push(point);	
+											  valid.push(items[1]);
+												units.push(items[1]+'!'+items[2]+'!'+items[11]+','+items[10]+'!'+icon_new+'!'+info2);
+												
+											iconos.push(icon_new);
+										
+											//infos.push(item.info2);
+											//	}
+					
+					
+									}
+									
+									}
+							
+						}
+					
+					//$('#list_formas_y').html(ajax.responseText);
+					//tigra_tables('MyDatay', 0, 0, '#ffffff', '#DDD', '#AEC7F3', '#5283D8');
+						var textselec=" <select name='selectunid' id='selectunit' style='width: 170px;' onchange='endload()'  >"+
+									"<option value='0'>Seleccione una unidad</option>";
+							for(i=0;i<units.length;i++){
+								var estsel=units[i].split('!');
+								textselec+="<option value='"+estsel[0]+"'>"+estsel[1]+"</option>";
+								}
+								textselec+="</select>";
+								
+						$('#combo').html(textselec);
+		
+		}
+	
+	
+	function endload(){
+
+
+
+	
+	var date = $("#start-dates").val();
+	if(date==''){
+		date='undefined';
+		}
+		var id=$("#selectunit").val();
+
+
+	 var path = "index.php?m=mContenido2&c=mGetXML&day="+date+"&idunit="+id ;
+	
+		var ajax = nuevoAjax();
+	//var url = "index.php?m=rRsalida&c=mGetReport";
+		ajax.open("GET", path,true);
+		ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				//alert(result);
+				
+				if(result != 0){
+					console.log(result);
+						 //onload1(result);		
+					
+				}else{
+					//$('#combo').html('<div style="position: relative; top:-1px; width:100px; height:10px;">No hay Viajes &nbsp;</div>');
+
+				}
+			}			
+		}		
+	ajax.send(null);
+/*$.getJSON(path,function(data) {
+		
+		$.each(data.items, function(i,item){
+			
+			var unitLatitude =  item.lat;
+	        var unitLong  =  item.lon;
+			//var point = new OpenLayers.Geometry.Point(item.lat,item.lon );	
+			points.push(new OpenLayers.Geometry.Point(unitLong, unitLatitude));
+		//	latlngbounds.extend(new OpenLayers.LonLat(item.unitLong, item.unitLatitude  ));
+				   // points.push(point);
+					
+			var info2 = '<table style="font:10px Verdana, Geneva, sans-serif;" class="infoGlobe"><tr><th colspan="2">Informacion de la Unidad</th></tr>'+'<tr><td align="left">Unidad   	 :</td><td align="left">'+ item.dunit	+'</td></tr>'+
+				  '<tr><td align="left">Evento       :</td><td align="left">'+ item.evt	+'</td></tr>'+
+				  '<tr><td align="left">Velocidad	 :</td><td align="left">'+ item.vel	+'</td></tr>'+
+				  '<tr><td align="left">Fecha/Hora :</td><td align="left">'+ item.fecha	+'</td></tr>'+
+				  '<tr><td align="left">Latitud	 :</td><td align="left">'+ item.lat+'</td></tr>'+  
+				  '<tr><td align="left">Longitud :</td><td align="left">'+ item.lon	+'</td></tr>'+  
+'</table>';
+
+				
+					  valid.push(item.unitd);
+						units2.push(item.entity+'!'+item.dunit+'!'+item.lon+','+item.lat+'!'+item.ico+'!'+info2+'!'+item.angle);
+						
+						
+						 
+						
+			
+		});
+		
+		createVisits(id) ;
+		var colortrue= "#F32424";
+		style_blue = OpenLayers.Util.extend({}, layer_style);
+            style_blue.strokeColor = colortrue;
+            style_blue.fillColor = colortrue;
+			style_blue.strokeOpacity= 0.3 ;
+			
+			style_blue.strokeWidth = 3;
+		 polygonFeature = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.LineString(points),null,style_blue);
+            vectorLayer.addFeatures([polygonFeature]);
+		});
+			*/
+		
+
+	}
+	/*function globo1(id,longitud,latitud,texto,icon){
+			var markerf = new OpenLayers.Marker(new OpenLayers.LonLat(longitud,latitud),icon);
+			
+			markerf.events.register('click', markerf, function(evt) {
+			var popup2 = new OpenLayers.Popup.FramedCloud(null,
+                                       markerf.lonlat,
+                                       null,
+                                      texto,
+								null,true,null);
+
+                    map.addPopup(popup2);
+				
+				 OpenLayers.Event.stop(evt); });
+			marker2.addMarker(markerf);
+			
+			}*/

@@ -18,6 +18,7 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 	if(!$userAdmin->u_logged()){
 		echo '<script>window.location="index.php?m=login"</script>';
 	}
+$db ->sqlQuery("SET NAMES 'utf8'");
 
 $idc   = $userAdmin->user_info['ID_CLIENTE'];
 $idu   = $userAdmin->user_info['ID_USUARIO'];
@@ -197,18 +198,28 @@ function generar_data_geo(){
 	$data = "";
 	require_once 'excel_reader2.php';
 	$excel = new Spreadsheet_Excel_Reader($archi);
-	
+	$excel->setColumnFormat ("A", 'string');
 	for ($row=2;$row<=$excel->rowcount();$row++) {
+		echo "el val de A es: ".$excel->val($row,'A');
+		echo "<br>";
+		/*echo "el raw de A es: ".$excel->raw($row,'A');
+		echo "<br>";
+		echo "el type de A es: ".$excel->type($row,'A');
+		echo "<br>";
+		//if($excel->type($row,'A'))
+		echo "el valor de B es: ".$excel->value($row,'B');
+		echo "<br>";*/
 		if($excel->val($row,'A')!="" && $excel->val($row,'B')!=""){
 		$lon = ($excel->val($row,'K')=="")?0:$excel->val($row,'K');
 		$lat = ($excel->val($row,'J')=="")?0:$excel->val($row,'J');
 		//Generar cadena
 		//`ID_CLIENTE``ID_TIPO_GEO``DESCRIPCION``LONGITUDE``LATITUDE``CALLE``NO_INT``NO_EXT``COLONIA``MUNICIPIO``ESTADO``CP``RADIO``TIPO``PRIVACIDAD``ID_ADM_USUARIO``CREADO``ITEM_NUMBER``RESPONSABLE``CORREO``CELULAR``TWITTER`
 		$data .= ($data=="")
-		?" (".$idc.",1,'".$excel->val($row,'B')."',".$lon.",".$lat.",'".$excel->val($row,'C')."','".$excel->val($row,'D')."','".$excel->val($row,'E')."','".$excel->val($row,'F')."','".$excel->val($row,'G')."','".$excel->val($row,'H')."','".$excel->val($row,'I')."',50,'G','P',".$idu.",'".date('Y-m-d H:i:s')."','".$excel->val($row,'A')."','".$excel->val($row,'L')."','".$excel->val($row,'M')."','".$excel->val($row,'N')."','".$excel->val($row,'o')."')"
-		:",(".$idc.",1,'".$excel->val($row,'B')."',".$lon.",".$lat.",'".$excel->val($row,'C')."','".$excel->val($row,'D')."','".$excel->val($row,'E')."','".$excel->val($row,'F')."','".$excel->val($row,'G')."','".$excel->val($row,'H')."','".$excel->val($row,'I')."',50,'G','P',".$idu.",'".date('Y-m-d H:i:s')."','".$excel->val($row,'A')."','".$excel->val($row,'L')."','".$excel->val($row,'M')."','".$excel->val($row,'N')."','".$excel->val($row,'o')."')";
+		?" (".$idc.",1,'".utf8_encode($excel->val($row,'B'))."',".$lon.",".$lat.",'".utf8_encode($excel->val($row,'C'))."','".$excel->val($row,'D')."','".$excel->val($row,'E')."','".utf8_encode($excel->val($row,'F'))."','".utf8_encode($excel->val($row,'G'))."','".utf8_encode($excel->val($row,'H'))."','".$excel->val($row,'I')."',50,'G','P',".$idu.",'".date('Y-m-d H:i:s')."','".$excel->val($row,'A')."','".utf8_encode($excel->val($row,'L'))."','".$excel->val($row,'M')."','".$excel->val($row,'N')."','".$excel->val($row,'o')."')"
+		:",(".$idc.",1,'".utf8_encode($excel->val($row,'B'))."',".$lon.",".$lat.",'".utf8_encode($excel->val($row,'C'))."','".$excel->val($row,'D')."','".$excel->val($row,'E')."','".utf8_encode($excel->val($row,'F'))."','".utf8_encode($excel->val($row,'G'))."','".utf8_encode($excel->val($row,'H'))."','".$excel->val($row,'I')."',50,'G','P',".$idu.",'".date('Y-m-d H:i:s')."','".$excel->val($row,'A')."','".utf8_encode($excel->val($row,'L'))."','".$excel->val($row,'M')."','".$excel->val($row,'N')."','".$excel->val($row,'o')."')";
 		}
 		}
+	echo $data;
 	return $data;	
 	}	
 ?>

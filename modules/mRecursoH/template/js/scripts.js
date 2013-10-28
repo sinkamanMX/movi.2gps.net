@@ -308,21 +308,21 @@ $('a[href="#geo_tabs1"]').trigger('click');
 return false;
 	}
 	
-if($('#rhcor').val().length==0){
+/*if($('#rhcor').val().length==0){
 ifs=ifs+1;
 $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir el correo electr\u00f3nico del responsable.</p>');
 $("#dialog_message" ).dialog('open');		
 $('a[href="#geo_tabs1"]').trigger('click');
 return false;
-	}
+	}*/
 
-if($('#rhcel').val().length==0){
+/*if($('#rhcel').val().length==0){
 ifs=ifs+1;
 $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir el n\u00famero celular del responsable.</p>');
 $("#dialog_message" ).dialog('open');		
 $('a[href="#geo_tabs1"]').trigger('click');
 return false;
-	}
+	}*/
 
 var rh_pdi = $('#rh_pdi_sel div').map(function() {
 		return this.id;

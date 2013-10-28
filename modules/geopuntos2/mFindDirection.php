@@ -16,7 +16,7 @@
 		echo '<script>window.location="index.php?m=login"</script>';  //Manda al login si no se ha Logeo.
 	//--------------------------- Modificada BD y Encabezado------------------------
 	
-	 
+	 $db ->sqlQuery("SET NAMES 'utf8'");
  	if(isset($_GET['cp'])){
 		$sql = "SELECT e.NOMBRE AS COLONIA,f.NOMBRE AS MUNI, g.NOMBRE AS ESTADO, f.ID_MUNICIPIO, g.ID_ESTADO
 				FROM ZZ_SPM_COLONIAS   e,

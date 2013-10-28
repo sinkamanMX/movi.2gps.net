@@ -200,6 +200,27 @@ public function dragndropF($id,$des,$tbl,$whr,$pr,$txt,$fun,$ord){
 		return $p;	
 		}
 	}
+//-----------------------------------------------------
+public function dragndropF2($id,$des,$tbl,$whr,$pr,$txt,$fun,$ord){
+	global $db;
+	$p = '';
+	$t = '';
+	$com = ($pr=="")?"":" AND ".$id." NOT IN (".$pr.") ";
+	$w = ($txt=="")?"":" AND ".$des." LIKE '%".$txt."%' ";
+	$sql = "SELECT ".$id." AS ID, ".$des." AS DES ,XDEFECTO,ACTIVO FROM ".$tbl.$whr.$com.$w.$ord;
+	$qry = $db->sqlQuery($sql);
+	$cnt = $db->sqlEnumRows($qry);
+	if($cnt>0){
+		while($row = $db->sqlFetchArray($qry)){
+			$def = ($row['XDEFECTO']=='S')?'checked="checked"':'';
+			$act = ($row['ACTIVO']=='S'  )?'checked="checked"':'';
+			$t = '<table width="100%" ><tr><td width="60%">'.$row['DES'].'</td><td align="center" width="20%"><input type="checkbox" id="d_'.$row['ID'].'" '.$def.' /></td><td align="center" width="20%"><input type="checkbox" id="a_'.$row['ID'].'" '.$act.' /></td></tr></table>';
+			$p.= '<div class="ui-corner-all " id="'.$row['ID'].'" '.$fun.' >'.$t.'</div>';
+			}
+		
+		return $p;	
+		}
+	}	
 //-----------------------------------------------------	
 public function dragndrop($id,$des,$tbl,$whr,$pr,$txt){
 	global $db;

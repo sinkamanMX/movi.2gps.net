@@ -3,14 +3,14 @@
 <div id="geo_tabs" style="width:95%; height:95%;">
   <ul>
     <li><a href="#geo_tabs1">Datos Generales</a></li>
-    <li><a href="#geo_tabs2" onClick="">Ubicaci&oacute;n</a></li>
-    <li><a href="#geo_tabs5">Cartera</a></li>
+    <li><a href="#geo_tabs2" onClick="pgeo_gmapa()">Ubicaci&oacute;n</a></li>
+    <li><a href="#geo_tabs5">Responsable</a></li>
     <li><a href="#geo_tabs3">Cuestionarios</a></li>
     <li><a href="#geo_tabs4" onClick="lay();">Payload</a></li>
   </ul>
   <div id="geo_tabs1">
   <fieldset>
-  <legend>Datos del geopunto</legend>
+  <legend>Datos del punto de inter&eacute;s</legend>
   <table width="70%">
   <tr>
   <td><label>Nombre:</label></td>
@@ -33,18 +33,27 @@
   <tr>
   <td><label>Radio:</label></td>
   <td>
-  <select id="grdo" class="mcaja" >
+  <select id="grdo" class="caja" >
   <!-- BEGIN r -->
   {r.R}
   <!-- END r -->
   </select>
+  &nbsp;mts.
   </td>
-  </tr></table> 
+  </tr>
+  <tr>
+  <td>Activo:</td>
+  <td><select id="gact" class="mcaja" >
+  <option value="S" {T_S}>SI</option>
+  <option value="N" {T_N}>NO</option>
+  </select></td>
+  </tr>
+  </table> 
   </fieldset>
   <br><br>
   <div style="float:left; width:49%">
   <fieldset>
-  <legend>Datos del responsable</legend>
+  <legend>Datos del contacto</legend>
   <table width="70%">
   <tr>
   <td><label>Nombre:</label></td>
@@ -183,10 +192,10 @@
   <div id="geo_location_map"  style="width:460px; height:440px; float:right; border:#a6c9e2 solid thin;" class="ui-corner-all brdrc"></div><!--location_map-->
   </div><!--tabs2-->
   <div id="geo_tabs3">
-    <div style="position:absolute; width:98%; height:90%; border:#00F dotted thin;">
+    <div style="position:absolute; width:98%; height:90%;" >
     
     <!--cuestionarios disponibles-->
-    <div style=" width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+    <div style=" width:49%; height:100%; float:left; border:#a6c9e2 solid thin;" class="ui-corner-all">
     <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
     <span class="ui-dialog-title">Cuestionarios Disponibles</span>
     </div>
@@ -200,8 +209,8 @@
     </div>
     </div>
     <!--Buscador-->
-    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
-    <div id="geo_qst_dsp" class="dropme" style="width:100%;">
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px;">
+    <div id="geo_qst_dsp" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
     <!-- BEGIN U -->
     <div class="ui-corner-all" id="{U.ID}">{U.DES}</div>
     <!-- END U -->
@@ -210,7 +219,7 @@
     </div>   
     <!--cuestionarios disponibles-->
     <!--cuestionarios seleccionados-->
-    <div style="width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+    <div style="width:49%; height:100%; float:right; border:#a6c9e2 solid thin;" class="ui-corner-all">
     <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
     <span class="ui-dialog-title">Cuestionarios Seleccionados</span>
     <!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>-->
@@ -226,12 +235,13 @@
     </div>
     <!--Buscador-->
     <!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
-    
-    <div id="geo_qst_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px;">
+    <div id="geo_qst_sel" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
     <!-- BEGIN U2 -->
     <div class="ui-corner-all" id="{U2.ID}">{U2.DES}</div>
     <!-- END U2 -->
     </div>
+    </div><!--scroll-->
     </div>
     <!--</div>-->
     <!--cuestionarios seleccionados-->
@@ -247,7 +257,7 @@
   <div style="position:absolute; width:98%; height:90%;">
     
     <!--Usuarios disponibles-->
-    <div style=" width:49.5%; height:100%; float:left; border:#00F0F0 solid thin;">
+    <div style=" width:49%; height:100%; float:left; border:#a6c9e2 solid thin;" class="ui-corner-all">
     <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
     <span class="ui-dialog-title">Usuarios Disponibles</span>
     </div>
@@ -261,15 +271,15 @@
     </div>
     </div>
     <!--Buscador-->
-    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
-    <div id="geo_usr_dsp" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px;">
+    <div id="geo_usr_dsp" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
     {USD}
     </div>
     </div>
     </div>   
     <!--usuarios disponibles-->
     <!--usuarios seleccionados-->
-    <div style="width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+    <div style=" width:49%; height:100%; float:right; border:#a6c9e2 solid thin;" class="ui-corner-all">
     <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
     <span class="ui-dialog-title">Usuarios Seleccionados</span>
     <!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>-->
@@ -284,13 +294,13 @@
     </div>
     </div>
     <!--Buscador-->
-    <!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px;">
     
-    <div id="geo_usr_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+    <div id="geo_usr_sel" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
     {USS}
     </div>
     </div>
-    <!--</div>-->
+    </div><!--scroll-->
     <!--cuestionarios seleccionados-->
     
     </div>

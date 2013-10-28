@@ -10,11 +10,13 @@
 
 	//--------------------------- Modificada BD y Encabezado------------------------
 	$db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);	
+	
 	$userData = new usersAdministration(); //Nueva Instancia de Admin.
 	
 	if(!$userAdmin->u_logged())  //Valida Usuario Logeado
 		echo '<script>window.location="index.php?m=login"</script>';  //Manda al login si no se ha Logeo.
 	//--------------------------- Modificada BD y Encabezado------------------------
+	$db ->sqlQuery("SET NAMES 'utf8'");
 	$client   = $userAdmin->user_info['ID_CLIENTE'];
 
 	$result = array();

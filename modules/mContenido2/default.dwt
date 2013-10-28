@@ -1,8 +1,10 @@
 
 <script type="text/javascript"  charset="ISO-8859-1" src="public/js/tigra_tables.js"></script>
 <script type="text/javascript" src="{PATH}/js/scripts.js"></script>
-<!--<script  src="public/js/OpenLayers-2.11/OpenLayers.js" ></script>-->
-<!--<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key={APIKEY}" type="text/javascript"></script>-->
+<script type="text/javascript" src="{PATH}/js/spin.js"></script>
+<script type="text/javascript" src="{PATH}/js/spin.min.js"></script>
+
+
 <link type="text/css" href="{PATH}/css/styles.css" rel="stylesheet"/>
 
 <script>
@@ -35,14 +37,7 @@ function(){
 		});		
 	});
 	</script>
-<script>
-	$(function() {
-		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
-		$( "#dialog:ui-dialog" ).dialog( "destroy" );
-	
-	
-	});
-	</script>
+
 
      
 
@@ -105,8 +100,8 @@ $(document).keydown(function(tecla){
     	   
         <li><a href="#tabs-01" onclick="pestanaControl(1);">Viajes</a></li>
         <li><a href="#tabs-02" onclick="pestanaControl(2);">Paneles</a></li>
-<!--        <li><a href="#tabs-03" onclick="pestanaControl(3);">Graficas</a></li>
-        <li><a href="#tabs-04" onclick="pestanaControl(4);">Mapa</a></li> -->
+      <li><a href="#tabs-03" onclick="pestanaControl(3);">Graficas</a></li>
+ <!-- <li><a href="#tabs-04" onclick="pestanaControl(4);">Mapa</a></li>-->
     </ul> 
     
 <!---------------------------------------------GANTT VIAJE-----------------------------------------------style=" position:relative; top:40px; width:97%; height:91%;"------> 
@@ -154,8 +149,8 @@ $(document).keydown(function(tecla){
             	</tr>
             </table><button class="b_op"  style="font-size:12px; width:25px; height:25px; top:5px; position:absolute; right:2%; " onclick="dsp_b(4);"><div style="position:absolute; left:3px; top:3px;"><span class="ui-icon ui-icon-search"></span></div></button></h2>
                              
-				<div id="datagrid" align="center" style="" >
-           	  <div id="list_formas_xc" align="center"></div>
+				<div id="datagrid" align="center"  >
+           	  <div id="list_formas_xc" align="center" style="overflow-y:visible;overflow-x:hidden;"></div>
               <div id="info_formas" style="display:none;"></div>	
 			</div>
                          
@@ -194,7 +189,7 @@ $(document).keydown(function(tecla){
                 <tr>
                 <th width="20%">Descripci&oacute;n</th>
                 <th width="15%">Unidad</th>
-                <th width="20%">Item Viaje</th>
+                <th width="20%">Estatus</th>
                 <th width="20%">Fecha inicio</th>
                 <th width="20%">Fecha fin</th>
                 <th width="5%">Tolerancia</th>
@@ -349,6 +344,91 @@ $(document).keydown(function(tecla){
 
     </div>
 
+
+
+<div id="tabs-03">
+  
+      <table border="0" style="border:#333 solid 0px; position:relative; width:100%; height:550px;">
+        <tr>
+          <td rowspan="2" width="50%">   
+          
+           <div id="detalle_chart" style="border:#333 solid 0px; width:100%; height:100%;">  
+              <form name="frm_graficas"  target="grafikas" action="modules/mContenido2/mGraficas.php"  method="get">
+               <input type="hidden" name="dbh" value="{DB_H}"  />
+               <input type="hidden" name="dbport" value="{DB_PORT}"  />
+               <input type="hidden" name="dbname" value="{DB_BN}"  />
+               <input type="hidden" name="dbuser" value="{DB_U}"  />
+               <input type="hidden" name="dbpass" value="{DB_PASS}"  />
+               <input type="hidden" name="CLI" value="{COD_CLIENT}"  /> 
+                <input type="submit" value="Actualizar Graficas" class="caja_txt" />
+              </form>
+              <iframe  name="grafikas"  frameborder="0" style="position:relative; height:98%; width:99%; border:#CCF solid 1px;" align="middle"> </iframe>
+ 
+
+           </div>
+           
+          
+           </td>
+            <td height="50%">
+                  <div id="detalle_c" style="border: #0F6 solid 0px; position:relative; width:100%; height:100%;">  
+             Unidades
+             <select onchange="grafix_detalle(this.value);">
+                  <option value="-1">Elegir</option>
+                 <!-- BEGIN dato_x -->
+        		  <option value="{dato_x.ID}">{dato_x.UNIT}</option>
+         		 <!-- END dato_x -->
+            </select>
+             
+             <div id="unidades_z"> 
+              <br>
+                     <table width="100%" border="0" style="border:#CCF solid 1px;" id="g_detallex" >
+                      <tr style="background: #CCF; color:#FFF;" align="center"><td colspan="2">DETALLE</td></tr>
+                     </table>
+                    <table width="100%" border="0" style="border:#CCF solid 1px; margin:2px;">
+                      <tr><td>UNIDAD</td><td></td></tr>
+                      <tr><td>VIAJE</td><td></td></tr>
+                      <tr><td>CLIENTES A VISITAR</td><td></td></tr>
+                      <tr><td>CLIENTES VISITADOS</td><td></td></tr>
+                      <tr><td>VOLUMEN</td><td></td></tr>
+                      <tr><td>% de Ocupacion de la unidad</td><td></td></tr>
+                      <tr><td>Distancia recorrida (Estimada)</td><td></td></tr>
+                      <tr><td>Tiempo estimado del viaje</td><td></td></tr>
+                      <tr><td>Tiempo de duracción real del viaje</td><td></td></tr>
+                      <tr><td>Porcentaje de cumplimiento:</td><td></td></tr>
+                    </table>
+             </div>
+             
+             
+             
+           </div>
+           </td>
+        </tr>
+        <tr>
+          <td>
+              <form name="frm_graficas2"  target="grafikas2" action="modules/mContenido2/mGraficas2.php"  method="get">
+               <input type="hidden" name="dbh" value="{DB_H}"  />
+               <input type="hidden" name="dbport" value="{DB_PORT}"  />
+               <input type="hidden" name="dbname" value="{DB_BN}"  />
+               <input type="hidden" name="dbuser" value="{DB_U}"  />
+               <input type="hidden" name="dbpass" value="{DB_PASS}"  />
+               <input type="hidden" name="cod_entity" id="cod_entity"  />
+                
+              </form> 
+              <input type="hidden" id="COD_CLIENT" value="{COD_CLIENT}"  />
+       <iframe   name="grafikas2" src=""  frameborder="0" style=" height:98%; width:99%; border:#FC3 solid 0px;"> </iframe>
+           
+           
+          </td>
+        </tr>
+      </table>
+           
+    </div>
+
+<div id="tabs-04"  style=" top:1px; left:2px; height:560px; width:99.5%;" >
+  
+  <div id="map"  style="width: 100%; height: 100%"></div>
+  
+            </div>
 
 
 

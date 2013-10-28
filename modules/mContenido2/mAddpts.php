@@ -87,7 +87,7 @@ if($row!='AVL'){
 		while($row_g=$db->sqlFetchArray($query_g)){
 			 $tpl->assign_block_vars('dt2',array(
 				'IDC'	=> $row_g['ID_OBJECT_MAP'],
-				'CTE'	=> utf8_encode($row_g['DESCRIPCION']),
+				'CTE'	=> $row_g['DESCRIPCION'],
 				'LAT'	=> $row_g['LATITUDE'],
 				'LON'	=> $row_g['LONGITUDE'],
 				'RDO'	=> $row_g['RADIO']
@@ -96,7 +96,7 @@ if($row!='AVL'){
 										if($caden==' '){
 				$caden=$row_g['ID_OBJECT_MAP'].'¬'.$row_g['LATITUDE'].'¬'.$row_g['LONGITUDE'].'¬'.$row_g['RADIO'].','. utf8_encode($row_g['DESCRIPCION']);
 										}else{
-											$caden=$caden.'|'.$row_g['ID_OBJECT_MAP'].'¬'.$row_g['LATITUDE'].'¬'.$row_g['LONGITUDE'].'¬'.$row_g['RADIO'].','. utf8_encode($row_g['DESCRIPCION']);
+											$caden=$caden.'|'.$row_g['ID_OBJECT_MAP'].'¬'.$row_g['LATITUDE'].'¬'.$row_g['LONGITUDE'].'¬'.$row_g['RADIO'].','. $row_g['DESCRIPCION'];
 											}
 		
 		
@@ -110,11 +110,10 @@ if($row!='AVL'){
 
 
 	//////////////////////////////////////////////////////////////////////////////////////////R-H
-	 $sql_o="SELECT S.ID_OBJECT_MAP,R.DESCRIPCION, S.LONGITUDE, S.LATITUDE,S.RADIO
+	 $sql_o="SELECT S.ID_OBJECT_MAP,S.DESCRIPCION, S.LONGITUDE, S.LATITUDE,S.RADIO
 	 FROM ADM_RH_PDI RP
-	 	INNER JOIN ADM_RH R ON R.ID_OBJECT_MAP=RP.ID_OBJECT_MAP
 	 	INNER JOIN ADM_GEOREFERENCIAS S ON S.ID_OBJECT_MAP=RP.ID_OBJECT_MAP
-	  WHERE RP.ORDEN=1 AND RP.ID_CLIENTE=".$idc;
+	  WHERE RP.ORDEN=1 AND RP.ID_CLIENTE=".$idc." AND S.TIPO='RH' " ;
 	$query_o = $db->sqlQuery($sql_o);
 	$count_o = $db->sqlEnumRows($query_o);		
 	$caden=' ';
@@ -123,7 +122,7 @@ if($row!='AVL'){
 		while($row_o=$db->sqlFetchArray($query_o)){
 			 $tpl->assign_block_vars('dt_4_21',array(
 				'IDC'	=> $row_o['ID_OBJECT_MAP'],
-				'CTE'	=> utf8_encode($row_o['DESCRIPCION']),
+				'CTE'	=> $row_o['DESCRIPCION'],
 				'LAT'	=> $row_o['LATITUDE'],
 				'LON'	=> $row_o['LONGITUDE'],
 				'RDO'	=> $row_o['RADIO']
@@ -133,7 +132,7 @@ if($row!='AVL'){
 										if($caden==' '){
 				$caden=$row_o['ID_OBJECT_MAP'].'¬'.$row_o['LATITUDE'].'¬'.$row_o['LONGITUDE'].'¬'.$row_o['RADIO'].','. utf8_encode($row_o['DESCRIPCION']);
 										}else{
-											$caden=$caden.'|'.$row_o['ID_OBJECT_MAP'].'¬'.$row_o['LATITUDE'].'¬'.$row_o['LONGITUDE'].'¬'.$row_o['RADIO'].','. utf8_encode($row_o['DESCRIPCION']);
+											$caden=$caden.'|'.$row_o['ID_OBJECT_MAP'].'¬'.$row_o['LATITUDE'].'¬'.$row_o['LONGITUDE'].'¬'.$row_o['RADIO'].','. $row_o['DESCRIPCION'];
 											}
 		
 		

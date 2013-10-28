@@ -29,7 +29,16 @@
 				));
           }
 	
-	
+	$sqlX= "SELECT COD_EVENT,DESCRIPTION FROM ADM_EVENTOS
+			WHERE ID_CLIENTE = ".$userAdmin->user_info['ID_CLIENTE'];
+			
+	$queriX = $db->sqlQuery($sqlX);
+	      while($rowX = $db->sqlFetchArray($queriX)){
+	      	$tpl->assign_block_vars('evento',array(
+						'COD_EVENTO'   => $rowX['COD_EVENT'],
+						'DESCRTIPCION'  => $rowX['DESCRIPTION']
+				));
+          }
 	
 	
 	$tpl->set_filenames(array('default'=>'default'));	

@@ -31,26 +31,30 @@ for($i=0; $i < count($vls); $i++){
 		$a = trim($vl[1],'"');
 		$mns.= ($mns=="")?'El valor de la pregunta '.get_preg($vl[0]).' se modifico de '.$d.' a '.$a:'<br>El valor de la pregunta '.get_preg($vl[0]).' se modifico de '.$d.' a '.$a;
 		}
-	$cv .= ($cv=="")?'('.$vls[$i].')':',('.$vls[$i].')';	
+	//
+	//$cv .= ($cv=="")?'('.$vls[$i].')':',('.$vls[$i].')';	
+	$sql_s = "UPDATE CRM2_PREG_RES SET RESPUESTA = ".$vl[1]." WHERE ID_PREGUNTA = ".$vl[0]." AND ID_RES_CUESTIONARIO = ".$vl[2];
+	if($qry_s = $db->sqlQuery($sql_s)){
+		echo 2;
+		
 	}
+	else{
+		echo -1;
+		}
+	}
+	
+$sql_t = "INSERT INTO CRM2_LOG  (ID_RES_CUESTIONARIO,ID_USER,FECHA,OBSERVACIONES)VALUES(".$_GET['idq'].",".$usr.",'".date('Y-m-d H:i:s')."','".$mns."');";
+if($qry_t = $db->sqlQuery($sql_t)){
+	echo 1;
+	}	
 	//$mns = str_replace('\"','',$mns);
 	//$mns = str_replace("\'",'',$mns);
 
 
 			
-$where = " ID_RES_CUESTIONARIO  = ".$_GET['idq'];
-$dbf->deleteDB('CRM2_PREG_RES',$where);
-$sql_s = "INSERT INTO CRM2_PREG_RES VALUES ".$cv;
-if($qry_s = $db->sqlQuery($sql_s)){
-	echo 2;
-	$sql_t = "INSERT INTO CRM2_LOG  (ID_RES_CUESTIONARIO,ID_USER,FECHA,OBSERVACIONES)VALUES(".$_GET['idq'].",".$usr.",'".date('Y-m-d H:i:s')."','".utf8_encode($mns)."');";
-	if($qry_t = $db->sqlQuery($sql_t)){
-		echo 1;
-	}
-}
-else{
-	echo -1;
-}
+//$where = " ID_RES_CUESTIONARIO  = ".$_GET['idq'];
+//$dbf->deleteDB('CRM2_PREG_RES',$where);
+
 //---------------------------------
 function get_preg($idp){
 	global $db;

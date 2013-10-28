@@ -56,13 +56,12 @@ $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto"
 	 // $fecha = '2012-11-18'; WHERE M.FECHA_INICIO BETWEEN '".$fecha." 00:00:00' AND '".$fecha." 23:59:59' 
     $fecha = date('Y-m-d');
 	
-	$sql = "SELECT M.ID_DESPACHO, CONCAT(E.DESCRIPTION, ' - ',M.DESCRIPCION) AS VIAJE
-			FROM DSP_DESPACHO M 
+	$sql = " SELECT M.ID_DESPACHO, CONCAT(N.DESCRIPTION, ' - ',M.DESCRIPCION) AS VIAJE
+			FROM DSP_DESPACHO M
    			INNER JOIN DSP_UNIDAD_ASIGNADA U ON U.ID_DESPACHO = M.ID_DESPACHO
-  			INNER JOIN ADM_CLIENTES N ON N.ID_CLIENTE = U.COD_ENTITY
-  			INNER JOIN ADM_EVENTOS E ON E.ID_CLIENTE = N.ID_CLIENTE
+  			INNER JOIN ADM_UNIDADES N ON N.COD_ENTITY= U.COD_ENTITY
   			WHERE CURRENT_DATE BETWEEN CAST(M.FECHA_INICIO AS DATE)  AND CAST(M.FECHA_FIN AS DATE)
-	        AND N.ID_CLIENTE  =  ".$client." ORDER BY VIAJE";
+	        AND N.COD_CLIENT  =  ".$client." ORDER BY VIAJE";
 			
 			$query = $db->sqlQuery($sql);
 			$count = $db->sqlEnumRows($query);

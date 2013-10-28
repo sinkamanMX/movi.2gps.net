@@ -14,9 +14,9 @@ $tpl->set_filenames(array('mEdtpts' => 'tEdtpts'));
 
 	
 
-	$sql_f="SELECT S.TYPE FROM ADM_CLIENTES S WHERE  S.ID_CLIENTE=".$idc;
+	/*$sql_f="SELECT S.TYPE FROM ADM_CLIENTES S WHERE S.ID_CLIENTE=".$idc;
 	$query_f = $db->sqlQuery($sql_f);
-	$count_f = $db->sqlEnumRows($query_f);		
+	$count_f = $db->sqlEnumRows($query_f);		*/
 	
 
 		
@@ -116,25 +116,16 @@ $sql_j="SELECT D.DESCRIPCION, D.ITEM_NUMBER, D.FECHA_INICIO, D.FECHA_FIN, D.TOLE
 		
 	}
 ////////////////////////////////////////////////////////////////////////////
-if($row!='AVL'){
-$sql_l="SELECT D.COD_GEO, D.ITEM_NUMBER,
+
+ $sql_l="SELECT D.COD_GEO, D.ITEM_NUMBER,
 CAST(D.FECHA_ENTREGA AS TIME) AS T1,
-CAST(D.FECHA_SALIDA  AS TIME) AS T2,
+CAST(D.FECHA_FIN  AS TIME) AS T2,
 IF(D.FECHA_ENTREGA='0000-00-00 00:00:00','',CAST(D.FECHA_ENTREGA AS DATE)) AS DTE,
-IF(D.FECHA_SALIDA='0000-00-00 00:00:00','',CAST(D.FECHA_SALIDA AS DATE)) AS DTS,
-D.COMENTARIOS, DI.ID_CUESTIONARIO, DI.ID_PAYLOAD, GP.RADIO, GP.LONGITUDE, GP.LATITUDE FROM DSP_ITINERARIO D
-LEFT JOIN ADM_GEOREFERENCIAS GP ON D.COD_GEO = GP.ID_TIPO_GEO
-LEFT JOIN DSP_DOCUMENTA_ITINERARIO DI ON DI.ID_ENTREGA=D.ID_ENTREGA WHERE D.ID_ENTREGA=".$_GET['ide'];
-}
-else{
-$sql_l="SELECT D.COD_GEO, D.ITEM_NUMBER,
-CAST(D.FECHA_ENTREGA AS TIME) AS T1,
-CAST(D.FECHA_SALIDA  AS TIME) AS T2,
-IF(D.FECHA_ENTREGA='0000-00-00 00:00:00','',CAST(D.FECHA_ENTREGA AS DATE)) AS DTE,
-IF(D.FECHA_SALIDA='0000-00-00 00:00:00','',CAST(D.FECHA_SALIDA AS DATE)) AS DTS, D.COMENTARIOS, GP.RADIO, GP.LONGITUDE, GP.LATITUDE FROM DSP_ITINERARIO D
-INNER JOIN ADM_GEOREFERENCIAS GP ON D.COD_GEO = GP.ID_TIPO_GEO
+IF(D.FECHA_FIN='0000-00-00 00:00:00','',CAST(D.FECHA_FIN AS DATE)) AS DTS, 
+D.COMENTARIOS, GP.RADIO, GP.LONGITUDE, GP.LATITUDE FROM DSP_ITINERARIO D
+INNER JOIN ADM_GEOREFERENCIAS GP ON D.COD_GEO = GP.ID_OBJECT_MAP
 WHERE D.ID_ENTREGA=".$_GET['ide'];
-}
+
 	$query_l = $db->sqlQuery($sql_l);
 	$count_l = $db->sqlEnumRows($query_l);
 	
@@ -146,7 +137,8 @@ WHERE D.ID_ENTREGA=".$_GET['ide'];
 		 //$dt2=explode(" ", $row_l['FECHA_SALIDA']);
 		 $t  = explode(":",$row_l['T1']);
 		 $t2 = explode(":",$row_l['T2']);
-		 $ptl = ($row_l['ID_PAYLOAD']!=0) ? $row_l['ID_PAYLOAD'] :'';
+		
+		// $ptl = ($row_l['ID_PAYLOAD']!=0) ? $row_l['ID_PAYLOAD'] :'';
 			 $tpl->assign_vars(array(
 				'IDV'	=> $row_l['ITEM_NUMBER'],
 				'DTE'	=> $row_l['DTE'],
@@ -160,21 +152,7 @@ WHERE D.ID_ENTREGA=".$_GET['ide'];
 		
 	}	
 ////////////////////////////////////////////////////////////////////////////
-if($row!='AVL'){
-	 $sql_h="SELECT C.ID_CUESTIONARIO, C.DESCRIPCION AS CUE FROM CRM2_CUESTIONARIOS C WHERE C.COD_CLIENT=".$idc;
-	$query_h = $db->sqlQuery($sql_h);
-	$count_h = $db->sqlEnumRows($query_h);
-	
-	if($count_h>0){
-		
-		while($row_h=$db->sqlFetchArray($query_h)){
-			$sl= ($row_h["ID_CUESTIONARIO"] == $row_l['ID_CUESTIONARIO']) ? 'selected="selected"':'';
-			 $tpl->assign_block_vars('dt4',array(
-			 'OP'   => '<option  value="'. $row_h["ID_CUESTIONARIO"].' "'.$sl.'>'.$row_h['CUE'].'</option>'
-										));	
-		}
-	}			
-}
+
 ////////////////////////////////////////////////////////////////////////////
 	for($i=0;$i<24;$i++){		
 			$hour = ($i < 10) ? '0'.$i : $i; 
@@ -196,7 +174,7 @@ if($row!='AVL'){
  			));			
 		}
 ////////////////////////////////////////////////////////////////////////////		
-	$sql_g="SELECT S.ID_OBJECT_MAP, S.DESCRIPCION, S.LONGITUDE, S.LATITUDE,S.RADIO FROM ADM_GEOREFERENCIAS S WHERE S.TIPO='G' AND S.ID_CLIENT=".$idc;
+	$sql_g="SELECT S.ID_OBJECT_MAP, S.DESCRIPCION, S.LONGITUDE, S.LATITUDE,S.RADIO FROM ADM_GEOREFERENCIAS S WHERE S.TIPO='G' AND S.ID_CLIENTE=".$idc;
 	$query_g = $db->sqlQuery($sql_g);
 	$count_g = $db->sqlEnumRows($query_g);		
 	

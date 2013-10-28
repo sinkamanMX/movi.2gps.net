@@ -4,6 +4,9 @@ var qst_idq = 0;
 var data_log;
 //var qst_preguntas;
 
+var qst_apd = [];
+var qst_aps = [];
+
 //variables mapa
 var map_qst;
 var qst_points = [];
@@ -16,6 +19,8 @@ var qst_trayecto;
 var qst_infowindow;
 //variables mapa
 
+
+
 $(document).ready(function () {
 	//crear botones
 	//Definir botnes editar
@@ -25,6 +30,13 @@ $(document).ready(function () {
       },
       text: false
     })
+	//Definir botnes gear
+	$( ".gear" ).button({
+      icons: {
+        primary: "ui-icon-gear"
+      },
+      text: false
+    })	
 	//Definir botnes note
 	$( ".note" ).button({
       icons: {
@@ -130,6 +142,24 @@ $(document).ready(function () {
 			}
 		}
 	});	
+	//Crear dialog formulario configurar cuestionarios
+	$( "#qst_dialog_formg" ).dialog({
+		autoOpen:false,
+		title:"Configurar cuestionarios",
+		modal: true,
+		width:  450,
+		height: 450,
+		buttons: {
+			Cancelar: function() {
+				$(this).dialog( "close" );
+			},
+			Guardar: function() {				
+				//val_data_preg();
+				//alert("gardar config")
+				qst_save_config();
+			}
+		}
+	});		
 	//--------------------------------------
 	//DECLARAR DIALOG IMAGEN	
 	$( "#qst_dialog_img" ).dialog({
@@ -605,6 +635,26 @@ function qst_abrir_formulario(q){
           }
       });
 	}
+//-----------------------------------------------------------------------
+function qst_abrir_formulario_gear(){
+	//alert("qst_abrir_formulario_gear")
+	//if(q==""){$("#qst_dialog_formu").dialog('option', 'title', 'Agregar Cuestionario');}
+	//if(q!=""){$("#qst_dialog_formu").dialog('option', 'title', 'Editar Cuestionario');}
+	      $.ajax({
+          url: "index.php?m=mCuestionario&c=mFormularioGear",
+          type: "GET",
+          //data: {
+			  //cuestionario : q
+			   // },
+          success: function(data) {
+            var result = data; 
+			//$('#qst_dialog_formu').dialog( "destroy" );
+            $('#qst_dialog_formg').html('');
+            $('#qst_dialog_formg').dialog('open');
+			$('#qst_dialog_formg').html(result); 
+          }
+      });
+	}	
 //-------------------------------------------------------------------------
 function validar_nombre_qst(n){
 	$.ajax({
@@ -948,6 +998,7 @@ function val_data_preg(){
 }	
 //------------------------------------------------------------------------
 function qst_save_formp(){
+	
 	$.ajax({
 		url: "index.php?m=mCuestionario&c=mSavePregunta",
         type: "GET",
@@ -965,6 +1016,7 @@ function qst_save_formp(){
         var result = data;
 		//alert(result) 
 		if(result==1){
+			//qst_aps.push(
 			preguntas_seleccionadas();
 			$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La pregunta ha sido almacenda satisfactoriamente</p>');
 			$("#dialog_message" ).dialog('open');
@@ -979,13 +1031,25 @@ function qst_save_formp(){
 	}
 //---------------------------------------------------------------------------
 function preguntas_seleccionadas(){
-	var qst_preguntas = $('#qst_preg_dsp div').map(function() {
+	/*var qst_preguntas = $('#qst_preg_dsp div').map(function() {
 		return this.id;
 		}).get();
 	pre="";	
 	for (i=0; i<qst_preguntas.length; i++){
 		pre += (pre=="")?qst_preguntas[i]:","+qst_preguntas[i];
+		}*/
+	var pre;
+	
+/*	prs = "";	
+	for (i=0; i<qst_aps.length; i++){
+		prs += (prs=="")?qst_aps[i]:","+qst_aps[i];
+		}	*/
+	prd = "";	
+	for (i=0; i<qst_apd.length; i++){
+		prd += (prd == "")?qst_apd[i]:","+qst_apd[i];
 		}
+	pre = prd;
+
 	$.ajax({
 		url: "index.php?m=mCuestionario&c=mPreguntaS",
         type: "GET",
@@ -1009,22 +1073,45 @@ return true;
 }	
 //--------------------------------------------------------------------
 function buscador_preguntas(op,txt){
+	
+	//qst_apd
+	
+	//qst_aps
+	var pre;
+	
+	prs = "";	
+	for (i=0; i<qst_aps.length; i++){
+		prs += (prs=="")?qst_aps[i]:","+qst_aps[i];
+		}	
+	prd = "";	
+	for (i=0; i<qst_apd.length; i++){
+		prd += (prd == "")?qst_apd[i]:","+qst_apd[i];
+		}
+		
+	/*if(op==1){
+		alert(prs);
+	}
+	else{
+		alert(prd);
+		}*/
+	
 	//alert(txt)
 	if(op==1){
-		$("#qst_bscdr_s").val("");
+		pre = prs;
 		}
 	else{
-		$("#qst_bscdr_d").val("");
+		
+		pre = prd;
 		}	
-	var div = (op==1)?'qst_preg_sel':'qst_preg_dsp';
+	//var div = (op==1)?'qst_preg_sel':'qst_preg_dsp';
 	//alert(div);
-	var qst_preguntas = $('#'+div+' div').map(function() {
-		return this.id;
-		}).get();
-	pre="";	
-	for (i=0; i<qst_preguntas.length; i++){
-		pre += (pre=="")?qst_preguntas[i]:","+qst_preguntas[i];
-		}
+	//var qst_preguntas = $('#'+div+' div').map(function() {
+		//return this.id;
+		//}).get();
+	//pre="";	
+	//for (i=0; i<qst_preguntas.length; i++){
+		//pre += (pre=="")?qst_preguntas[i]:","+qst_preguntas[i];
+		//}
 	$.ajax({
 		url: "index.php?m=mCuestionario&c=mPreguntaS",
         type: "GET",
@@ -1232,13 +1319,18 @@ function qst_validar_pr(){
 	}
 //--------------------------------------------------------------
 function save_set_pr(){
+	// set modal dialog
+	$("#dialog_message").dialog( "option", "modal", true );	
+	$('#dialog_message').html('<p align="center"><img src="public/images/cargando.gif" > Procesando datos.Espere un momento, por favor.</p>');
+	$("#dialog_message").dialog('open');
+	$("body").css("cursor", "progress");
 	var vls = "";
 	$('.pr').each(function(index){
 		idp = $(this).attr("name");
 		//vls += (vls == "")?'('+idp+',"'+$(this).val()+'",'+qst_idq+')':',('+idp+',"'+$(this).val()+'",'+qst_idq+')';
 		vls += (vls == "")?idp+',"'+$(this).val()+'",'+qst_idq:'|'+idp+',"'+$(this).val()+'",'+qst_idq;
 	});
-	
+	alert(vls)
 	$.ajax({
 		url: "index.php?m=mCuestionario&c=mSaveSetpr",
 		type: "GET",
@@ -1248,6 +1340,7 @@ function save_set_pr(){
 			vl2  : $("#qst_dold").val()
 			},
 		success: function(data) {
+			$("body").css("cursor", "default");
 			var result = data; 
 			//alert(result)
 			if(result>0){
@@ -1326,4 +1419,41 @@ function qst_cbo_y(t,y){
 	else{
 		$('#qst_dcbox').html("");
 		}		
+	}
+//-------------------------------------------------------------------	
+function qst_save_config(){
+	var ordn = 1;
+	var txt = "";
+	$('#qst_cuestionarios div').each(function(index){
+		var def = ($("#d_"+this.id).attr("checked"))?'S':'N';
+		var act = ($("#a_"+this.id).attr("checked"))?'S':'N';
+		//alert(ordn+"/"+this.id+"/"+def+"/"+act);
+		txt += (txt=="")?'ORDEN = '+ordn+' , XDEFECTO = ['+def+'], ACTIVO = ['+act+'] WHERE ID_CUESTIONARIO = '+this.id:';ORDEN = '+ordn+' , XDEFECTO = ['+def+'], ACTIVO = ['+act+'] WHERE ID_CUESTIONARIO = '+this.id;
+		ordn++;
+		});
+	//alert(txt);
+	$.ajax({
+			url: "index.php?m=mCuestionario&c=mSaveConfig",
+			type: "GET",
+			data: {
+				txt  : txt
+			},
+			success: function(data) {
+				var result = data; 
+				//alert(result)
+				if(result > 0){
+					$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Los cambios no han sido almacenados intentelo mas tarde.</p>');
+					$("#dialog_message" ).dialog('open');
+					}
+				else{
+					$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Los cambios han sido almacenados correctamente.</p>');
+					$("#dialog_message" ).dialog('open');
+					$('#qst_dialog_formg').dialog('close');
+					//Cargar tabla principal
+					qst_load_datatable();
+					}	
+				//$('#qst_dcbox').html(result); 
+			}
+		});
+	
 	}

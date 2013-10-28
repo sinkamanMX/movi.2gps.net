@@ -25,7 +25,7 @@
 <tr><td>Activo:</td>
 <td colspan="2"> 
 <select name="act" id="qst_act_pre" class="caja">
-<option value="1" {SAC} >SI</option>
+<option value="1" {SAC} selected="selected">SI</option>
 <option value="0" {NAC}>NO</option>
 </select></td>
 </tr> 

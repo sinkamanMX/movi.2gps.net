@@ -719,7 +719,41 @@ function get_info_geop($idgeo){
 		return false;  
 	}		
 	
+	function direccion_flecha($angle){
+	$res = 'N';
 	
+	if (($angle > 0) and ($angle <= 22.5)){
+      $res = 'N';
+	}
+	
+	if (($angle > 22.5) and ($angle < 67.5)){
+      $res = 'NE';
+	}
+	
+    if (($angle >= 67.5) and ($angle <= 112.5)){
+      $res = 'E';
+	}
+	if (($angle > 337.5)){
+      $res = 'N';
+	}
+	if (($angle > 112.5) and ($angle <= 157.5)){
+      $res = 'SE';
+	}
+    if (($angle > 157.5) and ($angle <= 202.5)){
+      $res = 'S';
+	}
+	if (($angle > 202.5) and ($angle <= 247.5)){
+      $res = 'SO';
+	}
+	if (($angle > 247.5) and ($angle <= 292.5)){
+      $res = 'O';
+	}
+	if (($angle > 292.5) and ($angle <= 337.5)){
+      $res = 'NO';
+	}
+	return $res;
+  }
+
 	
 	
 function direccion($lati,$longi){
@@ -1305,7 +1339,127 @@ function trae_his_s($unit,$cliente,$rango_fechas,$maestre_array){
 	
 	}
 }
-        
+     
+function obtener_ureporte($unit,$cliente){
+	
+	/*Conexion a la BD2*/
+	global $config_bd;
+	$conexion = mysqli_connect($config_bd['host'],$config_bd['user'],$config_bd['pass'],$config_bd['bname']);		
+	if($conexion){
+	
+	/*3 Y 13*/
+	$table_h= $cliente;
+	
+	
+	$doub_array=array();
+	$coun_array=0;
+	
+
+		 $sql = "SELECT f.PLAQUE,f.YEAR,f.DESCRIPTION,    
+			                  IF (e.GPS_DATETIME IS NULL, '0000-00-00 00:00:00',e.GPS_DATETIME) AS GPS_DATETIME ,
+							  IF(g.DESCRIPTION IS NULL,'NO HA REPORTADO',g.DESCRIPTION) AS DESC_EVT,     
+							  IF(e.VELOCITY IS NULL,0,e.VELOCITY) AS VELOCITY,
+							  
+                              IF(e.LATITUDE IS NULL,0,e.LATITUDE) AS LATITUDE,
+						      IF(e.LONGITUDE IS NULL,0,e.LONGITUDE) AS LONGITUDE,
+					          f.COD_ENTITY,
+						      IF (g.PRIORITY is null,0,g.PRIORITY) as PRIORITY,
+							  e.ANGLE
+						FROM  ADM_UNIDADES f
+						LEFT JOIN ".$table_h." e ON e.COD_ENTITY = f.COD_ENTITY
+						LEFT JOIN ADM_EVENTOS g ON e.COD_EVENT  = g.COD_EVENT
+						WHERE e.COD_ENTITY = ".$unit."
+						ORDER BY g.PRIORITY DESC
+						LIMIT 1";
+       
+       
+       				//$contase=count($maestre_array);
+							
+						$query_hist = mysqli_query($conexion,$sql);
+						$count = @mysqli_num_rows($query_hist);					 
+						if($count>0){
+							$result = mysqli_fetch_array($query_hist);
+							return $result;				
+						}else{
+							return false;
+						}
+			
+	
+	}
+}	 
+	 
+	 function obtener_his_iterio($unit,$cliente,$sfech){
+	
+	/*Conexion a la BD2*/
+	global $config_bd;
+	$conexion = mysqli_connect($config_bd['host'],$config_bd['user'],$config_bd['pass'],$config_bd['bname']);		
+	if($conexion){
+	
+	/*3 Y 13*/
+	$table_h= $cliente;
+	
+	
+	$doub_array=array();
+	$coun_array=0;
+	
+
+		 $sql = "SELECT f.DESCRIPTION,    
+			                  IF (e.GPS_DATETIME IS NULL, '0000-00-00 00:00:00',e.GPS_DATETIME) AS GPS_DATETIME ,
+							  IF(g.DESCRIPTION IS NULL,'NO HA REPORTADO',g.DESCRIPTION) AS DESC_EVT,     
+							  IF(e.VELOCITY IS NULL,0,e.VELOCITY) AS VELOCITY,
+							 	CAST(e.GPS_DATETIME AS DATE ) AS FECHA,
+                              IF(e.LATITUDE IS NULL,0,e.LATITUDE) AS LATITUDE,
+						      IF(e.LONGITUDE IS NULL,0,e.LONGITUDE) AS LONGITUDE,
+					          f.COD_ENTITY,
+						      IF (g.PRIORITY is null,0,g.PRIORITY) as PRIORITY,
+							  e.ANGLE
+						FROM  ".$table_h." e 
+						LEFT JOIN ADM_UNIDADES f ON e.COD_ENTITY = f.COD_ENTITY
+						LEFT JOIN ADM_EVENTOS g ON e.COD_EVENT  = g.`COD_EVENT`
+						WHERE e.COD_ENTITY = ".$unit." AND
+						 ".$sfech."
+						ORDER BY g.PRIORITY DESC";
+       
+       
+       				//$contase=count($maestre_array);
+							
+						$query_hist = mysqli_query($conexion,$sql);
+						$count = @mysqli_num_rows($query_hist);					 
+						if($count>0){
+							$result = mysqli_fetch_array($query_hist);
+							return $result;				
+						}else{
+							return 0;
+						}
+			
+	
+	}
+}	
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	    
 function point_at_point($lat1, $lon1, $lat2, $lon2) { 
 
 $theta = $lon1 - $lon2;

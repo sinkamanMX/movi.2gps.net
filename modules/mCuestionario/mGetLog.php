@@ -37,7 +37,7 @@
 			$data .= ($data!="") ? ', ': '';
 			$data .= '{"FECHA"   : "'.$row['FECHA'] 		   .'" , '.
 					 ' "USER"    : "'.$row['NOMBRE_COMPLETO'].'" , '.
-					 ' "OBS"     : "'.utf8_decode($row['OBSERVACIONES']).'" }';}
+					 ' "OBS"     : "'.$row['OBSERVACIONES'].'" }';}
 	}	
 	$tpl->assign_vars(array(
 		'LOG'	=> $data

@@ -9,7 +9,7 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 		
 $tpl->set_filenames(array('mNuevo' => 'tNuevo'));
 
-$idc   = $userAdmin->user_info['ID_CLIENTE'];
+$idc   = $userAdmin->user_info['ID_USUARIO'];
 
 	for($i=0;$i<24;$i++){		
 			$hour = ($i < 10) ? '0'.$i : $i; 

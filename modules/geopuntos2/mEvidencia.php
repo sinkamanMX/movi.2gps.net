@@ -15,6 +15,7 @@
 	if(!$userAdmin->u_logged())  //Valida Usuario Logeado
 		echo '<script>window.location="index.php?m=login"</script>';  //Manda al login si no se ha Logeo.
 	//--------------------------- Modificada BD y Encabezado------------------------
+	$db ->sqlQuery("SET NAMES 'utf8'");
 	$cod_client =  $userAdmin->user_info['COD_CLIENT'];
 
 	$result = array();

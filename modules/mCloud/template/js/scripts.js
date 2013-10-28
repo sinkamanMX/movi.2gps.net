@@ -160,9 +160,16 @@ function change_id(id){
 function change_ide(id){
 	key_prin1='';
 	key_prin1 = id;
+	//alert(key_prin1);
 
 }
 
+function change_ide2(id){
+	key_prin1='';
+	key_prin2 = id;
+	//alert(key_prin2);
+
+}
 function change_m(m){
 	valores = m;
 	valores2 = 0;
@@ -174,10 +181,15 @@ function change_n(n){
 	valores = 0;
 	if(n==99){
 	//	alert('busca usuarios para este submenu'+$("#id_menu").val());
-		usuario_submenu($("#id_menu").val());
-		usuario_submenu_comple($("#id_menu").val());
+
+		
 		 borrar_submenu = $("#id_menu").val();
          borrar_menu = 0;
+		 
+		 $("#bandera_guardar_detalles").val('1');
+		 $("#valor_detalles").val('0');
+		 
+		 
 	}else{
 		 borrar_submenu = 0;
          borrar_menu = $("#id_menu").val();
@@ -193,7 +205,13 @@ function change_del(v){
 
 
 function change_idm(n){
-$("#id_menu").val(n);
+ $("#id_menu").val(n);
+/* if($("#valor_detalles").val()=='-1'){
+	//  alert('mostrar submenu para url');
+	// $("#valor_detalles").val(n); 
+	 usuario_submenu(n);
+	 usuario_submenu_comple(n);
+ }*/
 }
 
 
@@ -233,7 +251,7 @@ function r_filtro1(catalogo){
 	if(catalogo != -1){
 	cat = catalogo;
 	$("#catalogos").val(catalogo);
-	document.getElementById('browser').innerHTML='';
+	document.getElementById('browser').innerHTML='<br> &nbsp; &nbsp; &nbsp; Cargando menú Espere..';
 	var ajax = nuevoAjax();
 	//var url = "index.php?m=rRsalida&c=mGetReport";
 		ajax.open("GET", "index.php?m=mCloud&c=mGetStruct&catalogo="+catalogo,true);
@@ -241,9 +259,9 @@ function r_filtro1(catalogo){
 		if (ajax.readyState==4) {
 				var result =ajax.responseText;
 			//console.log(result);
-	//	alert(result);
+		//alert(result);
 				if(result != 0 || result != ""){
-								
+						document.getElementById('browser').innerHTML='';		
 							$(result).appendTo("#browser");
 							$("#browser").treeview();
 							
@@ -296,7 +314,9 @@ function contextenu(cat) {
 			switch(action){
 				
 				case "addfi":
-					add_file(cat);
+					elegir_tipo_archivo();
+					//add_file(cat);
+					
 				 // muestra_editar_form(ide);
 				break;
 				case "addcar":
@@ -306,20 +326,21 @@ function contextenu(cat) {
 				break;
 				case "renom":
 				//alert(' agregar elemento menu='+valores+', submenu='+valores2);
-					renombra(key_prin1,cat,valores,valores2);
+					renombra(key_prin2,cat,valores,valores2);
 				 // muestra_editar_form(ide);
 				break;
 				
 				case "delete":
 				var bora = borrar_menu+','+borrar_submenu;
-				
+			alert(key_prin2+',2'+','+cat+','+bora);
 			document.getElementById('dialog1').innerHTML="<p align='center'>Desea eliminar la Carpeta?</p>";		
 				
 			 $( "#dialog1" ).dialog({
 					width: 200,
 				 	 buttons: {
 						Aceptar: function() {
-   							elimina_fil(key_prin1,2,cat,bora);
+							
+   							elimina_fil(key_prin2,2,cat,bora);
 			  				$( this ).dialog( "close" );
 			 
        						 },
@@ -359,7 +380,7 @@ for(i=0;i<arraydocs.length;i++){
 				break;
 				
 				case "delete":
-				
+				alert(key_prin+',1'+','+cat+','+borrar_parametros);
 				document.getElementById('dialog1').innerHTML="<p align='center'>Desea eliminar el Archivo?</p>";		
 				
 			 $( "#dialog1" ).dialog({
@@ -410,7 +431,7 @@ for(i=0;i<arraydocs.length;i++){
 				
 				case "delete":
 				
-				document.getElementById('dialog1').innerHTML="<p align='center'>Desea eliminar el Archivo?</p>";		
+				document.getElementById('dialog1').innerHTML="<p align='center'>Desea eliminar el Archivo2?</p>";		
 				
 			 $( "#dialog1" ).dialog({
 					width: 200,
@@ -485,11 +506,11 @@ for(i=0;i<arraydocs.length;i++){
 	}		
 	
 	function hola(x){
-		
-		
-		if(x==1){
+		//alert(x);
+		if(x=='1'){
 			
-			 $( "#dialog" ).dialog( "close" );
+			// $( "#dialog" ).dialog( "close" );
+			 $("#dialog_prog").dialog("close");
 			 r_filtro1(cat);
 			 document.getElementById('dialog2').innerHTML='<p align="center">El archivo se cargo Correctamente</p>';	
 			  $( "#dialog2" ).dialog({
@@ -513,27 +534,64 @@ for(i=0;i<arraydocs.length;i++){
 		}
 	
 	
-	function add_file(){
-	
+function add_file(archivo){
+	selec();
+	//	alert(convert(key_prin1));
+      if($("#tipo_archivo").val()!="0"){
+		 $("#dialog_tipo_archivo").dialog("close");
 	  //	console.log("holaaaa");
-/*		var dialogo_conf='<form action="index.php?m=mCloud&c=mGetSubir&url='+convert(key_prin1)+
-		                  '" method="post" enctype="multipart/form-data" target="ifra"><input type="file" name="archivo" id="archivo"></input>'+
-						  '<input type="submit" value="Subir Archivo" style="position:absolute; top:35px; left:170px;" onclick="carga()"></input><div id="progressbar"                           style="display:none; position:absolute; top:59px; left:2px; width:310px; "><div id="progress-label">Cargando...</div></div></form>';
+     
+	  if($("#tipo_archivo").val()!='u'){
+		  var  visible = '';
+		var  tag = '<tr><td bgcolor="#c5dbec" width="120">Archivo</td> <td><input type="file" name="archivo" id="archivo" style="width:100%;"></input></td></tr>'+
+		     '<tr><td bgcolor="#c5dbec" width="120">Imagen Representativa</td> <td><input type="file" name="foto" id="archivo_foto" style="width:100%;"></input></td></tr>';
+	  }else{
+ 	
+		  var  tag = '<tr><td bgcolor="#c5dbec" width="120">Direcci&oacute;n Web(url)</td> <td>'+
+		                  '<input type="text" id="urls" name="urls" style="width:100%;" value="http://" /></td></tr>';
+		  var  visible = 'none';
+	  }
+	  
+/*
+    var s_ftp = 'test.2gps.net';
+	var u_ftp = 'algtester';
+	var p_ftp = 'AL6735teR';
 */
+    var s_ftp = 'movi.2gps.net';
+	var u_ftp = 'movi2gps';
+	var p_ftp = 'M0viFgp5';
 
-	var dialogo_conf='<form action="index.php?m=mCloud&c=mGetSubir&url='+convert(key_prin1)+'&id_menu='+$("#id_menu").val()+'" method="post" enctype="multipart/form-data" target="ifra">'+
-				     '<input type="file" name="archivo" id="archivo"></input>'+
-					 '</form>';
+
+	var ftp_datos    = s_ftp+'|'+u_ftp+'|'+p_ftp;
+	
+	var dialogo_conf='<form action="http://test.2gps.net/index.php?m=mCloud&c=mGetSubir&url='+convert(key_prin2)+'&id_menu='+
+	                  $("#id_menu").val()+'&ftp='+ftp_datos+'" method="post" enctype="multipart/form-data" target="ifra">'+
+				    
+'<table border="0" width="100%">'+
+'<tr style="display:'+visible+';" ><td bgcolor="#c5dbec" width="120">Titulo</td><td><input  class="caja_txt"  type="text" id="titulo" name="titulo" style="width:100%;"/> </td></tr>'+
+'<tr style="display:'+visible+';" ><td bgcolor="#c5dbec" width="120">Autor </td> <td><input  class="caja_txt"  type="text" id="autor" name="autor" style="width:100%;"/> </td></tr>'+
+'<tr style="height:120px; display:'+visible+';" ><td bgcolor="#c5dbec" >Resumen XX </td> <td><textarea  style="width:100%; height:100%;"   class="caja_txt"  id="resumen" name="resumen"> </textarea></td></tr>'+
+'<tr style="display:'+visible+';" ><td bgcolor="#c5dbec" width="120">Tag (Separar con "," para m&aacute;s de un tag)</td> <td><input  class="caja_txt"  type="text" id="tag" name="tag" style="width:100%;"/> </td></tr>'+
+'<tr style="display:none;"><td></td><td><input type="text" id="tip_archi" name="tip_archi" value="'+archivo+'" style="width:100%;" /> </td></tr>'+
+'<tr style="display:'+visible+';"><td bgcolor="#c5dbec" width="120">Evento</td><td>'+
+
+      '<div id ="selex"> <select style="width:100%;"  class="caja_txt" ><option>Cargando Datos... </option></select></div>'+
+					
+					 '  </td></tr>'+
+					    tag        +
+					 '</table>'
+				 '</form>';
 
 		document.getElementById('dialog').innerHTML=dialogo_conf;		
 			
-			
+		// '<input type="file" name="archivo" id="archivo"></input>'+	
 	  
-			 $( "#dialog" ).dialog({
-   	 	width: 400,height: 170,
-      buttons: {
+		$( "#dialog" ).dialog({
+   	 	width: 500,height: 380,
+        buttons: {
         Subir: function() {
-   
+        $( this ).dialog( "close" );    
+		$("#dialog_prog").dialog("open");
   			 // $( this ).dialog( "close" );
 			$("form").submit();
         },
@@ -543,15 +601,19 @@ for(i=0;i<arraydocs.length;i++){
         }
       }
     });
-		
-		}
+
+	}else{
+		alert('Debe de elegir un tipo de Archivo');
+	}	
+}
 		
 
 function elimina_fil(x,t,cat,borrar_parametros){
 	
-	//alert(x+','+t+','+cat+','+borrar_parametros);
+
 		var ulr=convert(x);
-		
+		$("#dialog_prog").dialog("open");
+	//alert('parametros '+ulr+','+t+','+cat+','+borrar_parametros);		
 		var ajax = nuevoAjax();
 	//var url = "index.php?m=rRsalida&c=mGetReport";
 		ajax.open("GET", "index.php?m=mCloud&c=mGetDelet&ulr="+ulr+"&tipo="+t+'&where='+borrar_parametros,true);
@@ -561,9 +623,9 @@ function elimina_fil(x,t,cat,borrar_parametros){
 			console.log(result);
 		//alert(result);
 				if(result != 0){
-					
+				$("#dialog_prog").dialog("close");	
 					if(result!=2){	
-								document.getElementById('dialog2').innerHTML='<p align="center">El archivo a sido eliminado</p>';	
+						document.getElementById('dialog2').innerHTML='<p align="center">El archivo a sido eliminado</p>';	
 					}else{
 						document.getElementById('dialog2').innerHTML='<p align="center">La Carpeta fue Eliminada</p>';
 						}
@@ -675,6 +737,7 @@ function afir_carp(noms,catalogo,v1,v2){
 	var dir=noms;
 	var cadenaz = v1+','+v2+','+$("#catalogos").val()+','+$("#nufol").val()+','+$("#id_menu").val();
 	//alert(cadenaz+','+dir);
+	 	$("#dialog_prog").dialog("open");
 	var ajax = nuevoAjax();
 
 		ajax.open("GET", "index.php?m=mCloud&c=mGetNewDir&ulr="+dir+"&cade="+cadenaz,true);
@@ -685,9 +748,11 @@ function afir_carp(noms,catalogo,v1,v2){
 				console.log(result);
 				
 				if(result != 0){
+					        $("#dialog_prog").dialog("close");
 							document.getElementById('dialog2').innerHTML='<p align="center">Elemento creado correctamente</p>';
 							document.getElementById('id_menu').value = result;	
 					}else{
+						$("#dialog_prog").dialog("close");
 							document.getElementById('dialog2').innerHTML='<p align="center">No se a podido crear el elemento</p>';	
 					}
 	  
@@ -714,12 +779,15 @@ function afir_carp(noms,catalogo,v1,v2){
 			function renombra(urls,cat,valores,valores2){
 				
 				var result=Base64.decode(urls);
+				var result_x=Base64.decode(key_prin1);
 				var gen=result.split('/');
+				var gen2=result_x.split('/');				
 				var viej=gen[gen.length-1].split('.');
+				var viej2=gen2[gen2.length-1].split('.');				
 				var downs=result;
 				var noms='';
 	
-	document.getElementById('dialog4').innerHTML='<p align="center"><input type="text" size="20" class="caj_dia" id="refol" placeholder="Nuevo Nombre" value="'+viej[0]+'"></p>';
+	document.getElementById('dialog4').innerHTML='<p align="center"><input type="text" size="20" class="caj_dia" id="refol" placeholder="Nuevo Nombre" value="'+viej2[0]+'"></p>';
 	
 	$( "#dialog4" ).dialog({
    	 	width: 190,
@@ -728,8 +796,10 @@ function afir_carp(noms,catalogo,v1,v2){
         Aceptar: function() {
   				
 				noms=$('#refol').val();
+       // noms = viej[0];
 				//var dir=downs+'/'+noms;
-  					val_renom(downs,noms,cat,valores,valores2);
+  				//alert(downs+'|'+noms+'|'+cat+'|'+valores+'|'+valores2);
+				val_renom(downs,noms,cat,valores,valores2);
 			  
 			  
 			  $( this ).dialog( "close" );
@@ -752,7 +822,9 @@ function val_renom(noms,names,cat,valores,valores2){
 		var dir=noms;
 		var ajax = nuevoAjax();
 	    var id_menu_submenu = $("#id_menu").val();		
-				
+		//alert(dir+'||'+names+'||'+id_menu_submenu+'||'+valores+'||'+valores2);
+		$("#dialog_prog").dialog("open");
+		
         ajax.open("GET", "index.php?m=mCloud&c=mGetRenm&ulr="+dir+'&nuws='+names+'&id_menu='+id_menu_submenu+'&v1='+valores+'&v2='+valores2,true);
 		ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
@@ -760,8 +832,10 @@ function val_renom(noms,names,cat,valores,valores2){
 			console.log(result);
 			//alert(result);
 		   			if(result != 0){
+							$("#dialog_prog").dialog("close");
 					 	document.getElementById('dialog2').innerHTML='<p align="center">La carpeta a cambiado de nombre</p>';		
 					}else{
+						$("#dialog_prog").dialog("close");
 						 document.getElementById('dialog2').innerHTML='<p align="center">No se a podido cambiar el carpeta</p>';	
 				  	}
 
@@ -912,10 +986,10 @@ function cadena_menu(catalogo){
 function usuario_submenu(id_submenu){
 		var ajax = nuevoAjax();
  		
-		var htlm =' Usuarios Asignados <select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">'+
+		var htlm ='  Asignados <select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">'+
                   '<option value="-1">Cargando Datos </option>'+
                   '</select>';
-		var htlm2 ='Usuarios Asignados <select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">'+
+		var htlm2 =' Asignados <select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">'+
                    '</select>';		  
 				  
 				  
@@ -943,10 +1017,10 @@ function usuario_submenu(id_submenu){
 function usuario_submenu_comple(id_submenu){
 		var ajax = nuevoAjax();
  		
-		var htlm =' Usuarios Disponibles <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0">'+
+		var htlm ='  Disponibles <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0">'+
                   '<option value="-1">Cargando Datos </option>'+
                   '</select>';
-		var htlm2 ='  Usuarios Disponibles <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0">'+
+		var htlm2 ='   Disponibles <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0">'+
                    '</select>';		  
 				  
 				  
@@ -968,6 +1042,8 @@ function usuario_submenu_comple(id_submenu){
 	ajax.send(null);
 }
 
+
+// ------------------------------ recorre los combos para buscar los usuarios asignados 
 function recorre_select(){
 	var todos = '';
   $("#origen option").each(function(){
@@ -981,6 +1057,8 @@ function recorre_select(){
   todos = todos +'|'+ $("#id_menu").val();
   
   var ajax = nuevoAjax();
+    $("#letra_x").html('Guardando Datos');
+   $("#dialog_prog").dialog("open");
   
   if($("#origen option").length > 0){
 	  //actualiza
@@ -996,9 +1074,15 @@ function recorre_select(){
 				var result =ajax.responseText;
 				  console.log(result);
 				  if(result!=0){
-					 alert('cambios realizados');
+					   $("#dialog_prog").dialog("close");
+					   $("#letrero_x").html('Proceso realizado');
+					   $("#dialog_okey").dialog("open");
+					 //alert('cambios realizados');
 				  }else{
-					 alert('falla al realizar cambios');  
+					   $("#dialog_prog").dialog("close");
+					     $("#letrero_x").html('Falla al realizar proceso');
+						  $("#dialog_okey").dialog("open");
+					// alert('falla al realizar cambios');  
 				  }
 				 
 					//alert(result+'terminado');
@@ -1006,4 +1090,319 @@ function recorre_select(){
 		}		
 	ajax.send(null);
   //alert(todos+'|'+ $("#origen option").length);	
+}
+
+//--------------  funcion  para asignar a input tipo de archivo
+
+function asig(valor){
+$("#tipo_archivo").val(valor);	
+}
+
+function elegir_tipo_archivo(){
+	
+		$("#dialog_tipo_archivo").dialog("open");
+	
+}
+
+function selec(){
+	
+	//alert('f');
+	var ajax = nuevoAjax();
+        ajax.open("GET", "index.php?m=mCloud&c=mCombo2",true);
+   	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				  console.log(result);
+				  if(result!='0'){
+					  $("#selex").html(result);
+				  }else{
+				        $("#selex").html('no hay datos');
+				  }
+				
+				 
+					//alert(result+'terminado');
+			}			
+		}		
+	ajax.send(null);
+	
+	
+}
+//____________________________-  funcion que uestra detalle de los archivos cargados..
+
+function muestra_deta(detalle,otr){
+
+
+					   $("#letra_x").html('Cargando Detalles');
+					   $("#dialog_prog").dialog("open");
+					   $("#id_menu").val(otr);
+if(detalle!='url'){
+	var ajax = nuevoAjax();
+        ajax.open("GET", "index.php?m=mCloud&c=mDetalles&deta="+detalle,true);
+   	ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				  console.log(result);
+				  if(result!='0'){
+					   //$("#dialog_okey").dialog("close");
+					   		usuario_submenu(otr);
+		                    usuario_submenu_comple(otr);
+					    $("#dialog_prog").dialog("close");
+					   $("#detalles_archivos").html(result);
+					  
+					 
+				  }else{
+					 // $("#dialog_okey").dialog("close");
+					   $("#dialog_prog").dialog("close");
+				        $("#detalles_archivos").html('no hay datos');
+						
+				  }
+				
+				 
+					//alert(result+'terminado');
+			}			
+		}		
+	ajax.send(null);
+	
+   }else{
+      var carta = '<span id="span_deta">No hay detalles</span>';
+	  var asig =  'Asignados'+
+                  '<select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">'+
+                  '<option value="-1"></option>'+
+                  '</select>';
+	 var disp = '    Disponibles'+
+                '<select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0"></select>';			  
+	 
+	 var msn_url = '&nbsp;&nbsp;  Nota: <br>'+ 
+	               '&nbsp;&nbsp;   Para el tipo de url se debe de asignar <br>'+
+				   '&nbsp;&nbsp;   directamente del Sub-menu.<br>'+
+				   '&nbsp;&nbsp;   Debe de dar click al submenu donde pertenece este enlace url';
+	     
+		 					   		usuario_submenu(otr);
+		                    usuario_submenu_comple(otr);
+							deta_default();
+		 $("#dialog_prog").dialog("close");	
+	     //$("#detalles_archivos").html(carta);
+		// $("#conte_1").html(asig);
+		// $("#conte_2").html(disp);
+		 //$("#mensaje_url").html(msn_url);
+	   	 $("#bandera_guardar_detalles").val(2);
+		 $("#valor_detalles").val(otr);
+   }
+}
+
+//------------------------------------------------
+
+function guardar_cambios(){
+	
+var  val_1x = $("#bandera_guardar_detalles").val();
+var  val_2x = $("#valor_detalles").val();
+
+if(val_1x=='1' && val_2x == '0'){
+	
+ recorre_select();
+  // alert('opcion 1,0');
+
+}else if(val_1x=='2' && val_2x != '0') {
+	var paquete = $("#c_titulo").val()+'|'+$("#c_autor").val()+'|'+$("#c_resumen").val()+'|'+$("#c_tag").val()+'|'+$("#c_eventos").val();
+	
+	var ajax = nuevoAjax();
+        ajax.open("GET", "index.php?m=mCloud&c=mCambio_deta_texto&id_contenido="+val_2x+"&pakete="+paquete,true);
+   	    ajax.onreadystatechange=function() {
+		    if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				  console.log(result);
+				  if(result!='0'){
+					  recorre_select();
+					 //alert('cambios realizados al detalle'+result);
+				  }else{
+				      alert('falla al hacer cambios al detalle');
+				  }
+				
+				 
+					//alert(result+'terminado');
+			 }			
+		}		
+	    ajax.send(null);
+	 //alert('opcion 2,>0');
+}else{
+	
+	alert("debe de espeicifcar el submenú a asignar");
+}
+
+
+	
+	
+}
+
+//---------------------------------------------
+
+function cambiar_img(){
+	
+	//alert(key_prin2+''+$("#id_menu").val());
+	//------------------------------------------------ 
+		   $( "#dialog_img_cambia" ).dialog({
+			     autoOpen: false,
+   	 	         width: 500,height: 180,
+				buttons: {
+				Subir: function() {
+				//$( this ).dialog( "close" );    
+				//$("#dialog_img_cambia").dialog("open");
+					 // $( this ).dialog( "close" );
+					//$("form").submit();
+					$( "#img-news" ).submit();
+					$( this ).dialog( "close" );
+					$( "#dialog_prog" ).dialog( "open" );
+					
+				},
+				Cancelar: function() {
+				  $( this ).dialog( "close" );
+		  
+				}
+			  }
+			});
+	//------------------------------------------------
+	 var  tag = '<tr>'+
+	             '<td bgcolor="#c5dbec" width="120">Nueva Imagen</td>'+ 
+				 '<td><input type="file" name="foto2" id="archivo_foto2" style="width:100%;"></input></td></tr>'+
+				 '<tr><td><input type="hidden" name ="origen_img" value="'+ $("#img_origen").val()+ '" /> </td></tr>'+
+				 '<tr><td><input type="hidden" name ="uere_origen" value="'+ $("#uere_origen").val()+ '" /> </td></tr>';
+	
+ 	var dialogo_img_cam='<form name="img-news" id="img-news" action="index.php?m=mCloud&c=mGetSubir2&url='+
+	                      convert(key_prin2)+'&id_menu='+$("#id_menu").val()+
+						  '" method="post" enctype="multipart/form-data" target="ifra">'+
+					      '<table border="0" width="100%">'+tag+'</table></form>';
+
+	$("#dialog_img_cambia").html(dialogo_img_cam);		
+    $("#dialog_img_cambia").dialog("open");
+
+
+}
+//----------------- funcion que pone area de detalle en default
+
+function deta_default(){
+	
+	
+var def = '<table border="0" width="100%" height="100%" > '+ 
+          '<tr bgcolor="#FFFFFF">'+ 
+          ' <td bgcolor="#F4F4F4" width="120" height="20">TITULO</td>'+ 
+          ' <td style="width:50%;"></td>'+ 
+          ' <td rowspan="4"><div align="center"  style="border:#F4F4F4 solid 1px; width:100%; height:100%;">No Disponible</div></td>'+ 
+         ' </tr>'+ 
+ 		 ' <tr bgcolor="#FFFFFF">'+ 
+          '	<td bgcolor="#F4F4F4" height="20" >AUTOR</td>'+ 
+          '  <td></td>'+ 
+         ' </tr>'+ 
+		' <tr style="height:70%;" bgcolor="#FFFFFF">'+ 
+         '   <td bgcolor="#F4F4F4">RESUMEN</td>'+ 
+         '   <td ></td>'+ 
+        ' </tr>'+ 
+ 		' <tr bgcolor="#FFFFFF">'+ 
+        '    <td bgcolor="#F4F4F4" >TAG (Separar con "," para m&aacute;s de un tag)</td>'+ 
+        '    <td></td>'+ 
+       ' </tr>'+ 
+ 		'<tr  bgcolor="#F4F4F4" height="20"><td>EVENTO</td>'+ 
+       '   <td>'+ 
+        '    <select name="eventos" style="width:100%;" class="caja_txt">'+ 
+ 		'	  <option value="-1" style="color:#666;">Opci&oacute;n</option>'+ 
+		'	</select>'+ 
+ 		'  </td>'+ 
+ 	'	<td >IMAGEN</td>'+ 
+     '   </tr>'+ 
+  		'<tr bgcolor="#F4F4F4" align="center" height="20">'+ 
+        '  <td></td>'+ 
+        '  <td><input type="button" value="Guardar Cambios"  onClick="guardar_cambios();"/></td>'+ 
+        '  <td >&nbsp;</td>'+ 
+        '</tr> '+   
+'</table>';	
+	
+	$("#detalles_archivos").html(def);
+}
+
+//-----------------------------------------------------------
+
+function deta_default_ini(){
+	
+     
+	  var asig =  'Asignados'+
+                  '<select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">'+
+                  '<option value="-1"></option>'+
+                  '</select>';
+	 var disp = '    Disponibles'+
+                '<select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0"></select>';			  
+	
+var def = '<table border="0" width="100%" height="100%" > '+ 
+          '<tr bgcolor="#FFFFFF">'+ 
+          ' <td bgcolor="#F4F4F4" width="120" height="20">TITULO</td>'+ 
+          ' <td style="width:50%;"></td>'+ 
+          ' <td rowspan="4"><div align="center"  style="border:#F4F4F4 solid 1px; width:100%; height:100%;">No Disponible</div></td>'+ 
+         ' </tr>'+ 
+ 		 ' <tr bgcolor="#FFFFFF">'+ 
+          '	<td bgcolor="#F4F4F4" height="20" >AUTOR</td>'+ 
+          '  <td></td>'+ 
+         ' </tr>'+ 
+		' <tr style="height:70%;" bgcolor="#FFFFFF">'+ 
+         '   <td bgcolor="#F4F4F4">RESUMEN</td>'+ 
+         '   <td ></td>'+ 
+        ' </tr>'+ 
+ 		' <tr bgcolor="#FFFFFF">'+ 
+        '    <td bgcolor="#F4F4F4" >TAG (Separar con "," para m&aacute;s de un tag)</td>'+ 
+        '    <td></td>'+ 
+       ' </tr>'+ 
+ 		'<tr  bgcolor="#F4F4F4" height="20"><td>EVENTO</td>'+ 
+       '   <td>'+ 
+        '    <select name="eventos" style="width:100%;" class="caja_txt">'+ 
+ 		'	  <option value="-1" style="color:#666;">Opci&oacute;n</option>'+ 
+		'	</select>'+ 
+ 		'  </td>'+ 
+ 	'	<td >IMAGEN</td>'+ 
+     '   </tr>'+ 
+  		'<tr bgcolor="#F4F4F4" align="center" height="20">'+ 
+        '  <td></td>'+ 
+        '  <td><input type="button" value="Guardar Cambios"/></td>'+ 
+        '  <td >&nbsp;</td>'+ 
+        '</tr> '+   
+'</table>';	
+	
+	$("#detalles_archivos").html(def);
+	$("#conte_1").html(asig);
+	$("#conte_2").html(disp);
+}
+
+
+//  funcion que muestra los elementos dependiendo la posicion, ejemplo si es catalogo solo muestra " crear menu"
+//  si es un menú ya creado solo muestra crear submenu o renombrar o eliminar.
+
+function menu_links(indice){
+  if(indice === 1){
+	//  alert('hohoh');
+	
+	  document.getElementById('link_subir').style.display='none';	 
+ 	  document.getElementById('link_nueva').style.display='';
+ 	  document.getElementById('link_renombra').style.display='none';
+ 	  document.getElementById('link_borrar').style.display='none';
+	  
+	  document.getElementById('link_nueva').innerHTML='Elemento de Menu';
+	  
+	//  $("#link_subir").css("display","none");
+  }
+  
+  if(indice === 2){  // menu emergente con opciones: nuevo,renombra,borrar
+	//  alert('hohoh');
+	
+	  document.getElementById('link_subir').style.display='none';	 
+ 	  document.getElementById('link_nueva').style.display='';
+ 	  document.getElementById('link_renombra').style.display='';
+ 	  document.getElementById('link_borrar').style.display='';
+	  
+	  document.getElementById('link_nueva').innerHTML='Nuevo Submenu';
+  }
+  
+  if(indice === 3){ // menu con opciones: subir, renombrar, borrar
+	
+	  document.getElementById('link_subir').style.display='';	 
+ 	  document.getElementById('link_nueva').style.display='none';
+ 	  document.getElementById('link_renombra').style.display='';
+ 	  document.getElementById('link_borrar').style.display='';
+	  
+  }
 }

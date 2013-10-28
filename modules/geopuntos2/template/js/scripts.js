@@ -8,6 +8,7 @@ var geo_gmap;
 var geocoder;
 var idev = -1;
 $(document).ready(function () {
+	
 	//Definir datepicker
 	$(".caja_date").datepicker({
 			showOn: "button",
@@ -50,7 +51,26 @@ $(document).ready(function () {
 		overlay: { opacity: 0.2, background: "cyan" },
 		width:  800,
 		height: 600,
-		buttons: {
+		
+		buttons:/*[
+			{
+				id: 'edit-button',
+				name: 'Guardar',
+				class: 'ocultar',
+				click: function() {validar_datos();}
+			},
+			{
+				id: 'issue-button',
+				name: 'Cancelar',
+				class: 'ocultar',
+				click: function() {
+				if($("#geo_dialog" ).dialog('isOpen')){
+					$("#dialog_message").dialog('close');
+					}
+					$("#geo_dialog" ).dialog('close');
+				}
+			}],*/
+			{
 			"Guardar": function(){
 				validar_datos();
 				},
@@ -109,7 +129,10 @@ $(document).ready(function () {
 		});				
 	//MAPA PRINCIPAL
 	geo_mapa();
-	
+	//Borrar cookies
+	//deleteAllCookies();
+
+	//setTimeout(function(){deleteAllCookies()},600000)
 	});
 //----------------------------
 function geo_load_datatable(){
@@ -177,7 +200,7 @@ function geo_load_datatable(){
 function validar_id(){
 	
 	if(idev==-1){
-		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un geopunto.</p>');
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un Punto de inter\u00e9s.</p>');
 		$("#dialog_message" ).dialog('open');	
 		}
 	}
@@ -188,7 +211,7 @@ function get_evidencias(){
 	//alert(idev)
 	
 	/*if(idev==-1){
-		$('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un geopunto.</p>');
+		$('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar un Punto de interes.</p>');
 		$("#dialog-message" ).dialog('open');	
 		}
 	else{*/
@@ -331,8 +354,8 @@ function geo_nuevo(op,id){
 			
 			
 			$("#geo_dialog").dialog("open");
-			if(op==1){$("#geo_dialog").dialog('option', 'title', 'Agregar Geopunto');}
-			if(op==2){$("#geo_dialog").dialog('option', 'title', 'Editar Geopunto');}
+			if(op==1){$("#geo_dialog").dialog('option', 'title', 'Agregar Punto de inter\u00e9s');}
+			if(op==2){$("#geo_dialog").dialog('option', 'title', 'Editar Punto de inter\u00e9s');}
 			$('#geo_dialog').html(""); 
 			$('#geo_dialog').html(result); 
 				}
@@ -352,7 +375,8 @@ function geo_mapa(){
 function pgeo_gmapa(){
 	$("#geo_location_map").height($("#geo_tabs").height()*0.9)
 	$("#geo_location_map").html("Cargando...");
-	setTimeout(geo_gmapa(), 5000);
+	setTimeout(function(){geo_gmapa()},5000)
+	
 	}
 function geo_gmapa(){
 	
@@ -430,7 +454,7 @@ function geo_main_clearOverlays(){
 function centra_mapa(lat,lon,dsc,nip,typ,rdo){
 	geo_main_clearOverlays();
 	var myLatlng = new google.maps.LatLng(lat,lon);	
-	var data = '<table width="100%"><tr><td colspan="2" align="center" style="background:#4297D7; color:#EAF5F7;"><strong>Datos del geopunto</strong></td></tr><tr><td>Descripci&oacute;n:</td><td>'+dsc+'</td></tr><tr><td>NIP:</td><td>'+nip+'</td></tr><tr><td>Tipo:</td><td>'+typ+'</td></tr></table>';
+	var data = '<table width="100%"><tr><td colspan="2" align="center" style="background:#4297D7; color:#EAF5F7;"><strong>Datos del Punto de inter\u00e9s</strong></td></tr><tr><td>Descripci&oacute;n:</td><td>'+dsc+'</td></tr><tr><td>NIP:</td><td>'+nip+'</td></tr><tr><td>Tipo:</td><td>'+typ+'</td></tr></table>';
 	//Pintar marcador
 	var image = 'public/images/Oficinas.png';
 	var marker = new google.maps.Marker({
@@ -512,7 +536,7 @@ function centra_punto(){
 		geof_marcadores.push(marker);
 		geo_gmap.setZoom(18);
 		geo_gmap.setCenter(marker.getPosition());
-		calcula_dir(lat,lon)
+		//calcula_dir(lat,lon)
 	}else{
 		$('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debes de ingresar latitud y longitud.</p>');
 		$("#dialog-message" ).dialog('open');	
@@ -658,6 +682,7 @@ function lay(){
 	}	
 //----------------------------------------------------------
 function validar_datos(){
+			
 	
 var ifs=0;	
 
@@ -670,37 +695,37 @@ $('a[href="#geo_tabs1"]').trigger('click');
 return false;
 	}
 	
-if($('#gnip').val().length==0){
+/*if($('#gnip').val().length==0){
 ifs=ifs+1;
 $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir un NIP.</p>');
 $("#dialog_message" ).dialog('open');		
 $('a[href="#geo_tabs1"]').trigger('click');
 return false;
-	}
+	}*/
 	
-if($('#gres').val().length==0){
+/*if($('#gres').val().length==0){
 ifs=ifs+1;
 $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir el nombre del responsable del PDI.</p>');
 $("#dialog_message" ).dialog('open');		
 $('a[href="#geo_tabs1"]').trigger('click');
 return false;
-	}	
+	}*/	
 
-if($('#gcor').val().length==0){
+/*if($('#gcor').val().length==0){
 ifs=ifs+1;
 $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir el correo electr\u00f3nico del responsable.</p>');
 $("#dialog_message" ).dialog('open');		
 $('a[href="#geo_tabs1"]').trigger('click');
 return false;
-	}
+	}*/
 
-if($('#gcel').val().length==0){
+/*if($('#gcel').val().length==0){
 ifs=ifs+1;
 $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir el n\u00famero celular del responsable.</p>');
 $("#dialog_message" ).dialog('open');		
 $('a[href="#geo_tabs1"]').trigger('click');
 return false;
-	}
+	}*/
 
 /*if($('#gtwt').val().length==0){
 ifs=ifs+1;
@@ -708,7 +733,7 @@ $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert"
 $("#dialog-message" ).dialog('open');		
 $('a[href="#tabs1"]').trigger('click');
 return false;
-	}*/
+	}
 	
 if($('#gstr').val().length==0){
 ifs=ifs+1;
@@ -764,7 +789,7 @@ $('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert"
 $("#dialog_message" ).dialog('open');		
 $('a[href="#geo_tabs2"]').trigger('click');
 return false;
-	}	
+	}	*/
 	
 var qst = $('#geo_qst_sel div').map(function() {
 		return this.id;
@@ -785,13 +810,17 @@ function payload(div){
 	var p ="";
 		$('#t'+div+'').find(':input').each(function(index, element) {
 			//p_r += this.id+"|"+this.value+"¬";
-			p += (p=="")?this.id+"¬"+this.value:"|"+this.id+"¬"+this.value;
+			if(this.value!=""){
+				p += (p=="")?this.id+"¬"+this.value:"|"+this.id+"¬"+this.value;
+				}
         });
+	//alert(p);
 	if(p==""){
 		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe contestar al menos una pregunta para generar QR.</p>');
 		$("#dialog_message" ).dialog('open');
 		}
 	else{
+		//alert (p)
 		var url= "index.php?m=geopuntos2&c=mGenerarQr&cadena="+p;
 				   window.location=url;
 				  
@@ -800,6 +829,10 @@ function payload(div){
 	}	
 //-------------------------------------------------------------------------------------------
 function save_geo(){
+	// set modal dialog
+	$("#dialog_message").dialog( "option", "modal", true );	
+	$('#dialog_message').html('<p align="center"><img src="public/images/cargando.gif" > Procesando datos.Espere un momento, por favor.</p>');
+	$("#dialog_message").dialog('open');
 	$("body").css("cursor", "progress");
 	var p_r = "";
 	c=0;
@@ -866,6 +899,7 @@ function save_geo(){
 		//alert(aes+","+nen+","+nsa+","+nat+","+nvr);
 		//alert(p_r)
 		//alert($("#gnip").val());
+		//alert($("#gact").val())
 	$.ajax({
 		url: "index.php?m=geopuntos2&c=mSave",
 		type: "GET",
@@ -874,6 +908,7 @@ function save_geo(){
 			typ : $("#gtyp").val(),
 			nip : $("#gnip").val(),
 			rdo : $("#grdo").val(),
+			act : $("#gact").val(),
 			str : $("#gstr").val(),
 			edo : $("#gedo option:selected").text(),
 			mun : $("#gmun option:selected").text(),
@@ -956,7 +991,7 @@ function proceso_borrar(id){
 			var result = data;
 			//alert(result) 
 			if(result>0){
-				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>El geopunto ha sido eliminado correctamente.</p>');
+				$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>El Punto de inter\u00e9s ha sido eliminado correctamente.</p>');
 				$("#dialog_message" ).dialog('open');
 				geo_load_datatable();
 				//$('#ev').html('');

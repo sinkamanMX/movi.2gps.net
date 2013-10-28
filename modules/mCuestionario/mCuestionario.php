@@ -24,12 +24,18 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 	$rtime = " AND CAST(R.FECHA AS DATE) BETWEEN '".$sStartDate."' AND '".$sEndDate."'";
 	
 	$result = '';
-	$sql="SELECT
+	/*$sql="SELECT
 	C.ID_CUESTIONARIO, 
 	C.DESCRIPCION,
 	(SELECT COUNT(R.ID_CUESTIONARIO) FROM CRM2_RESPUESTAS R WHERE R.ID_CUESTIONARIO=C.ID_CUESTIONARIO ".$rtime.") AS RESP 
 	FROM CRM2_CUESTIONARIOS C
-	WHERE C.COD_CLIENT = ".$client." ORDER BY RESP DESC, C.DESCRIPCION ASC;";
+	WHERE C.COD_CLIENT = ".$client." ORDER BY C. ORDEN ASC, RESP DESC, C.DESCRIPCION ASC;";*/
+	$sql = "SELECT
+	C.ID_CUESTIONARIO, 
+	C.DESCRIPCION,
+	(SELECT COUNT(R.ID_CUESTIONARIO) FROM CRM2_RESPUESTAS R WHERE R.ID_CUESTIONARIO = C.ID_CUESTIONARIO  ".$rtime.") AS RESP 
+	FROM CRM2_CUESTIONARIOS C
+	WHERE C.COD_CLIENT = ".$client." ORDER BY C. ORDEN ASC;	";
 		$query 	= $db->sqlQuery($sql);
 		while($row = $db->sqlFetchArray($query)){
 			$result[] = $row; // Inside while loop

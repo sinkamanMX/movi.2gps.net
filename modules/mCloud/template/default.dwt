@@ -69,28 +69,72 @@ function(){
         });
         setupLabel(); 
 		
-		$( "button" )
+	/*	$( "button" )
 		  .button()
 		  .click(function( event ) {
 			$( "#dialog_nc" ).dialog( "open" );
-		  });
-
+		  });*/
+/* --------------------------------------------------------*/  
 		 		  
 		 $( "#dialog_nc" ).dialog({ 
 		               autoOpen: false,
 					   title: "Nuevo Catálogo", 
 		               buttons: {
-						Guardar: function() {
-							/* Do stuff */
-							CrearCatalogo();
-						},
-						Cancelar: function() {
-							$("#dialog_nc").dialog("close");
-						}
-    }
+							Guardar: function() {
+								/* Do stuff */
+								CrearCatalogo();
+							},
+							Cancelar: function() {
+								$("#dialog_nc").dialog("close");
+							}
+   					   }
 		 
 		  }); 
+		/***********************************************************************/   		  
+		 $( "#dialog_prog" ).dialog({ 
+		               autoOpen: false
+		  }); 
+		/* ------------------------------------------- caja dialogo tipo de archivos-------------*/  
+		  	 $( "#dialog_okey" ).dialog({ 
+		               autoOpen: false,
+					   title: "Mensaje", 
+		               buttons: {
+							Aceptar: function() {
+								
+								$("#dialog_okey").dialog("close");
+							},
+							
+   					   }
+		  }); 	
+		/* ------------------------------------------- caja dialogo aviso de proceso de trabajo-------------*/  
+		  		 $( "#dialog_tipo_archivo" ).dialog({ 
+		               autoOpen: false,
+					   title: "Tipo de Archivo", 
+					   width: 250,
+					   heigth:190,
+		               buttons: {
+							Aceptar: function() {
+								/* agregar el archivo elegido*/
+								var tip_archi = $("#tipo_archivo").val();
+								add_file(tip_archi);
+							},
+							Cancelar: function() {
+								$("#dialog_tipo_archivo").dialog("close");
+							}
+   					   }
+		 
+		  });
+		  //-------------------------------------------------------------------------
+		  
+
+
+		  //-----------------------------------------------------------------------
     });
+	
+/*	function abree(){
+	$("#dialog5").dialog("open");
+	}
+*/
 </script>
 
 
@@ -115,6 +159,16 @@ function(){
 		font-weight: bold;
 		color: #2e6e9e;
 	 }
+	 
+	 #span_deta {
+position: absolute;
+height: 75px;
+top: 40%;
+left: 40%;
+color: #B7B7B7;
+font-size: 30px;
+font-weight: bold;
+}
 </style>
 </head>
 <!--<body onload="init('{URL}','{RM}','{UP}')" >-->
@@ -128,13 +182,6 @@ function(){
 <!--<button >Nuevo Cat&aacute;logo</button>-->
 <div id="column1" >
 
-<!--<select onchange="r_filtro1(this.value);" >
- <option value="-1" style="color:#666;">Opci&oacute;n</option>
-	
-      <option value="{group.ID_CATALOGO}">{group.DESCRTIPCION}</option> 
-
-
-</select>-->
      <div id="catalogos-combo" style="border:#333 solid 0px; width:250px;"> 
      
      </div>
@@ -146,25 +193,94 @@ function(){
 	</div>
 
 <div id="derecho" >
-        <div class="divs" id="conte_1">
-                 Usuarios Asignados
+       <table border="0" width="100%" height="100%"> 
+        <tr style="height:25%;"><td>
+       
+      <fieldset style="border:#A6C9E2 solid 1px;"> 
+      <legend> <h5>Asignaci&oacute;n de Usuarios</h5></legend> 
+        
+        <table border="0">
+        <tr>
+        <td>
+         <div class="divs" id="conte_2">
+                 Disponibles
+                <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0"></select>
+         </div>
+         </td>
+         <td>
+           <div id="dv">
+               <input id="xx" type="button" class="quitar der" value="&nbsp;>&nbsp;">
+                <input id="xx" type="button" class="quitartodos der" value=">>">
+               <input id="xx" type="button" class="pasartodos izq" value="<<">
+              <input id="xx" type="button" class="pasar izq" value="&nbsp;<&nbsp;" >               
+            </div>
+           </td>
+           <td>
+           <div class="divs" id="conte_1">
+                  Asignados
                   <select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">
                     <option value="-1"></option>
                 </select>
-  </div>
-            <div id="dv">
-               <input id="xx" type="button" class="pasar izq" value="&nbsp;>&nbsp;" >
-               <input id="xx" type="button" class="pasartodos izq" value=">>">
-                <input id="xx" type="button" class="quitartodos der" value="<<">
-               <input id="xx" type="button" class="quitar der" value="&nbsp;<&nbsp;">
-               
-            </div>
-         <div class="divs" id="conte_2">
-                Usuarios Disponibles
-                <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0"></select>
-         </div>
+        </div>
+        </td>
+        <td> 
+          <h4 id="mensaje_url">
+                    &nbsp;&nbsp;  Nota:  
+	                &nbsp;&nbsp;  Listado de usuarios que tienen <br />  
+				    &nbsp;&nbsp;  permiso de visualizar el documento <br />
+				    &nbsp;&nbsp;  actual.
+          
+           </h4>
+         </td>
+        </tr>
+        </table>
+        <input type="text" id="bandera_guardar_detalles" />
+        <input type="text" id="valor_detalles" />
+       </fieldset>
+      
          
-      <input type="button" id="guardar_datos"  onclick="recorre_select();" class="colores" value="Realizar cambios" />   
+      <!--<input type="button" id="guardar_datos"  onclick="recorre_select();" class="colores" value="Realizar cambios" />-->
+        </td></tr>
+        <tr><td align="center">
+     <div id="detalles_archivos" style=" width:100%; height:100%;position:relative; bottom:0px; border:#000 solid 0px;" class="divs"> 
+         <table border="0" width="100%" height="100%" > 
+          <tr bgcolor="#FFFFFF">
+           <td bgcolor="#F4F4F4" width="120" height="20">TITULO</td>
+           <td style="width:50%;"></td>
+           <td rowspan="4"><div align="center"  style="border:#F4F4F4 solid 1px; width:100%; height:100%;">No Disponible</div></td>
+          </tr>
+ 		  <tr bgcolor="#FFFFFF">
+          	<td bgcolor="#F4F4F4" height="20" >AUTOR</td>
+            <td></td>
+          </tr>
+		 <tr style="height:70%;" bgcolor="#FFFFFF">
+            <td bgcolor="#F4F4F4">RESUMEN</td>
+            <td ></td>
+         </tr>
+ 		 <tr bgcolor="#FFFFFF">
+            <td bgcolor="#F4F4F4" >TAG (Separar con "," para m&aacute;s de un tag)</td>
+            <td></td>
+        </tr>
+ 		<tr  bgcolor="#F4F4F4" height="20"><td>EVENTO</td>
+          <td>
+            <select name="eventos" style="width:100%;" class="caja_txt">
+ 			  <option value="-1" style="color:#666;">Opci&oacute;n</option>
+			</select>
+ 		  </td>
+ 		<td >IMAGEN</td>
+        </tr>
+  		<tr bgcolor="#F4F4F4" align="center" height="20">
+          <td></td>
+          <td><input type="button" value="Guardar Cambios"/></td>
+          <td >&nbsp;</td>
+        </tr>    
+</table>
+
+     </div>   
+        </td></tr>
+       </table>
+       
+        
    </div>
     
 	<!--	<div id="dialog"  title=" &nbsp;&nbsp; Descripcion" style="  ">
@@ -174,11 +290,12 @@ function(){
   
     </div>-->
 <ul id="mycarp" class="contextMenu" >
- 			<li class="adfi"><a href="#addfi">Subir</a></li>
-			 <li class="adca" id="nueva_carpeta"><a href="#addcar">Nueva</a></li>
-			<li class="edit"><a href="#renom">Renombrar</a></li>
-			<li class="delete"><a href="#delete">Eliminar</a></li>
- </ul> 
+ 			 <li class="adfi" >  <a href="#addfi"  id="link_subir"    style="display:none;">Subir</a></li>
+			 <li class="adca" >  <a href="#addcar" id="link_nueva"    style="display:none;"></a></li>
+			 <li class="edit" >  <a href="#renom"  id="link_renombra" style="display:none;">Renombrar</a></li>
+			 <li class="delete"> <a href="#delete" id="link_borrar"   style="display:none;">Eliminar</a></li>
+</ul>
+ 
 <ul id="myfil" class="contextMenu" >
 		<!--	<li class="desca"><a href="#descar">Descargar</a></li>
 			<li class="edit"><a href="#edit">Editar</a></li>-->
@@ -204,26 +321,38 @@ function(){
  <div id="dialog1" title="Eliminar"></div>
  <div id="dialog2" title="Confirmacion"></div>
  <div id="dialog3" title="Imagen" >
-    <div id="coin-slider"></div>
+ <div id="coin-slider"></div>
 </div>
  <div id="dialog4" title="Nueva Carpeta"></div>
+ <div id="dialog_prog" align="center">
+    <br />
+     <h5 id="letra_x"> Guardando Datos </h5> 
+    <br /><br />
+ <img id="imagenes"   src="modules/mCloud/template/apb.gif"/>
+ </div>
  
+ <div id="dialog_okey" align="center" > <h5 id="letrero_x"> </h5>
+ </div>
+<!-- <input type="button" value="aber" onclick="abree();" />-->
  <!--  dialogo para creacion de un nuevo catálogo  -->
  
- <div id="dialog_nc" title="Dialog Title">
+ <div id="dialog_nc" title="Dialog Title" >
    Descripci&oacute;n <input type="text" id="des_catalogo"/>
  </div>
  
-<iframe name="ifra" id="ifra" width="0" height="0" frameborder="0" >
+  <div id="dialog_tipo_archivo" title="Dialog Title">
+     <input type="radio" name="tiposs" value="a" onclick="asig(this.value);">Archivo &nbsp; &nbsp; &nbsp;
+     <input type="radio" name="tiposs" value="v" onclick="asig(this.value);">Vídeo   &nbsp; &nbsp; &nbsp;
+     <input type="radio" name="tiposs" value="u" onclick="asig(this.value);">URL
+ </div>
+ <div id="dialog_img_cambia" > </div>
+ 
+<iframe name="ifra" id="ifra" width="200" height="200" frameborder="0" style="position:relative; top:400px;" >
 </iframe>
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<input type="text" value="{CLIENTE}" id="cliente" />
-<input type="text"  id="catalogos" />
-<input type="text"  id="id_menu" style=" position:relative; left:200px;"  value="0"/>
+<input type="hidden" value="{CLIENTE}" id="cliente" />
+<input type="hidden"  id="catalogos" />
+<input type="hidden"  id="id_menu" style=" position:relative; left:200px;"  value="0"/>
+<input type="hidden"  id="tipo_archivo" style=" position:relative; left:300px;"  value="0"/>
+
 </body>
 </html>

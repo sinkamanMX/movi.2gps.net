@@ -12,6 +12,44 @@ $idc   = $userAdmin->user_info['ID_CLIENTE'];
 	
 	
 	$row_t='';
+	$order_prio=0;
+	$pal=0;
+	$c=0;
+	
+	$sql_p = "SELECT D.ORD_PRIO,D.FECHA_ENTREGA, D.ID_ENTREGA FROM DSP_ITINERARIO D WHERE D.ID_DESPACHO=".$_GET['idd']." ORDER BY D.ORD_PRIO DESC";
+				$query_p = $db->sqlQuery($sql_p);
+				$total_entregas = $db->sqlEnumRows($query_p); 
+				$ordens_b=explode('_',$row_p['ORD_PRIO']);
+				
+				$dateTime1 =strtotime($_GET['dte']);
+				if($total_entregas>0){
+				while($row_p=$db->sqlFetchArray($query_p)){
+					$c=$c+1;
+				
+					$dateTime =strtotime($row_p['FECHA_ENTREGA']);
+					
+					if($dateTime1 < $dateTime){
+						
+						$pal=$row_p['ORD_PRIO'];
+						
+						
+					$datas = Array(
+							'ORD_PRIO'   => $row_p['ORD_PRIO']+1
+					);
+					$where = " ID_ENTREGA  = ".$row_p['ID_ENTREGA'];
+						$dbf-> updateDB('DSP_ITINERARIO',$datas,$where,true);
+					}else{
+						$da=$row_p['ORD_PRIO'];
+						$pal=$da+1;
+						}
+				//var_dump($dateTime < $dateTime1);
+
+				}
+				}else{
+				$pal=1;
+				}
+				$order_prio=$pal;
+				
 if($_GET['datap']==""){	
 
 		if($_GET['rh']==0){
@@ -28,6 +66,7 @@ if($_GET['datap']==""){
 					'ID_TIPO_VOLUMEN'		=> 1,
 					'CREADO'	        => date('Y-m-d H:i:s'),
 					'TIPO_RH'	        => 'GP',
+					'ORD_PRIO'   		=> $order_prio,
 					'COD_RH'	        => '0'
 				);
 		}else{
@@ -45,6 +84,7 @@ if($_GET['datap']==""){
 					'ID_TIPO_VOLUMEN'		=> 1,
 					'CREADO'	        => date('Y-m-d H:i:s'),
 					'TIPO_RH'	        => 'RH',
+					'ORD_PRIO'   		=> $order_prio,
 					'COD_RH'	        => $_GET['cte']
 				);
 			

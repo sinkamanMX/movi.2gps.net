@@ -29,7 +29,7 @@
 	$ed_h = $Functions->cbo_number(24,"23");
 	$ed_m = $Functions->cbo_number(60,"59");
 	
-	$users = $dbf->cbo_from_all("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS","ID_EMPRESA = ".$emp,"");
+	$users = $dbf->cbo_from_all("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS","ID_CLIENTE = ".$cte,"");
 	$c_qry = " FROM CRM2_CUESTIONARIO_PREGUNTAS CP INNER JOIN CRM2_PREGUNTAS P ON P.ID_PREGUNTA = CP.ID_PREGUNTA WHERE    CP.ID_CUESTIONARIO = ".$_GET['cuestionario'];
 	$pregs = $dbf->cbo_from_query("CP.ID_PREGUNTA","P.DESCRIPCION",$c_qry,"",true);
 	//$pregs = $dbf->cbo_from_all("ID_PREGUNTA","DESCRIPCION","CRM2_PREGUNTAS","COD_CLIENT = ".$emp." ORDER BY DESCRIPCION","");

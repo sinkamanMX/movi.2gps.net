@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<script type="text/javascript" src="public/js/general.js"></script>
 
 <div style="width:100%; height:100%; border:#066 solid thin;" id="geo_main">
 
@@ -12,7 +13,8 @@
 <table cellpadding="0" cellspacing="0" border="0" class="display" id="geo_table" width="100%">
 <thead>
 <tr>
-<th colspan="5"><div style="width:79%; float:left;"><h3>Geopuntos</h3></div>
+<th colspan="5"><div style="width:79%; float:left;">
+  <h3>Puntos de inter&eacute;s</h3></div>
 <div style="width:20%;  float:right;"><button class="boton" id="geo_add" onClick="geo_nuevo(1,-1);">Nuevo</button><button class="import small_btn" onclick="geo_imp_for();" title="Importar"></button></div></th>
 </tr>
 <tr>

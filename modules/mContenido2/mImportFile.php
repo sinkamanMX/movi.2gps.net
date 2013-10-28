@@ -19,8 +19,9 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 		echo '<script>window.location="index.php?m=login"</script>';
 	}
 
-$idc   = $userAdmin->user_info['COD_CLIENT'];
-$idu   = $userAdmin->user_info['COD_USER'];
+$idc   = $userAdmin->user_info['ID_CLIENTE'];
+
+$idu   = $userAdmin->user_info['ID_USUARIO'];
 $mensaje ="";
 $sap_it = array();
 $und_id = array();
@@ -139,7 +140,7 @@ if ($permiso && !in_array($extension_archivo, $extensiones_permitidas)){
 function generar_data(){
 	global $db,$idc,$idu,$sap_it,$und_id,$und_nm,$ent_it,$tv,$dsp,$dsp_in;
 	//OBTENER SAP CLIENTE
-	$sql = "SELECT S.COD_OBJECT_MAP, S.ITEM_NUMBER FROM SAVL_G_PRIN S WHERE S.COD_CLIENT=".$idc;
+	$sql = "SELECT S.ID_OBJECT_MAP, S.ITEM_NUMBER FROM ADM_GEOREFERENCIAS S WHERE S.ID_CLIENTE=".$idc;
     $query = $db->sqlQuery($sql);
 	$count=  $db->sqlEnumRows($query);	
 		while($row=$db->sqlFetchArray($query)){
@@ -148,10 +149,8 @@ function generar_data(){
 			//$sap_id [] = $row['ITEM_NUMBER']."¬".$row['COD_OBJECT_MAP'];
 		}
 	//OBTENER UNIDADES
-	$sql_a = "SELECT S.COD_ENTITY,S.DESCRIPTION FROM SAVL1120 S
-	INNER JOIN SAVL1220_GDET B ON B.COD_ENTITY = S.COD_ENTITY 
-	INNER JOIN SAVL1220_G A ON A.ID_GROUP = B.ID_GROUP 
-	WHERE A.COD_CLIENT =".$idc;
+	$sql_a = "SELECT S.COD_ENTITY,S.DESCRIPTION FROM ADM_UNIDADES S
+	 WHERE S.COD_CLIENT =".$idc;
     $qry_a = $db->sqlQuery($sql_a);
 	$cnt_a=  $db->sqlEnumRows($qry_a);	
 		while($row_a=$db->sqlFetchArray($qry_a)){
@@ -175,7 +174,7 @@ function generar_data(){
 			$tv [] = $row_k['ABREVIATURA'];
 					}*/
 	// OBTENER DESPACHOS 
-	 $sql_c = "SELECT D.ID_DESPACHO, D.ITEM_NUMBER FROM DSP_DESPACHO D INNER JOIN SAVL1100 U ON U.COD_USER=D.COD_USER WHERE U.COD_CLIENT=".$idc;
+	 $sql_c = "SELECT D.ID_DESPACHO, D.ITEM_NUMBER FROM DSP_DESPACHO D WHERE D.COD_USER=".$idu;
      $qry_c = $db->sqlQuery($sql_c);
 	 $cnt_c =  $db->sqlEnumRows($qry_c);	
 		while($row_c=$db->sqlFetchArray($qry_c)){
@@ -525,7 +524,7 @@ function generar_data_iti(){
 	for ($row=2;$row<=$excel->rowcount();$row++) {
 		if($excel->val($row,'B')!="" && $excel->val($row,'C')!=""){
 		$id = get_id("ID_DESPACHO","DSP_DESPACHO"," WHERE ITEM_NUMBER = '".$excel->val($row,'B')."'");
-		$go = get_id("COD_OBJECT_MAP","SAVL_G_PRIN"," WHERE ITEM_NUMBER = '".$excel->val($row,'C')."'");
+		$go = get_id("ID_OBJECT_MAP","ADM_GEOREFERENCIAS"," WHERE ITEM_NUMBER = '".$excel->val($row,'C')."'");
 		//Generar cadena
 		//`ID_DESPACHO``ID_ESTATUS``COD_GEO``COD_USER``ITEM_NUMBER``FECHA_ENTREGA``FECHA_FIN``CREADO`
 		$data .= ($data=="")
@@ -546,7 +545,7 @@ function generar_data_und(){
 			if($row== 2 && $excel->val($row,'B')!=""){
 				//$idv_tmp = $excel->val($row,'B');
 				$id = get_id("ID_DESPACHO","DSP_DESPACHO"," WHERE ITEM_NUMBER = '".$excel->val($row,'B')."'");
-				$un = get_id("COD_ENTITY","SAVL1120"," WHERE DESCRIPTION = '".$excel->val($row,'D')."' AND COD_CLIENT = ".$idc);
+				$un = get_id("COD_ENTITY","ADM_UNIDADES"," WHERE DESCRIPTION = '".$excel->val($row,'D')."' AND COD_CLIENT = ".$idc);
 				}
 			else{
 				//echo $excel->val($row,'B')."!=".$excel->val($row-1,'B');
@@ -562,7 +561,7 @@ function generar_data_und(){
 					$id = ($excel->val($row,'B')!="")
 					?get_id("ID_DESPACHO","DSP_DESPACHO"," WHERE ITEM_NUMBER = '".$excel->val($row,'B')."'"):"";
 					$un = ($excel->val($row,'B')!="")
-					?get_id("COD_ENTITY","SAVL1120"," WHERE DESCRIPTION = '".$excel->val($row,'D')."' AND COD_CLIENT = ".$idc):"";
+					?get_id("COD_ENTITY","ADM_UNIDADES"," WHERE DESCRIPTION = '".$excel->val($row,'D')."' AND COD_CLIENT = ".$idc):"";
 					}
 				}	
 			}

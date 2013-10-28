@@ -9,7 +9,7 @@
 		echo '<script>window.location="index.php?m=login"</script>';
 		
 	$tpl->set_filenames(array('default'=>'default'));	
-	$idc   = $userAdmin->user_info['ID_CLIENTE'];
+	$idc   = $userAdmin->user_info['ID_USUARIO'];
        
 
         

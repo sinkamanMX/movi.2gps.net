@@ -32,18 +32,57 @@ $(document).ready(function () {
 		});	
 	$("a[href=#qst_tab_pregunta]").click(function(){
 		val_pes_tma();
-		});			
+		});
 		
-	$('.dropme').sortable({
-		connectWith: '.dropme',
-		cursor: 'move'
-		}).droppable({
+	 qst_aps = $('#qst_preg_sel div').map(function() {
+		return this.id;
+		}).get();
+	
+	
+	 qst_apd = $('#qst_preg_dsp div').map(function() {
+		return this.id;
+		}).get();
+		
+		
+		
+	$('.dropme').droppable({
 			accept: '.dropme',
 			activeClass: 'highlight',
-			drop: function(event, ui) {
-				var $li = $('<div>').html('List ' + ui.draggable.html());
-				$li.appendTo(this);
+			drop: function() {
+				//alert( "dropped" );
 				}
+	}).sortable({
+		connectWith: '.dropme',
+		cursor: 'move',
+		 	
+		stop: function( event, ui ) {
+			//alert("[" + this.id + "] received [" + ui.item.attr("id") + "]");
+			//alert(ui.item.parent().attr("id") )
+			//alert("[" + this.id + "] received [" + ui.item.attr("id") + "] from [" + ui.item.parent().attr("id") + "]");
+			
+			var div_src = this.id;
+			var div_dst = ui.item.parent().attr("id");
+			var idp = ui.item.attr("id");
+			
+			
+			
+			if(div_src == 'qst_preg_sel' && div_src!=div_dst){
+				var index = qst_aps.indexOf(idp);
+				//qst_aps.pop(idp);
+				if (index > -1) {
+					qst_aps.splice(index, 1);
+				}
+				qst_apd.push(idp);
+				}
+			if(div_src == 'qst_preg_dsp' && div_src!=div_dst){
+				var index = qst_apd.indexOf(idp);
+				//qst_apd.pop(idp);
+				if (index > -1) {
+					qst_apd.splice(index, 1);
+				}
+				qst_aps.push(idp);
+				}
+			}	
 		});
 	var x = {X}	;
 	var y = {Y} ;
@@ -219,7 +258,7 @@ $(document).ready(function () {
 <!--Buscador-->
 <!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
 
-<div id="qst_user_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+<div id="qst_user_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;" >
 {USS}
 </div>
 </div>

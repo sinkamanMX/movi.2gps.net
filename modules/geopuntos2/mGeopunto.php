@@ -15,6 +15,7 @@
 	if(!$userAdmin->u_logged())  //Valida Usuario Logeado
 		echo '<script>window.location="index.php?m=login"</script>';  //Manda al login si no se ha Logeo.
 	//--------------------------- Modificada BD y Encabezado------------------------
+	$db ->sqlQuery("SET NAMES 'utf8'");
 	
 
 	$cod_client = $userAdmin->user_info['ID_CLIENTE'];
@@ -43,11 +44,16 @@
 			$nsa = ($row_a['ITI_NOTI_SALIDA']=='S')?'checked="checked"':'';
 			$nat = ($row_a['ITI_NOTI_ATRAZO']=='S')?'checked="checked"':'';
 			$nvr = ($row_a['ITI_NOTI_VISTA_RUTA']=='S')?'checked="checked"':'';
+			$t_s = ($row_a['ACTIVO']=='S')?'selected="selected"':'';
+			$t_n = ($row_a['ACTIVO']=='N')?'selected="selected"':'';
 			
 				$tpl->assign_vars(array(
 				'IDG'	=>	$row_a['ID_OBJECT_MAP'],
 				'DSC'	=>	$row_a['DESCRIPCION'],
 				'NIP'	=>	$row_a['ITEM_NUMBER'],
+				
+				'T_S' 	=>  $t_s,
+				'T_N'	=>	$t_n,
 				'RES'	=>	$row_a['RESPONSABLE'],
 				'COR'	=>	$row_a['CORREO'],
 				'CEL'	=>	$row_a['CELULAR'],
@@ -212,7 +218,7 @@
 	}
 	
 	//
-	$sql_t = "SELECT ID_TIPO,DESCRIPCION FROM ADM_GEOREFERENCIAS_TIPO ORDER BY DESCRIPCION;";
+	$sql_t = "SELECT ID_TIPO,DESCRIPCION FROM ADM_GEOREFERENCIAS_TIPO WHERE ID_CLIENTE = ".$cod_client." ORDER BY DESCRIPCION;";
 	$qry_t = $db->sqlQuery($sql_t);
 	$cnt_t = $db->sqlEnumRows($qry_t);
 	

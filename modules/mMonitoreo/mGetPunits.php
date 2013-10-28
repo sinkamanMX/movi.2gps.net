@@ -107,11 +107,11 @@
                     }                    
                 }
             }else if($upos['LATITUDE'] != "0.000000" && $upos['LONGITUDE'] != "0.000000" 
-                                                     && ($typeLoc =="NULL" || $typeLoc =="0")){         
+                                                     && $typeLoc =="NULL" || $typeLoc =="0"){         
                 $typeLoc = 1;  
                 $direccion1 = $Positions->direccion_no_format($upos['LATITUDE'],$upos['LONGITUDE']);
                 $new_dir= $Functions->codif($direccion1);      
-                $buscarPDI=true;                   
+                $buscarPDI=true;                    
             }                
 			
             if($upos['LATITUDE'] != "0.000000" && $upos['LONGITUDE'] != "0.000000"){
