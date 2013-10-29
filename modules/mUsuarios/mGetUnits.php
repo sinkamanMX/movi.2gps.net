@@ -20,13 +20,13 @@
 						INNER JOIN ADM_UNIDADES ON ADM_UNIDADES.COD_ENTITY  = ADM_GRUPOS_UNIDADES.COD_ENTITY
 						WHERE ID_GRUPO = ".$_GET['grupo_id']." AND ADM_GRUPOS_UNIDADES.COD_ENTITY  NOT IN (
 							SELECT COD_ENTITY
-							FROM ADM_USUARIOS_GRUPOS WHERE ID_USUARIO = ".$_GET['data']." )";
+							FROM ADM_USUARIOS_GRUPOS WHERE ID_USUARIO = ".$_GET['data']." AND ID_GRUPO = ".$_GET['grupo_id']." )";
 		$query_units = $db->sqlQuery($sql_units);
 		$units_count = $db->sqlEnumRows($query_units);  		
   		if($units_count){
   			while($data_units = $db->sqlFetchArray($query_units)){				
 				$u_unselected .= '<li  id="'.$data_units['COD_ENTITY'].'" value="'.$_GET['grupo_id']
-							.'" class="ui-state-default">'.
+							.'" tittle="'.$_GET['grupo_id'].'" class="ui-state-default">'.
 							'<a href="javascript:void(0)">'.
 								$data_units['UNIDAD'].
 							'</a><span style="display:none;">'.$data_units['COD_ENTITY'].'|'.

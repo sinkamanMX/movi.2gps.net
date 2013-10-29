@@ -55,7 +55,7 @@ function user_load_datatable(){
       "bFilter": true,
       "bSort": true,
       "bJQueryUI": true,
-      "iDisplayLength": 20,      
+      "iDisplayLength": 18,      
       "bProcessing": true,
       "bAutoWidth": false,
       "bSortClasses": false,

@@ -27,7 +27,7 @@
   		if($units_count){
   			while($data_units = $db->sqlFetchArray($query_units)){				
 				$u_selected .= '<li id="'.$data_units['COD_ENTITY'].'" value="'.$data_units['ID_GRUPO']
-							.'" class="ui-state-default">'.
+							.'"  tittle="'.$data_units['ID_GRUPO'].'" class="ui-state-default">'.
 							'<a href="javascript:void(0)">'.
 								$data_units['UNIDAD'].
 							'</a><span style="display:none;">'.$data_units['COD_ENTITY'].'|'.
