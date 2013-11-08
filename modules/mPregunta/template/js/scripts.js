@@ -272,6 +272,7 @@ function pre_save_formp(){
 			rec : $("#pre_rec").val(),
 			req : $("#pre_req").val(),
 			com : $("#qst_comp").val(),
+			edt : $("#pre_edt").val(),
 			qst : pre_q,
 			oqst: $("#pre_hqst").val(),
 			op  : $("#pre_hop").val(),
@@ -396,4 +397,27 @@ function pre_validar_dsc(txt){
 		$("#pre_hdsc").val(result);
           }
       });	
+	}
+//----------------------------------------------------------------------	
+function pre_edt_op(idt){
+	$.ajax({
+		url: "index.php?m=mPregunta&c=mGetTipo",
+        type: "GET",
+		data:{
+			idt : idt
+			},
+        success: function(data) {
+        var result = data;
+		//alert(result)
+		if(result=='N'){
+			$('#pre_edt option[value="S"]').prop('selected', true);
+			$("#pre_edt").prop('disabled',true);
+			}
+		if(result=='S'){
+			$('#pre_edt option[value="S"]').prop('selected', false);
+			$("#pre_edt").prop('disabled',false);
+			}
+	
+          }
+      });
 	}

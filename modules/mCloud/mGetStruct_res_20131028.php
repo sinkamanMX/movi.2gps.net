@@ -4,11 +4,11 @@
 
 	if(!$userAdmin->u_logged())
 	echo '<script>window.location="index.php?m=login"</script>';
-    
-	 $UTF8 = "SET NAMES 'utf8'";
-     $db->sqlQuery($UTF8);
 
- $sqlZ = "SELECT CT.ID_CATALOGO,CT.DESCRIPCION AS URL,CT.DESCRIPCION_REAL AS NREAL,CLI.NOMBRE FROM 
+
+ 
+
+ $sqlZ = "SELECT CT.ID_CATALOGO,CT.DESCRIPCION AS URL,CLI.NOMBRE FROM 
 		CAT_CATALOGO CT INNER JOIN 
 		CAT_CLIENTE_CATALOGO CCT ON CT.ID_CATALOGO = CCT.ID_CATALOGO 
 		INNER JOIN ADM_CLIENTES CLI ON CCT.ID_CLIENTE = CLI.ID_CLIENTE
@@ -21,9 +21,9 @@
   $sqlx = "SELECT ID_MENU,DESCRIPTION,DESCRIPTION2 FROM CAT_MENU WHERE ID_CATALOGO = ".$_GET['catalogo'];
      $q = $db->sqlQuery($sqlx);
      $count = $db->sqlEnumRows($q);
-	 $dato = '';
-	 $arreglo = array();
-	 $contador = -1;
+	$dato = '';
+	$arreglo = array();
+	$contador = -1;
 	
 	 while($ro = $db->sqlFetchArray($q)){
 		  $contador = $contador +1;
@@ -70,7 +70,7 @@ $sqlW = "SELECT A.ID_SUBMENU,A.UBICACION_REMOTA,A.ORDEN FROM CAT_CONTENIDO A
 	 } 
 //----------------------------------------------------------
 
-    $directorio='catalogos/'.$rowZ['NREAL'];
+    $directorio='catalogos/'.$rowZ['URL'];
 
 	$T=1;
 	$ct='-';
@@ -111,7 +111,6 @@ $sqlW = "SELECT A.ID_SUBMENU,A.UBICACION_REMOTA,A.ORDEN FROM CAT_CONTENIDO A
 					'.jpeg,imgs',
 					'.bmp,imgs',
 					'.png,imgs',
-					'.apk,imgs',
 					'.dwt,dwt'
 						 );
 	
@@ -128,7 +127,7 @@ if ($handle = opendir($directorio)) {
 					$newcar=$directorio.'/'.$file;
 					$T++;
 					
-$cadena.='<li class="closed"><span class="folder" onmouseup="menu_links(1),deta_default_ini(),change_m(1),change_ide(\''. base64_encode($directorio.'/'.$file).'\')" >C&aacute;talogo : '.($rowZ['URL'])."</span>"; // echo $file ." cas $file\n"; //de ser un directorio lo envolvemos entre corchetes
+$cadena.='<li class="closed"><span class="folder" onmouseup="menu_links(1),deta_default(),change_m(1),change_ide(\''. base64_encode($directorio.'/'.$file).'\')" >'.$file ."</span>"; // echo $file ." cas $file\n"; //de ser un directorio lo envolvemos entre corchetes
 				    $cadena.=carpt($newcar,$formatos,1,$arreglo,$arreglo2,$arreglo3);
 					$cadena.='</li>';
    				 }
@@ -212,7 +211,7 @@ function carpt($directorio,$formatos,$x,$arreglo,$arreglo2,$arreglo3){
 	                     }
 					   $cads.='<li class="closed"><span class="folder" onmouseup="menu_links('.$link_dato.'),deta_default_ini(),change_idm('.$mm.'), change_n('.$codigo.
 					   '),change_ide2(\''.base64_encode($directorio.'/'.$file).'\'),change_ide(\''. 
-					   base64_encode($directorio.'/'.($ETIQUETA)).'\');">'.($ETIQUETA) ."</span>";
+					   base64_encode($directorio.'/'.codif($ETIQUETA)).'\');">'.codif($ETIQUETA) ."</span>";
 					  
 					
  // echo $file ." cas $file\n"; //de ser un directorio lo envolvemos entre corchetes
@@ -245,8 +244,8 @@ function carpt($directorio,$formatos,$x,$arreglo,$arreglo2,$arreglo3){
 								     $mmn = 'url';
 								     $jk =$file ;
 								   }
-			$cads.='<li><span  class="'.$divide[1].'"  onmouseup="muestra_deta(event,\''.$mmn.'\','.$jk.'),change_del(\''.$mmn.'\'),change_id(\''. 
-							base64_encode($directorio.'/'.$file).'\')">'.$file."</span></li>";
+			$cads.='<li><span  class="'.$divide[1].'"  onmouseup="muestra_deta(\''.$mmn.'\','.$jk.'),change_del(\''.$mmn.'\'),change_id(\''. 
+							base64_encode($directorio.'/'.$file).'\')">'.$file . "-$jk</span></li>";
 										$countar=$countar+1;
 									}else{
 										
@@ -264,7 +263,7 @@ function carpt($directorio,$formatos,$x,$arreglo,$arreglo2,$arreglo3){
 								     $jk = explode("_",$file);
 								   }
 					//$cads.='<li><span  class="file"  onmouseup="muestra_deta(\''.$mmn.'\','.$jk.'),change_del(\''.$mmn.'\'),change_id(\''. 			   
-							$cads.='<li><span  class="file"  onmouseup="muestra_deta(event,\''.$mmn.'\','.$jk[count($jk)-1].'),change_del(\''.$mmn.'\'),change_id(\''. 
+							$cads.='<li><span  class="file"  onmouseup="muestra_deta(\''.$mmn.'\','.$jk[count($jk)-1].'),change_del(\''.$mmn.'\'),change_id(\''. 
 							base64_encode($directorio.'/'.$file).'\')">'.$file . "</span></li>";
 			  							}
 			 						}

@@ -115,8 +115,8 @@ $(document).ready(function () {
 		autoOpen:false,
 		//title:"Estad\u00edstica",
 		modal: true,
-		width: w*0.35,
-		height: h*0.75,
+		width:800,
+		height: 600,
 		buttons: {
 			Cancelar: function() {
 				$(this).dialog( "close" );
@@ -210,8 +210,8 @@ function qst_load_datatable(){
             var edit  = '';
             var del   = '';
 			var gra   = '';
-
-            edit = "<td><div onclick='qst_abrir_formulario("+full.ID_CUESTIONARIO+");' class='custom-icon-edit-custom'>"+
+			var dsc = '"'+full.DESCRIPCION+'"';
+            edit = "<td><div onclick='qst_abrir_formulario("+full.ID_CUESTIONARIO+","+dsc+");' class='custom-icon-edit-custom'>"+
                     "<img class='total_width total_height' src='data:image/gif;base64,R0lGODlhAQABAJH/AP///wAAAMDAwAAAACH5BAEAAAIALAAAAAABAAEAQAICVAEAOw=='/>"+
                     "</div></td>";
 
@@ -617,9 +617,9 @@ function qst_load_preg_resp(idrc){
     }); 
 	}
 //-----------------------------------------------------------------------
-function qst_abrir_formulario(q){
+function qst_abrir_formulario(q,d){
 	if(q==""){$("#qst_dialog_formu").dialog('option', 'title', 'Agregar Cuestionario');}
-	if(q!=""){$("#qst_dialog_formu").dialog('option', 'title', 'Editar Cuestionario');}
+	if(q!=""){$("#qst_dialog_formu").dialog('option', 'title', 'Editar Cuestionario ('+d+')');}
 	      $.ajax({
           url: "index.php?m=mCuestionario&c=mFormulario",
           type: "GET",
@@ -1008,6 +1008,7 @@ function qst_save_formp(){
 			act : $("#qst_act_pre").val(),
 			rec : $("#qst_rec_pre").val(),
 			req : $("#qst_req_pre").val(),
+			edt : $("#qst_edt_pre").val(),
 			com : $("#qst_comp").val(),
 			op  : $("#qst_hop").val(),
 			id  : $("#qst_hid").val()
@@ -1023,7 +1024,7 @@ function qst_save_formp(){
 			$('#qst_dialog_formp').dialog('close');
 			}
 		else{
-			$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>El cuestionario no hasido almacenado. Vuelva a int\u00e9ntelo posteriormente.</p>');
+			$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>La pregunta no hasido almacenada. Vuelva a int\u00e9ntelo posteriormente.</p>');
 			$("#dialog_message" ).dialog('open');
 			}
           }
@@ -1457,3 +1458,46 @@ function qst_save_config(){
 		});
 	
 	}
+//------------------------------------------------------------------------
+function qst_get_param(id){
+	$.ajax({
+			url: "index.php?m=mCuestionario&c=mGetParam",
+			type: "GET",
+			data: {
+				id  : id
+			},
+			success: function(data) {
+				var result = data; 
+				//alert(result)
+				
+					
+					//Cargar tabla principal
+					
+				
+				//$('#qst_dcbox').html(result); 
+			}
+		});
+	}
+//------------------------------------------------------------------------
+function qst_edt_op(idt){
+	$.ajax({
+		url: "index.php?m=mCuestionario&c=mGetTipo",
+        type: "GET",
+		data:{
+			idt : idt
+			},
+        success: function(data) {
+        var result = data;
+		//alert(result) 
+		if(result=='N'){
+			$('#qst_edt_pre option[value="S"]').prop('selected', true);
+			$("#qst_edt_pre").prop('disabled',true);
+			}
+		if(result=='S'){
+			$('#qst_edt_pre option[value="S"]').prop('selected', false);
+			$("#qst_edt_pre").prop('disabled',false);
+			}
+	
+          }
+      });
+	}	

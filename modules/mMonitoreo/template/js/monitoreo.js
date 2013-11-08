@@ -26,15 +26,15 @@ function mon_init(){
 function onload_map(){      
     var mapOptions = {
       zoom: 5,
-      center: new google.maps.LatLng(24.52713, -104.41406),
+      center: new google.maps.LatLng(19.435113686545755,-99.13316173010253),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 	map = new google.maps.Map(document.getElementById('mon_content'),mapOptions);
     google.maps.event.addListener(map, 'click', function() {
       infoWindow.close();
-    });	
+    });			
 
-	google.maps.event.addListener(map, 'idle', showM);
+    	google.maps.event.addListener(map, 'idle', showM);
 
 	mon_load_units();
 	mon_init();
@@ -326,10 +326,10 @@ function mon_draw_table(){
 							 '<tr><td align="left">Estado:</td><td align="left">'   	+ estatus	+'</td></tr>';
 			}else{
 				if(!isNaN(battery)){
-					if(battery < 33){
+					if(battery < 34){
 						image = 'public/images/geo_icons/phone_red.png';
 						colorImage = "width:12px;' src='public/images/geo_icons/battery_low.png";	
-					}else if(battery>33 && battery < 66){
+					}else if(battery>33 && battery < 67){
 						image = 'public/images/geo_icons/phone_orange.png';
 						colorImage = "width:12px;' src='public/images/geo_icons/battery_medium.png";	
 					}else if(battery>66){						
@@ -396,8 +396,7 @@ function mon_draw_table(){
 					"<td onclick='mon_center_map(\""+array_selected[i]+"\");'>"+unit_info[3]+"</td> "+
 					"<td onclick='mon_center_map(\""+array_selected[i]+"\");'>"+unit_info[5]+ "</td>";
 
-				if(type_loc > 0 && type_loc < 6){					
-
+				if(type_loc > 0 && type_loc < 6){
 				    var populationOptions = {
 				      strokeColor: '#0026FF',
 				      strokeOpacity: 0.5,
@@ -644,7 +643,7 @@ function mon_center_map(unitsinfo){
 				  			'<tr><td align="left">Evento :</td><td align="left">'	+ textoMensaje + evt	+'</td></tr>'+
 				  			'<tr><td align="left">Fecha  :</td><td align="left">'	+ fecha	+'</td></tr>'+
 							otrosCampos+								
-							'<tr rowspan="3"><td align="left">Dirección:</td><td align="left">'	+ dire	+'</td></tr>'+
+							'<tr  rowspan="3"><td align="left">Dirección:</td><td align="left">'	+ dire	+'</td></tr>'+
 							'<tr><td>&nbsp;</td><td align="rigth" colspan="2"<td align="left">'		+ pdi	+'</td></tr>'+
 		  					'</table>'+
 		  				'</div>';

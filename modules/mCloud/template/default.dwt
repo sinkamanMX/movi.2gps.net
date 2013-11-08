@@ -10,6 +10,7 @@
 <script src="{PATH}/js/jquery.treeview.js"></script>
 <script src="{PATH}/js/demo.js"></script>
 <script type="text/javascript" src="{PATH}/js/jquery.contextMenu.js" ></script>
+<script type="text/javascript" src="{PATH}/js/jquery.timer.js"></script>
 <!--<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>-->
 
  
@@ -38,7 +39,9 @@ function(){
 
 	//onload();
 });
-	
+	function dominio(){
+	 document.getElementById('recibidor').value = document.domain;	
+	}
 </script>
 
 
@@ -137,8 +140,45 @@ function(){
 */
 </script>
 
+	<script type="text/javascript">	
+		var count = 0;
+		var suma  = 0;
+		var asig_tiempo = 0;
+		
+		var timer = $.timer(
+			function() {
+			    
+				count++;
+				$('.counters').html(count);
+				if(count==suma+60){
+					//alert('cada 10 se ejecuta');
+					VerBanderaSiNo();
+					suma = count;
+					/*
+					if(suma == 40 ){
+						timer.stop();
+						alert('se deteiene hasta 40');
+				    }*/			
+				}
+				
+			},
+			1000,
+			true
+		);
+		timer.stop();	
+				 
+		
+	</script>
+
+
 
 <style>
+	
+	.counters {
+		font-weight: bold;
+		font-size: 20px;
+		padding: 0px 2px;
+	}
 	
 	.selects0{width:120px;margin:0 0 20px 0;border:1px solid #ccc;padding:5px;border-radius:5px 0 0 5px;}
 	.selects1{width:100px;margin:0 0 5px 0;border:1px solid #ccc;border-radius:5px 0 0 5px;}
@@ -159,6 +199,7 @@ function(){
 		font-weight: bold;
 		color: #2e6e9e;
 	 }
+
 	 
 	 #span_deta {
 position: absolute;
@@ -231,11 +272,15 @@ font-weight: bold;
 				    &nbsp;&nbsp;  actual.
           
            </h4>
+		   <p style="display:none;"> timer has been played <span class='counters'>0</span> times.<br/> 
+		   <input type='button' value='timer.play()' onclick='timer.play(true);' /><br/>
+           <input type='button' value='timer.stop()' onclick='timer.stop();' /></p>
          </td>
         </tr>
         </table>
-        <input type="text" id="bandera_guardar_detalles" />
-        <input type="text" id="valor_detalles" />
+        <input type="hidden" id="bandera_guardar_detalles" />
+        <input type="hidden" id="valor_detalles" />
+        <input type="hidden" id="bandera_guarda_asignado" />
        </fieldset>
       
          
@@ -271,7 +316,7 @@ font-weight: bold;
         </tr>
   		<tr bgcolor="#F4F4F4" align="center" height="20">
           <td></td>
-          <td><input type="button" value="Guardar Cambios"/></td>
+          <td>&nbsp;</td>
           <td >&nbsp;</td>
         </tr>    
 </table>
@@ -323,11 +368,11 @@ font-weight: bold;
  <div id="dialog3" title="Imagen" >
  <div id="coin-slider"></div>
 </div>
- <div id="dialog4" title="Nueva Carpeta"></div>
+ <div id="dialog4" title="xx"></div>
  <div id="dialog_prog" align="center">
     <br />
-     <h5 id="letra_x"> Guardando Datos </h5> 
-    <br /><br />
+     <h5 id="letra_x">.</h5>
+    <br />
  <img id="imagenes"   src="modules/mCloud/template/apb.gif"/>
  </div>
  
@@ -347,12 +392,29 @@ font-weight: bold;
  </div>
  <div id="dialog_img_cambia" > </div>
  
-<iframe name="ifra" id="ifra" width="200" height="200" frameborder="0" style="position:relative; top:400px;" >
+<iframe name="ifra" id="ifra" width="0" height="0" frameborder="0" style="position:relative; top:400px;"  >
 </iframe>
 <input type="hidden" value="{CLIENTE}" id="cliente" />
 <input type="hidden"  id="catalogos" />
 <input type="hidden"  id="id_menu" style=" position:relative; left:200px;"  value="0"/>
 <input type="hidden"  id="tipo_archivo" style=" position:relative; left:300px;"  value="0"/>
 
+
+
+
+
+
+
+
+<input type="hidden" id="host_bd" value="{HOST}"/>
+<input type="hidden" id="usuario_bd" value="{USUARIO}"/>
+<input type="hidden" id="pass_bd" value="{PASSWORD}"/>
+<input type="hidden" id="nombre_bd" value="{BASE_NOMBRE}"/>
+<input type="hidden" id="host_ftp" value="{FTP_HOST}"/>
+<input type="hidden" id="usuario_ftp" value="{FTP_USUARIO}"/>
+<input type="hidden" id="pass_ftp" value="{FTP_PASS}"/>
+<input type="hidden" id="puerto_ftp" value="{FTP_PUERTO}"/>
+<input type="hidden" id="tipo_extension" value="{EXTENSIONES}"/>
+<input type="hidden" id="tipo_extension_m" value="{EXTENSIONES_M}"/>
 </body>
 </html>

@@ -38,7 +38,7 @@
   </tr>
   <tr bgcolor="#c5dbec" align="center">
      <td></td>
-     <td><input type="button" value="Guardar Cambios" onClick="guardar_cambios();"/></td>
+     <td><input type="button" value="Guardar Cambios" onClick="guardar_cambios();" class="boton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"/></td>
  <!--       <td><input type="button" value="Guardar Cambios" onClick="guardar_cambios({ID_DET});"/></td>
     <td ><input type="button" value="Actualizar Imagen" onClick="cambiar_img();"/></td>-->
   </tr>    
@@ -59,7 +59,7 @@
         <td height="25">IMAGEN</td>
        </tr>
      <tr bgcolor="#c5dbec" align="center">
-      <td height="25" ><input type="button" value="Actualizar Imagen" onClick="cambiar_img();"/></td>
+      <td height="25" ><input type="button" value="Actualizar Imagen" onClick="cambiar_img();" class="boton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"/></td>
        </tr>       
      </table>   
         </td>

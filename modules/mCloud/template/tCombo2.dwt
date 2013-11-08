@@ -1,5 +1,5 @@
 
-<select name="eventos"  class="caja_txt" style="width:100%;" >
+<select name="eventos" id="eventos"  class="caja_txt" style="width:100%;" >
  <option value="-1" style="color:#666;">Opci&oacute;n</option>
 	<!-- BEGIN evento -->
       <option value="{evento.COD_EVENTO}">{evento.DESCRTIPCION}</option> 

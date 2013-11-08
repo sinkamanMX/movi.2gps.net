@@ -323,7 +323,7 @@ function rev_validar_datos(){
 			u += (u=="")?usr[i]:","+usr[i];
 			}
 
-		for(i=0; i<usr.length; i++){
+		for(i=0; i<qst.length; i++){
 			q += (q=="")?qst[i]:","+qst[i];
 			}		
 		

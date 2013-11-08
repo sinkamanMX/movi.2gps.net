@@ -6,6 +6,9 @@
     if(!$userAdmin->u_logged())
 		echo '<script>window.location="index.php?m=login"</script>';
 	
+	 $UTF8 = "SET NAMES 'utf8'";
+     $db->sqlQuery($UTF8);	
+	
     $sqlZ = "SELECT CT.ID_CATALOGO,CT.DESCRIPCION FROM 
 			CAT_CATALOGO CT INNER JOIN 
 			CAT_CLIENTE_CATALOGO CCT ON CT.ID_CATALOGO = CCT.ID_CATALOGO 

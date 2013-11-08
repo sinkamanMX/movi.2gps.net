@@ -5,6 +5,7 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 	if(!$userAdmin->u_logged())  //Valida Usuario Logeado
 		echo '<script>window.location="index.php?m=login"</script>';  //Manda al login si no se ha Logeo.
 	//--------------------------- Modificada BD y Encabezado------------------------
+	$db ->sqlQuery("SET NAMES 'utf8'");
 	$idc   = $userAdmin->user_info['ID_CLIENTE'];
 	$idu   = $userAdmin->user_info['ID_USUARIO'];
 

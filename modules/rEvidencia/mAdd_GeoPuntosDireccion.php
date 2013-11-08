@@ -14,7 +14,7 @@
 	if(!$userAdmin->u_logged())  //Valida Usuario Logeado
 		echo '<script>window.location="index.php?m=login"</script>';  //Manda al login si no se ha Logeo.
 	//--------------------------- Modificada BD y Encabezado------------------------
-	
+	$db ->sqlQuery("SET NAMES 'utf8'");
 		if(isset($_GET['lat']) && isset($_GET['lon'])){
 			$userID   = $userData->userID;	
 			$tpl-> set_filenames(array(

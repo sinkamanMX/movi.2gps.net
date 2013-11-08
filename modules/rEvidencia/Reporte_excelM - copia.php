@@ -6,6 +6,7 @@ $userData = new usersAdministration();
 		 //	global $db,$funciones,$excel,$path_config,;	
 	
 	        $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);
+			$db ->sqlQuery("SET NAMES 'utf8'");
 		   
 		    $arreglo = array();
 		   

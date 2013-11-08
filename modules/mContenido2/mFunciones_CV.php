@@ -1437,7 +1437,74 @@ function obtener_ureporte($unit,$cliente){
 }	
 	 
 	 
-	 
+	function ini_laboral($unit,$cliente,$rango_fechas,$segmento){
+	
+	/*Conexion a la BD2*/
+	global $config_bd;
+	$conexion = mysqli_connect($config_bd['host'],$config_bd['user'],$config_bd['pass'],$config_bd['bname']);		
+	if($conexion){
+	
+	/*3 Y 13*/
+	$table_h= $cliente;
+	
+	
+	$doub_array=array();
+	$coun_array=0;
+	
+
+		$sql = "SELECT e.GPS_DATETIME,
+				e.VELOCITY,
+				e.LONGITUDE,
+				e.LATITUDE,
+				f.DESCRIPTION AS EVT,
+				e.COD_EVENT
+					FROM ".$table_h." e
+				INNER JOIN ADM_EVENTOS f ON e.COD_EVENT=f.COD_EVENT
+				WHERE
+					e.COD_ENTITY=".$unit."
+					AND ".$rango_fechas."
+					ORDER BY e.GPS_DATETIME ASC";
+       
+       
+       				$contase=count($maestre_array);
+							
+						$query_hist = mysqli_query($conexion,$sql);
+						$count_hist = @mysqli_num_rows($query_hist);
+							
+					while($row = @mysqli_fetch_array($query_hist)){		
+						
+					if($row['COD_EVENT']==10032){
+						
+						 $datas ='UPDATE DSP_DESPACHO SET
+											ID_ESTATUS = \'4\' WHERE ID_DESPACHO  = '.$segmento;
+								//	echo 'entro';
+										if(mysqli_query($conexion,$datas)){
+											$coun_array=1;
+											//$maestre_array[$i]=$maestre_array[$i].',1';
+										}
+						
+							
+					
+						} 
+						
+						if($row['COD_EVENT']==10033){
+						
+						 $datas ='UPDATE DSP_DESPACHO SET
+											ID_ESTATUS = \'3\' WHERE ID_DESPACHO  = '.$segmento;
+								//	echo 'entro';
+										if(mysqli_query($conexion,$datas)){
+											$coun_array=1;
+											//$maestre_array[$i]=$maestre_array[$i].',1';
+										}
+						
+							
+					
+						} 
+					
+					}
+	
+	}
+} 
 	 
 	 
 	 

@@ -4,7 +4,7 @@ header('Content-Type: image/jpeg');
 
 
 //------------------------------------------------
-//echo $_GET['img'].",".$_GET['grd'];
+///echo $_GET['img'].",".$_GET['grd'];
     $fotos = '/var/www/vhosts/2gps.net/subdominios/movi/'.$_GET['img'];
     $angulos = -1*$_GET['grd'];
     $ruta_imagen = $fotos;

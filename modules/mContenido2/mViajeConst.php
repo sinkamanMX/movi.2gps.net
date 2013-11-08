@@ -181,13 +181,14 @@ FECHA_INICIO BETWEEN '".$dayhr." 00:00:00' AND '".$dayhr." 23:59:00'
 	
 	for($i=0;$i<count($segmento);$i++){	
 	$cad_plan='';
-	
+			 $table_h= 'HIST'.$Positions->get_tablename($idc);
+			 $funciones_cv->ini_laboral($segmento[$i][2],$table_h,$rango_time,$segmento[$i][3]);
 	//-----------------------------------------------------------------------------------UNIDAD EN CUESTION 
 	 $unidad.= "<tr class='inf_viaj'><th width='15%'  bgcolor='#DBDBDB' rowspan='3' style='border:#FFFFFF solid 1px;' >".utf8_encode($segmento[$i][0])."<br>".utf8_encode($segmento[$i][1])."</th> ";
 	
 
 ////--------------------------------------------------------------------------------TIEMPOS 
- echo $sql1 = "SELECT  CONCAT(PG.DESCRIPCION,' - ',P.VOLUMEN,' ',V.DESCRIPCION) AS
+ $sql1 = "SELECT  CONCAT(PG.DESCRIPCION,' - ',P.VOLUMEN,' ',V.DESCRIPCION) AS
 DESCRIPTION,
    AU.COD_ENTITY,
    P.COD_GEO,

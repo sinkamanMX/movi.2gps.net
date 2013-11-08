@@ -3334,7 +3334,7 @@ case 2:
 function down_format()
 {
 	//window.location="modules/AdRutas/template/descargable/layout.xls";
-   window.location="public/Descargas/layout.xls";
+   window.location="public/Descargas/layout_puntos.xls";
 }	
 //---------------------------------------------
 function down_format_2()
@@ -3344,7 +3344,7 @@ function down_format_2()
 }	
 //---------------------------------------------
 function down_format_pto(){
-	window.location="public/Despacho/descargable/layout_puntos.xls"
+	window.location="public/Descargas/layout_puntos.xls"
 	}
 //---------------------------------------------
 function down_format_pld(){

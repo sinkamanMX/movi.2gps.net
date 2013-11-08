@@ -1,6 +1,7 @@
 <?php
 $userData = new usersAdministration();
 $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);
+$db ->sqlQuery("SET NAMES 'utf8'");
 
 $rango_texto  = "Del: ".$_GET['f1'].' Al: '.$_GET['f2'];
 $dti = $_GET['f1'];
@@ -105,19 +106,7 @@ $qst = $_GET['cuestionario'];
 					$objWorkSheet->getCell('D'.$row2)
 					->getHyperlink()
 					->setUrl($data2[$x][3]);
-					/*
-				  	$objDrawing = new PHPExcel_Worksheet_Drawing();
-					$objDrawing->setPath('http://movi.2gps.net/public/evidencia/foto_2.jpg');
-					$objDrawing->setCoordinates('');
-					$objDrawing->setResizeProportional(false);
-					$objDrawing->setHeight(100);
-					$objDrawing->setWidth(100);
-					//	$objDrawing->getShadow()->setVisible(true);
-					$objDrawing->setWorksheet($objWorkSheet);
-					//$objWorkSheet->getCell('D'.$row2)
-					//->getHyperlink()
-					//->setUrl('http:/public/evidencia/foto_2.jpg');
-					*/}
+					}
 
 				$row2++;
 				}			
@@ -130,7 +119,8 @@ $qst = $_GET['cuestionario'];
 			
 			$objPHPExcel->setActiveSheetIndex(0);
 			
-			$filename = "rev_".date("His_Ymd").".xlsx";
+			//$filename = "rev_".date("His_Ymd").".xlsx";
+			$filename = "rev_".date("His_Ymd").".xls";
 			header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 			header('Content-Disposition: attachment;filename="'.$filename.'"');
 			header('Cache-Control: max-age=0');			

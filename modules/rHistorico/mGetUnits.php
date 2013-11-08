@@ -24,7 +24,7 @@
 		while($row = $db->sqlFetchArray($query)){
 			$result[] = array(
 				'id' 	=> $row['ID'], 
-				'name'	=> $row['NAME']
+				'name'	=> $Functions->codif($row['NAME'])
 			); 
 		}	
 	}			

@@ -24,7 +24,7 @@
 <tr>
 <td>Tipo:</td>
 <td colspan="2">
-<select name="pre_tp" id="pre_typ" class="caja" onChange="pre_selec_preg(this.value);">
+<select name="pre_tp" id="pre_typ" class="caja" onChange="pre_selec_preg(this.value);pre_edt_op(this.value)">
 <option value="0" >Seleccione un tipo.</option>
 <!-- BEGIN tipo -->
 <option value="{tipo.IDTP}" {tipo.S}>{tipo.TP}</option>
@@ -52,6 +52,15 @@
 <select id="pre_req" class="caja">
 <option value="1" {SRQ}>SI</option>
 <option value="0" {NRQ}>NO</option>
+</select>
+</td>
+</tr>
+<tr>
+<td>Editable:</td>
+<td>
+<select id="pre_edt" class="caja" >
+<option value="S" {EDS}>SI</option>
+<option value="N" {EDN}>NO</option>
 </select>
 </td>
 </tr>

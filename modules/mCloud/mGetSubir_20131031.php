@@ -17,21 +17,29 @@
 	$ftp_usuario  = $d_ftp[1];
 	$ftp_clave    = $d_ftp[2];	
 	
+	
+	/*$servidor_ftp = "test.2gps.net";
+	$ftp_usuario = "algtester";
+	$ftp_clave = "AL6735teR";	
+	*/ 
 	 $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);
-   
+    if(!$userAdmin->u_logged()){
+    		echo '<script>window.location="index.php?m=login"</script>';
+    }
+    $tipo_archivo = '';
+  $mp4 = '';
+    
      $UTF8 = "SET NAMES 'utf8'";
      $db->sqlQuery($UTF8);
-  
-// ---------------------------------------- variables y arreglos
-    $tipo_archivo = '';
-    $mp4 = '';
-  	$ruta_img = '';
+    
+	
+	$ruta_img = '';
 	$T=0;
-	$Padre = 0;
 	$ct='-';
 	$cs='*';
+//	$directorio=dirname(__FILE__).'/Raiz/ragde18@hotmail.es';
 	$cadena='';
-
+//	$down='/modules/mCloud/Raiz/ragde18@hotmail.es/';
 
     $arreglo_archivos = array("doc"  => " Archivo DOC  ",
 							  "docx" => " Archivo DOC  ",
@@ -39,52 +47,64 @@
 							  "xlsx" => " Archivo XLSX ",	
 	                          "pdf"  => " Archivo PDF  ",
 	                          "mp4"  => " Video MP4",
-	                          "apk"  => " Archivo APP",
 	                          "url"  => " enlace url "
 	                          );
 
 
 	 $utl= $_GET['url'];
 	
-//-------------------------------------------------------------- datos iniciales
-
 	
-	 if($_POST['tip_archi'] == 'u'){  //----------------------  si es url desde local
-		  
-		    if (copy('catalogos/enlace.url',$utl.'/'.str_replace("/",'_',str_replace("http://"," ",$_POST['urls'])).'_'.$_GET['id_menu'])){
-				   	$ACT2 = "UPDATE CAT_SUBMENU SET UBICACION = '".$_POST['urls']."' , ACCION= 'U' WHERE ID_SUBMENU =".$_GET['id_menu'];
-					  $queria2 = $db->sqlQuery($ACT2); 
-					  	if($queria2){
-					  	echo "si jala ".$_POST['urls'].'-'.$_GET['id_menu'].''.$ACT2;	
-				 	   echo 'Se ha copiado el archivo corretamente';
-					  	$T = 1;
-					  	$Padre = 1;
-				  	   }else{
-				  	   		echo "pos aver si jala";
-				  	   		$T=0;
-				  	   }
-				     //$T= guardar('enlace.url',$utl,'u');
-				}
-				else {
-				   echo 'Se produjo un error al copiar el fichero';
-				   $T=0;
-				}	
+	 if($_POST['tip_archi'] == 'u'){
+    	
     
-   }else{                  //----------------------------  fin de opcion url  e inicio d otra opcion
-	
+		   	//  $ACT2 = "UPDATE CAT_SUBMENU SET UBICACION = '".$_POST['urls']."' , ACCION= 'U' WHERE ID_SUBMENU =".$_GET['id_menu'];
+//			  $queria2 = $db->sqlQuery($ACT2); 
+//			  	if($queria2){
+//			  	echo "si jala ".$_POST['urls'].'-'.$_GET['id_menu'].''.$ACT2;
+//			  	$T = 1;
+//		  	   }else{
+//		  	   		echo "pos aver si jala";
+//		  	   }
+		   	
+		 
+    	
+//$nuevo_testo = rename("catalogos/archivo.url", "/home/user/login/docs/mi_archivo.txt");
+   	if (copy('./catalogos/enlace.url', $utl.'/'.str_replace("/",'_',str_replace("http://"," ",$_POST['urls'])).'_'.$_GET['id_menu'])) {
+
+		   	$ACT2 = "UPDATE CAT_SUBMENU SET UBICACION = '".$_POST['urls']."' , ACCION= 'U' WHERE ID_SUBMENU =".$_GET['id_menu'];
+			  $queria2 = $db->sqlQuery($ACT2); 
+			  	if($queria2){
+			  	echo "si jala ".$_POST['urls'].'-'.$_GET['id_menu'].''.$ACT2;	
+		 	   echo 'Se ha copiado el archivo corretamente';
+			  	$T = 1;
+		  	   }else{
+		  	   		echo "pos no jala";
+		  	   		$T=0;
+		  	   }
+		     //$T= guardar('enlace.url',$utl,'u');
+		}
+		else {
+		   echo 'Se produjo un error al copiar el fichero';
+		    print_r(error_get_last());
+		   $T=0;
+		}
+    }else{
 			
 			if ($_FILES['archivo']["error"] > 0){
 			    echo "Error: " . $_FILES['archivo']['error'] . "<br>";
 				$T=0;
 			}else{
-	 			borra_archivos();		   
-	 			$destino = "archivos/".reemplaza(str_replace(" ","_",utf8_decode($_FILES['archivo']['name'])));
-		 		$moved   = copy($_FILES['archivo']['tmp_name'],$destino);
+	 borra_archivos();		   
+	 $destino = "archivos/".reemplaza(str_replace(" ","_",utf8_decode($_FILES['archivo']['name'])));
+	 	    
+	 $moved   = copy($_FILES['archivo']['tmp_name'],$destino);
 		   
              if($moved) { // si se envio la imagen a 2gps.net/archivo
 				//---------------------------------------	proceso ftp  	     
 				
 				$ftp_carpeta_local  = "./archivos/";
+//				$ftp_carpeta_remota = "./catalogos/ICSS-ALG/ICSS-ALG/";
+//				$ftp_carpeta_remota = "./catalogos/ICSS-ALG/ICSS-ALG/Mido_Portatil/asi_33/";
 			    $ftp_carpeta_remota = "/".$utl."/";
 				$mi_nombredearchivo = reemplaza(str_replace(" ","_",utf8_decode($_FILES['archivo']['name'])));	 
 			
@@ -106,44 +126,24 @@
 				   if ($upload) { 
 				   	//echo " pos si se subieron a".$archivo_destino;
 				   	
-				   	//---------------------------------------- cnx a la base de origen
-				   	$base_datos = explode("|",$_GET['bdatos']);
 				   	
-					//$host = '173.224.120.179';
-//					$usuario = 'savl_movi';
-//					$contra  = 'fr4de3';
-				
-				
-
-				   	
-				   
-				   	//----------------------------------------
 					  	if (empty($_FILES['foto']['name'])){ // si no se envia foto descriptiva  solo se guarda datos de detalle 
-   	                          $T = 1;
-				         	  $nombre_foto = $_FILES['archivo']['name'];
-							  $direccion_carpeta = $utl;
-							  $tipo_d_archivo = $_POST['tip_archi'];
-							  $ruta_img = "NO";
-							  $regresa_datos   = $nombre_foto.'|'.$direccion_carpeta.'|'.$tipo_d_archivo.'|'.$ruta_img;
-							  $datos_d_detalle = $_POST['titulo'].'|'.$_POST['autor'].'|'.$_POST['resumen'].'|'.$_POST['tag'].'|'.$_POST['eventos'];
+				         	        $T = 1;
+				         	        $nombre_foto = $_FILES['archivo']['name'];
+							  	    $direccion_carpeta = $utl;
+							  	    $tipo_d_archivo = $_POST['tip_archi'];
+							  	    $ruta_img = "NO";
+							  	 $regresa_datos = $nombre_foto.'|'.$direccion_carpeta.'|'.$tipo_d_archivo.'|'.$ruta_img;
+							 $datos_d_detalle = $_POST['titulo'].'|'.$_POST['autor'].'|'.$_POST['resumen'].'|'.$_POST['tag'].'|'.$_POST['eventos'];
 							 
 							        echo  $regresa_datos;
-							   //--------------
-							   
-							    if(guardar($nombre_foto,$utl,$tipo_d_archivo,$ruta_img)){
-				      	        $T=1;
-				      	        echo "se guardoooooooo";
-								}else{
-					      	        $T=0;
-					      	        echo "no se guardoooooo";
-					            }
-							   
-							   //--------------     
-							        
-							        
-							        
-
-				      	}else{ // si llega dato de foto, guardarla, y guardar detalle.
+						  /*	echo "llego vacio";
+							if(guardar($_FILES['archivo']['name'],$utl,$_POST['tip_archi'],'NO')){
+				      	       $T=1;
+							}else{
+				      	        $T=0;
+				            }*/
+				      	}else{ // si llega dato de foto guardarla, y guardar detalle.
 						
 	                    $moved2 = move_uploaded_file($_FILES['foto']['tmp_name'],'archivos_imagenes_detalles/'. 
 						$_GET['id_menu'].'_'.reemplaza(str_replace(" ","_",utf8_decode($_FILES['foto']['name']))));					
@@ -156,7 +156,7 @@
 			    					$archivo_destino2 = $ftp_carpeta_remota2.$mi_nombredearchivo2;	
 							  
 							   	$upload2 = ftp_put($conexion_id, $archivo_destino2, $nombre_archivo2, FTP_BINARY);					
-				                if ($upload2) {  // si ha subido la imagen de detalle
+				                 if ($upload2) { 
 							  	    $T = 1;
 							  	    $nombre_foto = $_FILES['archivo']['name'];
 							  	    $direccion_carpeta = $utl;
@@ -167,22 +167,26 @@
 								 
 								     echo $archivo_destino2 .'--'.$nombre_archivo2.'<br>';
 							         echo  $regresa_datos;
-							         
-							           if(guardar($nombre_foto,$utl,$tipo_d_archivo,$ruta_img)){
-						      	        $T=1;
-						      	        echo "se guardoooooooo todo y con foto descripctiva";
-										}else{
-							      	        $T=0;
-							      	        echo "no se guardoooooo";
-							            }
-							         
-							         
 							  	}else{
 							    	$T = 0;
 			 	    		          echo "Ha ocurrido un error al subir el foto mediante ftp checar todo ".
 							          $conexion_id.'-'.$archivo_destino2.'-'.$nombre_archivo2.'<br>';
 									   print_r(error_get_last());				  
 							    }
+    /* $ruta_img = "http://".$_SERVER['HTTP_HOST']."/catalogos/imagenes_detalles/".$_GET['id_menu'].'_'.reemplaza(str_replace(" ","_",utf8_decode($_FILES['foto']['name'])));
+							     
+								 if(guardar($_FILES['archivo']['name'],$utl,$_POST['tip_archi'],$ruta_img)){
+					      	       $T=1;
+								    echo " foto nombre temporal".$_FILES['foto']['tmp_name'].'<br>';
+								    echo " foto nombre".$_FILES['foto']['name'].'<br>';
+								    echo " foto error".$_FILES['foto']['error'].'<br>';
+								    echo " foto tamanio".$_FILES['foto']['size'].'<br>';
+								    echo " foto tipo".$_FILES['foto']['type'].'<br>';  
+								}else{
+					      	        $T=0;
+					            }
+							*/		
+					      	
 							}else{
 								$T = 0;
 							    echo "No subio foto ";
@@ -211,28 +215,13 @@
 	}
 //-------------------------------------- funcion general guarda en cat_contenido y actualiza cat_submenu
 function guardar($nom_ar,$utl,$tpa,$img_deta){
-	global $db,$mp4,$arreglo_archivos,$tipo_archivo,$base_datos;
-	
-					$host    = $base_datos[0];
-					$usuario = $base_datos[1];
-					$contra  = $base_datos[2];
-					$base_nombre = $base_datos[3];
-					$servilleta  = $base_datos[4];
-					
-					$enlace =  mysql_connect($host,$usuario,$contra);
-					if (!$enlace) {
-					    die('No pudo conectarse: ' . mysql_error());
-					}else{   //si se conecto correctamente
-							echo 'Conectado satisfactoriamente';
-				   
-	
-	mysql_select_db($base_nombre, $enlace); 
+	global $db,$mp4,$arreglo_archivos,$tipo_archivo;
 	
     $mayor = " SELECT IF(MAX(ORDEN) IS NULL,1,MAX(ORDEN)+1) AS MAXIMO FROM CAT_CONTENIDO WHERE ID_SUBMENU  =".$_GET['id_menu'];
-	$query_mayor =  mysql_query($mayor,$enlace);
+	$query_mayor = $db->sqlQuery($mayor);
 	if($query_mayor){
-	  //$count = $db->sqlEnumRows($query_mayor);
-	  $row_mayor = mysql_fetch_array($query_mayor);
+	  $count = $db->sqlEnumRows($query_mayor);
+	  $row_mayor = $db->sqlFetchArray($query_mayor);
 	  $userfile_extn = explode(".",strtolower($nom_ar));
 	  
 	    foreach ($arreglo_archivos as $item => $value){
@@ -245,29 +234,24 @@ function guardar($nom_ar,$utl,$tpa,$img_deta){
 		}
 			
 	$sqlZ = "INSERT INTO CAT_CONTENIDO(ID_SUBMENU,UBICACION_LOCAL,UBICACION_REMOTA,DESCRIPCION,ORDEN)
-             VALUES ('".$_GET['id_menu']."','/USUARIO1/','http://".$servilleta."/".
-			 ($utl)."/".reemplaza(str_replace(" ","_",utf8_decode($nom_ar)))."','".$tipo_archivo."','".$row_mayor['MAXIMO']."')";
-		  	
-			   $queri = mysql_query($sqlZ); 
+             VALUES ('".$_GET['id_menu']."','/USUARIO1/','http://".$_SERVER['HTTP_HOST']."/".($utl)."/".reemplaza(str_replace(" ","_",utf8_decode($nom_ar)))."','".$tipo_archivo."','".$row_mayor['MAXIMO']."')";
+		  	$queri = $db->sqlQuery($sqlZ); 
 	      
 		   if($queri){
 		   	
 		   	 $ultimo = "SELECT LAST_INSERT_ID() AS IDCONT FROM CAT_CONTENIDO;";
-		   	   $query_ultimo = mysql_query($ultimo); 
-	      if($query_ultimo){
-		   	$row_ultimo = mysql_fetch_array($query_ultimo);
-   			if(guardar_detalle($row_ultimo['IDCONT'],$_POST['titulo'],$_POST['autor'],$_POST['resumen'],$_POST['tag'],$_POST['eventos'],$img_deta)){
-		   	$T = 1;
-		   	}else{
+		   	   $query_ultimo = $db->sqlQuery($ultimo); 
+		   	   if($query_ultimo){
+		   	   	 $row_ultimo = $db->sqlFetchArray($query_ultimo);
+		   	     	if(guardar_detalle($row_ultimo['IDCONT'],$_POST['titulo'],$_POST['autor'],$_POST['resumen'],$_POST['tag'],$_POST['eventos'],$img_deta)){
+		   	     		  $T = 1;
+		   	     	}else{
 		   	     		  $T = 0;
 		   	     	}
-		   	     }else{
-		   	     	
-		   	     	echo 'No pudo query_ultimo' . mysql_error();
 		   	     }
 					if($row_mayor['MAXIMO']>'1'){
 						$ACT = "UPDATE CAT_SUBMENU SET ACCION = 'D' WHERE ID_SUBMENU =".$_GET['id_menu'];
-							$queria = mysql_query($ACT); 
+							$queria = $db->sqlQuery($ACT); 
 	       					if($queria){
        						    echo '<br>'."Successfully uploaded y saved".'<br>'; 
 								echo "nombre temporal".$_FILES['archivo']['tmp_name'].'<br>';
@@ -294,18 +278,10 @@ function guardar($nom_ar,$utl,$tpa,$img_deta){
 				//	 $T=1;
 	        }else{
 	        	$T=0;
-	        		echo 'No pudo $queri' . mysql_error();
 	        }
-    }else{
-	        	$T=0;
-	        		echo 'Nooooo $queri' . mysql_error();
-	        }
-
- }   //si se conecto correctamente
-
-	mysql_close($enlace);
+    }
+	
 	if ($T ===1){
-		
 		return 1;
 	}else{
 		return 0;
@@ -339,47 +315,38 @@ function guardar($nom_ar,$utl,$tpa,$img_deta){
 //------------------------------ guarda en cat_contenido-detalle, y actualiza en cat_submenu si es url
 
  function guardar_detalle($id,$titulo,$autor,$resumen,$tag,$ev,$img_deta){
-  	global $db,$base_datos;
-  	
-  	$host    = $base_datos[0];
-					$usuario = $base_datos[1];
-					$contra  = $base_datos[2];
-					$base_nombre = $base_datos[3];
-					
-					$enlace =  mysql_connect($host,$usuario,$contra);
-					if (!$enlace) {
-					    die('No pudo conectarse: ' . mysql_error());
-					}else{   //si se conecto correctamente
-							echo 'Conectado para detalle satisfactoriamente';	
-  	
-	  $detalle = "INSERT INTO CAT_CONTENIDO_DETALLE 
+  	global $db;
+  	$detalle = "INSERT INTO CAT_CONTENIDO_DETALLE 
 				(ID_CONTENIDO,TITULO, 
 		         NOMBRE_AUTOR, 
 				 RESUMEN, 
 				 TAG,ID_EVENTO,IMAGEN)
                  VALUES('".$id."','".$titulo."','".$autor."','".$resumen."','".$tag."','".$ev."','".$img_deta."')";
-  	$queri_deta = mysql_query($detalle); 
+  	$queri_deta = $db->sqlQuery($detalle); 
 	  	if($queri_deta){
-	  		  $bandera_sino ="UPDATE CAT_CATALOGO_BANDERA SET BANDERA = 1";
-	  		  $query_sino = mysql_query($bandera_sino); 
-	  		  if($query_sino){
-	  		  	echo "pos segun si se actualizo bandera";
-	 	        return 1;
-	 	      }else{
-	 	      	return 0;
-	 	      }
+	  	//  if($tpa === 'u'){
+//		   	$ACT2 = "UPDATE CAT_SUBMENU SET UBICACION = '".$_POST['urls']."' AND ACCION= 'U' WHERE ID_SUBMENU =".$_GET['id_menu'];
+//			  $queria2 = $db->sqlQuery($ACT2); 
+//			  	if($queria2){
+//			  		return 1;
+//		  	   }else{
+//		  	   	return 0;
+//		  	   }
+//		   	
+//		   }else{
+//		   	 return 1;
+//		   }
+  	      return 1;
 		 }else{
-  	       	  return 0;
-  	   }
-  	   
+  	   	return 0;
   	   }
   }
   
   //--------------------
    function reemplaza($cadena_x){
 		$regresa = '';
-		$a = array('á','Á','é','É','í','Í', 'ó','Ó', 'ú','Ú','ü','Ü', 'ñ', 'Ñ',' ');
-		$b = array('a','A','e','E','i','I', 'o' ,'O', 'u','U', 'u','U', 'n', 'N', '_');
+		$a = array('á','Á','é','É','í','Í', 'ó','Ó', 'ú','Ú', 'ñ', 'Ñ',' ');
+		$b = array('a','A','e','E','i','I', 'o' ,'O', 'u','U', 'n', 'N', '_');
 		
 		$regresa = str_replace($a, $b,$cadena_x);
 		return $regresa;
@@ -400,19 +367,11 @@ function guardar($nom_ar,$utl,$tpa,$img_deta){
 	
    	}
 ?>
- <div id="dialog_j" title="Subir">hola</div>
 <script type="text/javascript">
 var na = '<?php echo $T; ?>';
 var dr = '<?php echo $regresa_datos; ?>';
 var ddet = '<?php echo $datos_d_detalle; ?>'; 
 var id_m = '<?php echo $_GET['id_menu']; ?>'; 
 
-if(na == '1'){
-	//alert('todo se guardo correctamente');
-}
-var papa= '<?php echo $Padre; ?>';
-if(papa == '1'){
-	parent.hola(na);
-}
-
+parent.hola(na,dr,ddet,id_m);
 </script>

@@ -48,7 +48,8 @@
 	$x = ( $_GET['cuestionario']!="" && @$qst['ID_EJE_X']!="")?@$qst['ID_EJE_X']:0;
 	
 	$y = ( $_GET['cuestionario']!="" && @$qst['ID_EJE_Y']!="")?@$qst['ID_EJE_Y']:0;
-
+	
+	
 	$grz = ( $_GET['cuestionario']!="" && $x!=0)?$dbf->getRow('CRM2_EJE_Y','ID_EJE_Y = '.$y):0;
 
 	$z = ( $_GET['cuestionario']!="" && @$grz['ID_EJE_Z']!="")?@$grz['ID_EJE_Z']:0;
@@ -66,6 +67,8 @@
 		$lud = ex_qry("ID_USUARIO","ADM_USUARIOS"," WHERE ID_CLIENTE = ".$cte." AND ID_USUARIO NOT IN (".$lus.")");
 		$usd = $dbf->dragndrop("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS"," WHERE ESTATUS='Activo' AND ID_CLIENTE =".$cte,$lus,"");
 		$uss = $dbf->dragndrop("ID_USUARIO","NOMBRE_COMPLETO","ADM_USUARIOS"," WHERE ESTATUS='Activo' AND ID_CLIENTE =".$cte,$lud,"");
+		
+		
 		
 		$tpl->assign_vars(array(
 		'PRG'      	=> $pgd,
@@ -90,6 +93,8 @@
 	
 
 	$tp = $dbf->cbo_from_notit("ID_TIPO","DESCRIPCION","CRM2_TIPO_CUES","",$option=@$qst['ID_TIPO']);
+	$w = "TIPO='PUB' OR ID_CLIENTE = ".$cte." ORDER BY NOMBRE";
+	//$cf = $dbf->cbo_from_str2("ID_FUNCION","NOMBRE","DESCRIPCION","ADM_FUNCION",$w,$option=@$qst['ID_TIPO']);
 	
 
 	$tms = $dbf->tabla_temas($tma);
@@ -103,6 +108,7 @@
 	'IDQ'      	=> $id,
 	'TMS'      	=> $tms,
 	'T_P'      	=> $tp,
+	'C_F'		=> $cf,
 	'TIT'      	=> $tit,
 	'MUL'      	=> $mul,
 	'OFF'      	=> $off,

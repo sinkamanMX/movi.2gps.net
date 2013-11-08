@@ -15,6 +15,8 @@
 	if(!$userAdmin->u_logged())  //Valida Usuario Logeado
 		echo '<script>window.location="index.php?m=login"</script>';  //Manda al login si no se ha Logeo.
 	//--------------------------- Modificada BD y Encabezado------------------------
+	
+	$db ->sqlQuery("SET NAMES 'utf8'");	
 	$client   = $userAdmin->user_info['ID_CLIENTE'];
 	$tpl->set_filenames(array(
 		'mExport_Form'=>'tExport_Form'
@@ -47,7 +49,7 @@
 		while($row = $db->sqlFetchArray($qry)){
 			$tpl->assign_block_vars('dt3',array(
 				'IDU'	=> $row['ID_USUARIO'],
-				'USR'	=> utf8_encode($row['NOMBRE_COMPLETO'])
+				'USR'	=> $row['NOMBRE_COMPLETO']
 				));	
 				}
 		}

@@ -14,7 +14,7 @@
 <tr>
 <td>Tipo:</td>
 <td colspan="2">
-<select name="tp" id="qst_typ_pre" class="caja" onChange="selec_preg(this.value);">
+<select name="tp" id="qst_typ_pre" class="caja" onChange="selec_preg(this.value);qst_edt_op(this.value);">
 <option value="0" >Seleccione un tipo.</option>
 <!-- BEGIN tipo -->
 <option value="{tipo.IDTP}" {tipo.S}>{tipo.TP}</option>
@@ -25,7 +25,7 @@
 <tr><td>Activo:</td>
 <td colspan="2"> 
 <select name="act" id="qst_act_pre" class="caja">
-<option value="1" {SAC} selected="selected">SI</option>
+<option value="1" {SAC}>SI</option>
 <option value="0" {NAC}>NO</option>
 </select></td>
 </tr> 
@@ -46,6 +46,15 @@
 </td>
 </tr>
 <tr>
+<td>Editable:</td>
+<td>
+<select id="qst_edt_pre" class="caja">
+<option value="S" {EDS}>SI</option>
+<option value="N" {EDN}>NO</option>
+</select>
+</td>
+</tr>
+<tr>
 <td style="height:50px;" valign="top">Complemento:</td>
 <td colspan="2" valign="top">
 <div id="qst_com_pre" style="width:100%; border:#06 solid 1px; height:20px; " >{HTML}
@@ -58,6 +67,20 @@
 $(document).ready(function () {
 	comp = $("#qst_hcmp").val();
 	//alert(comp)
+	
+	//vaciar arreglos
+	qst_aps = [];
+	qst_apd = [];
+	
+	//Llenar arreglos
 	$("#qst_comp").val(comp);
+		 qst_aps = $('#qst_preg_sel div').map(function() {
+		return this.id;
+		}).get();
+	
+	
+	 qst_apd = $('#qst_preg_dsp div').map(function() {
+		return this.id;
+		}).get();
 	});
 </script>

@@ -1,6 +1,7 @@
 <?php
 $userData = new usersAdministration();
 $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_bd['user'],$config_bd['pass']);
+$db ->sqlQuery("SET NAMES 'utf8'");
 $usuario = '';
 
 ini_set ('error_reporting', E_ALL);
@@ -63,9 +64,9 @@ function FancyTable($header){
                
 
 			  		   
-			 	         $this->Cell(60,4,$_GET['usr'],'LR',0,'L',$fill);
+			 	         $this->Cell(60,4,utf8_decode($_GET['usr']),'LR',0,'L',$fill);
 						 //$this->Cell(50,4,$row_c['DESCRIPCION'],'LR',0,'R',$fill);
-						 $this->Cell(50,4,$_GET['qst'],'LR',0,'R',$fill);
+						 $this->Cell(50,4,utf8_decode($_GET['qst']),'LR',0,'R',$fill);
 				         //$this->Cell(30,4,$row_c['FECHA'],'LR',0,'R',$fill);
 						 $this->Cell(30,4,$_GET['date'],'LR',0,'R',$fill);
 				         //$this->Cell(15,4,$row_c['BATTERY'].' %','LR',0,'R',$fill);
@@ -116,7 +117,7 @@ function FancyTable2($header2){
 	$data = array();
 	$data = data($_GET['id']);
 	//$this->Cell(40,3,count($data),1,0,'C',true);
-	$this->Cell($w2[0],4,$_GET['qst'],'LR',0,'L',$fill2);
+	$this->Cell($w2[0],4,utf8_decode($_GET['qst']),'LR',0,'L',$fill2);
 	for($x=0; $x<count($data); $x++){
 		
 		if($x>0){
@@ -136,162 +137,7 @@ function FancyTable2($header2){
 		$fill2 = !$fill2;
 		}
 	
-    /*for($an=0;$an<count($tabla2);$an++){
-    	$hola = $this->dame_res($tabla2[$an][0]);
-    	$blanco = '';            
-    	
-    	        	for($l=0;$l<count($hola);$l++){
-    	        		  if($blanco ==''){
-    	        		  	 $this->Cell($w2[0],4, $userData->codif($tabla2[$an][1]),'LR',0,'L',$fill2);
-    	        		  	 $blanco = 'x';
-    	        		  }else{
-    	        		  	 $this->Cell($w2[0],4, '','LR',0,'L',$fill2);
-    	        		  }
-    	        		    
-       		 	           
-   		 	         	$jpg = $this->buscarCadena($hola[$l][1],'jpg');
-       		 	        if($jpg==1){
-       		 	        $imag = 'http://movilidad.2gps.net'.$hola[$l][1];  	
-				        //$this->Cell($w2[1],4,  $this->Image('http://movilidad.2gps.net'.$hola[$l][1],150,'',15,11,'JPG'),'LR',0,'C',$fill2);
-				        $foto_x = '';
-				        $kk = explode("/",$hola[$l][1]);
-				        $k2 = $kk[1].'/'.$kk[2].'/'.$kk[3];
-				        if(file_exists($k2)){ 
-				        	if(filesize($k2)>0){
-				        		$foto_x = $imag;
-				        	}else{
-				        	    $foto_x = 'http://movilidad.2gps.net/modules/cuestionarios/no_diponible.jpg';	
-				        	}
-						   
-						}else{ 
-						   $foto_x = 'http://movilidad.2gps.net/modules/cuestionarios/no_diponible.jpg';
-						} 
-				       
-					   
-					    $this->Cell($w2[1],24,$hola[$l][0],'LR',0,'L',$fill2);
-       		 	   	    $this->Cell($w2[2],24,$this->Image($foto_x,$this->GetX(),$this->GetY(),20,25,'JPG'),'LR',0,'C',false);	
-       		 	   	
-       		 	        }else{
-						
-						$this->Cell($w2[1],4,$hola[$l][0],'LR',0,'L',$fill2);
-					//$this->Cell($w2[2],4, utf8_decode($hola[$l][1]),'LR',0,'L',$fill2);
-						
-						$valcadena=strlen($hola[$l][1]);
-						
-						$cadenarup="";
-						$cadenarup1="";
-						$cadenarup2="";
-						$cadenarup3="";
-						$cadenarup4="";
-						
-						
-						if($valcadena<52){
-								$this->Cell($w2[2],4, utf8_decode($hola[$l][1]),'LR',0,'L',$fill2);
-									}else{
-										if($valcadena>52&&$valcadena<104){
-						
-											$cadenarup=substr($hola[$l][1],0,52);
-											$cadenarup1=substr($hola[$l][1],52,strlen($hola[$l][1]));
-							
-															
-       		 	        					$this->Cell($w2[2],4, utf8_decode($cadenarup),'LR',0,'L',$fill2);
-											$this->Ln(4);
-											$this->Cell(130);
-											$this->Cell($w2[2],4, utf8_decode($cadenarup1),'LR',0,'L',$fill2);
-												}else{
-														
-														if($valcadena>52&&$valcadena>104&&$valcadena<156){
-													
-														$cadenarup=substr($hola[$l][1],0,52);
-														$cadenarup1=substr($hola[$l][1],52,52);
-														$cadenarup2=substr($hola[$l][1],104,strlen($hola[$l][1]));
-													
-											
-       		 	        								$this->Cell($w2[2],4, utf8_decode($cadenarup),'LR',0,'L',$fill2);
-														$this->Ln(4);
-														$this->Cell(130);
-														$this->Cell($w2[2],4, utf8_decode($cadenarup1),'LR',0,'L',$fill2);
-														$this->Ln(4);
-														$this->Cell(130);
-														$this->Cell($w2[2],4, utf8_decode($cadenarup2),'LR',0,'L',$fill2);
-														
-															}else{
-																if($valcadena>52&&$valcadena>104&&$valcadena>156&&$valcadena<208){
-																
-																$cadenarup=substr($hola[$l][1],0,52);
-																$cadenarup1=substr($hola[$l][1],52,52);
-																$cadenarup2=substr($hola[$l][1],104,52);
-																$cadenarup3=substr($hola[$l][1],156,strlen($hola[$l][1]));
-						
-																$this->Cell(55,4, utf8_decode($cadenarup),'LR',0,'L',$fill2);
-																$this->Ln(4);
-												  			 	$this->Cell(130);
-																$this->Cell(55,4, utf8_decode($cadenarup1),'LR',0,'L',$fill2);
-																$this->Ln(4);
-																$this->Cell(130);
-																$this->Cell(55,4, utf8_decode($cadenarup2),'LR',0,'L',$fill2);
-																$this->Ln(4);
-																$this->Cell(130);
-																$this->Cell(55,4, utf8_decode($cadenarup3),'LR',0,'L',$fill2);
-																$this->Ln(4);
-															
-																}else{
-																			if($valcadena>52&&$valcadena>104&&$valcadena>156&&$valcadena>208&&$valcadena<260){
-																				$cadenarup=substr($hola[$l][1],0,52);
-																				$cadenarup1=substr($hola[$l][1],52,52);
-																				$cadenarup2=substr($hola[$l][1],104,52);
-																				$cadenarup3=substr($hola[$l][1],156,52);
-																				$cadenarup4=substr($hola[$l][1],208,strlen($hola[$l][1]));
-																					$this->Cell(55,4, utf8_decode($cadenarup),'LR',0,'L',$fill2);
-																					$this->Ln(4);
-																					$this->Cell(130);
-																					$this->Cell(55,4, utf8_decode($cadenarup1),'LR',0,'L',$fill2);
-																					$this->Ln(4);
-																					$this->Cell(130);
-																					$this->Cell(55,4, utf8_decode($cadenarup2),'LR',0,'L',$fill2);
-																					$this->Ln(4);
-																					$this->Cell(130);
-																					$this->Cell(55,4, utf8_decode($cadenarup3),'LR',0,'L',$fill2);
-																					$this->Ln(4);
-																					$this->Cell(130);
-																					$this->Cell(55,4, utf8_decode($cadenarup4),'LR',0,'L',$fill2);
-																					}
-															
-																}
-																
-																}
-															
-       		 	        								}
-													
-												}				
-																
-																
-						
-										
-												
-					
-						
-													
-						
-					
-						
-						
-				
-						
-						
-						
-						// LINEA DE COMENTARIOS
-						
-						
-						}
-				        
-		  	            $this->Ln();
-		  	            $fill2 = !$fill2;
-		  	            
-                    }
-		$y_pos = $y_pos+50;
-    	
-    }*/
+    
     
     // Línea de cierre
     $this->Cell(array_sum($w2),0,'','T');
@@ -300,6 +146,7 @@ function FancyTable2($header2){
 //--------------------------------------------------	
 	   function dame_res($res){
 				global $db;
+				$db ->sqlQuery("SET NAMES 'utf8'");
 				$arreglo3 = array();
 				$contador = -1;
 				
@@ -311,8 +158,8 @@ function FancyTable2($header2){
 		 
 		 	while($rowx = $db->sqlFetchArray($query_user_x)){
 					$contador = $contador+1;
-					$arreglo3[$contador][0]=$rowx['PREGUNTA'];
-					$arreglo3[$contador][1]=$rowx['RESPUESTA'];
+					$arreglo3[$contador][0]=utf8_decode($rowx['PREGUNTA']);
+					$arreglo3[$contador][1]=utf8_decode($rowx['RESPUESTA']);
 				}
 			return $arreglo3;
 		 
@@ -333,6 +180,7 @@ function FancyTable2($header2){
 //-------------------------------------
 function data($id){
 	global $db;
+	$db ->sqlQuery("SET NAMES 'utf8'");
 	$data = array();
 	$contador = 0;
 	
@@ -350,9 +198,9 @@ function data($id){
     $qry = $db->sqlQuery($sql);	
 		 
 	while($row = $db->sqlFetchArray($qry)){
-		$data[$contador][0]=$row['PREGUNTA'];
-		$data[$contador][1]=$row['RESPUESTA'];
-		$data[$contador][2]=$row['MULTIMEDIA'];
+		$data[$contador][0]=utf8_decode($row['PREGUNTA']);
+		$data[$contador][1]=utf8_decode($row['RESPUESTA']);
+		$data[$contador][2]=utf8_decode($row['MULTIMEDIA']);
 		$contador++;
 				}
 	return $data;
@@ -361,21 +209,10 @@ function data($id){
 // Creación del objeto de la clase heredada
 
 $ids_res = array();
-//$header  = array('Usuario', 'Cuestionario(s)', 'Fecha de Creación','Nivel de Bateria');
-//$header  = array('Usuario', 'Cuestionario(s)', 'Evidencia Registrada','Bateria','Reporte Generado');
+
 $header  = array('Usuario', 'Cuestionario(s)', 'Evidencia Registrada','Reporte Generado');
 $header2 = array('Cuestionario','Pregunta', 'Respuesta');
-    /*
-	$datos = array();
-    $datos[0][0]= $_GET['cosas']; 
-    $datos[0][1]= 'mas'; 
-    $datos[0][2]= 'que'; 
-    $datos[0][3]= 'nada'; 
-    $datos[1][0]= 'hay '; 
-    $datos[1][1]= 'que '; 
-    $datos[1][2]= 'ver '; 
-    $datos[1][3]= 'si jala';
-    */
+
 $pdf = new PDF();
 $pdf->AddPage();
 $pdf->AliasNbPages();
@@ -383,7 +220,6 @@ $pdf->SetAutoPageBreak(true, 24);
 $pdf->FancyTable($header);
 $pdf->Ln(10);
 $pdf->FancyTable2($header2);
-//for($i=1;$i<=40;$i++)
-//$pdf->Cell(0,5,'Imprimiendo línea número '.$i,0,1);
+
 $pdf->Output('rev_'.date('Ymd_His').'.pdf','D');
 ?>

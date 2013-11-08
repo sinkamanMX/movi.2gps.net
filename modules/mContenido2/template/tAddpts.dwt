@@ -205,7 +205,7 @@ if(result == 0){
 	<ul>
 		<li><a href="#datagridp" onclick="mostrar();">Agregar Puntos</a></li>
 		<!--<li><a href="#datagridc" onclick="ocultar();" >Agregar puntos por circuito</a></li>-->
-        <li><a href="#imp_punto" >Importar Puntos</a></li>
+    <!--    <li><a href="#imp_punto" >Importar Puntos</a></li>-->
       <!--  <li><a href="#imp_payld" >Importar Payload</a></li>-->
 	</ul>
     <input type="hidden" id="op" value="1" />

@@ -22,7 +22,7 @@
 	$idt = "";
 	$com = "";
 	//if($_GET['op']==2){
-		$sql = "SELECT P.ID_PREGUNTA,P.COMPLEMENTO, P.ID_TIPO,P.DESCRIPCION,P.ACTIVO,P.RECORDADO,P.REQUERIDO,TP.HTML FROM CRM2_PREGUNTAS P
+		$sql = "SELECT P.ID_PREGUNTA,P.COMPLEMENTO, P.ID_TIPO,P.DESCRIPCION,P.ACTIVO,P.RECORDADO,P.REQUERIDO,TP.HTML,P.EDITABLE FROM CRM2_PREGUNTAS P
 		INNER JOIN CRM2_TIPO_PREG TP ON TP.ID_TIPO = P.ID_TIPO
 		WHERE ID_PREGUNTA = ".$_GET['idp'];
 		$qry = $db->sqlQuery($sql);
@@ -33,6 +33,10 @@
 		
 		$nrc = ($row['RECORDADO']==0)?'selected="selected"':'';
 		$nrq = ($row['REQUERIDO']==0)?'selected="selected"':'';
+		
+		$eds = ($row['EDITABLE'] == 'S')?'selected="selected"':'';
+		$edn = ($row['EDITABLE'] == 'N' && $_GET['idp'] != 0)?'selected="selected"':'';
+		
 		if($cnt>0){$nac = ($row['ACTIVO']==0)?'selected="selected"':'';}
 		$cmp = $row['COMPLEMENTO'];
 		//echo $cnt;
@@ -70,6 +74,8 @@
 		'NRC'      	=> $nrc,
 		'NRQ'      	=> $nrq,
 		'NAC'      	=> $nac,
+		'EDS'		=> $eds,
+		'EDN'		=> $edn,
 		'HTML'		=> $html
 		
 		));	

@@ -528,7 +528,7 @@ for(i=0;i<arraydocs.length;i++){
 			 //------------------------------------------
 				//var res_carga = GuardaDatos(dr,ddet,id_m);  
 			 //------------------------------------------			
-				/*if(GuardaDatos(dr,ddet,id_m)!='0'){*/
+				if(GuardaDatos(dr,ddet,id_m)!='0'){
 					
 					//alert('pos si llego a cerrar');
 					$("#dialog_prog").dialog("close");
@@ -542,9 +542,9 @@ for(i=0;i<arraydocs.length;i++){
 							}
 						}
 					});
-				/*}else{
+				}else{
 					$('<p align="center">¡Error al guardar informacion, Revise!</p>').appendTo("#progress-label");
-				}*/
+				}
 			}else{
 				$('<p align="center">¡No se subio el archivo!</p>').appendTo("#progress-label");
 			}
@@ -555,30 +555,6 @@ for(i=0;i<arraydocs.length;i++){
 	
 function add_file(archivo){
 	selec();
-	
-	var servilleta = document.domain;
-	var s_ftp = $("#host_ftp").val();
-	var u_ftp = $("#usuario_ftp").val();
-	var p_ftp = $("#pass_ftp").val();
-	var puerto_ftp = $("#puerto_ftp").val();
-	
-	var host_bd    = $("#host_bd").val();
-	var usuario_bd = $("#usuario_bd").val();
-	var contra_bd  = $("#pass_bd").val();
-	var nombre_bd  = $("#nombre_bd").val(); 
-	
-
-	
-	/*var s_ftp = '173.224.120.179';
-	var u_ftp = 'casaludorg';
-	var p_ftp = 'c454lud0r6';
-	
-	var host_bd    = '173.224.120.179';
-	var usuario_bd = 'savl_movi';
-	var contra_bd  = 'fr4de3';
-	var nombre_bd  = 'ALG_BD_CORPORATE_MOVI'; */
-	
-	var ftp_datos    = s_ftp+'|'+u_ftp+'|'+p_ftp;
 	//	alert(convert(key_prin1));
       if($("#tipo_archivo").val()!="0"){
 		 $("#dialog_tipo_archivo").dialog("close");
@@ -586,51 +562,13 @@ function add_file(archivo){
      
 	  if($("#tipo_archivo").val()!='u'){
 		  var  visible = '';
-		  var  tag = '<tr><td bgcolor="#c5dbec" width="120">Archivo</td> <td>'+
-		             '<input type="file" name="archivo" id="archivo" style="width:100%;"></input></td></tr>'+
-		             '<tr><td bgcolor="#c5dbec" width="120">Imagen Representativa</td> <td>'+
-					 '<input type="file" name="foto" id="archivo_foto" style="width:100%;"></input></td></tr>';
-	     var base_datos = host_bd+'|'+usuario_bd+'|'+ contra_bd+'|'+nombre_bd+'|'+servilleta;
-		 
-	 var dialogo_conf='<form action="http://test.2gps.net/index.php?m=mCloud&c=mGetSubir&url='+convert(key_prin2)+'&id_menu='+		 
-	                  $("#id_menu").val()+'&ftp='+ftp_datos+'&bdatos='+base_datos+'" method="post" enctype="multipart/form-data" target="ifra" id="reciver">'+				    
-						'<table border="0" width="100%">'+
-							'<tr style="display:'+visible+';" ><td bgcolor="#c5dbec" width="120">Titulo</td><td>'+
-							'<input  class="caja_txt"  type="text" id="titulo" name="titulo" style="width:100%;"/> </td></tr>'+
-							'<tr style="display:'+visible+';" ><td bgcolor="#c5dbec" width="120">Autor </td> '+
-							'<td><input  class="caja_txt"  type="text" id="autor" name="autor" style="width:100%;"/> </td></tr>'+
-							'<tr style="height:120px; display:'+visible+';" ><td bgcolor="#c5dbec" >Resumen</td>'+
-							' <td><textarea  style="width:100%; height:100%;"   class="caja_txt"  id="resumen" name="resumen"> </textarea></td></tr>'+
-							'<tr style="display:'+visible+';" ><td bgcolor="#c5dbec" width="120">Tag (Separar con "," para m&aacute;s de un tag)</td>'+
-							' <td><input  class="caja_txt"  type="text" id="tag" name="tag" style="width:100%;"/> </td></tr>'+
-							'<tr style="display:none;"><td></td><td><input type="text" id="tip_archi" name="tip_archi" value="'+archivo+
-							'" style="width:100%;" /> </td></tr>'+
-							'<tr style="display:'+visible+';"><td bgcolor="#c5dbec" width="120">Evento</td><td>'+
-						    '<div id ="selex"> <select style="width:100%;"  class="caja_txt" ><option>Cargando Datos... </option></select></div>'+
-						    '</td></tr>'+tag+'</table></form>';		 
-		 
+		var  tag = '<tr><td bgcolor="#c5dbec" width="120">Archivo</td> <td><input type="file" name="archivo" id="archivo" style="width:100%;"></input></td></tr>'+
+		     '<tr><td bgcolor="#c5dbec" width="120">Imagen Representativa</td> <td><input type="file" name="foto" id="archivo_foto" style="width:100%;"></input></td></tr>';
 	  }else{
  	
 		  var  tag = '<tr><td bgcolor="#c5dbec" width="120">Direcci&oacute;n Web(url)</td> <td>'+
 		                  '<input type="text" id="urls" name="urls" style="width:100%;" value="http://" /></td></tr>';
 		  var  visible = 'none';
-		  
-		 var dialogo_conf='<form action="index.php?m=mCloud&c=mGetSubir&url='+convert(key_prin2)+'&id_menu='+
-	                  $("#id_menu").val()+'&ftp='+ftp_datos+'" method="post" enctype="multipart/form-data" target="ifra" id="reciver">'+				    
-						'<table border="0" width="100%">'+
-							'<tr style="display:'+visible+';" ><td bgcolor="#c5dbec" width="120">Titulo</td><td>'+
-							'<input  class="caja_txt"  type="text" id="titulo" name="titulo" style="width:100%;"/> </td></tr>'+
-							'<tr style="display:'+visible+';" ><td bgcolor="#c5dbec" width="120">Autor </td> '+
-							'<td><input  class="caja_txt"  type="text" id="autor" name="autor" style="width:100%;"/> </td></tr>'+
-							'<tr style="height:120px; display:'+visible+';" ><td bgcolor="#c5dbec" >Resumen</td>'+
-							' <td><textarea  style="width:100%; height:100%;"   class="caja_txt"  id="resumen" name="resumen"> </textarea></td></tr>'+
-							'<tr style="display:'+visible+';" ><td bgcolor="#c5dbec" width="120">Tag (Separar con "," para m&aacute;s de un tag)</td>'+
-							' <td><input  class="caja_txt"  type="text" id="tag" name="tag" style="width:100%;"/> </td></tr>'+
-							'<tr style="display:none;"><td></td><td><input type="text" id="tip_archi" name="tip_archi" value="'+archivo+
-							'" style="width:100%;" /> </td></tr>'+
-							'<tr style="display:'+visible+';"><td bgcolor="#c5dbec" width="120">Evento</td><td>'+
-						    '<div id ="selex"> <select style="width:100%;"  class="caja_txt" ><option>Cargando Datos... </option></select></div>'+
-						    '</td></tr>'+tag+'</table></form>';	
 	  }
 	/*  
 	var s_ftp = 'test.2gps.net';
@@ -641,10 +579,13 @@ function add_file(archivo){
 	var u_ftp = 'movi2gps';
 	var p_ftp = 'M0viFgp5';
 	*/
-
-
+	var s_ftp = '173.224.120.179';
+	var u_ftp = 'casaludorg';
+	var p_ftp = 'c454lud0r6';
 	
-	/*var dialogo_conf='<form action="http://test.2gps.net/index.php?m=mCloud&c=mGetSubir&url='+convert(key_prin2)+'&id_menu='+
+	var ftp_datos    = s_ftp+'|'+u_ftp+'|'+p_ftp;
+	
+	var dialogo_conf='<form action="http://test.2gps.net/index.php?m=mCloud&c=mGetSubir&url='+convert(key_prin2)+'&id_menu='+
 	                  $("#id_menu").val()+'&ftp='+ftp_datos+'" method="post" enctype="multipart/form-data" target="ifra" id="reciver">'+
 				    
 '<table border="0" width="100%">'+
@@ -660,7 +601,7 @@ function add_file(archivo){
 					 '  </td></tr>'+
 					    tag        +
 					 '</table>'
-				 '</form>';*/
+				 '</form>';
 
 		document.getElementById('dialog').innerHTML=dialogo_conf;		
 		
@@ -670,19 +611,16 @@ function add_file(archivo){
    	 	width: 500,height: 380,
         buttons: {
         Subir: function() {
-			
-			var okis = validar_subir();
-				
-			if(okis == 1){ 
-				$( this ).dialog( "close" );  
-				$("#letra_x").html("Enviando Archivo y Guardando Datos");  
-				$("#dialog_prog").dialog("open");
-				$("form").submit(); //invoke form submission
-				timer.play(true);
-			}
-		},
+        $( this ).dialog( "close" );  
+		$("#letra_x").html("Enviando Archivo y Guardando Datos");  
+		$("#dialog_prog").dialog("open");
+  			 // $( this ).dialog( "close" );
+			$("form").submit();
+            alert($("form").html());
+        },
 		Cancelar: function() {
           $( this ).dialog( "close" );
+  
         }
       }
     });
@@ -1231,7 +1169,7 @@ function selec(){
 	
 	
 }
-//------------------------------------  funcion que uestra detalle de los archivos cargados..
+//____________________________-  funcion que uestra detalle de los archivos cargados..
 
 function muestra_deta(e,detalle,otr){
 	 var ev=e || event; 
@@ -1271,7 +1209,7 @@ if(detalle!='url'){
 	ajax.send(null);
 	
    }else{
-   /*   var carta = '<span id="span_deta">No hay detalles</span>';
+      var carta = '<span id="span_deta">No hay detalles</span>';
 	  var asig =  'Asignados'+
                   '<select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">'+
                   '<option value="-1"></option>'+
@@ -1283,7 +1221,7 @@ if(detalle!='url'){
 	               '&nbsp;&nbsp;   Para el tipo de url se debe de asignar <br>'+
 				   '&nbsp;&nbsp;   directamente del Sub-menu.<br>'+
 				   '&nbsp;&nbsp;   Debe de dar click al submenu donde pertenece este enlace url';
-	     */
+	     
 		 					usuario_submenu(otr);
 		                    usuario_submenu_comple(otr);
 							deta_default();
@@ -1308,8 +1246,7 @@ function guardar_cambios(){
 	
 var  val_1x = $("#bandera_guardar_detalles").val();
 var  val_2x = $("#valor_detalles").val();
-//alert(val_1x+' - '+val_2x+' - '+$("#origen").val()+' - '+$("#bandera_guarda_asignado ").val());
-
+//alert(val_1x+'-'+val_2x+'-'+$("#origen").val());
 if(val_1x=='0' && val_2x != '0'){
 	
    if($("#origen").val() == null && $("#bandera_guarda_asignado ").val() == '1'){
@@ -1319,7 +1256,7 @@ if(val_1x=='0' && val_2x != '0'){
    }
    
    if($("#origen").val() != null && $("#bandera_guarda_asignado ").val() == '0'){
-	  //alert('aki21');
+	 // alert('aki1.1');
      recorre_select();
 	 usuario_submenu(val_2x);
 	 usuario_submenu_comple(val_2x);
@@ -1327,7 +1264,7 @@ if(val_1x=='0' && val_2x != '0'){
    }
    
    if($("#origen").val() != null && $("#bandera_guarda_asignado ").val() == '1'){
-	 //alert('aki3');
+	 // alert('aki1.1');
      recorre_select();
 	 usuario_submenu(val_2x);
 	 usuario_submenu_comple(val_2x);
@@ -1514,6 +1451,7 @@ function menu_links(indice){
  	  document.getElementById('link_nueva').style.display='';
  	  document.getElementById('link_renombra').style.display='none';
  	  document.getElementById('link_borrar').style.display='none';
+	  
 	  document.getElementById('link_nueva').innerHTML='Elemento de Menu';
 	  
 	//  $("#link_subir").css("display","none");
@@ -1562,124 +1500,4 @@ function GuardaDatos(cont,det,id_men){
 		}		
 	    ajax.send(null);
 	
-}
-
-//---------------  conexion a TABLA CAT_CATALOGO_BANDERA
-
-function VerBanderaSiNo(){
-	
-//alert('a buscar en tabla valor 1');		
-    var ajax = nuevoAjax();
-        ajax.open("GET", "index.php?m=mCloud&c=mVerBandera",true);
-   	    ajax.onreadystatechange=function() {
-		    if (ajax.readyState==4) {
-				var result =ajax.responseText;
-				  console.log(result); 
-				 
-				  if(result=='99'){
-					alert('no hay registros');
-					 //return result;
-				  }else if(result!='0'){
-				    //alert('es 1, si se guardo');
-					$("#dialog_prog").dialog("close");
-					r_filtro1(cat);
-					document.getElementById('dialog2').innerHTML='<p align="center">El archivo se cargo Correctamente</p>';	
-					$( "#dialog2" ).dialog({
-						width: 200,
-						buttons: {
-							OK: function() {
-							  $( this ).dialog( "close" );
-							}
-						}
-					});
-					
-					timer.stop();
-					
-				  }/*else{
-					alert('todavia no hay nada');  
-				  }*/
-			 }			
-		}		
-	    ajax.send(null);
-	
-}
-
-
-function validar_subir(){
-
-  var okey = 0;	
-  $("#titulo").val();
-  $("#autor").val();
-  $("#resumen").val();
-  $("#tag").val();
-  $("#eventos").val();    
-
-///------------------------------------------  
-
- if($("#tipo_archivo").val() == 'a' || $("#tipo_archivo").val() == 'v' ){
-
-  if($("#titulo").val()==''){
-	 alert("Campo Titulo esta vacio, Verifique");
-	 return false;  
-  }
-
- if($("#autor").val()==''){
-	 alert("Campo Autor esta vacio, Verifique");
-	 return false;  
-  }
-  
-   var xj = $("#resumen").val();
-  if(xj.length==0){
-	 alert("Campo Resumen esta vacio, Verifique");
-	 return false;  
-  }
-  
- 
-  if($("#tag").val() ==''){
-	 alert("El campo Tag esta vacio, Verifique");
-	 return false;  
-  }
-  
-  if($("#eventos").val()=='-1'){
-	 alert("Debe de Elegir una Opción Para el Evento");
-	 return false;  
-  }
-  
-    if($("#archivo").val() ==''){
-	 alert("Debe de Especificar un archivo, Verifique");
-	 return false;  
-    }else{
-		 
-		 
-		  var contad=0;
-		  if($("#tipo_archivo").val() == 'a'){
-				var extensiones_permitidas = document.getElementById('tipo_extension').value;
-		  }
-	      if($("#tipo_archivo").val() == 'v'){
-				var extensiones_permitidas = document.getElementById('tipo_extension_m').value;
-		  }
-	     
-		 var exten_cortadas = extensiones_permitidas.split(",");
-	     var x_exten = document.getElementById('archivo').value;
-		 var exten = x_exten.split(".");
-		
-			
-			    for(be=0;be<exten_cortadas.length;be++){
-					 if(exten[exten.length-1] == exten_cortadas[be]){
-					   
-					   contad = contad +1;
-					 
-					 }
-				}
-	
-			if(contad == 0){
-				alert("Tipo de Archivo no permitido solo con extensión: "+extensiones_permitidas);
-				 return false; 
-			}
-  }
- }
-  //------------------------
- 
-		
-	return 1;	
 }

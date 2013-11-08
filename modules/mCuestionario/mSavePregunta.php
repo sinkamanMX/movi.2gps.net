@@ -23,7 +23,8 @@ $db ->sqlQuery("SET NAMES 'utf8'");
 			'ACTIVO'  		=> $_GET['act'],
 			'COMPLEMENTO'	=> $_GET['com'],
 			'RECORDADO'   	=> $_GET['rec'],
-			'REQUERIDO'   	=> $_GET['req']
+			'REQUERIDO'   	=> $_GET['req'],
+			'EDITABLE'		=> $_GET['edt']
 	);
 	
 	if($_GET['op']==1){

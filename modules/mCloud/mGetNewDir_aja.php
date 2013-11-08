@@ -16,13 +16,10 @@
 	$ct='-';
 	$cs='*';
 	
-	$a = array('á','Á','é','É','í','Í', 'ó','Ó', 'ú','Ú', 'ñ', 'Ñ',' ');
-    $b = array('a','A','e','E','i','I', 'o' ,'O', 'u','U', 'n', 'N', '_');
-
 	//echo $directorio=dirname(__FILE__).'/Raiz/ragde18@hotmail.es';
 	$cadena='';
 	$down='/modules/mCloud/Raiz/ragde18@hotmail.es/';
-	$path=reemplaza(str_replace(" ","_",utf8_decode($_GET['ulr'])));
+	$path=reemplaza(str_replace(" ","_",($_GET['ulr'])));
 	$la_ruta  ='';
 	
 	if($cadenad[0] === '1' && $cadenad[1] ==='0'){
@@ -117,39 +114,15 @@ function crear_sub_menu($idmenu,$nombre){
 
 function reemplaza($cadena_x){
 $regresa = '';
-$a = array('á','Á','é','É','í','Í', 'ó','Ó', 'ú','Ú', 'ü','Ü', 'ñ', 'Ñ',' ');
-$b = array('a','A','e','E','i','I', 'o' ,'O', 'u','U','u','U', 'n', 'N', '_');
+$ag = array('á','Á','é','É','í','Í','ó','Ó','ú','Ú','ñ','Ñ',' ');
+$bg = array('a','A','e','E','i','I','o','O','u','U','n','N','_');
 
-$regresa = str_replace($a, $b,$cadena_x);
+$regresa = str_replace($ag, $bg,$cadena_x);
 return $regresa;
 }	
 //------------------------------------
 
-function limpiar_caracteres_especiales($s) {
-	$s = ereg_replace("[áàâãª]","a",$s);
-	$s = ereg_replace("[ÁÀÂÃ]","A",$s);
-	$s = ereg_replace("[éèê]","e",$s);
-	$s = ereg_replace("[ÉÈÊ]","E",$s);
-	$s = ereg_replace("[íìî]","i",$s);
-	$s = ereg_replace("[ÍÌÎ]","I",$s);
-	$s = ereg_replace("[óòôõº]","o",$s);
-	$s = ereg_replace("[ÓÒÔÕ]","O",$s);
-	$s = ereg_replace("[úùû]","u",$s);
-	$s = ereg_replace("[ÚÙÛ]","U",$s);
-	$s = str_replace(" ","_",$s);
-	$s = str_replace("ñ","n",$s);
-	$s = str_replace("Ñ","N",$s);
-	//para ampliar los caracteres a reemplazar agregar lineas de este tipo:
-	//$s = str_replace("caracter-que-queremos-cambiar","caracter-por-el-cual-lo-vamos-a-cambiar",$s);
-	return $s;
-}
 
-function normaliza ($cadena){ 
-$originales = 'ÁÉÍÑÓÚáéíñó'; 
-$modificadas = 'AEINOUaeino'; 
-$cadena = utf8_decode($cadena); 
-$cadena = strtr($cadena, utf8_decode($originales), $modificadas); 
-$cadena = strtolower($cadena); 
-return utf8_encode($cadena); 
-} 
+
+ 
 ?>

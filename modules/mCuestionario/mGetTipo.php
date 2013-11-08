@@ -18,22 +18,17 @@
 	$db ->sqlQuery("SET NAMES 'utf8'");
 	$client   = $userAdmin->user_info['ID_CLIENTE'];
 
-	$result = array();
-	$sqlx = "SELECT 
-	G.ID_OBJECT_MAP, G.DESCRIPCION AS GEO, G.ITEM_NUMBER, GT.ID_TIPO, GT.DESCRIPCION AS TYP, G.LATITUDE, G.LONGITUDE,G.RADIO
-	FROM ADM_GEOREFERENCIAS G
-	INNER JOIN ADM_GEOREFERENCIAS_TIPO GT ON GT.ID_TIPO = G.ID_TIPO_GEO
-	WHERE G.ID_CLIENTE= ".$client." AND G.TIPO = 'G' ORDER BY G.DESCRIPCION";
-					
-						
-	$queryx= $db->sqlQuery($sqlx);
-	$contador= $db->sqlEnumRows($queryx);
-	
-	if($contador>0){ 
-		while($rowx=$db->sqlFetchArray($queryx)){
-			$result[] = $rowx; // Inside while loop
-			}
+	//$result = array();
+	$sql = "SELECT EDITABLE FROM CRM2_TIPO_PREG WHERE ID_TIPO = ".$_GET['idt'];
+	$qry = $db->sqlQuery($sql);
+	$cnt = $db->sqlEnumRows($qry);
+	if($cnt>0){
+		$row=$db->sqlFetchArray($qry);
+		echo $row['EDITABLE'];
 	}
-	echo json_encode( $result = array('aaData'=>$result ) );	 	
+	else{
+		echo 0;
+		}
+	//echo json_encode( $result = array('aaData'=>$result ) );	 	
 	$db->sqlClose();
 ?>

@@ -121,9 +121,22 @@ $(document).ready(function () {
 <li><a href="#qst_tab_propiedades">Propiedades</a></li>
 <li><a href="#qst_tab_tema">Tema</a></li>
 <li><a href="#qst_tab_pregunta">Preguntas</a></li>
+<!--<li><a href="#qst_tab_funcion">Funci&oacute;n</a></li>-->
 <li><a href="#qst_tab_user">Usuarios</a></li>
 </ul>
-
+<!--<div id="qst_tab_funcion">
+<table>
+<tr>
+<td><label>Funci&oacute;n:</label></td>
+<td>
+<select id="qst_idf" class="caja_txt" onchange="qst_get_param(this.value)">
+{C_F}
+</select>
+</td>
+</tr>
+</table>
+<div id="qst_list_param"></div>
+</div>--><!--qst_tab_funcion-->
 <div id="qst_tab_propiedades">
 <table>
 <tr>
@@ -164,10 +177,10 @@ $(document).ready(function () {
 </div>
 </div><!--qst_tab_tema-->
 <div id="qst_tab_pregunta">
-<div style="position:absolute; width:98%; height:90%; border:#00F dotted thin;">
+<div style="position:absolute; width:98%; height:90%; ">
 
 <!--preguntas disponibles-->
-<div style=" width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+<div style=" width:49%; height:100%; float:left; border:#a6c9e2 solid thin;" class="ui-corner-all">
 <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
 <span class="ui-dialog-title">Preguntas Disponibles</span>
 </div>
@@ -181,15 +194,15 @@ $(document).ready(function () {
 </div>
 </div>
 <!--Buscador-->
-<div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
-<div id="qst_preg_dsp" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+<div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px; max-height:355px;">
+<div id="qst_preg_dsp" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
     {PRG}
 </div>
 </div>
 </div>   
 <!--preguntas disponibles-->
 <!--preguntas seleccionadas-->
-<div style="width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+<div style="width:49%; height:100%; float:right; border:#a6c9e2 solid thin;" class="ui-corner-all">
 <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
 <span class="ui-dialog-title">Preguntas Seleccionadas</span>
 <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg(0,1);"><span class="ui-icon ui-icon-plusthick"></span></a>
@@ -204,22 +217,22 @@ $(document).ready(function () {
 </div>
 </div>
 <!--Buscador-->
-<!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
 
-<div id="qst_preg_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+<div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px; max-height:355px;">
+<div id="qst_preg_sel" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
 {PRS}    
 </div>
 </div>
-<!--</div>-->
+</div><!--scroll-->
 <!--preguntas seleccionadas-->
 
 </div>
 </div><!--qst_tab_pregunta-->
 <div id="qst_tab_user">
-<div style="position:absolute; width:98%; height:90%; border:#00F dotted thin;">
+<div style="position:absolute; width:98%; height:90%;">
 
 <!--usuarios disponibles-->
-<div style=" width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+<div style=" width:49%; height:100%; float:left; border:#a6c9e2 solid thin;" class="ui-corner-all">
 <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
 <span class="ui-dialog-title">Usuarios Disponibles</span>
 </div>
@@ -233,15 +246,15 @@ $(document).ready(function () {
 </div>
 </div>
 <!--Buscador-->
-<div style="overflow-y:scroll; overflow-x:hidden; width:100%; height:85%;">
-<div id="qst_user_dsp" class="dropme" style="min-height:230px; min-width:170px; width:100%;">
+<div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px; max-height:355px;">
+<div id="qst_user_dsp" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
     {USD}
 </div>
 </div>
 </div>   
 <!--usuarios disponibles-->
 <!--usuarios seleccionados-->
-<div style="width:49.5%; height:100%; float:left; border:#00F0F0 dotted thin;">
+<div style="width:49%; height:100%; float:right; border:#a6c9e2 solid thin;" class="ui-corner-all">
 <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ">
 <span class="ui-dialog-title">Usuarios Seleccionados</span>
 <!--<a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" onclick="form_preg();"><span class="ui-icon ui-icon-plusthick"></span></a>-->
@@ -256,13 +269,13 @@ $(document).ready(function () {
 </div>
 </div>
 <!--Buscador-->
-<!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
 
-<div id="qst_user_sel" class="dropme" style="min-height:230px; min-width:170px; width:100%;" >
+<div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px; max-height:355px;">
+<div id="qst_user_sel" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
 {USS}
 </div>
 </div>
-<!--</div>-->
+</div><!--scroll-->
 <!--usuarios seleccionados-->
 
 </div>
