@@ -40,6 +40,7 @@ var angles2= new Array();
 var valid = new Array();
 
 var infos1 = new Array();
+var id_client='';
 
 
 var idpo = 0;
@@ -91,7 +92,7 @@ var cadena='<table border="0" id="tab_cotta" >'+
 $(cadena).appendTo('#dialog-acott');
 
 if(contas==0){
-
+r_filtro();
  $( "#dialog-acott" ).dialog({
 								width:300,
 								buttons: {
@@ -417,27 +418,16 @@ function nuevoAjax(){
 
 /*-----------------------------------    -------------------------------------------- */
 function r_filtro(){
-	/*var yy="";
-	var filt = 0; 
-	var text = $('#flt_x').val();
-	$('#list_formas').html('<div class="demo"><br/><br/><br/><br/>Cargando Datos<br/><div id="progressbar" style=" width:300px;" ></div></div>');
-barra_progress();
-	var ajax = nuevoAjax();
+var ajax = nuevoAjax();
 	//var url = "index.php?m=rRsalida&c=mGetReport";
-		ajax.open("GET", "index.php?m=mContenido2&c=mTabla&txtfil="+text,true);
+		ajax.open("GET", "index.php?m=mContenido2&c=mCod",true);
 		ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 				var result =ajax.responseText;
-				//alert(result);
-				if(result != 0){
-					$('#list_formas').html(ajax.responseText);
-					tigra_tables('MyDatas', 0, 0, '#ffffff', '#DDD', '#AEC7F3', '#5283D8');
-				}else{
-					$('#list_formas').html("<br><br><br><br><center>La busqueda no obtuvo resultados</center>");
-				}
+				id_client=result;
 			}			
 		}		
-	ajax.send(null);	*/
+	ajax.send(null);
 
 }
 /*-----------------------------------    -------------------------------------------- */
@@ -523,7 +513,7 @@ barra_progress();
 		if (ajax.readyState==4) {
 				var result =ajax.responseText;
 				//alert(result)
-				console.log(result);
+				//console.log(result);
 				if(result != 0){
 					//$('#list_formas').html(ajax.responseText);
 					//tigra_tables('MyData', 0, 0, '#ffffff', '#DDD', '#AEC7F3', '#5283D8');
@@ -1732,7 +1722,7 @@ barra_progress();
   	 if (ajax.readyState==4) {
 		$("#dialog_pb" ).dialog('close');				
 	      result =ajax.responseText;
-		  console.log(result);
+		 // console.log(result);
 		  //alert(result)
 		   	if(result>0){
 				
@@ -3334,13 +3324,15 @@ case 2:
 function down_format()
 {
 	//window.location="modules/AdRutas/template/descargable/layout.xls";
-   window.location="public/Descargas/layout_puntos.xls";
+   window.location="public/Descargas/layout_puntos.xlsx";
+   console.log();
+   
 }	
 //---------------------------------------------
 function down_format_2()
 {
 	//window.location="modules/AdRutas/template/descargable/layout.xls";
-   window.location="public/Despacho/descargable/layout_puntos.xls";
+   window.location="public/Descargas/layout_puntos.xlsx";
 }	
 //---------------------------------------------
 function down_format_pto(){
@@ -3400,7 +3392,7 @@ function generar_excel(qs,qt){
 //----------------------- funcion que envia el excel.
 function enviar_excel(){
 	
-	if($('#excel').val()==""){			
+	/*if($('#excel').val()==""){			
 		$('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Seleccione un archivo</p>');
 		$( "#dialog-message" ).dialog({
 			
@@ -3429,11 +3421,11 @@ function enviar_excel(){
 			}
 		});
 	
-	barra_progress();
+	barra_progress();*/
 	
 	document.forms["aver"].submit();
-	document.getElementById('excel').value="";
-	$("#dialog-message" ).dialog('close');
+	//document.getElementById('excel').value="";
+	//$("#dialog-message" ).dialog('close');
 	
 }
 //----------------------- funcion que envia el excel.
@@ -3517,6 +3509,34 @@ function enviar_excel_pld(){
 	
 }	
  	
+	function php_exvc(x){
+		
+		var id=id_client;
+		
+		if(x==1){
+		var ajax = nuevoAjax();
+		 ajax.open("GET", "index.php?m=mContenido2/PHPExcleReader&id="+id,true);
+		 ajax.onreadystatechange=function() {
+			 if (ajax.readyState==4) {
+				 
+				var result = ajax.responseText;
+				
+					console.log(result);
+					if(result==1){
+					
+						document.getElementById('c_content2').innerHTML = '<p align="center">Carga Realizada Satisfactoriamente</p>';	  
+					}else{
+						document.getElementById('c_content2').innerHTML = '<p align="center">No se puede cargar el archivo seleccionado </p>';	  
+						}
+		   
+		   }
+		  }
+		  ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		 ajax.send(null);
+		}
+		
+		
+		}
 //------------------------------------------------------------
 function mensaje(g){
 																							
@@ -4096,7 +4116,7 @@ $('#dialog-message').html('<p align="center"><span class="ui-icon ui-icon-alert"
 		ajax.onreadystatechange=function() {
 		if (ajax.readyState==4) {
 				var result =ajax.responseText;
-		console.log(result);
+		//console.log(result);
 				if(result != 0){
 					
 					$('#tab_viaj').find(".inf_viaj").remove();

@@ -240,7 +240,7 @@ font-weight: bold;
       <fieldset style="border:#A6C9E2 solid 1px;"> 
       <legend> <h5>Asignaci&oacute;n de Usuarios</h5></legend> 
         
-        <table border="0">
+        <table border="0" width="100%">
         <tr>
         <td>
          <div class="divs" id="conte_2">
@@ -265,6 +265,8 @@ font-weight: bold;
         </div>
         </td>
         <td> 
+        <table border="0" width="100%" height="100%" >
+        <tr> <td>
           <h4 id="mensaje_url">
                     &nbsp;&nbsp;  Nota:  
 	                &nbsp;&nbsp;  Listado de usuarios que tienen <br />  
@@ -275,6 +277,13 @@ font-weight: bold;
 		   <p style="display:none;"> timer has been played <span class='counters'>0</span> times.<br/> 
 		   <input type='button' value='timer.play()' onclick='timer.play(true);' /><br/>
            <input type='button' value='timer.stop()' onclick='timer.stop();' /></p>
+             </td> 
+             <td> 
+               <img src="modules/mCloud/template/lg.png" width="100" height="170" style="cursor:pointer;" onclick="Cataimagen({CLIENTE});" />
+             </td>
+             </tr>
+            </table>   
+           
          </td>
         </tr>
         </table>
@@ -392,18 +401,14 @@ font-weight: bold;
  </div>
  <div id="dialog_img_cambia" > </div>
  
+  <div id="dialog_img_movil" > </div>
+ 
 <iframe name="ifra" id="ifra" width="0" height="0" frameborder="0" style="position:relative; top:400px;"  >
 </iframe>
 <input type="hidden" value="{CLIENTE}" id="cliente" />
 <input type="hidden"  id="catalogos" />
 <input type="hidden"  id="id_menu" style=" position:relative; left:200px;"  value="0"/>
 <input type="hidden"  id="tipo_archivo" style=" position:relative; left:300px;"  value="0"/>
-
-
-
-
-
-
 
 
 <input type="hidden" id="host_bd" value="{HOST}"/>
@@ -416,5 +421,8 @@ font-weight: bold;
 <input type="hidden" id="puerto_ftp" value="{FTP_PUERTO}"/>
 <input type="hidden" id="tipo_extension" value="{EXTENSIONES}"/>
 <input type="hidden" id="tipo_extension_m" value="{EXTENSIONES_M}"/>
+<input type="hidden" id="el_login_img" />
+<input type="hidden" id="portada_img"/>
+<input type="hidden" id="icono_img"/>
 </body>
 </html>

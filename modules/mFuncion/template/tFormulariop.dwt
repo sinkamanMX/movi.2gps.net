@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<input type="hidden" id="fun_hidp" value="{ID}" />
+<input type="hidden" id="fun_hopp" value="{OP}" />
+<table>
+<tr>
+<td>Descripci&oacute;n:</td>
+<td colspan="2"><input type="text" id="fun_tit_par" class="caja_txt" value="{DES}"/>
+</td> 
+</tr>
+<tr>
+<td>Tipo:</td>
+<td>
+<select name="tp" id="fun_typ_par" class="caja" >
+<option value="I" {INT}>Entero</option>
+<option value="S" {STR}>Texto</option>
+</select>
+</td>
+</tr>
+
+</table>

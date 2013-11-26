@@ -1,0 +1,40 @@
+<table border="0" style="width:100%; height:100%;" > 
+ <tr>
+   <td bgcolor="#c5dbec" width="120">TITULO</td>
+   <td style="width:50%;"><input id="c_titulo" style="width:100%;" type="text" value="{TITULO}" class="caja_txt" /></td>
+   <td rowspan="4"> 
+   <div align="center"  style="border:#CCF solid 1px; width:100%; height:100%;">{IMAGEN}</div>
+   </td>
+ </tr>
+ <tr>
+   <td bgcolor="#c5dbec">AUTOR</td>
+   <td><input id="c_autor" style="width:100%;" type="text" value="{NOMBRE_AUTOR}" class="caja_txt" /></td>
+ </tr>
+ <tr style="height:50%; height:100%;">
+   <td bgcolor="#c5dbec">RESUMEN</td>
+   <td><textarea id="c_resumen" style="width:100%; height:100%;" class="caja_txt">{RESUMEN}</textarea></td>
+ </tr>
+ <tr>
+    <td bgcolor="#c5dbec">TAG (Separar con "," para m&aacute;s de un tag)</td>
+   <td><input id="c_tag" style="width:100%;" type="text" value="{TAG}"  class="caja_txt"/></td>
+ </tr>
+ <tr bgcolor="#c5dbec" align="center">
+   <td >EVENTO</td>
+   <td>
+     <select name="eventos"  id="c_eventos" class="caja_txt" style="width:100%;">
+     <option value="-1" style="color:#666;">Opci&oacute;n</option>
+        <!-- BEGIN eventox -->
+          <option value="{eventox.COD_EVENTO}" {eventox.SELEC}>{eventox.DESCRTIPCION}</option> 
+        <!-- END eventox -->
+    </select>
+  	</td>
+  	<td >IMAGEN</td>
+  </tr>
+  <tr bgcolor="#c5dbec" align="center">
+     <td></td>
+     <td><input type="button" value="Guardar Cambios" onClick="guardar_cambios({ID_DET});"/></td>
+     <td ><input type="button" value="Actualizar Imagen" onClick="cambiar_img();"/></td>
+  </tr>    
+</table>
+<input type="hidden" id="img_origen"  value="{FUENTE_IMG}" />
+<input type="hidden" id="uere_origen"  value="{GUERE}" />

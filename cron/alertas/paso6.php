@@ -98,7 +98,8 @@
           // $ress = Send_Email($smtp,'Alertas SAVL',"alertas@grupouda.com.mx",$emails.",csanchez@airlogisticsgps.com",$asunto,$mensaje);
           $emails = str_replace(',',';',$emails);
           $emails = str_replace(' ','',$emails);
-          $emails = $emails.";csanchez@airlogisticsgps.com";
+          //$emails = $emails.";csanchez@airlogisticsgps.com";
+	  $emails = $emails;
           echo "corregido...".$asunto." destino:  ".$emails."\n";
           if (strlen($emails) > 0){
 		    //https://maps.google.com/?q=42.501845+-5.73967

@@ -266,9 +266,7 @@ function r_filtro1(catalogo){
 							$("#browser").treeview();
 							
 							contextenu(cat);
-						
-								
-							
+							llena_cat_imagen(catalogo);
 							}else{
 					alert('No existe información');			
 							}
@@ -1682,4 +1680,151 @@ function validar_subir(){
  
 		
 	return 1;	
+}
+
+function Cataimagen(){
+ var img_cat_cli = $("#cliente").val(); 	
+ var img_cat     = $("#catalogos").val(); 
+
+if(img_cat != ''){	
+
+	//alert(key_prin2+''+$("#id_menu").val());
+	//------------------------------------------------ 
+		   $( "#dialog_img_movil" ).dialog({
+			     autoOpen: false,
+   	 	         width: 450,height: 380,
+				 buttons: {
+				Subir: function() {
+					
+					var input = document.getElementById('img_login');
+					var input2 = document.getElementById('img_portada');
+					var input3 = document.getElementById('img_icono');
+					
+					
+					
+					if(input.value == ''){
+						alert('Debe especificar una imagen de tipo png para el login');
+						return false;
+					}
+					
+					if(input2.value == ''){
+						alert('Debe especificar una imagen de tipo png para la portada');
+						return false;
+					}
+					
+					if(input3.value == ''){
+						alert('Debe especificar una imagen de tipo png para el icono');
+						return false;
+					}
+					
+					var file  =  input.files[0];
+					var file2 = input2.files[0];
+					var file3 = input3.files[0];
+					
+					if(file.type != 'image/png'){
+						alert('Debe especificar una imagen de tipo png para el login');
+						return false;
+					}
+					
+					if(file2.type != 'image/png'){
+					    alert('Debe especificar una imagen de tipo png para la portada')
+						return false;
+					}
+					if(file3.type != 'image/png'){
+						alert('Debe especificar una imagen de tipo png para el icono');
+						return false;
+					}
+					
+					
+					alert('ok a guardar nuevas imagenes');
+					//$( "#img-cat-movil" ).submit();
+					$( this ).dialog( "close" );
+					$("#letra_x").html("Enviando Imagenes y Guardando Datos");
+					$( "#dialog_prog" ).dialog( "open" );
+					
+				},
+				Cancelar: function() {
+				  $( this ).dialog( "close" );
+		  		}
+			  }
+			});
+	//------------------------------------------------
+	var lgn0  = $("#el_login_img").val(); 
+	var port0 = $("#portada_img").val(); 
+	var icon0 = $("#icono_img").val();
+	
+	if(lgn0 != 0 && port0 != 0 && icon0 != 0){
+
+	
+	var lgn  = 	lgn0.split("/");
+	var port = port0.split("/");	
+	var icon = icon0.split("/");
+	
+	var lg = lgn[(lgn.length-1)];
+	var por = port[(port.length-1)];
+	var ico = icon[(icon.length-1)];
+	}else{
+		var lg =  'no.png';
+	    var por = 'no.png';
+	    var ico = 'no.png';
+		
+	}
+	 var  tag_m = '<tr>'+
+	             '<td bgcolor="#c5dbec" width="120">Imagen Login</td>'+ 
+				 '<td><img src="./catalogos/iconos/'+lg +'" width="130" height="50"/></td> </tr>'+ 
+				 '<tr><td bgcolor="#c5dbec" width="120">&nbsp;</td>   '+
+				 '<td><input type="file" name="img_login" id="img_login" style="width:100%;"></input></td>'+
+				 '</tr>'+
+				 '<tr>'+
+	             '<td bgcolor="#c5dbec" width="120">Imagen Portada</td>'+ 
+				 '<td><img src="./catalogos/iconos/'+por+'" width="130" height="50"/></td> </tr>'+
+				  '<tr><td bgcolor="#c5dbec" width="120">&nbsp;</td>   '+ 
+				 '<td><input type="file" name="img_portada" id="img_portada" style="width:100%;"></input></td>'+
+				 '</tr>'+
+				 '<tr>'+
+	             '<td bgcolor="#c5dbec" width="120">Icono de sub-Menú</td>'+ 
+				 '<td><img src="./catalogos/iconos/'+ico+'" width="32" height="32"/></td> </tr>'+
+				  '<tr><td bgcolor="#c5dbec" width="120">&nbsp;</td>   '+ 
+				 '<td><input type="file" name="img_icono" id="img_icono" style="width:100%;"></input></td>'+
+				 '</tr>'+
+				 
+				 '<tr><td><input type="hidden" name ="clv_cat_img" value="'+img_cat+ '" /> </td></tr>';
+	
+ 	var dialog_img_mov='<form name="img-cat-movil" id="img-cat-movil" action="index.php?m=mCloud&c=mGetSubir3"'+
+	                    ' method="post" enctype="multipart/form-data" target="ifra">'+
+					    '<table border="0" width="100%">'+tag_m+'</table></form>';
+
+	$("#dialog_img_movil").html(dialog_img_mov);		
+    $("#dialog_img_movil").dialog("open");
+}else{
+  alert("Debe de Eleigr un Cátalogo");	
+}
+}
+
+function llena_cat_imagen(cat){
+	
+			
+    var ajax = nuevoAjax();
+        ajax.open("GET", "index.php?m=mCloud&c=mObtenerImg&cat="+cat,true);
+   	    ajax.onreadystatechange=function() {
+		    if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				  console.log(result); 
+				 
+				  if(result!='0'){
+					var y_img_cachitos = result.split("|");
+			        
+					$("#el_login_img").val(y_img_cachitos[0]); 
+					$("#portada_img").val(y_img_cachitos[1]); 
+					$("#icono_img").val(y_img_cachitos[2]);
+			
+				  }else{
+				     $("#el_login_img").val(0); 
+					 $("#portada_img").val(0); 
+					 $("#icono_img").val(0);
+				  }
+			 }			
+		}		
+	    ajax.send(null);
+	
 }

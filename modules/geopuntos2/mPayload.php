@@ -51,26 +51,36 @@
 		if($c == 0){
 			$tx .= ($tx == "")?$row['Q']:"|".$row['Q'];
 			$id = $row['ID_CUESTIONARIO'];
-			$html .= '<h3 style="height:30px;">&nbsp;&nbsp;&nbsp;'.$row['Q'].'<input style="float: right;" type="image" src="public/images/qricon.png" width="25px" height="25px" onclick="payload('.$row['ID_CUESTIONARIO'].')"></h3>';
+			$html .= '<h3 style="height:30px;">&nbsp;&nbsp;&nbsp;'.$row['Q'].'
+			<input style="float: right;" type="image" src="public/images/qricon.png" width="25px" height="25px" onclick="payload('.$row['ID_CUESTIONARIO'].')">
+			<input style="float:right;" type="image" src="public/images/excel.png" width="25px" height="25px" onclick="geo_imp_pay('.$row['ID_CUESTIONARIO'].')">
+			</h3>';
 			$html .= '<div id="'.$row['ID_CUESTIONARIO'].'">';
 			$html .= '<table width="100%" id="t'.$row['ID_CUESTIONARIO'].'">';
 			
 			$val = ($_GET['op']==2)?get_value($_GET['idg'],$id):"";
+			/*echo "<br>";
 			$a = explode("|",$val);
-			$b = explode("¬",$a[$pp]);
+			///$b = explode("¬",$a[$pp]);
 			
-			
-			$html .= '<tr><td><label>'.$row['PRE'].':</label></td><td><input type="text" class="caja" id="'.$row['IDP'].'" value="'.$b[1].'" /></td></tr>';
-			$pp++;
+			//echo $b[0]."==".$row['IDP']."<br>";
+			$v = ($b[0]==$row['IDP'])?$b[1]:"";*/
+			$v = asociar_pr($val,$row['IDP']);
+			$html .= '<tr><td><label>'.$row['PRE'].':</label></td><td><input type="text" class="caja" id="'.$row['IDP'].'" value="'.$v.'" /></td></tr>';
+			//$pp++;
 			}
 		else{
 			
 			if($id == $row['ID_CUESTIONARIO']){
 				$val = ($_GET['op']==2)?get_value($_GET['idg'],$id):"";
+				/*echo "<br>";
 				$a = explode("|",$val);
 				$b = explode("¬",$a[$pp]);
 				
-				$html .= '<tr><td><label>'.$row['PRE'].':</label></td><td><input type="text" class="caja" id="'.$row['IDP'].'" value="'.$b[1].'" /></td></tr>';
+				//echo $b[0]."==".$row['IDP']."<br>";
+				$v = ($b[0]==$row['IDP'])?$b[1]:"";*/
+				$v = asociar_pr($val,$row['IDP']);
+				$html .= '<tr><td><label>'.$row['PRE'].':</label></td><td><input type="text" class="caja" id="'.$row['IDP'].'" value="'.$v.'" /></td></tr>';
 				$pp++;
 				}
 			else{
@@ -79,14 +89,21 @@
 				$id = $row['ID_CUESTIONARIO'];
 				$html .= '</table>';
 				$html .= "</div>";
-				$html .= '<h3 style="height:30px;">&nbsp;&nbsp;&nbsp;'.$row['Q'].'<input style="float: right;" type="image" src="public/images/qricon.png" width="25px" height="25px" onclick="payload('.$row['ID_CUESTIONARIO'].')"></h3>';
+				$html .= '<h3 style="height:30px;">&nbsp;&nbsp;&nbsp;'.$row['Q'].'
+				<input style="float: right;" type="image" src="public/images/qricon.png" width="25px" height="25px" onclick="payload('.$row['ID_CUESTIONARIO'].')">
+				<input style="float:right;" type="image" src="public/images/excel.png" width="25px" height="25px" onclick="geo_imp_pay('.$row['ID_CUESTIONARIO'].')">
+				</h3>';
 				$html .= '<div id="'.$row['ID_CUESTIONARIO'].'">';
 				$html .= '<table width="100%" id="t'.$row['ID_CUESTIONARIO'].'">';
 				$val = ($_GET['op']==2)?get_value($_GET['idg'],$id):""; 
+				/*echo "<br>";
 				$a = explode("|",$val);
 				$b = explode("¬",$a[$pp]);
 				
-				$html .= '<tr><td><label>'.$row['PRE'].':</label></td><td><input type="text" class="caja" id="'.$row['IDP'].'" value="'.$b[1].'" /></td></tr>';
+				//echo $b[0]."==".$row['IDP']."<br>";
+				$v = ($b[0]==$row['IDP'])?$b[1]:"";*/
+				$v = asociar_pr($val,$row['IDP']);
+				$html .= '<tr><td><label>'.$row['PRE'].':</label></td><td><input type="text" class="caja" id="'.$row['IDP'].'" value="'.$v.'" /></td></tr>';
 				$pp++;
 				}	
 			}		
@@ -118,7 +135,17 @@ function get_value($pdi,$idc){
 		return "";
 		}	
 	}
-	
+function asociar_pr($val,$idp){
+	$r=="";
+	$a = explode("|",$val);
+	for($i=0; $i<count($a); $i++){
+		$b = explode("¬",$a[$i]);
+		if($b[0]==$idp){
+			$r = $b[1];
+			}
+		}
+	return $r;	
+	}	
 	
 	
 	

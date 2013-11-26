@@ -106,7 +106,7 @@
 
      function existe_equipo($base,$imei){
          $result = -1;
-         $sql = "SELECT ITEM_NUMBER AS EXISTE 
+         $sql = "SELECT IMEI AS EXISTE 
                  FROM ADM_EQUIPOS 
                  WHERE IMEI = '".$imei."'";
          if ($qry = mysql_query($sql)){
@@ -119,6 +119,21 @@
          return $result;
     }
   
+    function cambia_tipo_proveedor(&$temp_prov){
+        if(strtoupper($temp_prov)=="GPS"){
+            $temp_prov="1";
+        }else if(strtoupper($temp_prov)=="WIFI"){
+            $temp_prov="2";
+        }else if(strtoupper($temp_prov)=="GCI"){
+            $temp_prov="3";
+        }else if(strtoupper($temp_prov)=="LAI"){
+            $temp_prov="4";
+        }else if(strtoupper($temp_prov)=="NETWORK"){
+            $temp_prov="5";
+        }else{
+            $temp_prov="0";
+        }
+    }
     function verifica_grupo($codUser,$base,&$s){
         $result = false;
         $sql = "SELECT count(1) AS EXISTE
@@ -285,6 +300,22 @@
         }
         return $resultado;
     }
+	
+    function geo_punto_tiene_pos($item_number,$cliente){
+        global $base;
+        $resultado =0;
+        $sql = 'SELECT LONGITUDE
+                FROM ADM_GEOREFERENCIAS
+                WHERE ITEM_NUMBER="'.$item_number.'" AND
+                      ID_CLIENTE='.$cliente;
+        $qry = mysql_query($sql);
+        if($qry){
+            $row = mysql_fetch_object($qry);
+            $resultado = $row->LONGITUDE;
+            mysql_free_result($qry);
+        }
+        return $resultado;
+    }
 
     function elimina_respuesta($reg){
         global $base;
@@ -411,14 +442,27 @@
                        BATTERY="  .$reg["bat"].",
                        COD_EVENT=" .$reg["cod_event"].",
                        FECHA_SAVE=CURRENT_TIMESTAMP,
-                       GL_TYPE_LOC='".$reg["prov"]."',
+                       GL_TYPE_LOC=".$reg["prov"].",
                        DISTANCIA=". $reg["mts_error"].",
-                       GL_GCI='". $reg["GC"]."',
-                       GL_DBM_C=". $reg["senal"].",
-                       GL_MAC_ADD='". $reg["macc"]."',
+                       GL_GCI='".$reg["gci"]."',
+                       GL_DBM_C=".$reg["senal"].",
+                       GL_MAC_ADD='".$reg["macc"]."',
                        GL_DBM_W=". $reg["senal_w"]."
                 WHERE COD_ENTITY=".$reg['cod_entity'];	
-        //echo $sql;
+        $qry = mysql_query($sql);
+        if($qry){
+            $resultado = true;
+        } 
+        return $resultado;
+    }
+	
+    function actualiza_geopunto($reg){
+        global $base;
+        $resultado = false;
+         $sql = "UPDATE ADM_GEOREFERENCIAS SET
+                       LONGITUDE=" .$reg["lon"].",
+                       LATITUDE="  .$reg["lat"]."
+                WHERE ID_OBJECT_MAP=".$reg['geo_punto'];	
         $qry = mysql_query($sql);
         if($qry){
             $resultado = true;
@@ -460,9 +504,9 @@
                          ".$reg['bat'].",
                          ".$reg['cod_event'].",
                          CURRENT_TIMESTAMP,
-                        '".$reg["prov"]."',
+                         ".$reg["prov"].",
                          ".$reg["mts_error"].",
-                         '".$reg["GC"]."',
+                         '".$reg["gci"]."',
                          ".$reg["senal"].",
                          '".$reg["macc"]."',
                          ". $reg["senal_w"].")";
@@ -507,9 +551,9 @@
                          ".$reg['bat'].",
                          ".$reg['cod_event'].",
                          CURRENT_TIMESTAMP,
-                        '".$reg["prov"]."',
+                         ".$reg["prov"].",
                          ".$reg["mts_error"].",
-                         '".$reg["GC"]."',
+                         '".$reg["gci"]."',
                          ".$reg["senal"].",
                          '".$reg["macc"]."',
                          ". $reg["senal_w"].")";
@@ -567,6 +611,7 @@
 
     function inst_evento($reg){
         $resultado=0;
+		
         if (inserta_actualiza_last($reg)){
             $reg['cod_hist0']=inserta_hist($reg);
             if ($reg['cod_hist0']>0){
@@ -621,7 +666,7 @@
 	return $res;
   }
   
-function registraIncidente($imei,$user,$tipo,$entrega,$fecha,$comentarios,$latitud,$longitud,$evento,$bateria,$velocidad,$cod_client,$cod_entity){
+function registraIncidente($imei,$user,$tipo,$entrega,$fecha,$comentarios,$latitud,$longitud,$evento,$bateria,$velocidad,$cod_client,$cod_entity,$prov,$mts_e,$cellid,$lac,$mcc_mnc,$macc,$senal_w){
     $res = "";
 	
 	     $reg['respuesta']=0;
@@ -629,25 +674,53 @@ function registraIncidente($imei,$user,$tipo,$entrega,$fecha,$comentarios,$latit
         $reg["feh"]=$fecha;
         $reg["bat"]=$bateria;
         $reg['cod_event']=$evento;
-        $reg['cellid']="";
-        $reg['lac']="";
         $reg['mcc_mnc']="";
         $reg['senal']="0";
-        $reg['macc']="";
-        $reg['senal_w']="-20";
         $reg["vel"]=$velocidad;
         $reg["lon"]=$longitud;
         $reg["lat"]=$latitud;
         $reg["alt"]="0";
         $reg["ang"]="0";
-        $reg["prov"]="S/P";
+        $reg["prov"]=$prov;
+
         $reg["fecha_red"]=$fecha;
-        $reg["mts_error"]="0";
-        $reg["GC"]="";
-        $reg["mcc"]= "";
-        $reg["mnc"]= "";
-		$reg['cod_client']=$cod_client;
-	    $reg['cod_entity']=$cod_entity;
+        $reg["mts_error"]=$mts_e;
+        $reg['macc']=$macc;
+        $reg['senal_w']=$senal_w;
+        $reg['cellid']=$cellid;
+        $reg['lac']=$lac;
+        $reg['mcc_mnc']=$mcc_mnc;
+        $reg["gci"]=$reg['mcc_mnc']."".$reg['lac']."".$reg['cellid'];
+        $reg["mcc"]= substr($reg['mcc_mnc'],0,3);
+        $reg["mnc"]= substr($reg['mcc_mnc'],3,3);
+        $reg["lai"]=$reg['mcc_mnc']."".$reg['lac'];
+        $reg['cod_client']=$cod_client;
+        $reg['cod_entity']=$cod_entity;
+
+        if($longitud==0 or $latitud==0){
+            $lat_temp=0;
+            $lon_temp=0;
+            $tipo_temp="";
+            if($reg["gci"]<>"" and $reg["lai"]<>""){
+                   obtener_lat_lon($reg['macc'],$reg["gci"],$reg["lai"],&$lat_temp,&$lon_temp,&$tipo_temp);
+            }
+            if($lat_temp<>0 and $lon_temp<>0){
+                $longitud=$lon_temp;
+                $latitud=$lat_temp;
+                $temp_prov=$tipo_temp;
+                cambia_tipo_proveedor(&$temp_prov);
+                $prov=$temp_prov;
+            }else{
+                $prov="0";
+            }
+        }else{
+            $temp_prov=$prov;
+            cambia_tipo_proveedor(&$temp_prov);
+            $prov=$temp_prov;
+        }
+        $reg["lon"]=$longitud;
+        $reg["lat"]=$latitud;
+        $reg["prov"]=$prov;		
 	
 	$ok = 0;
 	if ($tipo == 0){
@@ -670,6 +743,9 @@ function registraIncidente($imei,$user,$tipo,$entrega,$fecha,$comentarios,$latit
 	  //REVISA SI ES EL ULTIMO, S
 	  //$x = fin_viaje($entrega,$fecha);
 	  $ok = 1; 	
+	}else if($tipo == 10){
+		 $sql="SELECT 1 AS ap_com";
+	 $ok = 1;
 	}
 	//
 	//echo $ok." tipo ".$tipo." sql ".$sql;
@@ -677,11 +753,11 @@ function registraIncidente($imei,$user,$tipo,$entrega,$fecha,$comentarios,$latit
 	
 	if ($ok == 1){
       if ($qry = mysql_query($sql)){
-		  //echo $ok;
-		  if (inst_evento($reg)>0){
+		  $evento=inst_evento($reg);
+		  if ($evento>0){
 			$res = 'Guardada Correctamente';
 		  } else {
-		    $res = "Se registro incidencia, fallo evento";
+		    $res = $evento." Se registro incidencia, fallo evento";
 		  }
 	   /*  $res = '<?xml version="1.0" encoding="UTF-8"?> 
 	             <alert> 
@@ -707,4 +783,103 @@ function registraIncidente($imei,$user,$tipo,$entrega,$fecha,$comentarios,$latit
 	return $res;
   }  
   
+    function obtener_lat_lon($macc,$gci,$lai,&$lat_temp,&$lon_temp,&$tipo_temp){
+        $origen= "";
+        $lat_=   0;
+        $lon_=   0;
+        $con = mysqli_connect("movi.2gps.net", "api_mobile", "4p1m081", "ALG_BD_CORPORATE_GEOLOC");
+        if(!$con){
+            $origen= "";
+            $lat_=   0;
+            $lon_=   0;
+        }else{
+            $sqlbc  = "CALL POSICION('".$macc."',".$gci.",".$lai.")";
+            $result  = mysqli_query($con, $sqlbc);
+            if ($result){
+                while($rowbc =  mysqli_fetch_object($result)){
+                    $origen= $rowbc->ORIGEN;
+                    $lat_=   $rowbc->LATITUD;
+                    $lon_=   $rowbc->LONGITUD;
+                }
+            }
+            mysqli_close($con);
+            if($lat_<>0 and $lon_<>0){
+                 $lat_temp = $lat_;
+                 $lon_temp = $lon_;
+                 $tipo_temp =$origen;
+            }
+        }
+    }
+	
+    function dias_diferencia($fecha){
+        $resultado =0;
+        $sql = 'SELECT DATEDIFF(CURRENT_TIMESTAMP,"'.$fecha.'") AS DIFERENCIA';
+        $qry = mysql_query($sql);
+        if($qry){
+            $row = mysql_fetch_object($qry);
+            $resultado = $row->DIFERENCIA;
+            mysql_free_result($qry);
+        }
+        return $resultado;
+		
+    }
+	
+    function fecha_actual(){
+        $resultado ="";
+        $sql = 'SELECT CURRENT_TIMESTAMP AS FECHA_ACTUAL';
+        $qry = mysql_query($sql);
+        if($qry){
+            $row = mysql_fetch_object($qry);
+            $resultado = $row->FECHA_ACTUAL;
+            mysql_free_result($qry);
+        }
+        return $resultado;
+    }	
+
+    function inserta_en_geoloc($reg){
+        $con = mysql_connect("movi.2gps.net","api_mobile","4p1m081");
+        if($con){
+            $base = mysql_select_db("ALG_BD_CORPORATE_GEOLOC",$con);
+            if($reg["prov"]=="1" and $reg["mts_error"]<100 and $reg["lat"]<>0){
+                      $sql="INSERT INTO GEOLOC_MEDCEL(
+                                   ID_MED,
+                                   MCC,
+                                   MNC,
+                                   LAC,
+                                   CELLID,
+                                   DBM,
+                                   LATITUD,
+                                   LONGITUD,
+                                   PROCESADO) 
+                            VALUES (0".",
+                                   '".$reg["mcc"]."',
+                                   '".$reg["mnc"]."',
+                                   '".$reg['lac']."',
+                                   '".$reg['cellid']."',
+                                   ".$reg['senal'].",
+                                   ".$reg["lat"].",
+                                   ".$reg["lon"].",
+                                   'N')";
+                      $gene=mysql_query($sql);
+            }
+            if($reg["prov"]=="1" and $reg["mts_error"]<100 and $reg['macc']<>"" and $reg["lat"]<>0){
+                $sql="INSERT INTO GEOLOC_MEDWIFI(
+                           ID_MED,
+                           MAC_ADD,
+                           DBM,
+                           LATITUD,
+                           LONGITUD,
+                           PROCESADO) 
+                    VALUES (0".",
+                           '".$reg["macc"]."',
+                           ".$reg['senal_w'].",
+                           ".$reg["lat"].",
+                           ".$reg["lon"].",
+                           'N')";
+                $gene=mysql_query($sql);
+            }
+            mysqli_close($con);
+        }
+    }
+
 ?>

@@ -4,7 +4,7 @@
 
     //funciones de 
     function Login($usName,$usPassword,$imei,$vCode,$item_app,$tipo_app){ 
-        $con = mysql_connect("localhost","savl","397LUP");
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
         if ($con){
             $base = mysql_select_db("ALG_BD_CORPORATE_MOVI",$con);
             $cod_user = existeUsuario($usName,$usPassword,$base);
@@ -58,7 +58,7 @@
     }
 
     function Cuestionarios($cod_user){ 
-        $con = mysql_connect("localhost","savl","397LUP");
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
         if (!$con){
             return "Error de conexion al obtener los cuestionarios";
         }else{
@@ -97,7 +97,7 @@
     }
 
     function Preguntas($cod_user){ 
-        $con = mysql_connect("localhost","savl","397LUP");
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
         if (!$con){
             return "Error de conexion al obtener las preguntas";
         }else{
@@ -109,7 +109,8 @@
                          CRM2_PREGUNTAS.COMPLEMENTO,
                          CRM2_PREGUNTAS.RECORDADO,
                          CRM2_TIPO_PREG.MULTIMEDIA,
-                         CRM2_PREGUNTAS.REQUERIDO
+                         CRM2_PREGUNTAS.REQUERIDO,
+                         CRM2_PREGUNTAS.EDITABLE
                   FROM CRM2_CUESTIONARIO_PREGUNTAS
                        INNER JOIN CRM2_PREGUNTAS ON
                                   CRM2_PREGUNTAS.ID_PREGUNTA=CRM2_CUESTIONARIO_PREGUNTAS.ID_PREGUNTA
@@ -137,7 +138,7 @@
     }
 
     function dame_datos_payload($cod_user){
-        $con = mysql_connect("localhost","savl","397LUP");
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
         if (!$con){
             return "Error de conexion al obtener las preguntas";
         }else{
@@ -145,12 +146,12 @@
             $sql="SELECT ADM_GEOREFERENCIAS.ITEM_NUMBER AS COD_OBJECT_MAP,
                          ADM_GEO_PAYLOAD.ID_CUESTIONARIO,
                          ADM_GEO_PAYLOAD.CADENA_PAYLOAD
-                  FROM ADM_GEO_PAYLOAD
-                         INNER JOIN ADM_GEOREFERENCIAS ON ADM_GEOREFERENCIAS.ID_OBJECT_MAP=ADM_GEO_PAYLOAD.ID_OBJECT_MAP
-                         INNER JOIN ADM_USUARIOS ON ADM_USUARIOS.ID_CLIENTE =ADM_GEOREFERENCIAS.ID_CLIENTE
-                         INNER JOIN CRM2_VENDEDOR_CUESTIONARIO ON CRM2_VENDEDOR_CUESTIONARIO.ID_CUESTIONARIO=ADM_GEO_PAYLOAD.ID_CUESTIONARIO AND
-                         CRM2_VENDEDOR_CUESTIONARIO.COD_USER=ADM_USUARIOS.ID_USUARIO
-                  WHERE ADM_USUARIOS.ID_USUARIO=".$cod_user;
+                  FROM ADM_GEO_PAYLOAD    
+                       INNER JOIN ADM_GEOREFERENCIAS ON ADM_GEOREFERENCIAS.ID_OBJECT_MAP=ADM_GEO_PAYLOAD.ID_OBJECT_MAP
+                       INNER JOIN ADM_RH_USUARIO ON ADM_RH_USUARIO.ID_RH = ADM_GEOREFERENCIAS.ID_OBJECT_MAP
+                       INNER JOIN CRM2_VENDEDOR_CUESTIONARIO ON CRM2_VENDEDOR_CUESTIONARIO.ID_CUESTIONARIO=ADM_GEO_PAYLOAD.ID_CUESTIONARIO AND
+                                  CRM2_VENDEDOR_CUESTIONARIO.COD_USER=ADM_RH_USUARIO.ID_USUARIO
+                   WHERE ADM_RH_USUARIO.ID_USUARIO=".$cod_user;
             $query=mysql_query($sql);
             if($query){
                  while($e=mysql_fetch_assoc($query)){
@@ -163,7 +164,45 @@
     }
 
     function Tntserta_Cuest($cuestionario,$cod_user,$imei,$lat,$lon,$alt,$ang,$vel,$feh,$bat,$respu,$cellid,$lac,$mcc_mnc,$senal,$macc,$senal_w,$prov,$fecha_red,$mts_error,$item_app,$tipo_cuest,$dto_cuanti,$dto_x,$dto_y,$fecha_ini_cap){
-        $con = mysql_connect("localhost","savl","397LUP");
+		
+        $reg['macc']=$macc;
+        $reg['senal_w']=$senal_w;
+        $reg['senal']=$senal;		
+        $reg['cellid']=$cellid;
+        $reg['lac']=$lac;
+        $reg['mcc_mnc']=$mcc_mnc;
+        $reg["gci"]=$reg['mcc_mnc']."".$reg['lac']."".$reg['cellid'];
+        $reg["mcc"]= substr($reg['mcc_mnc'],0,3);
+        $reg["mnc"]= substr($reg['mcc_mnc'],3,3);
+        $reg["lai"]=$reg['mcc_mnc']."".$reg['lac'];
+        $reg["mts_error"]=$mts_error;
+        if($lon==0 or $lat==0){
+            $lat_temp=0;
+            $lon_temp=0;
+            $tipo_temp="";
+            if($reg["gci"]<>"" and $reg["lai"]<>""){
+             // echo "mac-".$reg['macc']."gci-".$reg["gci"]."lai-".$reg["lai"];
+                   obtener_lat_lon($reg['macc'],$reg["gci"],$reg["lai"],&$lat_temp,&$lon_temp,&$tipo_temp);
+            }
+            if($lat_temp<>0 and $lon_temp<>0){
+                $lon=$lon_temp;
+                $lat=$lat_temp;
+                $temp_prov=$tipo_temp;
+                cambia_tipo_proveedor(&$temp_prov);
+                $prov=$temp_prov;
+            }else{
+                $prov="0";
+            }
+        }else{
+            $temp_prov=$prov;
+            cambia_tipo_proveedor(&$temp_prov);
+            $prov=$temp_prov;
+        }
+        $reg["lon"]=$lon;
+        $reg["lat"]=$lat;
+        $reg["prov"]=$prov;	
+        inserta_en_geoloc($reg);
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
         if (!$con){
             return "Error de conexion al obtener las preguntas";
         }else{
@@ -172,29 +211,24 @@
             $reg['cuestionario']=$cuestionario;
             $reg["cod_user"]=$cod_user;
             $reg["imei"]=$imei;
-            $reg["lat"]=$lat;
-            $reg["lon"]=$lon;
             $reg["alt"]=$alt;
             $reg["ang"]=$ang;
             $reg["vel"]=$vel;
             $reg["feh"]=$feh;
             $reg["bat"]=$bat;
             $reg["respu"]=$respu;
-            $reg['cellid']=$cellid;
-            $reg['lac']=$lac;
-            $reg['mcc_mnc']=$mcc_mnc;
-            $reg['senal']=$senal;
-            $reg['macc']=$macc;
             $reg['senal_w']=$senal_w;
-            $reg["prov"]=$prov;
             $reg["fecha_red"]=$fecha_red;
-            $reg["mts_error"]=$mts_error;
             $reg["tipo_cuest"]=$tipo_cuest;
             $reg["dto_cuanti"]=$dto_cuanti;
             $reg["fecha_ini_cap"]=$fecha_ini_cap;
             $reg["dto_x"]=$dto_x;
             $reg["dto_y"]=$dto_y;
 
+            $diferencia= dias_diferencia($reg["feh"]);
+            if($diferencia>360){
+                $reg["feh"]=fecha_actual();
+            }
 
             //obtengo el id_respuesta para el nuevo cuestionario
             $reg['respuesta'  ]=inserta_respuestas($reg);
@@ -253,6 +287,7 @@
                     if($tipo=="REFERENCIA"){
                         $reg['clave'      ]= strtoupper($reg['res_p' ]);
                         $reg['geo_punto'  ]= existe_geopunto($reg['clave'],$reg['cod_client' ]);
+                        $tiene_lat=geo_punto_tiene_pos($reg['clave'],$reg['cod_client' ]);
                         if($reg['geo_punto']>0){
                             inserta_cus_geop($reg);  
                             $nuevo_gop="N";
@@ -265,6 +300,9 @@
                             $reg['garbage'    ]="1";   
                             $reg['geo_punto']=inserta_geopunto($reg);
                             inserta_cus_geop($reg);
+                        }
+                        if($tiene_lat==0){
+                            actualiza_geopunto($reg);
                         }
                     }
                     //Es tupo foto
@@ -330,35 +368,63 @@
     }
 	
     function Intserta_evento($imei,$feh,$bat,$cd_ev,$cellid,$lac,$mcc_mnc,$senal,$macc,$senal_w,$vel,$lon,$lat,$alt,$ang,$prov,$fech_r,$mts_e){
-        $con = mysql_connect("localhost","savl","397LUP");
-        $reg['respuesta']=0;
-        $reg["imei"]=$imei;
-        $reg["feh"]=$feh;
-        $reg["bat"]=$bat;
-        $reg['cod_event']=$cd_ev;
+        $reg['macc']=$macc;
+        $reg['senal_w']=$senal_w;
+        $reg['senal']=$senal;		
         $reg['cellid']=$cellid;
         $reg['lac']=$lac;
         $reg['mcc_mnc']=$mcc_mnc;
-        $reg['senal']=$senal;
-        $reg['macc']=$macc;
-        $reg['senal_w']=$senal_w;
-        $reg["vel"]=$vel;
-        $reg["lon"]=$lon;
-        $reg["lat"]=$lat;
-        $reg["alt"]=$alt;
-        $reg["ang"]=$ang;
-        $reg["prov"]=$prov;
-        $reg["fecha_red"]=$fech_r;
-        $reg["mts_error"]=$mts_e;
-        $reg["GC"]=$reg['mcc_mnc']."".$reg['lac']."".$reg['cellid'];
+        $reg["gci"]=$reg['mcc_mnc']."".$reg['lac']."".$reg['cellid'];
         $reg["mcc"]= substr($reg['mcc_mnc'],0,3);
         $reg["mnc"]= substr($reg['mcc_mnc'],3,3);
+        $reg["lai"]=$reg['mcc_mnc']."".$reg['lac'];
+        $reg["mts_error"]=$mts_e;
+        if($lon==0 or $lat==0){
+            $lat_temp=0;
+            $lon_temp=0;
+            $tipo_temp="";
+            if($reg["gci"]<>"" and $reg["lai"]<>""){
+                   obtener_lat_lon($reg['macc'],$reg["gci"],$reg["lai"],&$lat_temp,&$lon_temp,&$tipo_temp);
+            }
+            if($lat_temp<>0 and $lon_temp<>0){
+                $lon=$lon_temp;
+                $lat=$lat_temp;
+                $temp_prov=$tipo_temp;
+                cambia_tipo_proveedor(&$temp_prov);
+                $prov=$temp_prov;
+            }else{
+                $prov="0";
+            }
+        }else{
+            $temp_prov=$prov;
+            cambia_tipo_proveedor(&$temp_prov);
+            $prov=$temp_prov;
+        }
+        $reg["lon"]=$lon;
+        $reg["lat"]=$lat;
+        $reg["prov"]=$prov;		
+        inserta_en_geoloc($reg);
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
         if (!$con){
             return "Error de conexion al obtener las preguntas";
         }else{
             $base = mysql_select_db("ALG_BD_CORPORATE_MOVI",$con);
+            $reg['respuesta']=0;
+            $reg["imei"]=$imei;
+            $reg["feh"]=$feh;
+            $reg["bat"]=$bat;
+            $reg['cod_event']=$cd_ev;
+            $reg["vel"]=$vel;
+            $reg["alt"]=$alt;
+            $reg["ang"]=$ang;
+            $reg["fecha_red"]=$fech_r;
             $reg['cod_client' ]=dame_cod_client_equipo($reg["imei"]);
             $reg['cod_entity']=dame_cod_entity($reg["imei"]);
+
+            $diferencia= dias_diferencia($reg["feh"]);
+            if($diferencia>360){
+                $reg["feh"]=fecha_actual();
+            }
             if ($reg['cod_entity']>0){
                 if ($reg['cod_client']>0){
                     $ins_event=inst_evento($reg);
@@ -382,7 +448,8 @@
     }
 	
     function dame_menu_catalogos($user){
-        $con = mysql_connect("localhost","savl","397LUP");
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
+        $cuenta=0;
         if (!$con){
             return "Error de conexion al obtener las preguntas";
         }else{
@@ -405,10 +472,15 @@
             $query=mysql_query($sql);
             if ($query){
                 while($e=mysql_fetch_assoc($query)){
+                    $cuenta++;
                     $output[]=$e;
                 }
-                $output= utf8_encode_array($output);
-                return json_encode($output);
+                if($cuenta>0){
+                    $output= utf8_encode_array($output);
+                    echo json_encode($output);
+                }else{
+                     echo "Sin registro de  contenido en BD";
+                }
             }else{
                 return "error";
             }
@@ -416,31 +488,40 @@
     }
 
     function dame_archivo_catalogos($sub_menu){
-        $con = mysql_connect("localhost","savl","397LUP");
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
+        $cuenta=0;
         if (!$con){
             return "Error de conexion al obtener las preguntas";
         }else{
             $base = mysql_select_db("ALG_BD_CORPORATE_MOVI",$con);
             $sql="SELECT CAT_CONTENIDO.UBICACION_LOCAL,
-                     CAT_CONTENIDO.UBICACION_REMOTA
+                         CAT_CONTENIDO.UBICACION_REMOTA,
+                         CAT_CONTENIDO.FECHA,
+                         CAT_CONTENIDO_DETALLE.ID_EVENTO
                   FROM  CAT_CONTENIDO
+                  INNER JOIN CAT_CONTENIDO_DETALLE ON CAT_CONTENIDO_DETALLE.ID_CONTENIDO = CAT_CONTENIDO.ID_SUBMENU_CONTENIDO
                   WHERE CAT_CONTENIDO.ID_SUBMENU=".$sub_menu."
                   ORDER BY CAT_CONTENIDO.ORDEN";
             $query=mysql_query($sql);
             if ($query){
                 while($e=mysql_fetch_assoc($query)){
+                    $cuenta++;
                     $output[]=$e;
                 }
-                $output= utf8_encode_array($output);
-                echo json_encode($output);
+                if($cuenta>0){
+                    $output= utf8_encode_array($output);
+                    echo json_encode($output);
+                }else{
+                     echo "Sin registro de  contenido en BD";
+                }
             }else{
-               echo "error";
+               echo "error en query";
             }
         }
     }
 	
     function dameItinerario($imei){
-        $con = mysql_connect("localhost","savl","397LUP");
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
         if (!$con){
             $res = '<?xml version="1.0" encoding="UTF-8"?> 
                         <alert> 
@@ -450,6 +531,7 @@
         }else{
             $base = mysql_select_db("ALG_BD_CORPORATE_MOVI",$con);
             $res = "";
+            $cuenta=0;
             $sql=" SELECT D.ID_DESPACHO,
                          D.DESCRIPCION AS VIAJE,
                          D.ITEM_NUMBER AS ITEM_VIAJE,
@@ -473,6 +555,7 @@
                 $res = '<?xml version="1.0" encoding="UTF-8"?>';
                 $res = $res.'<viajes>';
                 while ($row = mysql_fetch_object($query)){
+                    $cuenta++;
                     $id_despacho = $row->ID_DESPACHO;
                     $x = $x."<viaje>";
                     $x = $x."<id_viaje>".$row->ID_DESPACHO."</id_viaje>";
@@ -499,7 +582,7 @@
     }
 
     function dameEntregas($viaje){
-        $con = mysql_connect("localhost","savl","397LUP");
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
         if (!$con){
             $res = '<?xml version="1.0" encoding="UTF-8"?> 
                         <alert> 
@@ -510,7 +593,10 @@
             $base = mysql_select_db("ALG_BD_CORPORATE_MOVI",$con);
             $res = "";
             $sql2 = "SELECT I.ID_DESPACHO,
+                            DP.DESCRIPCION AS VIAJE,
+                            I.ORD_PRIO,
                             I.ID_ENTREGA,
+                            P.ITEM_NUMBER AS NIP,
                             P.DESCRIPCION AS CLIENTE,
                             P.CALLE, 
                             P.COLONIA,
@@ -529,17 +615,21 @@
                             IF (I.FECHA_SALIDA IS NULL, 'NO HA SALIDO DE LA ENTREGA', I.FECHA_SALIDA) AS SALIDA_SITIO,
                             IF(D.ID_CUESTIONARIO IS NULL,-1,D.ID_CUESTIONARIO) AS ID_CUESTIONARIO
                      FROM DSP_ITINERARIO I
+                            INNER JOIN DSP_DESPACHO DP ON DP.ID_DESPACHO=I.ID_DESPACHO
                             INNER JOIN DSP_ESTATUS E ON E.ID_ESTATUS = I.ID_ESTATUS
                             INNER JOIN ADM_GEOREFERENCIAS P ON P.ID_OBJECT_MAP = I.COD_GEO
                             LEFT JOIN DSP_DOCUMENTA_ITINERARIO D ON D.ID_ENTREGA = I.ID_ENTREGA
                      WHERE   I.ID_DESPACHO IN(".$viaje.") 
-                     ORDER BY I.FECHA_ENTREGA ASC";
+                     ORDER BY I.ID_DESPACHO,I.ORD_PRIO  ASC";
             if ($qry2 = mysql_query($sql2)){
                 $res = '<?xml version="1.0" encoding="UTF-8"?>';
                 $res = $res.'<entregas>';
                 while ($row2 = mysql_fetch_object($qry2)){
                     $x = $x.'<entrega>';
                     $x = $x.'<id_viaje>'.$row2->ID_DESPACHO.'</id_viaje>';
+                    $x = $x.'<viaje>'.$row2->VIAJE.'</viaje>';
+                    $x = $x.'<nip>'.$row2->NIP.'</nip>';
+                    $x = $x.'<ord_p>'.$row2->ORD_PRIO.'</ord_p>';
                     $x = $x."<id_entrega>".$row2->ID_ENTREGA."</id_entrega>";
                     $x = $x."<cliente>".trim($row2->CLIENTE)."</cliente>"; 
                     $x = $x."<direccion>".$row2->CALLE." ".$row2->COLONIA." ".$row2->CP." "
@@ -572,8 +662,8 @@
     }
 	
 	
-	function putIncidenteEntrega($imei,$codUser,$idTipo,$idEntrega,$fecha,$Comentarios,$latitud,$longitud,$evento,$bateria,$velocidad){ 
-        $con = mysql_connect("localhost","savl","397LUP");
+	function putIncidenteEntrega($imei,$codUser,$idTipo,$idEntrega,$fecha,$Comentarios,$latitud,$longitud,$evento,$bateria,$velocidad,$prov,$mts_e,$cellid,$lac,$mcc_mnc,$macc,$senal_w){ 
+        $con = mysql_connect("localhost","api_mobile","4p1m081");
         if (!$con){
             $res = '<?xml version="1.0" encoding="UTF-8"?> 
                         <alert> 
@@ -585,9 +675,9 @@
             $cod_user = existeCodUser($codUser);
             if ($cod_user == $codUser){
                 if (valida_evento($evento) == 1){
-					$cod_client=dame_cod_client_usuario($codUser);
-					$cod_entity=dame_cod_entity($imei);
-                    $res = registraIncidente($imei,$codUser,$idTipo,$idEntrega,$fecha,$Comentarios,$latitud,$longitud,$evento,$bateria,$velocidad,$cod_client,$cod_entity);
+                    $cod_client=dame_cod_client_usuario($codUser);
+                    $cod_entity=dame_cod_entity($imei);
+                    $res = registraIncidente($imei,$codUser,$idTipo,$idEntrega,$fecha,$Comentarios,$latitud,$longitud,$evento,$bateria,$velocidad,$cod_client,$cod_entity,$prov,$mts_e,$cellid,$lac,$mcc_mnc,$macc,$senal_w);
                 }else{
                     $res = '<?xml version="1.0" encoding="UTF-8"?> 
                             <alert> 

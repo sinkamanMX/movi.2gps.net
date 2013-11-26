@@ -1,0 +1,420 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{PAGE_TITLE}</title>
+
+<!--<script type="text/javascript"  charset="ISO-8859-1" src="public/js/tigra_tables.js"></script>-->
+<script type="text/javascript" src="{PATH}/js/scripts.js"></script>
+<!--<script type="text/javascript" src="public/js/ui/jqueryUI.js"></script>-->
+<script src="{PATH}/js/jquery.cookie.js"></script>
+<script src="{PATH}/js/jquery.treeview.js"></script>
+<script src="{PATH}/js/demo.js"></script>
+<script type="text/javascript" src="{PATH}/js/jquery.contextMenu.js" ></script>
+<script type="text/javascript" src="{PATH}/js/jquery.timer.js"></script>
+<!--<script type="text/javascript" src="public/js/ui/ui.panel.min.js"></script>-->
+
+ 
+<link href="{PATH}/css/jquery.contextMenu.css"  rel="stylesheet" type="text/css" />
+<!--<link rel="stylesheet" href="{PATH}/css/coin-slider-styles.css" type="text/css" />-->
+<link type="text/css" href="{PATH}/css/menuV2.css" rel="stylesheet" />
+
+<!--<link type="text/css" href="public/css/ui.panel.css" rel="stylesheet" />
+<link type="text/css" href="public/css/jqueryUI.css" rel="stylesheet" />
+<link type="text/css" href="public/css/estilo.css" rel="stylesheet"/>-->
+
+<link type="text/css" href="{PATH}/css/styles.css" rel="stylesheet"/>
+<link type="text/css" href="{PATH}/css/jquery.treeview.css" rel="stylesheet"/>
+<!--<link type="text/css" href="{PATH}/css/screen.css" rel="stylesheet"/>-->
+
+
+<script>
+$(document).ready(
+function(){
+ init();
+        $('.pasar').click(function() { return !$('#origen option:selected').remove().appendTo('#destino'); });  
+		$('.quitar').click(function() { return !$('#destino option:selected').remove().appendTo('#origen'); });
+		$('.pasartodos').click(function() { $('#origen option').each(function() { $(this).remove().appendTo('#destino'); }); });
+		$('.quitartodos').click(function() { $('#destino option').each(function() { $(this).remove().appendTo('#origen'); }); });
+		$('.submit').click(function() { $('#destino option').prop('selected', 'selected'); });
+
+	//onload();
+});
+	function dominio(){
+	 document.getElementById('recibidor').value = document.domain;	
+	}
+</script>
+
+
+
+<script>
+    function setupLabel() {
+        if ($('.label_check input').length) {
+            $('.label_check').each(function(){ 
+                $(this).removeClass('c_on');
+            });
+            $('.label_check input:checked').each(function(){ 
+                $(this).parent('label').addClass('c_on');
+            });                
+        };
+        if ($('.label_radio input').length) {
+            $('.label_radio').each(function(){ 
+                $(this).removeClass('r_on');
+            });
+            $('.label_radio input:checked').each(function(){ 
+                $(this).parent('label').addClass('r_on');
+            });
+        };
+    };
+    $(document).ready(function(){
+        $('body').addClass('has-js');
+        $('.label_check, .label_radio').click(function(){
+            setupLabel();
+        });
+        setupLabel(); 
+		
+	/*	$( "button" )
+		  .button()
+		  .click(function( event ) {
+			$( "#dialog_nc" ).dialog( "open" );
+		  });*/
+/* --------------------------------------------------------*/  
+		 		  
+		 $( "#dialog_nc" ).dialog({ 
+		               autoOpen: false,
+					   title: "Nuevo Catálogo", 
+		               buttons: {
+							Guardar: function() {
+								/* Do stuff */
+								CrearCatalogo();
+							},
+							Cancelar: function() {
+								$("#dialog_nc").dialog("close");
+							}
+   					   }
+		 
+		  }); 
+		/***********************************************************************/   		  
+		 $( "#dialog_prog" ).dialog({ 
+		               autoOpen: false
+		  }); 
+		/* ------------------------------------------- caja dialogo tipo de archivos-------------*/  
+		  	 $( "#dialog_okey" ).dialog({ 
+		               autoOpen: false,
+					   title: "Mensaje", 
+		               buttons: {
+							Aceptar: function() {
+								
+								$("#dialog_okey").dialog("close");
+							},
+							
+   					   }
+		  }); 	
+		/* ------------------------------------------- caja dialogo aviso de proceso de trabajo-------------*/  
+		  		 $( "#dialog_tipo_archivo" ).dialog({ 
+		               autoOpen: false,
+					   title: "Tipo de Archivo", 
+					   width: 250,
+					   heigth:190,
+		               buttons: {
+							Aceptar: function() {
+								/* agregar el archivo elegido*/
+								var tip_archi = $("#tipo_archivo").val();
+								add_file(tip_archi);
+							},
+							Cancelar: function() {
+								$("#dialog_tipo_archivo").dialog("close");
+							}
+   					   }
+		 
+		  });
+		  //-------------------------------------------------------------------------
+		  
+
+
+		  //-----------------------------------------------------------------------
+    });
+	
+/*	function abree(){
+	$("#dialog5").dialog("open");
+	}
+*/
+</script>
+
+	<script type="text/javascript">	
+		var count = 0;
+		var suma  = 0;
+		var asig_tiempo = 0;
+		
+		var timer = $.timer(
+			function() {
+			    
+				count++;
+				$('.counters').html(count);
+				if(count==suma+60){
+					//alert('cada 10 se ejecuta');
+					VerBanderaSiNo();
+					suma = count;
+					/*
+					if(suma == 40 ){
+						timer.stop();
+						alert('se deteiene hasta 40');
+				    }*/			
+				}
+				
+			},
+			1000,
+			true
+		);
+		timer.stop();	
+				 
+		
+	</script>
+
+
+
+<style>
+	
+	.counters {
+		font-weight: bold;
+		font-size: 20px;
+		padding: 0px 2px;
+	}
+	
+	.selects0{width:120px;margin:0 0 20px 0;border:1px solid #ccc;padding:5px;border-radius:5px 0 0 5px;}
+	.selects1{width:100px;margin:0 0 5px 0;border:1px solid #ccc;border-radius:5px 0 0 5px;}
+	.clear{clear:both;text-align:center}
+	.divs{float:left;width:120px;text-align:center; border:#039 solid 0px;}
+	#dv{float:left;width:50px;text-align:center; border:#039 solid 0px;}
+	.izq{border-radius:10px 10px 10px 10px;}
+	.der{border-radius:10px 10px 10px 10px;}
+	.colores{
+		border: 1px solid #c5dbec;
+		background: #dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;
+		font-weight: bold;
+		color: #2e6e9e;
+	 }
+	 #xx{
+		border: 1px solid #c5dbec;
+		background: #dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;
+		font-weight: bold;
+		color: #2e6e9e;
+	 }
+
+	 
+	 #span_deta {
+position: absolute;
+height: 75px;
+top: 40%;
+left: 40%;
+color: #B7B7B7;
+font-size: 30px;
+font-weight: bold;
+}
+</style>
+</head>
+<!--<body onload="init('{URL}','{RM}','{UP}')" >-->
+<body onload="" >
+
+                    <div style="font-size:10px; width:70px; position:absolute; z-index:0; left:70%; display:none" class="hb">
+                                     <span id="icbr" class="ui-icon ui-icon-search " title="Buscar"></span>
+                    <div style="position:relative; top:3px; left:-4px;">Buscar</div>
+                    </div>
+  
+<!--<button >Nuevo Cat&aacute;logo</button>-->
+<div id="column1" >
+
+     <div id="catalogos-combo" style="border:#333 solid 0px; width:250px;"> 
+     
+     </div>
+
+	<ul id="browser" class="filetree" style="position:relative; left:10px; ">
+		
+	</ul>
+	
+	</div>
+
+<div id="derecho" >
+       <table border="0" width="100%" height="100%"> 
+        <tr style="height:25%;"><td>
+       
+      <fieldset style="border:#A6C9E2 solid 1px;"> 
+      <legend> <h5>Asignaci&oacute;n de Usuarios</h5></legend> 
+        
+        <table border="0">
+        <tr>
+        <td>
+         <div class="divs" id="conte_2">
+                 Disponibles
+                <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0"></select>
+         </div>
+         </td>
+         <td>
+           <div id="dv">
+               <input id="xx" type="button" class="quitar der" value="&nbsp;>&nbsp;">
+                <input id="xx" type="button" class="quitartodos der" value=">>">
+               <input id="xx" type="button" class="pasartodos izq" value="<<">
+              <input id="xx" type="button" class="pasar izq" value="&nbsp;<&nbsp;" >               
+            </div>
+           </td>
+           <td>
+           <div class="divs" id="conte_1">
+                  Asignados
+                  <select name="origen[]" id="origen" multiple="multiple" size="8" class="selects0">
+                    <option value="-1"></option>
+                </select>
+        </div>
+        </td>
+        <td> 
+          <h4 id="mensaje_url">
+                    &nbsp;&nbsp;  Nota:  
+	                &nbsp;&nbsp;  Listado de usuarios que tienen <br />  
+				    &nbsp;&nbsp;  permiso de visualizar el documento <br />
+				    &nbsp;&nbsp;  actual.
+          
+           </h4>
+		   <p style="display:none;"> timer has been played <span class='counters'>0</span> times.<br/> 
+		   <input type='button' value='timer.play()' onclick='timer.play(true);' /><br/>
+           <input type='button' value='timer.stop()' onclick='timer.stop();' /></p>
+         </td>
+        </tr>
+        </table>
+        <input type="hidden" id="bandera_guardar_detalles" />
+        <input type="hidden" id="valor_detalles" />
+        <input type="hidden" id="bandera_guarda_asignado" />
+       </fieldset>
+      
+         
+      <!--<input type="button" id="guardar_datos"  onclick="recorre_select();" class="colores" value="Realizar cambios" />-->
+        </td></tr>
+        <tr><td align="center">
+     <div id="detalles_archivos" style=" width:100%; height:100%;position:relative; bottom:0px; border:#000 solid 0px;" class="divs"> 
+         <table border="0" width="100%" height="100%" > 
+          <tr bgcolor="#FFFFFF">
+           <td bgcolor="#F4F4F4" width="120" height="20">TITULO</td>
+           <td style="width:50%;"></td>
+           <td rowspan="4"><div align="center"  style="border:#F4F4F4 solid 1px; width:100%; height:100%;">No Disponible</div></td>
+          </tr>
+ 		  <tr bgcolor="#FFFFFF">
+          	<td bgcolor="#F4F4F4" height="20" >AUTOR</td>
+            <td></td>
+          </tr>
+		 <tr style="height:70%;" bgcolor="#FFFFFF">
+            <td bgcolor="#F4F4F4">RESUMEN</td>
+            <td ></td>
+         </tr>
+ 		 <tr bgcolor="#FFFFFF">
+            <td bgcolor="#F4F4F4" >TAG (Separar con "," para m&aacute;s de un tag)</td>
+            <td></td>
+        </tr>
+ 		<tr  bgcolor="#F4F4F4" height="20"><td>EVENTO</td>
+          <td>
+            <select name="eventos" style="width:100%;" class="caja_txt">
+ 			  <option value="-1" style="color:#666;">Opci&oacute;n</option>
+			</select>
+ 		  </td>
+ 		<td >IMAGEN</td>
+        </tr>
+  		<tr bgcolor="#F4F4F4" align="center" height="20">
+          <td></td>
+          <td>&nbsp;</td>
+          <td >&nbsp;</td>
+        </tr>    
+</table>
+
+     </div>   
+        </td></tr>
+       </table>
+       
+        
+   </div>
+    
+	<!--	<div id="dialog"  title=" &nbsp;&nbsp; Descripcion" style="  ">
+  
+    </div>
+    <div id="dialogo"  title=" &nbsp;&nbsp; Configuracion" >
+  
+    </div>-->
+<ul id="mycarp" class="contextMenu" >
+ 			 <li class="adfi" >  <a href="#addfi"  id="link_subir"    style="display:none;">Subir</a></li>
+			 <li class="adca" >  <a href="#addcar" id="link_nueva"    style="display:none;"></a></li>
+			 <li class="edit" >  <a href="#renom"  id="link_renombra" style="display:none;">Renombrar</a></li>
+			 <li class="delete"> <a href="#delete" id="link_borrar"   style="display:none;">Eliminar</a></li>
+</ul>
+ 
+<ul id="myfil" class="contextMenu" >
+		<!--	<li class="desca"><a href="#descar">Descargar</a></li>
+			<li class="edit"><a href="#edit">Editar</a></li>-->
+			<li class="delete"><a href="#delete">Eliminar</a></li>
+ </ul> 
+
+ <ul id="mydocs" class="contextMenu" >
+			 <!--<li class="desca"><a href="#descar">Descargar</a></li>-->
+			<li class="delete"><a href="#delete">Eliminar</a></li>
+ </ul> 
+ 
+  <ul id="myimas" class="contextMenu" >
+			<!-- <li class="desca"><a href="#desca">Descargar</a></li>
+             <li class="vist"><a href="#vist">Visualizar</a></li>-->
+			<li class="delete"><a href="#delete">Eliminar</a></li>
+ </ul> 
+ 
+   <ul id="mycat" class="contextMenu" >
+			 <li class="desca"><a href="#newcat">Nuevo Catálogo</a></li>
+  </ul>
+ 
+ <div id="dialog" title="Subir"></div>
+ <div id="dialog1" title="Eliminar"></div>
+ <div id="dialog2" title="Confirmacion"></div>
+ <div id="dialog3" title="Imagen" >
+ <div id="coin-slider"></div>
+</div>
+ <div id="dialog4" title="xx"></div>
+ <div id="dialog_prog" align="center">
+    <br />
+     <h5 id="letra_x">.</h5>
+    <br />
+ <img id="imagenes"   src="modules/mCloud/template/apb.gif"/>
+ </div>
+ 
+ <div id="dialog_okey" align="center" > <h5 id="letrero_x"> </h5>
+ </div>
+<!-- <input type="button" value="aber" onclick="abree();" />-->
+ <!--  dialogo para creacion de un nuevo catálogo  -->
+ 
+ <div id="dialog_nc" title="Dialog Title" >
+   Descripci&oacute;n <input type="text" id="des_catalogo"/>
+ </div>
+ 
+  <div id="dialog_tipo_archivo" title="Dialog Title">
+     <input type="radio" name="tiposs" value="a" onclick="asig(this.value);">Archivo &nbsp; &nbsp; &nbsp;
+     <input type="radio" name="tiposs" value="v" onclick="asig(this.value);">Vídeo   &nbsp; &nbsp; &nbsp;
+     <input type="radio" name="tiposs" value="u" onclick="asig(this.value);">URL
+ </div>
+ <div id="dialog_img_cambia" > </div>
+ 
+<iframe name="ifra" id="ifra" width="0" height="0" frameborder="0" style="position:relative; top:400px;"  >
+</iframe>
+<input type="hidden" value="{CLIENTE}" id="cliente" />
+<input type="hidden"  id="catalogos" />
+<input type="hidden"  id="id_menu" style=" position:relative; left:200px;"  value="0"/>
+<input type="hidden"  id="tipo_archivo" style=" position:relative; left:300px;"  value="0"/>
+
+
+
+
+
+
+
+
+<input type="hidden" id="host_bd" value="{HOST}"/>
+<input type="hidden" id="usuario_bd" value="{USUARIO}"/>
+<input type="hidden" id="pass_bd" value="{PASSWORD}"/>
+<input type="hidden" id="nombre_bd" value="{BASE_NOMBRE}"/>
+<input type="hidden" id="host_ftp" value="{FTP_HOST}"/>
+<input type="hidden" id="usuario_ftp" value="{FTP_USUARIO}"/>
+<input type="hidden" id="pass_ftp" value="{FTP_PASS}"/>
+<input type="hidden" id="puerto_ftp" value="{FTP_PUERTO}"/>
+<input type="hidden" id="tipo_extension" value="{EXTENSIONES}"/>
+<input type="hidden" id="tipo_extension_m" value="{EXTENSIONES_M}"/>
+</body>
+</html>

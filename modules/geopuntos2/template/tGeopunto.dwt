@@ -202,14 +202,14 @@
     <!--Buscador-->
     <div>
     <div style="width:96%;">
-    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(1,this.value);" style="width:90%;"/>
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qd" class="caja_txt" onkeyup="geo_buscador_qst(1,this.value);" style="width:90%;"/>
     </div>
     <div style="width:3%; position:relative; left:96%; top:-20px;">
     <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
     </div>
     </div>
     <!--Buscador-->
-    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px;">
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px; max-height:355px; height:353;">
     <div id="geo_qst_dsp" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
     <!-- BEGIN U -->
     <div class="ui-corner-all" id="{U.ID}">{U.DES}</div>
@@ -227,7 +227,7 @@
     <!--Buscador-->
     <div>
     <div style="width:96%;">
-    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(2,this.value)" style="width:90%;"/>
+    <label>Buscar:</label><input type="text" id="geo_bscdr_qs" class="caja_txt" onkeyup="geo_buscador_qst(2,this.value)" style="width:90%;"/>
     </div>
     <div style="width:3%; position:relative; left:96%; top:-20px;">
     <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
@@ -235,7 +235,7 @@
     </div>
     <!--Buscador-->
     <!--<div style="overflow-y:scroll; height:90%; width:100%; position:relative;">-->
-    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px;">
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px; max-height:355px; height:353;">
     <div id="geo_qst_sel" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
     <!-- BEGIN U2 -->
     <div class="ui-corner-all" id="{U2.ID}">{U2.DES}</div>
@@ -264,14 +264,14 @@
     <!--Buscador-->
     <div>
     <div style="width:96%;">
-    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(1,this.value);" style="width:90%;"/>
+    <label>Buscar:</label><input type="text" id="geo_bscdr_ud" class="caja_txt" onkeyup="geo_buscador_usr(1,this.value);" style="width:90%;"/>
     </div>
     <div style="width:3%; position:relative; left:96%; top:-20px;">
     <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
     </div>
     </div>
     <!--Buscador-->
-    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px;">
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px; max-height:355px; height:353;">
     <div id="geo_usr_dsp" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
     {USD}
     </div>
@@ -287,14 +287,14 @@
     <!--Buscador-->
     <div>
     <div style="width:96%;">
-    <label>Buscar:</label><input type="text" id="geo_bscdr_qst" class="caja_txt" onkeyup="buscador_qst(2,this.value)" style="width:90%;"/>
+    <label>Buscar:</label><input type="text" id="geo_bscdr_us" class="caja_txt" onkeyup="geo_buscador_usr(2,this.value)" style="width:90%;"/>
     </div>
     <div style="width:3%; position:relative; left:96%; top:-20px;">
     <span class="ui-icon ui-icon-search" style="position:relative; left:-5px; top:-5px;"></span>
     </div>
     </div>
     <!--Buscador-->
-    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px;">
+    <div style="overflow-y:scroll; overflow-x:hidden; width:100%; min-height:350px; max-height:355px; height:353;">
     
     <div id="geo_usr_sel" class="dropme" style="min-height:350px; min-width:170px; width:100%; border-bottom:#fad42e solid thin; border-top:#fad42e solid thin;">
     {USS}

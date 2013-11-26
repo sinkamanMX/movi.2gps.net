@@ -153,7 +153,8 @@
            <input type="hidden" id="geo_hidpr" />
             <div id="geo_dialog" > </div>
             <div id="geo_dialog_pr"></div>
-            <div id="geo_dialog_import" > </div>           
+            <div id="geo_dialog_import" > </div>
+            <div id="geo_dialog_impay" > </div>       
             <div id="geo_dialog_message" title="&iexcl;Aviso!"></div>
             <div id="geo_dialog_confirm" title="&iexcl;Aviso!"></div>
 

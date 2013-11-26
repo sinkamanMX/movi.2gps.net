@@ -52,24 +52,7 @@ $(document).ready(function () {
 		width:  800,
 		height: 600,
 		
-		buttons:/*[
-			{
-				id: 'edit-button',
-				name: 'Guardar',
-				class: 'ocultar',
-				click: function() {validar_datos();}
-			},
-			{
-				id: 'issue-button',
-				name: 'Cancelar',
-				class: 'ocultar',
-				click: function() {
-				if($("#geo_dialog" ).dialog('isOpen')){
-					$("#dialog_message").dialog('close');
-					}
-					$("#geo_dialog" ).dialog('close');
-				}
-			}],*/
+		buttons:
 			{
 			"Guardar": function(){
 				validar_datos();
@@ -105,7 +88,29 @@ $(document).ready(function () {
 				},
 		show: "blind",
 		hide: "blind"
-		});	
+		});
+	//Declara dialog import payload
+	$("#geo_dialog_impay" ).dialog({
+		modal: true,
+		autoOpen:false,
+		overlay: { opacity: 0.2, background: "cyan" },
+		width:  550,
+		height: 400,
+		buttons: {
+			"Importar": function(){
+				geo_enviar_excel_pay();
+				},
+			"Cancelar": function(){
+				if($("#geo_dialog_impay" ).dialog('isOpen')){
+					$("#dialog_message").dialog('close');
+					}
+					$("#geo_dialog_impay" ).dialog('close');
+					//geo_load_datatable();
+				}
+				},
+		show: "blind",
+		hide: "blind"
+		});			
 	//Declara dialog editar preguntas respuestas
 	$("#geo_dialog_pr" ).dialog({
 		modal: true,
@@ -823,6 +828,7 @@ function payload(div){
 		//alert (p)
 		var url= "index.php?m=geopuntos2&c=mGenerarQr&cadena="+p;
 				   window.location=url;
+				   //window.open(url);
 				  
 		}	
 		
@@ -1029,6 +1035,16 @@ function geo_down_format()
 
    window.location="public/Descargas/Geopuntos/plantilla.xls";
 }	
+//-----------------------
+function geo_down_formpay(){
+	var idq = $("#geo_excel_idq").val();
+	//alert(idq);
+	var url= "index.php?m=geopuntos2&c=plantilla_payload&idq="+idq; 
+	window.location=url;
+	return false;
+	//window.location="public/Descargas/Geopuntos/plantilla_payload.xlsx";
+	
+	}
 //----------------------- funcion que envia el excel.
 function geo_enviar_excel(){
 	
@@ -1077,4 +1093,174 @@ function geo_fedit_pr(){
 			$('#geo_dialog_pr').html(result); 
 				}
 		});	
+	}
+
+//--------------------------------------------------------------
+function geo_buscador_usr(op,txt){
+	//alert(txt)
+	/*if(op==1){
+		$("#geo_bscdr_ud").val("");
+		}
+	else{
+		$("#geo_bscdr_us").val("");
+		}*/
+	//var div = (op==1)?'geo_usr_dsp':'geo_usr_sel';
+	var div = (op==1)?'geo_usr_sel':'geo_usr_dsp';
+	//alert(div);
+	var geo_users = $('#'+div+' div').map(function() {
+		return this.id;
+		}).get();
+	us = "";	
+	for (i=0; i<geo_users.length; i++){
+		us += (us == "")?geo_users[i]:","+geo_users[i];
+		}
+	$.ajax({
+		url: "index.php?m=geopuntos2&c=mUsuario",
+        type: "GET",
+		data:{
+			us : us,
+			txt : txt
+			},
+        success: function(data) {
+        var result = data;
+		//alert(result)
+		if(op==1){
+			$("#geo_usr_dsp").html(result);
+			}
+		else{
+			$("#geo_usr_sel").html(result);
+			}	
+          }
+      });	
+	}		
+//--------------------------------------------------------------
+function geo_buscador_qst(op,txt){
+	//alert(txt)
+	/*if(op==1){
+		$("#geo_bscdr_us").val("");
+		}
+	else{
+		$("#geo_bscdr_ud").val("");
+		}*/	
+	//var div = (op==1)?'geo_usr_dsp':'geo_usr_sel';
+	var div = (op==1)?'geo_qst_sel':'geo_qst_dsp';
+	//alert(div);
+	var geo_qst = $('#'+div+' div').map(function() {
+		return this.id;
+		}).get();
+	q = "";	
+	for (i=0; i<geo_qst.length; i++){
+		q += (q == "")?geo_qst[i]:","+geo_qst[i];
+		}
+	$.ajax({
+		url: "index.php?m=geopuntos2&c=mCuestionario",
+        type: "GET",
+		data:{
+			q : q,
+			txt : txt
+			},
+        success: function(data) {
+        var result = data;
+		//alert(result)
+		if(op==1){
+			$("#geo_qst_dsp").html(result);
+			}
+		else{
+			$("#geo_qst_sel").html(result);
+			}	
+          }
+      });	
+	}	
+//--------------------------------------------------------------
+function geo_imp_pay(idq){
+	$("#geo_dialog_impay").dialog('option', 'title', 'Importar Payload');
+	$.ajax({
+		url: "index.php?m=geopuntos2&c=mImpay",
+		type: "GET",
+		data: {
+			idq	: idq
+			},
+		success: function(data) {
+			var result = data;
+			//alert(result) 
+			if(result!=0){
+				$('#geo_dialog_impay').dialog('open'); 
+				$('#geo_dialog_impay').html(result); 
+				}
+			}
+		});		
+	}	
+//--------------------------------------------------------------	
+function geo_enviar_excel_pay(){
+	if($('#geo_file_pay').val()==""){			
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Seleccione un archivo</p>');
+		$("#dialog_message" ).dialog('open');
+		$('#geo_file_pay').focus();
+		return false;
+	}
+	else{
+		$("#dialog_message").dialog( "option", "modal", true );	
+		$('#dialog_message').html('<p align="center"><img src="public/images/cargando.gif" > Procesando datos.Espere un momento, por favor.</p>');
+		$("#dialog_message").dialog('open');
+		$("body").css("cursor", "progress");
+		//$("#dialog_message").dialog({ title: "Cargando" });
+		//$('#dialog_message').html('<div class="demo"><div style="position:relative; width:60px; left:120px; "><img src="public/images/ajax_loader.gif" width="60" height="60" ><br/>Cargando...</div></div></div>');
+		$("#dialog_message" ).dialog('open');
+		
+		//barra_progress();
+	
+		document.forms["geo_excel_pay"].submit();
+		$("#geo_file_pay").val("");
+		$("#dialog_message" ).dialog('close');		
+		$("body").css("cursor","default");
+		}
+}
+//--------------------------------------------------------------	
+function geo_exp(x){
+	if(x==1){
+		$.ajax({
+			url: "index.php?m=geopuntos2/PHPExcleReader",
+			type: "GET",
+			success: function(data) {
+				var result = data;
+				console.log(result)
+				geo_insertar_payload(result);
+				}
+			});		
+		}
+	}
+//--------------------------------------------------------------	
+function geo_insertar_payload(str){
+	var mensaje = '';
+		$.ajax({
+			url: "index.php?m=geopuntos2&c=mSavePay",
+			type: "POST",
+			data: {
+				str : str
+				},
+			success: function(data) {
+				var result = data;
+				console.log(result)
+				
+				var res = result.split("¬");
+				if(res[0]==1){
+					mensaje += 'Se almacenaron '+res[2]+' registros con &eacute;xito.<br>';
+					error = res[1].split("|")
+					//console.log(error.length);
+					for(i=0; i<error.length; i++){
+						if(error[i] != ""){
+							mensaje += 'El punto de inter\u00e9s '+error[i]+' no existe. Los datos de este no fueron almacenados. Revise su archivo excel y vuelva a intentarlo.<br>';
+							}
+						}
+					$("#geo_con_pay").html(mensaje);
+					}
+				//console.log(res[0])
+				if(res[0] < 0 | res[0]!= 1){
+					$("#geo_con_pay").html('Los datos no pudieron ser almacenados. Verifique su archivo de excel.');
+					}
+				/*else{
+					$("#geo_con_pay").html('El payload no ha podido ser almacenado.');
+					}*/
+				}
+			});		
 	}

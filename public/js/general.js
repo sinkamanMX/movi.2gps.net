@@ -32,3 +32,21 @@ function gral_btn_note(){
 function gral_boton(){
 	$(".boton").button();
 	}	
+//-----------------------------------
+function gral_btn_gear(){
+	$( ".gear" ).button({
+      icons: {
+        primary: "ui-icon-gear"
+      },
+      text: false
+    })
+	}
+//-----------------------------------
+function gral_btn_add(){
+	$( ".add" ).button({
+      icons: {
+        primary: "ui-icon-plus"
+      },
+      text: false
+    })
+	}			

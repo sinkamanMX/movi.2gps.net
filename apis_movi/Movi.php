@@ -86,6 +86,6 @@
         echo dameEntregas($_REQUEST['viaje']);
     }
     if($_REQUEST['fun'] == 'Incidencia'){	
-        echo putIncidenteEntrega($_GET['imei'],$_GET['codUser'],$_GET['idTipo'],$_GET['idEntrega'],$_GET['fecha'],$_GET['Comentarios'],$_GET['latitud'],$_GET['longitud'],$_GET['idEvento'],$_GET['bateria'],$_GET['velocidad']);
+        echo putIncidenteEntrega($_GET['imei'],$_GET['codUser'],$_GET['idTipo'],$_GET['idEntrega'],$_GET['fecha'],$_GET['Comentarios'],$_GET['latitud'],$_GET['longitud'],$_GET['idEvento'],$_GET['bateria'],$_GET['velocidad'],$_GET['prov'],$_GET['mts_e'],$_GET['cellid'],$_GET['lac'],$_GET['mcc_mnc'],$_GET['macc'],$_GET['senal_w']);
     }
 ?>

@@ -103,11 +103,41 @@
          }
          return $result;
     }
+	
+     function verifica_equipo_app($app,$imei){
+        $result = "Sin registro de servidor";
+        $cuenta=0;
+        $con = mysql_connect("localhost","savl_movi","fr4de3");
+        if (!$con){
+            return "Error de conexión al verificar el equipo en matrix";
+        }else{
+            $base = mysql_select_db("ALG_BD_MATRIX",$con);
+            $sql ="SELECT ADM_SERVIDORES.URL_SCRIPT,
+                         ADM_SERVIDORES.IP_FTP,
+                         ADM_SERVIDORES.USUARIO_FTP,
+                         ADM_SERVIDORES.CONTRASENA_FTP
+                   FROM  ADM_MATRIX
+                   INNER JOIN ADM_SERVIDORES ON ADM_SERVIDORES.ID_SERVIDOR=ADM_MATRIX.SERVIDOR
+                   WHERE ADM_MATRIX.IMEI='".$imei."' AND
+                         ADM_MATRIX.APLICACION='".$app."'";
+             if ($qry = mysql_query($sql)){
+                while($e=mysql_fetch_assoc($qry)){
+                    $output[]=utf8_encode_array($e);
+                    $cuenta++;
+                }
+            }
+            if($cuenta>0){
+                $result = json_encode($output);
+            }else{
+                $result = "Sin Servidores disponibles";
+            }
+            return $result;
+        }
+    }
 
     function inserta_matrix($imei,$servidor,$app,$ver,$marca,$modelo){
         $resultado =0;
         $sql="INSERT INTO ADM_MATRIX (
-                     ID_MATRIX,
                      IMEI,
                      SERVIDOR,
                      APLICACION,
@@ -116,7 +146,6 @@
                      MODELO,
                      FECHA_CREADO) 
               VALUES (
-                      0,
                       '".$imei."',
                       ".$servidor.",
                       '".$app."',
@@ -134,8 +163,8 @@
     function actualiza_matrix($servidor,$ver,$imei,$app){
         $resultado = 0;
         $sql = "UPDATE ADM_MATRIX SET
-                       SERVIDOR = ".$servidor.",
-                       VERSION =".$ver."
+                       SERVIDOR =".$servidor.",
+                       VERSION ='".$ver."'
                        WHERE IMEI='".$imei."' AND
                              APLICACION='".$app."'";	
         $qry = mysql_query($sql);
@@ -146,9 +175,9 @@
     }
 
     function matrix_($imei,$servidor,$app,$ver,$marca,$modelo){
-        $con = mysql_connect("localhost","savl","397LUP");
+        $con = mysql_connect("localhost","savl_movi","fr4de3");
         if (!$con){
-            return "Error de conexion al obtener los cuestionarios";
+            return "Error de conexion de matrix";
         }else{
             $base = mysql_select_db("ALG_BD_MATRIX",$con);
             $resultado="Sin intento de registro";
@@ -170,14 +199,17 @@
     }
 
     function servidores(){ 
-        $con = mysql_connect("localhost","savl","397LUP");
+        $con = mysql_connect("localhost","savl_movi","fr4de3");
         if (!$con){
-            return "Error de conexion al obtener los cuestionarios";
+            return "Error de conexion al obtener el servidor de matrix";
         }else{
             $base = mysql_select_db("ALG_BD_MATRIX",$con);
             $sql="SELECT ID_SERVIDOR, 
                          DESCRIPCION,
-                         URL_SCRIPT
+                         URL_SCRIPT,
+                         IP_FTP,
+                         USUARIO_FTP,
+                         CONTRASENA_FTP
                   FROM ADM_SERVIDORES";
             $query=mysql_query($sql);
             $cuenta=0;
@@ -201,5 +233,9 @@
     if($_REQUEST['fun'] == 'matrix'){
         echo matrix_($_REQUEST["imei"],$_REQUEST["servidor"],$_REQUEST["app"],$_REQUEST["ver"],$_REQUEST["marca"],$_REQUEST["modelo"]);
     }	
+
+    if($_REQUEST['fun'] == 'matrix_v'){
+        echo verifica_equipo_app($_REQUEST["app"],$_REQUEST["imei"]);
+    }
 
 ?>

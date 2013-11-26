@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="public/js/general.js"></script>
+<input type="hidden" id="fun_hop" value="{OP}" />
+<input type="hidden" id="fun_hid" value="{ID}" />
+<div id="fun_tabs" style="width:100%; height:98%;">
+<ul>
+    <li><a href="#fun_tabs1">Datos generales</a></li>
+    <li><a href="#fun_tabs2" onclick="fun_load_datatable_fparam();">Parametros</a></li>
+</ul>
+
+<div id="fun_tabs1">
+<table>
+<tr>
+<td><label>Nombre:</label></td>
+<td><input type="text" id="fun_nom" class="caja_txt" value="{NOM}" /></td>
+</tr>
+<tr>
+<td><label>Tipo:</label></td>
+<td>
+<select id="fun_tip" class="caja_txt">
+<option value="PUB" {PUB}>P&uacute;blica</option>
+<option value="PRI" {PRI}>Privada</option>
+</select>
+</td>
+</tr>
+<tr>
+<td><label>Descripci&oacute;n:</label></td>
+<td><textarea id="fun_des" class="ui-corner-all" rows="3" style="height:60px; width:500px; border:#aaaaaa solid thin;">{DES}</textarea></td>
+</tr>
+<tr>
+<td><label>Funci&oacute;n:</label></td>
+<td><textarea id="fun_fun" class="ui-corner-all" rows="10" style="height:240px; width:500px; border:#aaaaaa solid thin;">{FNC}</textarea></td>
+</tr>
+</table>
+</div><!--fun_tabs1-->
+<div id="fun_tabs2">
+<table cellpadding="0" cellspacing="0" border="0" class="display" id="fun_table_par">
+<thead>
+<tr>
+<th colspan="5"><div style="width:90%; float:left;">
+<h3>Parametros de la funci&oacute;n </h3></div>
+<div style="width:9%;  float:right;"><button class="add small_btn"  onclick="fun_abrir_formulario_par($('#fun_hid').val(),1)"></button></div></th>
+</tr>
+<tr>
+  <th></th>	
+  <th>ID</th>	
+  <th>Nombre</th>
+  <th>Tipo</th>
+</tr>
+</thead>
+<tbody>
+  <tr> 
+  </tr>
+</tbody>
+</table>
+</div><!--fun_tabs2-->
+</div><!--fun_tabs-->
+<script>
+$(document).ready(function () {
+	$( "#fun_tabs" ).tabs();
+	gral_btn_add();
+	
+	
+
+	});
+</script>

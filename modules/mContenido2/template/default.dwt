@@ -150,7 +150,7 @@ $(document).keydown(function(tecla){
             </table><button class="b_op"  style="font-size:12px; width:25px; height:25px; top:5px; position:absolute; right:2%; " onclick="dsp_b(4);"><div style="position:absolute; left:3px; top:3px;"><span class="ui-icon ui-icon-search"></span></div></button></h2>
                              
 				<div id="datagrid" align="center"  >
-           	  <div id="list_formas_xc" align="center" style="overflow-y:visible; overflow-x:hidden;"></div>
+           	  <div id="list_formas_xc" align="center" style="position:relative; top:0px; left:0%; width:98%; height:78%; overflow:scroll; overflow-x:hidden;"></div>
               <div id="info_formas" style="display:none;"></div>	
 			</div>
                          
@@ -211,16 +211,16 @@ $(document).keydown(function(tecla){
              <div id="datagridim">
             <div id="imp" >
                 <div id="arc2" >
-                <form name="envi_excel" id="aver" action="index.php?m=mContenido2&c=mImportFile" method="post" enctype="multipart/form-data" target="archivo" style="width:100%; height:90%; border:#3F3 solid 0px; " >
+                <form name="envi_excel" id="aver" action="index.php?m=mContenido2&c=PHPExcleReader/Getxlsxs" method="post" enctype="multipart/form-data" target="archivo" style="width:100%; height:90%; border:#3F3 solid 0px; " >
                 <table>
                 <!--<tr><td>Nombre:</td><td><input type="text" class="caja_txt" name="cto_imp" id="cto_imp"/></td></tr>-->
-                <tr><td><input type="file" id="excel" name="excel"/> </td><td><input type="button" class="b_op" value="Importar" onclick="enviar_excel()" /></td>
+                <tr><td><input type="file"  name="excel"/> </td><td><input type="button" class="b_op" value="Importar" onclick="enviar_excel()" /></td>
               
-                <td align="right"><div id="clr" style="position:relative; top:50%; display:;" title="Descargar Formato"><button class="b_ic" onclick="down_format()"><span style="position:relative; left:-7px; " title="Descargar Formato"  class="ui-icon ui-icon-circle-arrow-s"></span></button></div></td></tr>
+                <td align="right"></td></tr>
                 </table>
                  </form>
                 
-
+			<button class="b_ic" onclick="down_format()" title="Descargar Formato" style="position:absolute; top:15%; right:20px;"><span style="position:relative; left:-7px; " title="Descargar Formato"  class="ui-icon ui-icon-circle-arrow-s"></span></button>
                 <input id="jota2" type="hidden" size="1" style="border:#fff solid 0px;"/>
                 <input type="hidden" id="usuario" value="{COD_USER}" size="20"/>
                 <input type="hidden" id="cliente" value="{COD_CLI}" size="20"/>
@@ -260,7 +260,7 @@ $(document).keydown(function(tecla){
             </h2>
                              
 				<div id="datagrid" align="center" style="" >
-           	  <div id="list_formas_xa" align="center"></div>
+           	  <div id="list_formas_xa" align="center" style="position:relative; top:0px; left:0%; width:98%; height:78%; overflow:scroll; overflow-x:hidden;"></div>
               <div id="info_formas" style="display:none;"></div>	
 			</div>
 
@@ -285,7 +285,7 @@ $(document).keydown(function(tecla){
             </table><button class="b_op"  style="font-size:12px; width:25px; height:25px; top:5px; position:absolute; right:2%; " onclick="dsp_b(3);"><div style="position:absolute; left:3px; top:3px;"><span class="ui-icon ui-icon-search"></span></div></button></h2>
                              
 				<div id="datagrid" align="center" style="" >
-           	  <div id="list_formas_xb" align="center"></div>
+           	  <div id="list_formas_xb" align="center" style="position:relative; top:0px; left:0%; width:98%; height:78%; overflow:scroll; overflow-x:hidden;"></div>
               <div id="info_formas" style="display:none;"></div>	
 			</div>
                          

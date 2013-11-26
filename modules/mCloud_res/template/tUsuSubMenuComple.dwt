@@ -1,0 +1,6 @@
+ Disponibles
+ <select name="destino[]" id="destino" multiple="multiple" size="8" class="selects0">
+      <!-- BEGIN submenuc -->
+      <option value="{submenuc.ID_SUBMENU}">{submenuc.NOMBRE}</option> 
+	<!-- END submenuc -->
+  </select>

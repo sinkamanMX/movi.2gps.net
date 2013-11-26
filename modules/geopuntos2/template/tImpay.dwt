@@ -1,0 +1,40 @@
+<script>
+	//Definir botones dowload
+	$( ".down" ).button({
+      icons: {
+        primary: "ui-icon-circle-arrow-s"
+      },
+      text: false
+    })
+</script>
+
+<div style=" height:40px; width:100%" >
+<div style="position:relative; float:left; width:90%;">
+<form name="geo_excel_pay" id="geo_excel_pay" action="index.php?m=geopuntos2&c=PHPExcleReader/Getxlsxs" method="post" enctype="multipart/form-data" target="geo_trg_pay">
+<input type="hidden" id="geo_excel_idq" value="{IDQ}" />
+<table>
+<tr>
+<td>Archivo:</td><td><input type="file" id="geo_file_pay" name="geo_file_pay"/> </td>
+</tr>
+</table>
+</form>
+</div>
+<div style="position:relative; float:right; width:9%">
+<button class="down" onclick="geo_down_formpay()">Descargar plantilla</button>
+</div>
+</div>
+
+<input type="hidden" id="usuario" value="{COD_USER}" size="20"/>
+<input type="hidden" id="cliente" value="{COD_CLI}" size="20"/>
+
+
+
+
+              
+<div id="console2" style="height:auto; width:100%;">
+<iframe name="geo_trg_pay" id="geo_trg_pay" style=" display:none;" width="700" height="100" frameborder="1"></iframe>
+Consola de eventos:
+<div id="geo_con_pay" class="ui-corner-all" style="width:100%; height:250px; border:#A6C9E2 solid thin;" ></div>
+</div>
+
+

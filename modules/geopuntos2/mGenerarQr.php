@@ -9,7 +9,7 @@ if(!$userAdmin->u_logged()){echo '<script>window.location="index.php?m=login"</s
 	 //$idc	= $userAdmin->user_info['COD_CLIENT'];
 
 //echo $n=date("Y_m_d_H_i_s");
-	$db ->sqlQuery("SET NAMES 'utf8'"); 
+	//$db ->sqlQuery("SET NAMES 'utf8'"); 
 require('phpqrcode/phpqrcode.php');
 /*$url = utf8_decode($_GET['cadena']);
 $img = "codigo.png";
@@ -31,25 +31,30 @@ readfile($file);*/
     // we need to be sure ours script does not output anything!!! 
     // otherwise it will break up PNG binary! 
      
-    ob_start("callback"); 
+    //ob_start("callback"); 
      
     // here DB request or some processing 
     //$codeText = 'DEMO - '.$param; 
 	$codeText = $_GET['cadena'];
      
     // end of processing here 
-    $debugLog = ob_get_contents(); 
-    ob_end_clean(); 
-     
+    //$debugLog = ob_get_contents(); 
+    //ob_end_clean(); 
+     $file = date("Ymd_His").'_codigo.png';
     // outputs image directly into browser, as PNG stream 
-    QRcode::png($codeText);
+    QRcode::png($codeText,$file);
 	 
 	//
-	$file = date("Ymd_His").'codigo.png';
 	
-	header("Content-disposition: attachment; filename=$file");
-	//header("Content-type: application/octet-stream");
+	
+	/*header("Content-disposition: attachment; filename=".$file." ");
+	header("Content-type: application/octet-stream");
+	header ("Content-Length: ".filesize($file));
+	
+	readfile($file);*/ 
+	header ("Content-Disposition: attachment; filename=".$file); 
+	header ("Content-Type: application/octet-stream");
+	header ("Content-Length: ".filesize($file));
 	header('Content-Type: image/png');
-	readfile($file); 
-
+	readfile($file);
 ?>
