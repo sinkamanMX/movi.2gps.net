@@ -1,0 +1,48 @@
+  <script>
+$(document).ready(
+function(){
+         $('.pasar').click(function() { return !$('#origen option:selected').remove().appendTo('#destino'); });  
+		$('.quitar').click(function() { return !$('#destino option:selected').remove().appendTo('#origen'); });
+		$('.pasartodos').click(function() { $('#origen option').each(function() { $(this).remove().appendTo('#destino'); }); });
+		$('.quitartodos').click(function() { $('#destino option').each(function() { $(this).remove().appendTo('#origen'); }); });
+		$('.submit').click(function() { $('#destino option').prop('selected', 'selected'); });
+
+	//onload();
+});
+	
+</script>
+
+<table border="0" width="100%">
+        <tr>
+        <td width="45%">
+         <div class="divs" id="conte_2">
+                 Disponibles
+                <select name="origen[]" id="destino" multiple="multiple" size="25" class="caja_stxt" style="width:100%; height:90%;">
+                   <!-- BEGIN group2 -->
+                      <option value="{group2.ID_OBJECT_MAP}">{group2.DESCRIPCION}</option> 
+                    <!-- END group2 -->
+                </select>
+         </div>
+         </td>
+         <td>
+           <div id="dv">
+               <input id="xx" type="button" class="quitar der" value="&nbsp;>&nbsp;">
+                <input id="xx" type="button" class="quitartodos der" value=">>">
+               <input id="xx" type="button" class="pasartodos izq" value="<<">
+              <input id="xx" type="button" class="pasar izq" value="&nbsp;<&nbsp;" >               
+            </div>
+           </td>
+           <td width="45%">
+           <div class="divs" id="conte_1">
+                  Asignados
+                  <select name="destino[]" id="origen" multiple="multiple" size="25" class="caja_stxt" style="width:100%; height:90%;">
+                    <!-- BEGIN group -->
+                      <option value="{group.ID_OBJECT_MAP}">{group.DESCRIPCION}</option> 
+                    <!-- END group -->
+
+                </select>
+        </div>
+        </td>
+        </tr>
+        </table>
+

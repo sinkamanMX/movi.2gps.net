@@ -357,7 +357,7 @@ if($count>0){
 			$otdiv=explode(',',$divi[$a]);
 			//$otdiv[3]
 			 $datas5 = "SELECT CU.COD_ENTITY
-					FROM DSP_CIRCUITO2 C
+					FROM DSP_CIRCUITO C
 					INNER JOIN DSP_CIRCUITO_UNIDAD CU ON C.ID_CIRCUITO=CU.ID_CIRCUITO
 					WHERE C.NOMBRE=".$otdiv[3]." AND C.ID_CLIENT=".$idu;
 					

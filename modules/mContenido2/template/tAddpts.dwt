@@ -234,7 +234,7 @@ if(result == 0){
     </div>-->
 
     
-    <div id="imp_punto">
+<!--    <div id="imp_punto">
     <div id="imp_p" >
     	<div>
         <form name="env_excel_pto" id="form_pto" action="index.php?m=mContenido2&c=mImportFilePto" method="post" enctype="multipart/form-data" target="trt_pto" style="width:100%; height:90%; border:#3F3 solid 0px;">
@@ -259,7 +259,7 @@ if(result == 0){
                 </div>
 			</div>
             
-    </div><!--imp_punto-->                        
+    </div><!--imp_punto-->            
 	
     <div id="datagridp" align="center" style=" " >
     	

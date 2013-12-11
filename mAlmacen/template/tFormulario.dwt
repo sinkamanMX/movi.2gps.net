@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+
+<style>
+  #xx{
+		border: 1px solid #c5dbec;
+		background: #dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;
+		font-weight: bold;
+		color: #2e6e9e;
+	 }
+
+</style>
+
+</head>
+<input type="hidden" id="alm_hop" value="{OP}" />
+<input type="hidden" id="alm_hid" value="{ID}" />
+<table border="0" width="100%">
+<tr>
+  <td width="15%"><label>Descripci&oacute;n:</label></td>
+  <td width="15%"><input type="text" id="alm_dsc" class="caja_txt" value="{DSC}" onkeyup="validar_dsc(this.value)" maxlength="250"/></td>
+  <td ><div id="alm_ddsc"></div></td>
+   <td width="70%">Asignado al Tipo:       
+   		<select class="caja_stxt" onchange="mostrar_tipo(this.value);" id="tipo_pdi_uni" >
+   		    {TIP}
+         </select></td>
+</tr>
+<tr>
+  <td><label>Identificador Almac&eacute;n:</label></td>
+  <td><input type="text" id="alm_alm" class="caja_txt" value="{ALM}" onkeyup="validar_nip(this.value)" maxlength="250"/></td>
+  <td><div id="alm_dalm"></div></td>
+  <td width="70%" rowspan="9"> <div id="pdis"> </div></td>
+</tr>
+<tr>
+  <td><label>Identificador Tienda:</label></td>
+  <td><input type="text" id="alm_tda" class="caja_txt" value="{TDA}" maxlength="250"/></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><label>Zona:</label></td>
+  <td><input type="text" id="alm_zon" class="caja_txt" value="{ZON}" maxlength="250" /></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+   <td><label>Mercado:</label></td>
+   <td><input type="text" id="alm_mer" class="caja_txt" value="{MER}" maxlength="250"/></td>
+   <td>&nbsp;</td>
+</tr>
+<tr>
+	<td><label>Capacidad Alojamiento:</label></td>
+	<td><input type="text" maxlength="5"  id="alm_alo" class="caja_num" value="{ALO}" onkeypress="return isNumberKey(event)" /></td>
+    <td>&nbsp;</td>
+<tr>
+   <td>Unidad de Medida</td>
+   <td><select id="alm_c1" class="caja_stxt" onchange="get_combo2(this.value,-1)" style="width:100%">{C1}</select></td>
+   <td>&nbsp;</td>
+</tr>
+<tr>
+   <td>Patron de Medida</td> 
+   <td>
+       <div id="alm_dc2">
+       <select class="caja_stxt" style="width:100%"><option>Opciones</option></select>
+       </div>
+   </td>
+   <td>&nbsp;</td>
+</tr>
+
+<tr>
+   <td valign="top"><label>Observaciones:</label></td>
+   <td><textarea id="alm_obs" class="ui-corner-all text_area"  rows="10" maxlength="256">{OBS}</textarea></td>
+   <td>&nbsp;</td>
+</tr>
+<!--<tr>
+ <td></td>
+ <td>
+
+ </td>
+ <td>&nbsp;</td>
+</tr>-->
+</table>
+
+<script type="text/javascript">
+	var opt = {OPT};
+	var pat = {PAT};
+	if(opt!="" && pat !=""){
+		get_combo2(opt,pat);
+	}
+</script>

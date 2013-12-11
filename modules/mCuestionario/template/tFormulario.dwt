@@ -98,12 +98,37 @@ $(document).ready(function () {
 		
 		
 		}
+	var p ={P};
+	//alert(p)
+	if(p>0){
+		qst_get_param(p);
+		setTimeout(function(){
+			var qst_parval = $('.qst_selpar').map(function() {
+			val = this.id+','+this.value
+			return val;
+			}).get();
+			var parval = "";	
+			for(i=0; i<qst_parval.length; i++){
+				str = qst_parval[i];
+				str = str.replace("qst_p","")
+				parval += (parval=="")?str:'|'+str;
+				}	
+			$("#qst_old_par").val(parval)
+			//alert($("#qst_old_par").val())
+			idf = $("#qst_idf").val()
+			$("#qst_old_fun").val(idf)
+			//alert($("#qst_old_fun").val())
+			},500)
+		
+		}
+	
 	});
 </script>
 <input type="hidden" id="qst_op" value="{O_P}" />
 <input type="hidden" id="qst_id" value="{IDQ}" />
 
 <input type="hidden" id="qst_old_tit" value="{TIT}" />
+<input type="hidden" id="qst_old_nip" value="{NIP}" />
 <input type="hidden" id="qst_old_typ" value="{TYP}" />
 <input type="hidden" id="qst_old_mlt" value="{MLV}" />
 <input type="hidden" id="qst_old_off" value="{OFV}" />
@@ -113,6 +138,9 @@ $(document).ready(function () {
 
 <input type="hidden" id="qst_old_x" value="{X}" />
 <input type="hidden" id="qst_old_y" value="{Y}" />
+
+<input type="hidden" id="qst_old_fun" value="" />
+<input type="hidden" id="qst_old_par" value="" />
 <!--z<input type="TEXT" id="qst_old_z" value="{Z}" />-->
 
 <div id="qst_tab_formulario" style="width:100%; height:98%;">
@@ -121,10 +149,10 @@ $(document).ready(function () {
 <li><a href="#qst_tab_propiedades">Propiedades</a></li>
 <li><a href="#qst_tab_tema">Tema</a></li>
 <li><a href="#qst_tab_pregunta">Preguntas</a></li>
-<!--<li><a href="#qst_tab_funcion">Funci&oacute;n</a></li>-->
+<li><a href="#qst_tab_funcion">Funci&oacute;n</a></li>
 <li><a href="#qst_tab_user">Usuarios</a></li>
 </ul>
-<!--<div id="qst_tab_funcion">
+<div id="qst_tab_funcion">
 <table>
 <tr>
 <td><label>Funci&oacute;n:</label></td>
@@ -136,13 +164,18 @@ $(document).ready(function () {
 </tr>
 </table>
 <div id="qst_list_param"></div>
-</div>--><!--qst_tab_funcion-->
+</div><!--qst_tab_funcion-->
 <div id="qst_tab_propiedades">
 <table>
 <tr>
 <td><label>Titulo:</label></td>
 <td><input type="text" class="caja_txt" id="qst_title" value="{TIT}" onkeyup="validar_nombre_qst(this.value)"/></td>
 <td><div id="qst_tit_val"></div></td>
+</tr>
+<tr>
+<td>Identificador:</td>
+<td><input type="text" class="caja_txt" id="qst_nip" value="{NIP}" onkeyup="validar_nip_qst(this.value)"/></td>
+<td><div id="qst_nip_val"></div></td>
 </tr>
 <tr>
 <td><label>Tipo:</label></td>

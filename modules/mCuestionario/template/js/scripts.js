@@ -676,6 +676,26 @@ function validar_nombre_qst(n){
       });
 	}
 //-------------------------------------------------------------------------
+function validar_nip_qst(n){
+	$.ajax({
+          url: "index.php?m=mCuestionario&c=mGetNip",
+          type: "GET",
+          data: {
+			  nip : n
+			    },
+          success: function(data) {
+            var result = data; 
+			//alert(result);
+			if(result>0){
+				$("#qst_nip_val").html('<font color = "red">El identificador de cuestionario ya existe.</font>');
+				}
+			else{
+				$("#qst_nip_val").html('');
+				}	
+          }
+      });
+	}	
+//-------------------------------------------------------------------------
 function val_pes_pro(){
 	var ifs = 0;
 
@@ -690,7 +710,19 @@ function val_pes_pro(){
 		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>El cuestionario ya existe. Escriba un titulo diferente.</p>');
 		$("#dialog_message" ).dialog('open');		
 		return false;
-		}		
+		}
+	if($("#qst_nip").val().length == 0){
+		ifs=ifs+1;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir un identificador del cuestionario.</p>');
+		$("#dialog_message" ).dialog('open');		
+		return false;
+		}
+	if($("#qst_nip_val").html() != ""){
+		ifs=ifs+1;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>El identificador del cuestionario ya existe. Escriba un identificador diferente.</p>');
+		$("#dialog_message" ).dialog('open');		
+		return false;
+		}				
 	}
 //---------------------------------------------------------------------------
 function val_pes_tma(){
@@ -720,6 +752,20 @@ function val_all_pes(){
 		$("#dialog_message" ).dialog('open');		
 		return false;
 		}
+		
+	if($("#qst_nip").val().length == 0){
+		ifs=ifs+1;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe escribir un identificador del cuestionario.</p>');
+		$("#dialog_message" ).dialog('open');		
+		return false;
+		}
+	if($("#qst_nip_val").html() != ""){
+		ifs=ifs+1;
+		$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>El identificador del cuestionario ya existe. Escriba un identificador diferente.</p>');
+		$("#dialog_message" ).dialog('open');		
+		return false;
+		}
+				
 	if($("#qst_type").val()==3){
 		if($("#qst_Y").val() < 1){
 			ifs=ifs+1;
@@ -780,7 +826,7 @@ function val_all_pes(){
 	}	
 //------------------------------------------------------------------------------
 function qst_guardar_form(op){
-	
+	gral_cargando();
 	var x = ($("#qst_type").val()==3)?$("#qst_X").val():"";
 	var y = ($("#qst_type").val()==3)?$("#qst_Y").val():"";
 	var mlt = ($('#qst_multi_resp').is(':checked'))?1:0;
@@ -804,13 +850,23 @@ function qst_guardar_form(op){
 	for(i=0; i<qst_users.length; i++){
 		usr += (usr=="")?qst_users[i]:","+qst_users[i];
 		}
-		
-
+	var qst_parval = $('.qst_selpar').map(function() {
+		val = this.id+','+this.value
+		return val;
+		}).get();
+	var parval = "";	
+	for(i=0; i<qst_parval.length; i++){
+		str = qst_parval[i];
+		str = str.replace("qst_p","")
+		parval += (parval=="")?str:'|'+str;
+		}
+	//alert(parval);
 		$.ajax({
           url: "index.php?m=mCuestionario&c=mSaveForm",
           type: "GET",
           data: {
 			  tit : $("#qst_title").val(),
+			  nip : $("#qst_nip").val(),
 			  typ : $("#qst_type").val(),
 			  mlt : mlt,
 			  off : off,
@@ -821,8 +877,13 @@ function qst_guardar_form(op){
 			  idq : $("#qst_id").val(),
 			  x   : x,
 			  y   : y,
+			  fun : $("#qst_idf").val(),
+			  prm : parval,
 			  
+			  ofun : $("#qst_old_fun").val(),
+			  oprm : $("#qst_old_par").val(),
 			  otit : $("#qst_old_tit").val(),
+			  onip : $("#qst_old_nip").val(),
 			  otyp : $("#qst_old_typ").val(),
 			  omlt : omlt,
 			  ooff : ooff,
@@ -835,6 +896,7 @@ function qst_guardar_form(op){
           success: function(data) {
             var result = data; 
 			//alert(result);
+			$("body").css("cursor", "default");
 			if(result>0 && result!=""){
 				message = (op==1)?"El cuestionario ha sido almacenado satisfactoriamente.":"El cuestionario ha sido actualizado satisfactoriamente";
 				$('#qst_dialog_formu').dialog('close');
@@ -998,7 +1060,7 @@ function val_data_preg(){
 }	
 //------------------------------------------------------------------------
 function qst_save_formp(){
-	
+	gral_cargando();
 	$.ajax({
 		url: "index.php?m=mCuestionario&c=mSavePregunta",
         type: "GET",
@@ -1015,6 +1077,7 @@ function qst_save_formp(){
 			},
         success: function(data) {
         var result = data;
+		$("body").css("cursor", "default");
 		//alert(result) 
 		if(result==1){
 			//qst_aps.push(
@@ -1331,7 +1394,7 @@ function save_set_pr(){
 		//vls += (vls == "")?'('+idp+',"'+$(this).val()+'",'+qst_idq+')':',('+idp+',"'+$(this).val()+'",'+qst_idq+')';
 		vls += (vls == "")?idp+',"'+$(this).val()+'",'+qst_idq:'|'+idp+',"'+$(this).val()+'",'+qst_idq;
 	});
-	alert(vls)
+	//alert(vls)
 	$.ajax({
 		url: "index.php?m=mCuestionario&c=mSaveSetpr",
 		type: "GET",
@@ -1460,21 +1523,40 @@ function qst_save_config(){
 	}
 //------------------------------------------------------------------------
 function qst_get_param(id){
+	var pregs = "";
+	var qst_pregs = $("#qst_preg_sel div").map(function(){
+		return this.id;
+		}).get();
+	for(i=0; i < qst_pregs.length; i++){
+		pregs += (pregs=="")?qst_pregs[i]:","+qst_pregs[i];
+		}
+	//alert($("#qst_id").val())	
 	$.ajax({
 			url: "index.php?m=mCuestionario&c=mGetParam",
 			type: "GET",
 			data: {
-				id  : id
+				id  : id,
+				pr	: pregs,
+				idq : $("#qst_id").val()
 			},
 			success: function(data) {
 				var result = data; 
 				//alert(result)
-				
+				if(result == 0){
+					$('a[href="#qst_tab_pregunta"]').trigger('click');
+					$('#dialog_message').html('<p align="center"><span class="ui-icon ui-icon-alert" style="float:left; margin:0 1px 25px 0;"></span>Debe seleccionar las preguntas que formaran el cuestionario antes de seleccionar una funci\u00f3n.</p>');
+					$("#dialog_message" ).dialog('open');
+					$('#qst_idf option:eq(-1)').attr('selected', 'selected')
+					$('#qst_idf option:eq(-1)').prop('selected', true)
+					}
+				else{
+					$('#qst_list_param').html(result); 	
+					}	
 					
 					//Cargar tabla principal
 					
 				
-				//$('#qst_dcbox').html(result); 
+				
 			}
 		});
 	}

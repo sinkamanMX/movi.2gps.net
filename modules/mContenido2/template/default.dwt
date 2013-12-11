@@ -15,28 +15,7 @@ function(){
 });
 	
 </script>
-	<script>
-	$(function() {
-		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
-		//$( "#dialog:ui-dialog" ).dialog( "destroy" );
-	
-		/*$( "#dialog-message" ).dialog({
-			autoOpen:false,
-			modal: false,
-			buttons: {
-				Aceptar: function() {
-					$("#dialog-message" ).dialog( "close" );
-					//alert(save)
-					if(save==1){r_filtro(); save=0;}
-				}
-			}
-		});*/
-		$( "#dialog_pb" ).dialog({
-			autoOpen:false,
-			modal: false
-		});		
-	});
-	</script>
+
 
 
      
@@ -102,6 +81,7 @@ $(document).keydown(function(tecla){
         <li><a href="#tabs-02" onclick="pestanaControl(2);">Paneles</a></li>
       <li><a href="#tabs-03" onclick="pestanaControl(3);">Graficas</a></li>
  <!-- <li><a href="#tabs-04" onclick="pestanaControl(4);">Mapa</a></li>-->
+ <li><a href="#tabs-05" onclick="pestanaControl(5);">Rutas</a></li>
     </ul> 
     
 <!---------------------------------------------GANTT VIAJE-----------------------------------------------style=" position:relative; top:40px; width:97%; height:91%;"------> 
@@ -430,7 +410,55 @@ $(document).keydown(function(tecla){
   
             </div>-->
 
+<div id="tabs-05" align="center"  >
 
+           	  <div id="rut" style="position:relative; top:0%; left:0%; width:97%; " >
+               
+               <ul style="height: 30px;">
+		<!--<li><a href="#datagridx"  onclick="pestana(1)">Unidades Disponibles</a></li>-->
+		<li><a href="#datarutx"  onclick="control_ruta(1)">Crear/Editar</a></li>
+		<!--<li><a href="#datagridz"  onclick="pestana(2)">Viajes por Asignar</a></li>-->
+       <li><a href="#dataruty" onclick="control_ruta(2)">Programar Ruta</a></li>   
+
+	</ul>            
+     
+     <div id="datarutx" style="position:relative; top:0px; left:0%; width:99%; height:500px;  background: #dfeffc url(images/ui-bg_glass_85_dfeffc_1x400.png) 50% 50% repeat-x;" >
+       <table border="0" id="bucara" style="position:absolute; top:4px; left:10px; ">
+       <tr><td class="clastxt">Eligir Zona:&nbsp;</td><td><select id="zone" onChange="circ_list(this.value)" style="width:150px;" ><option value="-1">Seleccionar</option></select></td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td>
+       <td colspan="2"><input type="text" size="30" id="buck" title="Buscar" onkeyup="txtls(this.value)" placeholder="Buscar..."/></td><td><a href="#" onclick="busque()" ><img title="Buscar" src="/public/images/search.png" style=" width:18px;"></a></td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td></tr></table>
+       
+       <table cellpadding="0" cellspacing="0" border="0" class="display dataTable" style="margin-left: 0px; position:relative; top:18px; width: 98%;"><thead>
+        <tr role="row"><th colspan="4" rowspan="1" style="width: 1082px;">
+        </th></tr>
+        <tr role="row"><th class="ui-state-default" role="columnheader" rowspan="1" colspan="1" style="width: 130px;" aria-label=""><div class="DataTables_sort_wrapper"><span class="DataTables_sort_icon"></span></div></th>
+        
+        <th class="ui-state-default" role="columnheader" tabindex="0" aria-controls="qst_table" rowspan="1" colspan="1" aria-label="Cuestionario: activate to sort column ascending" style="width: 446px;"><div class="DataTables_sort_wrapper">Nombre de Ruta</div></th>
+        
+        <th class="ui-state-default" role="columnheader" tabindex="0" aria-controls="qst_table" rowspan="1" colspan="1" aria-label="Uso ultima semana: activate to sort column ascending" style="width: 438px;"><div class="DataTables_sort_wrapper">Fecha de Creacion</div></th>
+        </tr>
+        </thead></table>
+       
+   	<div id="lista_final" style="position:absolute; top:7%; left:0%; height:90%;  overflow:scroll; overflow-x:hidden; width:100%;" >
+     <table  id="cvs" cellpadding="0" cellspacing="0" border="0" class="display dataTable" style="position:absolute; top:-10px; margin-left: 3px; position:relative; top:18px; width: 100%;">
+     </table>
+		</div>
+     </div>
+     <div id="dataruty" style="position:relative; top:0px; left:0%; width:98%; height:78%; overflow:scroll; overflow-x:hidden;" >
+     
+   
+     
+     
+     </div>
+       <!--<div id="datarutz" style="position:relative; top:0px; left:0%; width:98%; height:78%; overflow:scroll; overflow-x:hidden;" ></div>
+       <tr id="'+rompe[0]+'"><td ><div id="sizer2" class="sizer" style="width:95%;" ><table  border="0" style="width-min:230px">'+
+												'<tr><td> Nombre: </td><td>&nbsp;</td><td ></td><td><a href="#" onclick="editar_todo(\''+rompe[0]+'\')" ><img title="Editar" src="/Alertas/public/images/Edit_icon.png" style="width:15px;"></a>&nbsp;<a href="#" onclick="elimina_edit(\''+rompe[0]+'\')" ><img title="Eliminar" src="/Alertas/public/images/elimina.png"></a></td></tr>'+
+												'<tr><td colspan="4"><font color="#2f4f4f" face="Arial Black" size="1"  >'+rompe[1]+'</font></td></tr>'+
+												'<tr><td colspan="4"><font color="#C0C0C0" face="Arial Black" size="1" >Creacion: '+rompe[11]+'</font></td></tr>'+
+												'</table></br></div></td></tr>
+       -->
+     
+    </div>
+</div>
 
 
 

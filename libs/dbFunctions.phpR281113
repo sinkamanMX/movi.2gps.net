@@ -16,7 +16,7 @@ class dbFunctions{
 		$conexion = @mysqli_connect($config_bd['host'],$config_bd['user'],$config_bd['pass'],$config_bd['name']);
 		return $conexion;	
 	}
-
+	
 	public function disconnect_bd($conexion){
 		@mysqli_close($conexion);
 	}	*/
@@ -257,7 +257,6 @@ public function dragndrop($id,$des,$tbl,$whr,$pr,$txt){
 	  }	
   
   public function cbo_from_string($id,$desc,$table,$where,$option=''){
-	 // echo $option;
 	global $db,$Functions;
 	$select = '';
 	$sql = "SELECT ".$id." AS ID,".$desc." AS DES
@@ -269,47 +268,11 @@ public function dragndrop($id,$des,$tbl,$whr,$pr,$txt){
 		$select .= '<option value="-1" '.$currentdefault.'>Seleccionar</option>';
 		while($row = $db->sqlFetchArray($query)){
 			$current = ($row['DES']==$option) ? 'selected': '';
-			$select .= '<option '.$current.' value="'.$row['ID'].'" >'.$row['DES'].'</option>';
-		}
-	}	
-	return $select;  	
-  }
-  public function cbo_from_string2($id,$desc,$table,$where,$option=''){
-	 // echo $option;
-	global $db,$Functions;
-	$select = '';
-	$sql = "SELECT ".$id." AS ID,".$desc." AS DES
-			FROM ".$table." WHERE ".$where;	
-	$query = $db->sqlQuery($sql);
-	$count = $db->sqlEnumRows($query);
-	if($count>0){
-		$currentdefault = ($option < 0)?'selected':'';
-		$select .= '<option value="-1" '.$currentdefault.'>Seleccionar</option>';
-		while($row = $db->sqlFetchArray($query)){
-			$current = ($row['ID']==$option) ? 'selected': '';
-			$select .= '<option '.$current.' value="'.$row['ID'].'" >'.$row['DES'].'</option>';
+			$select .= '<option '.$current.' value="'.$row['ID'].'" >'.$Functions->codif($row['DES']).'</option>';
 		}
 	}	
 	return $select;  	
   }  
-  public function cbo_from_str2($id,$desc,$title,$table,$where,$option=''){
-	global $db,$Functions;
-	
-	$select = '';
-	$sql = "SELECT ".$id." AS ID,".$desc." AS DES, ".$title." AS TIT
-			FROM ".$table." WHERE ".$where;	
-	$query = $db->sqlQuery($sql);
-	$count = $db->sqlEnumRows($query);
-	if($count>0){
-		$currentdefault = ($option!="")?'selected':'';
-		$select .= '<option value="-1" '.$currentdefault.'>Seleccionar</option>';
-		while($row = $db->sqlFetchArray($query)){
-			$current = ($row['ID']==$option) ? 'selected': '';
-			$select .= '<option '.$current.' value="'.$row['ID'].'" title="'.$row['TIT'].'" >'.$row['DES'].'</option>';
-		}
-	}	
-	return $select;  	
-  }    
   
   public function cbo_from_enum($table,$column,$option=''){
 	global $db;

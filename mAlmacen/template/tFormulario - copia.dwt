@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+
+</head>
+<input type="hidden" id="alm_hop" value="{OP}" />
+<input type="hidden" id="alm_hid" value="{ID}" />
+<table>
+<tr>
+<td><label>Descripci&oacute;n:</label></td>
+<td colspan="2"><input type="text" id="alm_dsc" class="caja_txt" value="{DSC}" onkeyup="validar_dsc(this.value)" maxlength="250"/></td><td><div id="alm_ddsc"></div></td>
+</tr>
+<tr><td><label>Identificador Almac&eacute;n:</label></td><td colspan="2"><input type="text" id="alm_alm" class="caja_txt" value="{ALM}" onkeyup="validar_nip(this.value)" maxlength="250"/></td>
+<td><div id="alm_dalm"></div></td>
+</tr>
+<tr><td><label>Identificador Tienda:</label></td><td colspan="3"><input type="text" id="alm_tda" class="caja_txt" value="{TDA}" maxlength="250"/></td></tr>
+<tr><td><label>Zona:</label></td><td colspan="3"><input type="text" id="alm_zon" class="caja_txt" value="{ZON}" maxlength="250" /></td></tr>
+<tr><td><label>Mercado:</label></td><td colspan="3"><input type="text" id="alm_mer" class="caja_txt" value="{MER}" maxlength="250"/></td></tr>
+<tr><td><label>Capacidad Alojamiento:</label></td>
+<td><input type="text" maxlength="5"  id="alm_alo" class="caja_num" value="{ALO}" onkeypress="return isNumberKey(event)" /></td>
+<td><select id="alm_c1" class="caja_stxt" onchange="get_combo2(this.value,-1)">{C1}</select> </td>
+<td><div id="alm_dc2"></div></td>
+</tr>
+<tr><td valign="top"><label>Observaciones:</label></td><td colspan="3"><textarea id="alm_obs" class="ui-corner-all text_area"  rows="10" maxlength="256">{OBS}</textarea></td></tr>
+<tr><td>Asignado a </td>
+<td>
+<select class="caja_stxt" onchange="mostrar_tipo(this.value);" id="tipo_pdi_uni">
+ <option value="-1"> Elija Opci&oacute;n</option>
+ {TIP}
+</select>
+</td><td></td></tr>
+</table>
+<div id="pdis"> 
+    
+</div>
+<script>
+var opt = {OPT};
+var pat = {PAT};
+if(opt!="" && pat !=""){
+	get_combo2(opt,pat);
+	}
+	
+
+</script>

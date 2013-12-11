@@ -228,7 +228,7 @@ $sql_j="SELECT D.DESCRIPCION, D.ITEM_NUMBER, D.FECHA_INICIO, D.FECHA_FIN, D.TOLE
 		}
 	}		
 //////////////////////////////////////////////////////////////////////////// 
- $sql_n="SELECT D.ID_CTO, D.DESCRIPCION FROM DSP_CIRCUITO D WHERE COD_CLIENT=".$idc;
+ /*$sql_n="SELECT D.ID_CTO, D.DESCRIPCION FROM DSP_CIRCUITO D WHERE COD_CLIENT=".$idc;
 	$query_n = $db->sqlQuery($sql_n);
 	$count_n = $db->sqlEnumRows($query_n);		
 	
@@ -240,7 +240,7 @@ $sql_j="SELECT D.DESCRIPCION, D.ITEM_NUMBER, D.FECHA_INICIO, D.FECHA_FIN, D.TOLE
 				'DSC'	=> utf8_encode($row_n['DESCRIPCION'])
 										));	
 		}
-	}			
+	}	*/		
 $tpl->pparse('mAddpts');
 $db->sqlClose();
 ?>

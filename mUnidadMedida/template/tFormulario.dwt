@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="public/js/general.js"></script>
+<input type="hidden" id="fun_hop" value="{OP}" />
+<input type="hidden" id="fun_hid" value="{ID}" />
+<div id="fun_tabs" style="width:100%; height:98%;">
+<ul>
+    <li><a href="#fun_tabs1">Datos generales</a></li>
+   
+</ul>
+
+<div id="fun_tabs1">
+<table>
+<tr>
+<td><label>Unidad de Medida:</label></td>
+<td><input type="text" id="fun_nom" class="caja_txt" value="{NOM}" /></td>
+</tr>
+</table>
+</div><!--fun_tabs1-->
+</div><!--fun_tabs-->
+<script>
+$(document).ready(function () {
+	$( "#fun_tabs" ).tabs();
+	gral_btn_add();
+	});
+</script>

@@ -148,6 +148,7 @@ contas=1;
 				
 				//$('#panelx').tabs();
 				$( "#panelx" ).tabs({ active: -4 });
+				$( "#rut" ).tabs({ active: -4 });
 				$( "#tabs-lp" ).tabs();
 				//$( "#panelx" ).tabs( "option", "active", 1 );
 			   /* $('#panelx').panel({
@@ -255,40 +256,6 @@ contas=1;
 					hide: "blind",
 				}
 				);
-/*
-				$("#dialog_pts" ).dialog({
-					title: "Editar {PAGE_TITLE}",
-					modal: true,
-					autoOpen:false,
-					overlay: { opacity: 0.2, background: "cyan", width:300 },
-					width: 1150,
-					height: 700,
-					buttons: {
-						
-						"Eliminar": function(){
-							borrarvje();
-							
-						},						
-						"Guardar": function(){
-							validar_ed();
-							
-						},
-			
-						"Cancelar": function(){
-							
-							if($("#dialog_pts" ).dialog('isOpen')){
-							$("#dialog-message").dialog('close');
-							}
-							$("#dialog_pts" ).dialog('close');
-						
-						}
-					},
-					
-					show: "blind",
-					hide: "blind",
-				}
-				);*/
-//.......................................dialog notas..........................//
 
 //.......................................dialog notas..........................//
 				$("#dialog_mnote" ).dialog({
@@ -580,10 +547,7 @@ idpo="";
 
 }
 /*----------------------------------- -------------------------------------------- */
-function regs(){
-	reg=$("[name='chk']").length;
-	$('#reg').html("<b>"+reg+"</b>");
-	}
+
 /*  +++++++++++++++++++++++++++++++++++++++++++ DANIEL ++++++++++++++++++++++++++++++++++++  */
 
 
@@ -3325,14 +3289,12 @@ function down_format()
 {
 	//window.location="modules/AdRutas/template/descargable/layout.xls";
    window.location="public/Descargas/layout_puntos.xlsx";
-   console.log();
-   
 }	
 //---------------------------------------------
 function down_format_2()
 {
 	//window.location="modules/AdRutas/template/descargable/layout.xls";
-   window.location="public/Descargas/layout_puntos.xlsx";
+   window.location="public/Despacho/descargable/layout_puntos.xls";
 }	
 //---------------------------------------------
 function down_format_pto(){
@@ -4473,7 +4435,7 @@ case 1:
 			document.getElementById('pft').style.display='';
 			document.getElementById('tabs-02').style.display = 'none';
 			document.getElementById('tabs-03').style.display = 'none';
-		/*	document.getElementById('tabs-04').style.display = 'none';*/
+
 			document.getElementById('fec').style.display='';
 			document.getElementById('comb').style.display='none';
 			document.getElementById('comb2').style.display='none';
@@ -4484,7 +4446,7 @@ case 2:
 		 	 document.getElementById('tabs-02').style.display = '';
 				document.getElementById('tabs-03').style.display = 'none';
 			 document.getElementById('pft').style.display='none';
- 		/*	 document.getElementById('tabs-04').style.display = 'none';*/
+
  			 document.getElementById('fec').style.display='none';
 			 document.getElementById('comb').style.display='none';
 			 document.getElementById('comb2').style.display='none';
@@ -4496,7 +4458,7 @@ case 2:
 		 	 document.getElementById('tabs-02').style.display = 'none';
 		 document.getElementById('tabs-03').style.display = '';
 			 document.getElementById('pft').style.display='none';
- 		/*	 document.getElementById('tabs-04').style.display = 'none';*/
+
  			 document.getElementById('fec').style.display='none';
 			 document.getElementById('comb').style.display='none';
 			 document.getElementById('comb2').style.display='none';
@@ -4508,7 +4470,7 @@ case 2:
 document.getElementById('tabs-01').style.display = 'none'; 
 document.getElementById('tabs-02').style.display = 'none';
 document.getElementById('tabs-03').style.display = 'none';
-document.getElementById('tabs-04').style.display = '';
+
 document.getElementById('pft').style.display='';
 document.getElementById('fec').style.display='';
 document.getElementById('comb').style.display='';
@@ -4525,6 +4487,20 @@ carga_viajes();
 	
 	cap_map_pan(1);*/
   break;
+  
+  case 5: 
+  document.getElementById('tabs-01').style.display = 'none'; 
+document.getElementById('tabs-02').style.display = 'none';
+document.getElementById('tabs-03').style.display = 'none';
+
+document.getElementById('tabs-05').style.display = '';
+document.getElementById('pft').style.display='';
+document.getElementById('fec').style.display='';
+document.getElementById('comb').style.display='';
+document.getElementById('comb2').style.display='';
+  control_ruta(1);
+  break;
+  
   
 }
 		
@@ -5047,34 +5023,7 @@ var colortrue= "#F32424";
 		}		
 	ajax.send(null);
 
-/*
-	if(uno==0){}else{
-	
-	try{
-		
-	
-		
-	
-			
-	}catch(e){
-		
-			
-			
-		}
 
-//if(flag_p1==0){
-
-	 
-	 if(bandertime==0){
-		 recarga();
-		 bandertime=1;
-		 }else{
-			 clearInterval(temporizador);
-			recarga();
-			 }
-		
-		}
-*/
 	}
 	
 	
@@ -5312,3 +5261,81 @@ var colortrue= "#F32424";
 			marker2.addMarker(markerf);
 			
 			}*/
+			function control_ruta(x){
+				
+				switch(x){
+				case 1:
+				circ_zon();
+				circuit_lis();
+				break;
+				
+				
+				}
+			}
+			
+			
+			function circuit_lis(){
+				 
+				 var path = "index.php?m=mContenido2&c=mCirclist";
+	
+		var ajax = nuevoAjax();
+	//var url = "index.php?m=rRsalida&c=mGetReport";
+		ajax.open("GET", path,true);
+		ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				//alert(result);
+				var div=result.split('!');
+				
+				if(div[0] != 0){
+					console.log(div[0]);
+						 		
+					$(div[0]).appendTo("#cvs");
+					$("#sizer2").addClass('sizer');	 
+					
+				}else{
+					$('#cvs').html('<tr><td>No Rutas Asignadas &nbsp;</td></tr>');
+
+				}
+			}			
+		}		
+	ajax.send(null);	}
+	
+	function circ_zon(){
+				 
+				 var path = "index.php?m=mContenido2&c=mCircZon";
+	
+		var ajax = nuevoAjax();
+	//var url = "index.php?m=rRsalida&c=mGetReport";
+		ajax.open("GET", path,true);
+		ajax.onreadystatechange=function() {
+		if (ajax.readyState==4) {
+				var result =ajax.responseText;
+				//alert(result);
+				
+				if(result != 0){
+					console.log(result);
+					
+					$(result).appendTo("#zone"); 
+						 	
+					
+				}else{
+					//$('#combo').html('<div style="position: relative; top:-1px; width:100px; height:10px;">No hay Viajes &nbsp;</div>');
+
+				}
+			}			
+		}		
+	ajax.send(null);	
+	}
+				
+			/*	var se= '<tr id=""><td ><div id="sizer2"  style="width:95%;" ><table  border="0" style="width-min:230px">'+
+												'<tr><td> Nombre: </td><td>&nbsp;</td><td ></td><td><a href="#" onclick="editar_todo(\'\')" ><img title="Editar" src="/Alertas/public/images/Edit_icon.png" style="width:15px;"></a>&nbsp;<a href="#" onclick="elimina_edit(\'\')" ><img title="Eliminar" src="/Alertas/public/images/elimina.png"></a></td></tr>'+
+												'<tr><td colspan="4"><font color="#2f4f4f" face="Arial Black" size="1"  ></font></td></tr>'+
+												'<tr><td colspan="4"><font color="#C0C0C0" face="Arial Black" size="1" >Creacion: </font></td></tr>'+
+												'</table></br></div></td></tr>';
+				$(se).appendTo("#cvs");
+				$("#sizer2").addClass('sizer');*/
+				
+				
+				
+			

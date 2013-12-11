@@ -19,6 +19,7 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 	if($_GET['op']==1){
 	$data = Array(
 			'DESCRIPCION'			=> $_GET['tit'],
+			'ITEM_NUMBER'			=> $_GET['nip'],
 			'COD_CLIENT'   			=> $client,
 			'ID_TIPO'    			=> $_GET['typ'],
 			'MULTIPLES_RESPUESTAS'  => $_GET['mlt'],
@@ -54,6 +55,7 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 				echo 1;
 				}
 			else{echo -3;}
+			echo $res_ins_fp = insert_fun_par($q,$_GET['fun'],$_GET['prm']);
 			}
 			else{
 				echo -1;
@@ -68,6 +70,9 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 		if($_GET['tit'] != $_GET['otit']){
 			$cv .= ($cv=="")?" DESCRIPCION ='".$_GET['tit']."'":" ,DESCRIPCION ='".$_GET['tit']."'";
 			}
+		if($_GET['nip'] != $_GET['onip']){
+			$cv .= ($cv=="")?" ITEM_NUMBER ='".$_GET['nip']."'":" ,ITEM_NUMBER ='".$_GET['nip']."'";
+			}			
 		if($_GET['typ'] != $_GET['otyp']){
 			$cv .= ($cv=="")?" ID_TIPO =".$_GET['typ']:" ,ID_TIPO =".$_GET['typ'];
 			}
@@ -141,6 +146,46 @@ $db = new sql($config_bd['host'],$config_bd['port'],$config_bd['bname'],$config_
 					else{
 						echo -1;
 						}	
-					}	
+					}
+				
+				if($_GET['fun']>0){
+					if($_GET['fun']!=$_GET['ofun'] | $_GET['prm']!=$_GET['oprm']){
+						if($_GET['prm']!=""){
+							echo $delete = delete($_GET['idq'],$_GET['fun']); 
+							if($delete > 0){
+								echo $res_ins_fp = insert_fun_par($_GET['idq'],$_GET['fun'],$_GET['prm']);
+								}
+							}
+						}
+
+					}
 		}
+function delete($idc,$idf){
+	global $db;
+	$sql = "DELETE FROM CRM2_CUESTIONARIO_FUNCION WHERE ID_CUESTIONARIO = ".$idc." AND ID_FUNCION = ".$idf;	
+	if($qry = $db->sqlQuery($sql)){
+		return 3;
+		}
+	else{
+		return -3;
+		}
+	}
+function insert_fun_par($idq,$idf,$pv){
+	if($idf > -1){
+		global $db;
+		$exp = explode('|',$pv);
+		$val = "";
+		for($i=0; $i<count($exp); $i++){
+			$ex = explode(',',$exp[$i]);
+			$val .= ($val=="")?'('.$idq.','.$idf.','.$ex[0].','.$ex[1].')':',('.$idq.','.$idf.','.$ex[0].','.$ex[1].')';
+			}
+		$sql = "INSERT INTO CRM2_CUESTIONARIO_FUNCION (ID_CUESTIONARIO,ID_FUNCION,ID_PARAMETRO,ID_PREGUNTA) VALUES".$val;	
+		if($qry = $db->sqlQuery($sql)){
+			return 4;
+			}
+		else{
+			return -4;
+			}		
+		}
+	}		
 ?>

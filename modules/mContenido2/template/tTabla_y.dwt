@@ -1,14 +1,14 @@
 <div id="myDiv">
 
-	<table id="MyDatay"  class="usersTableInfo" width="100%">
+	<table id="MyDatay"  class="usersTableInfo" >
     <!-- BEGIN datosy -->
         <tr style="cursor:pointer;">
-         <td width="20%" onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');" onDblClick="add_pts('{datosy.IDD}')" >{datosy.DSP}</td>
-         <td width="15%" onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');" onDblClick="add_pts('{datosy.IDD}')" >{datosy.UND}</td>
-         <td width="20%" onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');" onDblClick="add_pts('{datosy.IDD}')" >{datosy.IDV}</td>
-         <td width="20%" onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');" onDblClick="add_pts('{datosy.IDD}')" >{datosy.DTI}</td>
-         <td width="20%" onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');" onDblClick="add_pts('{datosy.IDD}')" >{datosy.DTF}</td>
-         <td width="5%" onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');"  onDblClick="add_pts('{datosy.IDD}')" >{datosy.TLR}</td>                           
+         <td width="10" onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');" onDblClick="add_pts('{datosy.IDD}')" >{datosy.DSP}</td>
+         <td  onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');" onDblClick="add_pts('{datosy.IDD}')" >{datosy.UND}</td>
+         <td onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');" onDblClick="add_pts('{datosy.IDD}')" >{datosy.IDV}</td>
+         <td  onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');" onDblClick="add_pts('{datosy.IDD}')" >{datosy.DTI}</td>
+         <td  onClick="r_filtro_xc('{datosy.IDD}');r_filtro_xa('{datosy.IDD}');r_filtro_xb('{datosy.IDD}');" onDblClick="add_pts('{datosy.IDD}')" >{datosy.DTF}</td>
+       
      	</tr>
 	<!-- END datosy -->
     </table>

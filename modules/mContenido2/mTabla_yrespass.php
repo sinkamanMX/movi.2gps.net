@@ -9,7 +9,7 @@
 		echo '<script>window.location="index.php?m=login"</script>';
 		
 
-	$idc   = $userAdmin->user_info['ID_CLIENTE'];
+	$idc   = $userAdmin->user_info['ID_USUARIO'];
 
         
     $tpl->set_filenames(array(
@@ -37,7 +37,7 @@ FROM
   INNER JOIN DSP_ESTATUS EST ON ( EST.ID_ESTATUS = P.ID_ESTATUS)
 WHERE
 (P.FECHA_ARRIBO = '0000-00-00 00:00:00' OR P.FECHA_SALIDA = '0000-00-00 00:00:00') AND
-P.COD_USER='46'
+P.COD_USER=".$idc."
 GROUP BY
 D.ID_DESPACHO";		
 	
@@ -75,7 +75,7 @@ FROM
   INNER JOIN ADM_UNIDADES UN ON UN.COD_ENTITY=AU.COD_ENTITY
 WHERE
 D.FECHA_INICIO BETWEEN '".$dayhr." 00:00:00' AND '".$dayhr." 23:59:00' AND
-D.COD_USER='46'
+D.COD_USER=".$idc."
 ORDER BY
 D.FECHA_INICIO";		
 	

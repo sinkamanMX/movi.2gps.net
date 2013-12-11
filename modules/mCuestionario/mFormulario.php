@@ -35,7 +35,14 @@
 	
 	$qst = ( $_GET['cuestionario']!="")?$dbf->getRow('CRM2_CUESTIONARIOS','ID_CUESTIONARIO = '.$_GET['cuestionario']):"";
 	
+	$fun = ( $_GET['cuestionario']!="")?$dbf->getRow('CRM2_CUESTIONARIO_FUNCION','ID_CUESTIONARIO = '.$_GET['cuestionario']):"";
+	
+	$idf = (@$fun['ID_FUNCION']!="")?@$fun['ID_FUNCION']:0;
+	$p = ( $_GET['cuestionario']!="")?$idf:0;
+	
 	$tit = ( $_GET['cuestionario']!="")?@$qst['DESCRIPCION']:"";
+	
+	$nip = ( $_GET['cuestionario']!="")?@$qst['ITEM_NUMBER']:"";
 	
 	$tma = ( $_GET['cuestionario']!="")?@$qst['TEMA']:"";
 	
@@ -89,12 +96,13 @@
 		'O_P'      	=> 1,
 		'USD'		=> $usr
 		));
+		
 		}	
 	
 
 	$tp = $dbf->cbo_from_notit("ID_TIPO","DESCRIPCION","CRM2_TIPO_CUES","",$option=@$qst['ID_TIPO']);
 	$w = "TIPO='PUB' OR ID_CLIENTE = ".$cte." ORDER BY NOMBRE";
-	//$cf = $dbf->cbo_from_str2("ID_FUNCION","NOMBRE","DESCRIPCION","ADM_FUNCION",$w,$option=@$qst['ID_TIPO']);
+	$cf = $dbf->cbo_from_str2("ID_FUNCION","NOMBRE","DESCRIPCION","ADM_FUNCION",$w,$option=@$fun['ID_FUNCION']);
 	
 
 	$tms = $dbf->tabla_temas($tma);
@@ -110,6 +118,7 @@
 	'T_P'      	=> $tp,
 	'C_F'		=> $cf,
 	'TIT'      	=> $tit,
+	'NIP'		=> $nip,
 	'MUL'      	=> $mul,
 	'OFF'      	=> $off,
 	'IDT'      	=> $tma,
@@ -118,7 +127,8 @@
 	'OFV'      	=> $ofv,
 	'X'      	=> $x,
 	'Y'      	=> $y,
-	'Z'      	=> $z
+	'Z'      	=> $z,
+	'P'			=> $p
 	));
 	$tpl->pparse('mFormulario');	
 ?>	
